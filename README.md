@@ -12,9 +12,11 @@ Set up backend:
 7. run the project as normally 
 8. Something should be loading now and lots of red lines will appear
 
-9. Type in webbrowser http://localhost:9999/calcrest/rest
+9. Type in webbrowser http://localhost:9999/rest/rest/test/
 
-10. {"name":"Fidde","surename":"Lass","age":32} should apper and you are ready to go! 
+10. {"name":"Fidde","surename":"Lass","age":32} should apper and you are ready to go!
+
+ 
 
 
 NOTE if the server can't come up you need to close the existing connection or change port. 
