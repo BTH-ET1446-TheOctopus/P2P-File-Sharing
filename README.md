@@ -21,6 +21,12 @@ Set up backend:
 
 8. {"name":"Fidde","surename":"Lass","age":32} should apper and you are ready to go!
 
+
+Build backend whit Maven
+1. Cd to dicretory P2P
+2. mvn package
+3. cd target
+4. java -jar .\Octopus-0.0.1-SNAPSHOT.jar
  
 
 
