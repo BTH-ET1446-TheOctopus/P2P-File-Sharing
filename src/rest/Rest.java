@@ -4,114 +4,94 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import json.Address;
-import json.Block;
-import json.PeersBootstrapBlacklist;
+import json.TestAddress;
+import json.Blacklist;
+import json.Bootstraps;
 import json.Swarm;
 import json.Swarms;
-import json.IPS;
+import json.Peers;
 
 @Path("/rest")
 public class Rest {
 	@GET
 	@Path("/test/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Address convertCtoF(){
-		Address adr = new Address();
+	public TestAddress convertCtoF(){
+		TestAddress adr = new TestAddress();
 		adr.setAge(32);
 		adr.setName("Fidde");
 		adr.setSurename("Lass");
 		return adr;
 	}
 	
-	/*
-	 * The thing that differ between peers,servers and blacklist
-	 * is the ID, that is either Blacklist, Servers or Peers
-	 * 
-	 */
 	@GET
 	@Path("/peers/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public PeersBootstrapBlacklist getPeers()
+	public Peers getPeers()
 	{
-		PeersBootstrapBlacklist peers = new PeersBootstrapBlacklist();
+		Peers peers = new Peers();
+		List<String> ip = new ArrayList<String>();
+		ip.add("1.2.3.4");
+		ip.add("1.2.3.6");
 		
-		//Creating static example
-		peers.setId("Peers");
-		peers.setTime("1461151586");
-		List<IPS> ips = new ArrayList<IPS>();
-		IPS ip = new IPS();
-		ip.setIP("192.168.30.2");
-		ips.add(ip);
-		ip.setIP("192.168.30.3");
-		ips.add(ip);
-		peers.setIPS(ips);
-		
+		peers.setpeers(ip);
+
 		
 		return peers;
 	}
 	
 	@GET
-	@Path("/bootstrapServers/")
+	@Path("/bootstraps/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public PeersBootstrapBlacklist getBootstrapServers()
+	public Bootstraps getBootstraps()
 	{
-		PeersBootstrapBlacklist peers = new PeersBootstrapBlacklist();
+	
+		Bootstraps bootstraps = new Bootstraps();
+		List<String> ip = new ArrayList<String>();
+		ip.add("1.2.3.4");
+		ip.add("1.2.3.6");
+		bootstraps.setbootstraps(ip);
 		
-		//Creating static example
-		peers.setId("Servers");
-		peers.setTime("1461151586");
-		List<IPS> ips = new ArrayList<IPS>();
-		IPS ip = new IPS();
-		ip.setIP("192.168.31.4");
-		ips.add(ip);
-		ip.setIP("192.168.31.5");
-		ips.add(ip);
-		peers.setIPS(ips);
-		
-		
-		return peers;
+		return bootstraps;
 	}
 	
 	@GET
 	@Path("/blacklist/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public PeersBootstrapBlacklist getBlacklist()
+	public Blacklist getBlacklist()
 	{
-		PeersBootstrapBlacklist peers = new PeersBootstrapBlacklist();
+		Blacklist blacklist = new Blacklist();
+		List<String> ip = new ArrayList<String>();
+		ip.add("1.2.3.4");
+		ip.add("1.2.3.6");
+		blacklist.setblacklist(ip);
 		
-		//Creating static example
-		peers.setId("Blacklist");
-		peers.setTime("1461151586");
-		List<IPS> ips = new ArrayList<IPS>();
-		IPS ip = new IPS();
-		ip.setIP("192.168.31.6");
-		ips.add(ip);
-		ip.setIP("192.168.31.7");
-		ips.add(ip);
-		peers.setIPS(ips);
-		
-		return peers;
+		return blacklist;
 	}
 	
+	
+	/*
+	 * Should be an array that is called swarms
+	 */
 	@GET
-	@Path("/swarmList/")
+	@Path("/swarms/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Swarms> getSwarmList()
+	public List<Swarms> getSwarms()
 	{
 		Swarms swarm = new Swarms();
 		List<Swarms> swarms = new ArrayList<Swarms>(); 
-		swarm.setFileName("ninda.exe");
-		swarm.setSwarmID("test");
+		swarm.setfilename("ninda.exe");
+		swarm.setid("test");
 		
 		swarms.add(swarm);
-		swarm.setFileName("virus.exe");
-		swarm.setSwarmID("DDDDEEEFFF");
+		swarm.setfilename("virus.exe");
+		swarm.setid("DDDDEEEFFF");
 		swarms.add(swarm);
 		
 		
@@ -119,46 +99,44 @@ public class Rest {
 	}
 	
 	@GET
-	@Path("/swarm/{swarmID}/")
+	@Path("/swarms/{id}/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Swarm getSwarm(@PathParam("swarmID") String swarmID)
+	public Swarm getSwarm(@PathParam("id") int id)
 	{
 
 		Swarm swarm = new Swarm();
-		System.out.println(swarmID);
+		System.out.println(id);
 
-		if(swarmID.equals("test"))
+		if(id == 1)
 		{
-			Block block = new Block();
-			block.setBlockNr(0);
-			block.setBlockSize(1024);
-			block.setChecksum("XXXYYY");
-			List<Block> blocks = new ArrayList<Block>();
-			
-			blocks.add(block);
-			block.setBlockNr(1);
-			block.setBlockSize(123);
-			block.setChecksum("XXXYYY");
-			blocks.add(block);
-			
-			swarm.setNumOfBlocks(2);
+			swarm.setBlockCount(2);
 			swarm.setFilename("virus.exe");
-			swarm.setFileCheckSum("XXXYYY");
-			swarm.setBlocks(blocks);
+			swarm.setFileChecksum("XXXYYY");
+			swarm.setMetadataChecksum("XXXYYY");
+			
+			List<String> peers = new ArrayList<String>();
+			peers.add("1.2.3.4");
+			peers.add("1.2.3.5");
+			
+			swarm.setPeers(peers);
 		}
-		
 		return swarm;
 	}
 	
 	
-	
 	/*
+	 * In progress
+	 * 
+	 * 
+	 */
 	@POST
-    @Path("/createSwarm/{a}/{b}")
+    @Path("/swarms/{blockCount}/{filename}/{fileCHecksum}/{metadataChecksum}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String addPlainText(@PathParam("a") double a, @PathParam("b") double b) 
+    public String addPlainText(@PathParam("blockCount") int blockCount, @PathParam("filename") String filename,@PathParam("fileChecksum") String fileChecksum, @PathParam("metadataChecksum") String metadataChecksum) 
 	{
-        return (a + b) + "";
+        
+		
+		return filename;
     }
-    */
+    
 }

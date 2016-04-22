@@ -1,14 +1,14 @@
 package json;
 
-public class Address {
+public class TestAddress {
 	private String name;
 	private String surename;
 	private int age;
 	
-	public Address(){	
+	public TestAddress(){	
 	}
 	
-	public Address(String fName, String lName, int age){
+	public TestAddress(String fName, String lName, int age){
 		this.name =  fName;
 		this.surename = lName;
 		this.age = age;
