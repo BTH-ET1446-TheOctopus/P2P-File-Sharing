@@ -67,5 +67,17 @@ public class Swarm {
 	public void setPeers(List<String> peers) {
 		this.peers = peers;
 	}
-
+	
+	@Override
+	public String toString() 
+	{
+		String stringBuilder = "peers: " + peers.toString();
+		stringBuilder += "metadataChecksum: " + this.metadataChecksum + "\n"
+				+ "fileChecksum:" + this.fileChecksum + "\n"
+				+ "blockCount:" + this.blockCount + "\n"
+				+ "filename:" + this.filename + "\n"; 
+		
+		return stringBuilder;
+		
+	}
 }

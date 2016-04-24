@@ -15,6 +15,7 @@ import json.Blacklist;
 import json.Bootstraps;
 import json.Swarm;
 import json.Swarms;
+import json.SwarmsHelper;
 import json.Peers;
 
 @Path("/rest")
@@ -82,8 +83,9 @@ public class Rest {
 	@GET
 	@Path("/swarms/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Swarms> getSwarms()
+	public SwarmsHelper getSwarms()
 	{
+		SwarmsHelper swarmHelp = new SwarmsHelper();
 		Swarms swarm = new Swarms();
 		List<Swarms> swarms = new ArrayList<Swarms>(); 
 		swarm.setfilename("ninda.exe");
@@ -93,9 +95,10 @@ public class Rest {
 		swarm.setfilename("virus.exe");
 		swarm.setid("DDDDEEEFFF");
 		swarms.add(swarm);
+		swarmHelp.setSwarms(swarms);
 		
 		
-		return swarms;
+		return swarmHelp;
 	}
 	
 	@GET
