@@ -32,7 +32,7 @@ public class RESTStartUp {
        calls.getPeers();
        calls.getBootstraps();
        calls.getBlacklist();
-       //calls.getSwarms();
+       calls.getSwarms();
        calls.getSwarm("1");
     	
     }

@@ -9,7 +9,6 @@ import json.Blacklist;
 import json.Bootstraps;
 import json.Peers;
 import json.Swarm;
-import json.Swarms;
 import json.SwarmsHelper;
 
 public class BootstrapCalls {
@@ -59,7 +58,7 @@ public class BootstrapCalls {
 		
 		System.out.println(respons.toString());
 	}
-	/*
+	
 	public void getSwarms(){
 		
 		Client client = ClientBuilder.newClient();
@@ -71,7 +70,7 @@ public class BootstrapCalls {
 		
 		System.out.println(respons.toString());
 	}
-	*/
+	
 	
 	
 	public void getSwarm(String id){
