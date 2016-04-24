@@ -1,29 +1,35 @@
 package json;
 
 public class Swarms {
-	private String swarmID;
-	private String fileName;
+	private String id;
+	private String filename;
 	
 	
 	public Swarms() {
 	}
 	
 	public Swarms(String swarmID, String fileName) {
-		this.swarmID = swarmID;
-		this.fileName = fileName;
+		this.id = swarmID;
+		this.filename = fileName;
 	}
-	public String getSwarmID() {
-		return swarmID;
+	public String getid() {
+		return id;
 	}
-	public void setSwarmID(String swarmID) {
-		this.swarmID = swarmID;
+	public void setid(String swarmID) {
+		this.id = swarmID;
 	}
-	public String getFileName() {
-		return fileName;
+	public String getfilename() {
+		return filename;
 	}
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setfilename(String fileName) {
+		this.filename = fileName;
 	}
 	
+	@Override
+	public String toString() 
+	{
+		return "id: " + this.id + "\n" + "filename" + this.filename;
+		
+	}
 	
 }

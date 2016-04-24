@@ -1,116 +1,89 @@
 package rest;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
+
+import json.Address;
+import json.Blacklist;
+import json.Bootstraps;
+import json.Peers;
+import json.Swarm;
+import json.Swarms;
+import json.SwarmsHelper;
 
 public class BootstrapCalls {
     static final String REST_URI = "http://localhost:9999/rest/rest/";
     
+    
     public void getTest(){
-		ClientConfig config = new DefaultClientConfig();
-        Client client = Client.create(config);
-        WebResource service = client.resource(REST_URI).path("test");
-        
-        ClientResponse response = service.accept("application/json")
-                .get(ClientResponse.class);
-        
-        if (response.getStatus() != 200) {
- 		   throw new RuntimeException("Failed : HTTP error code : "
- 			+ response.getStatus());
- 		}
-        String output = response.getEntity(String.class);
-        System.out.println("Output from Server .... \n");
-		System.out.println(output);
+    	Client client = ClientBuilder.newClient();
+		
+		Address respons = client.target(REST_URI)
+				.path("test")
+				.request(MediaType.APPLICATION_JSON)
+				.get(Address.class);
+		
+		System.out.println(respons.toString());
 	}
     
 	public void getPeers(){
-		ClientConfig config = new DefaultClientConfig();
-        Client client = Client.create(config);
-        WebResource service = client.resource(REST_URI).path("peers");
-        
-        ClientResponse response = service.accept("application/json")
-                .get(ClientResponse.class);
-        
-        if (response.getStatus() != 200) {
- 		   throw new RuntimeException("Failed : HTTP error code : "
- 			+ response.getStatus());
- 		}
-        String output = response.getEntity(String.class);
-        System.out.println("Output from Server .... \n");
-		System.out.println(output);
+		Client client = ClientBuilder.newClient();
+		
+		Peers respons = client.target(REST_URI)
+				.path("peers")
+				.request(MediaType.APPLICATION_JSON)
+				.get(Peers.class);
+		
+		System.out.println(respons.toString());
 	}
 	
 	public void getBootstraps(){
-		ClientConfig config = new DefaultClientConfig();
-        Client client = Client.create(config);
-        WebResource service = client.resource(REST_URI).path("bootstraps");
-        
-        ClientResponse response = service.accept("application/json")
-                .get(ClientResponse.class);
-        
-        if (response.getStatus() != 200) {
- 		   throw new RuntimeException("Failed : HTTP error code : "
- 			+ response.getStatus());
- 		}
-        String output = response.getEntity(String.class);
-        System.out.println("Output from Server .... \n");
-		System.out.println(output);
+		Client client = ClientBuilder.newClient();
+		
+		Bootstraps respons = client.target(REST_URI)
+				.path("bootstraps")
+				.request(MediaType.APPLICATION_JSON)
+				.get(Bootstraps.class);
+		
+		System.out.println(respons.toString());
 	}
 	
 	public void getBlacklist(){
-		ClientConfig config = new DefaultClientConfig();
-        Client client = Client.create(config);
-        WebResource service = client.resource(REST_URI).path("blacklist");
-        
-        ClientResponse response = service.accept("application/json")
-                .get(ClientResponse.class);
-        
-        if (response.getStatus() != 200) {
- 		   throw new RuntimeException("Failed : HTTP error code : "
- 			+ response.getStatus());
- 		}
-        String output = response.getEntity(String.class);
-        System.out.println("Output from Server .... \n");
-		System.out.println(output);
+		Client client = ClientBuilder.newClient();
+		
+		Blacklist respons = client.target(REST_URI)
+				.path("blacklist")
+				.request(MediaType.APPLICATION_JSON)
+				.get(Blacklist.class);
+		
+		System.out.println(respons.toString());
 	}
-	
+	/*
 	public void getSwarms(){
-		ClientConfig config = new DefaultClientConfig();
-        Client client = Client.create(config);
-        WebResource service = client.resource(REST_URI).path("swarms");
-        
-        ClientResponse response = service.accept("application/json")
-                .get(ClientResponse.class);
-        
-        if (response.getStatus() != 200) {
- 		   throw new RuntimeException("Failed : HTTP error code : "
- 			+ response.getStatus());
- 		}
-        String output = response.getEntity(String.class);
-        System.out.println("Output from Server .... \n");
-		System.out.println(output);
+		
+		Client client = ClientBuilder.newClient();
+		
+		SwarmsHelper respons = client.target(REST_URI)
+				.path("swarms")
+				.request(MediaType.APPLICATION_JSON)
+				.get(SwarmsHelper.class);
+		
+		System.out.println(respons.toString());
 	}
-	
+	*/
 	
 	
 	public void getSwarm(String id){
-		ClientConfig config = new DefaultClientConfig();
-        Client client = Client.create(config);
-        WebResource service = client.resource(REST_URI).path("swarms").path(id);
-        
-        ClientResponse response = service.accept("application/json")
-                .get(ClientResponse.class);
-        
-        if (response.getStatus() != 200) {
- 		   throw new RuntimeException("Failed : HTTP error code : "
- 			+ response.getStatus());
- 		}
-        String output = response.getEntity(String.class);
-        System.out.println("Output from Server .... \n");
-		System.out.println(output);
+		
+		Client client = ClientBuilder.newClient();
+
+		Swarm respons = client.target(REST_URI)
+				.path("swarms/")
+				.path(id)
+				.request(MediaType.APPLICATION_JSON)
+				.get(Swarm.class);
+		
+		System.out.println(respons.toString());
 	}
-	
 }

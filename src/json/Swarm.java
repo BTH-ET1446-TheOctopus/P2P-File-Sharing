@@ -3,54 +3,82 @@ package json;
 import java.util.List;
 
 public class Swarm {
-	private int numOfBlocks;
-	private String Filename;
-	private String fileCheckSum;
-	private List<Block> blocks;
-	private String metadataCheckSum;
+	private int blockCount;
+	private String filename;
+	private String fileChecksum;
+	private String metadataChecksum;
+	private List<String> peers;
 	
 	
 	public Swarm() {
-	
 	}
-	
-	public Swarm(int numOfBlocks, String filename, String fileCheckSum, List<Block> blocks, String metadataCheckSum) {
+	public Swarm(int blockCount, String filename, String fileChecksum, String metadataChecksum, List<String> peers) {
 		super();
-		this.numOfBlocks = numOfBlocks;
-		Filename = filename;
-		this.fileCheckSum = fileCheckSum;
-		this.blocks = blocks;
-		this.metadataCheckSum = metadataCheckSum;
+		this.blockCount = blockCount;
+		this.filename = filename;
+		this.fileChecksum = fileChecksum;
+		this.metadataChecksum = metadataChecksum;
+		this.peers = peers;
 	}
-	public int getNumOfBlocks() {
-		return numOfBlocks;
+
+
+
+	public int getblockCount() {
+		return blockCount;
 	}
-	public void setNumOfBlocks(int numOfBlocks) {
-		this.numOfBlocks = numOfBlocks;
+
+	public void setBlockCount(int blockCount) {
+		this.blockCount = blockCount;
 	}
-	public String getFilename() {
-		return Filename;
+
+	public String getfilename() {
+		return filename;
 	}
+
 	public void setFilename(String filename) {
-		Filename = filename;
+		this.filename = filename;
 	}
-	public String getFileCheckSum() {
-		return fileCheckSum;
+
+	public String getfileChecksum() {
+		return fileChecksum;
 	}
-	public void setFileCheckSum(String fileCheckSum) {
-		this.fileCheckSum = fileCheckSum;
+
+
+	public void setFileChecksum(String fileChecksum) {
+		this.fileChecksum = fileChecksum;
 	}
-	public List<Block> getBlocks() {
-		return blocks;
+
+
+	public String getmetadataChecksum() {
+		return metadataChecksum;
 	}
-	public void setBlocks(List<Block> blocks) {
-		this.blocks = blocks;
+
+
+	public void setMetadataChecksum(String metadataChecksum) {
+		this.metadataChecksum = metadataChecksum;
 	}
-	public String getMetadataCheckSum() {
-		return metadataCheckSum;
+
+
+	public List<String> getpeers() {
+		return peers;
 	}
-	public void setMetadataCheckSum(String metadataCheckSum) {
-		this.metadataCheckSum = metadataCheckSum;
+
+
+	public void setpeers(List<String> peers) {
+		this.peers = peers;
+	}
+	
+	@Override
+	public String toString() 
+	{
+		String stringBuilder = "peers: " + peers.toString() + "\n";
+		stringBuilder += "metadataChecksum: " + this.metadataChecksum + "\n"
+				+ "fileChecksum:" + this.fileChecksum + "\n"
+				+ "blockCount:" + this.blockCount + "\n"
+				+ "filename:" + this.filename + "\n"; 
+		
+		return stringBuilder;
+		
 	}
 	
 }
