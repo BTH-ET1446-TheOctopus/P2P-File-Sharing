@@ -6,6 +6,8 @@
 .project
 
 /RemoteSystemsTempFiles/
-/target/
+
+/src/Bootstrap/target/
+/src/client/target/
 
 tmp/
