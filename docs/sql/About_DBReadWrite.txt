@@ -1,6 +1,6 @@
 Path to DBReadWrite:
-C:\p2p\src\Bootstrap\src\main\java\sql
-C:\p2p\src\client\src\main\java\sql
+~\p2p\src\Bootstrap\src\main\java\sql
+~\p2p\src\client\src\main\java\sql
 
 DBReadWrite file tries to retrieve information from the database and show it in the output;
 
