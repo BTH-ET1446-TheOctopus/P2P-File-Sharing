@@ -1,0 +1,22 @@
+Path to DBReadWrite:
+~\p2p\src\Bootstrap\src\main\java\sql
+~\p2p\src\client\src\main\java\sql
+
+DBReadWrite file tries to retrieve information from the database and show it in the output;
+
+In this initial file we retrieve some data from "serverpeers" table as follow: "File ID", "Latest IP" and "Black List".
+
+How to use it in your machine:
+1. one can create a separate project in Eclipse, import these two files (DBReadWrite.java, ToReadDB.java) into the project's package.
+
+2. first comment out the ToReadDB.java file
+
+3. Run the project normally; You should get some info from those columns mentioned above (If you put some data in them).
+
+NOTICE:
+a) It's assumed you installed mysql in your machine correctly and also bind sql connector/J to your Eclipse. (Google it in case you don't setup these yet.)
+b) Database URL is defined in "connectionUrl" value.
+You should adopt the username and password for sql running in your own machine.
+
+
+//@Author: Kambiz
