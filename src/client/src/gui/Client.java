@@ -61,8 +61,6 @@ public class Client {
 	private void initialize() {
 
 		frmOctopusP2P = new JFrame();
-		frmOctopusP2P
-				.setIconImage(Toolkit.getDefaultToolkit().getImage(Client.class.getResource("/Resourses/Octopus.png")));
 		frmOctopusP2P.setTitle("Octopus P2P");
 		frmOctopusP2P.setResizable(false);
 		frmOctopusP2P.setBounds(100, 100, 800, 600);
