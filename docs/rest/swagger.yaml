@@ -1,0 +1,444 @@
+swagger: '2.0'
+info:
+  title: P2P File Sharing
+  description: REST API specification for the bootstrap server and the client.
+  version: "1.0.0"
+host: localhost
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /hello:
+    get:
+      summary: Update validity timer
+      description: |
+        Updates the validity timer. If no ID is supplied by the client the server will threat it as a new connection and generate a new ID, which is returned in the response
+      parameters:
+        - name: id
+          in: query
+          description: The client UUID
+          required: false
+          type: string
+          format: uuid
+      tags:
+        - Bootstrap
+      responses:
+        200:
+          description: The client ID
+          schema:
+            $ref: '#/definitions/ClientIdentifier'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /peers:
+    get:
+      summary: Retrieves a list of 2 to 3 random peer IP addresses
+      description: |
+        Every X minute a client will be able to get a list of other clients from the bootstrap server
+      tags:
+        - Bootstrap
+        - Client
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            description: A list of peer IP addresses
+            items:
+              type: string
+              description: The IP address of the peer
+              minItems: 2
+              maxItems: 3
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /bootstraps:
+    get:
+      summary: Retrieves a list of all bootstrap servers
+      description: |
+        Every X minute a client will be able to get a list bootstrap servers
+      tags:
+        - Bootstrap
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            description: List of bootstrap IP addresses
+            items:
+              type: string
+              description: The IP address of the bootstrap server
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /blacklist:
+    get:
+      summary: Retrieves a list of all blacklisted IP addresses
+      description: |
+        Every X minute a client will be able to get a list of blacklisted IP addresses
+      tags:
+        - Bootstrap
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            description: List of blacklisted IP addresses
+            items:
+              type: string
+              description: Blacklisted IP address
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /swarms:
+    get:
+      summary: Retrieves a list of all swarms
+      description: |
+        Every X minute a client will be able get a list of all swams
+      tags:
+        - Bootstrap
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            description: List of all swarms
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  description: The swarm identifier
+                filename:
+                  type: string
+                  description: The name of the file
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create a new pulic swarm
+      parameters:
+        - name: blockCount
+          in: query
+          description: The number of blocks in the file
+          required: true
+          type: integer
+        - name: filename
+          in: query
+          description: The name of the file
+          required: true
+          type: string
+        - name: fileChecksum
+          in: query
+          description: SHA checksum for the file
+          required: true
+          type: string
+        - name: metadataChecksum
+          in: query
+          description: SHA checksum for the metadata
+          required: true
+          type: string
+      tags:
+        - Bootstrap
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                description: The swarm identifier
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /swarms/{id}:
+    get:
+      summary: Retrieve swarm metadata
+      description: |
+        Retrieves the metadata for the swarm. The Bootstrap server registers the peer as a participant in swarm
+      parameters:
+        - name: id
+          in: path
+          description: The client UUID
+          required: true
+          type: string
+          format: uuid
+      tags:
+        - Bootstrap
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/SwarmMetadata'
+        404:
+          description: Swarm not found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /sync:
+    get:
+      summary: Synchronize data with a bootstrap server
+      description: |
+        Get all data from the bootstrap server including: peers, bootstraps, blacklist and swarms
+      tags:
+        - Bootstrap
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              peers:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      description: Client identifier
+                    ip:
+                      type: string
+                      description: The IP address of the peer
+                    lastSeen:
+                      type: string
+                      format: date-time
+                      description: When the peer last sent a /hello request
+              bootstraps:
+                type: array
+                description: List of bootstrap IP addresses
+                items:
+                  type: string
+                  description: The IP address of the bootstrap server
+              blacklist:
+                type: array
+                description: List of blacklisted IP addresses
+                items:
+                  type: string
+                  description: Blacklisted IP address
+              swarms:
+                type: array
+                description: List of all swarms
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      description: The swarm identifier
+                    blockCount:
+                      type: integer
+                      description: The number of blocks in the file
+                    filename:
+                      type: string
+                      description: The name of the file
+                    fileChecksum:
+                      type: string
+                      description: SHA checksum of the file contents
+                    metadataChecksum:
+                      type: string
+                      description: SHA checksum of the metadata
+                    peers:
+                      type: array
+                      description: List of all IP addresses associated with the swarm
+                      items:
+                        type: string
+                        description: The IP address of a peer
+        401:
+          description: Unauthorized
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /search/{filename}:
+    post:
+      summary: Search for a file 
+      description: |
+        The receiving peer forwards the search to every other peer it knows. If the receiving peer has the file, it will send a ´/searchResult´ to the IP in the parameters
+      parameters:
+        - name: filename
+          in: path
+          description: The name of the file
+          required: true
+          type: string
+        - name: ip
+          in: query
+          description: The IP address of the client that initiated the serach
+          required: true
+          type: string
+        - name: hopLimit
+          in: query
+          description: The number of times the search will be forwarded. This number is decresed each time a client recives it
+          required: true
+          type: integer
+          minimum: 0
+          maximum: 16
+      tags:
+        - Client
+      responses:
+        200:
+          description: OK
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /searchresult:
+    post:
+      summary: The result of a search
+      description: |
+        When a client recives a ´/search´ for a file that it has it will send this request to the client that initiated the search
+      parameters:
+        - name: id
+          in: query
+          description: The file identifier
+          required: true
+          type: string
+          format: uuid
+        - name: blockCount
+          in: query
+          description: The number of blocks in the file
+          required: true
+          type: integer
+        - name: filename
+          in: query
+          description: The name of the file
+          required: true
+          type: string
+        - name: fileChecksum
+          in: query
+          description: SHA checksum of the file contents
+          required: true
+          type: string
+        - name: metadataChecksum
+          in: query
+          description: SHA checksum of the metadata
+          required: true
+          type: string
+      tags:
+        - Client
+      responses:
+        200:
+          description: OK
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /file/{id}:
+    get:
+      summary: Retrieve a list of available file blocks
+      parameters:
+        - name: id
+          in: path
+          description: The file identifier
+          required: true
+          type: string
+          format: uuid
+      tags:
+        - Client
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            description: A list of available blocks
+            items:
+              type: integer
+        404:
+          description: File not found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /file/{id}/{block}:
+    get:
+      summary: Retrive a file block
+      parameters:
+        - name: id
+          in: path
+          description: The file identifier
+          required: true
+          type: string
+          format: uuid
+        - name: block
+          in: path
+          description: The block number
+          required: true
+          type: integer
+      tags:
+        - Client
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              sequenceNumber:
+                type: integer
+                description: Block sequence number
+              size:
+                type: integer
+                description: Block size in bytes
+              checksum:
+                type: string
+                description: Block checksum
+              data:
+                type: string
+                format: byte
+                description: The block data
+        404:
+          description: Block is not available
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  ClientIdentifier:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+        description: Unique identifier for the client
+  SwarmMetadata:
+    type: object
+    properties:
+      blockCount:
+        type: string
+        description: The number of blocks in the file
+      filename:
+        type: string
+        description: The name of the file
+      fileChecksum:
+        type: string
+        description: SHA checksum of the file contents
+      metadataChecksum:
+        type: string
+        description: SHA checksum of the file metadata
+      peers:
+        type: array
+        description: A list of 2..3 selected peers
+        items:
+          type: string
+          description: The IP address of the peer
+          minItems: 2
+          maxItems: 3
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
