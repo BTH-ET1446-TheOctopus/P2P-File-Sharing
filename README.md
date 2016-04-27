@@ -39,3 +39,29 @@ A program that can be used is TCPView but it is only for windows
 
 Create folder tmp in order to have a folder that will not be included in git repository. 
 If one wants another folder name please add the folder name to git ignore. 
+
+# Should be in wiki
+## General info Junit
+The bootstrap and client can be built whit
+mvn -package
+
+If a junit test is created which fail maven wont build the project and you will see what junit test are failing. 
+The junit tests should be added in src/test/java/test
+
+If you want to create a new junit test class add it to tha package mention above and name it Test* otherwise you will get into trouble and have a hard time to find the error. 
+
+
+## How to write test
+As you see in the function below it is simple. 
+You use assertEquals to see that the test you are doing produce the expected output. 
+For the test below the test is "sum = 2 + 3". My assumption is that this generates 5. 
+Now we compare whit assertEquals the assumption and the variables sum. 
+The assumption should be on the left and the "test" to the right. 
+```java
+	@org.junit.Test
+	public void test() {
+		int sum = 0;
+		sum = 2 + 3;
+		assertEquals(5, sum);
+	}
+```
