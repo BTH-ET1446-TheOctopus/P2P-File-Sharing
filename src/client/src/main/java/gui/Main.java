@@ -1,11 +1,25 @@
 package gui;
 
 import java.awt.EventQueue;
+
 import rest.RESTStartUp;
 
 public class Main {
 	public static void main(String[] args) {
-		new Thread(new RESTStartUp()).start();
+		final Thread restServerThread = new Thread(new RESTStartUp());
+		restServerThread.start();
+
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				restServerThread.interrupt();
+				try {
+					restServerThread.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

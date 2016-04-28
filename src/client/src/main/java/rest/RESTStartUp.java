@@ -30,8 +30,8 @@ public class RESTStartUp implements Runnable {
 			server.stop(0);
 			server = null;
 		} finally {
-			System.out.println("HTTP finally block");
 			if (server != null) {
+				System.out.println("HTTP server was stopped (force)");
 				server.stop(0);
 			}
 		}
