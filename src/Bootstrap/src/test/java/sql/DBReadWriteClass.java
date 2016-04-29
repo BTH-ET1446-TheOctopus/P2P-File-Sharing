@@ -1,4 +1,4 @@
-package com.javadbwriter.octopus;
+package sql;
 
 import java.sql.DriverManager;
 import java.sql.Connection;

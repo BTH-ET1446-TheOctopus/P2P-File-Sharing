@@ -1,4 +1,4 @@
-package com.javadbwriter.octopus;
+package sql;
 
 /**
  * @author Kambiz
