@@ -52,6 +52,7 @@ paths:
               description: The IP address of the peer
               minItems: 2
               maxItems: 3
+              example: 10.0.0.1
         default:
           description: Unexpected error
           schema:
@@ -72,6 +73,7 @@ paths:
             items:
               type: string
               description: The IP address of the bootstrap server
+              example: 10.0.0.254
         default:
           description: Unexpected error
           schema:
@@ -92,6 +94,7 @@ paths:
             items:
               type: string
               description: Blacklisted IP address
+              example: 8.8.8.8
         default:
           description: Unexpected error
           schema:
@@ -116,9 +119,11 @@ paths:
                   type: string
                   format: uuid
                   description: The swarm identifier
+                  example: aefa6c95-eebc-46c2-bcfe-5872fe4939f4
                 filename:
                   type: string
                   description: The name of the file
+                  example: virus.exe
         default:
           description: Unexpected error
           schema:
@@ -158,6 +163,7 @@ paths:
                 type: string
                 format: uuid
                 description: The swarm identifier
+                example: aefa6c95-eebc-46c2-bcfe-5872fe4939f4
         default:
           description: Unexpected error
           schema:
@@ -209,9 +215,11 @@ paths:
                       type: string
                       format: uuid
                       description: Client identifier
+                      example: 7c0f1e9b-1a7f-4e02-8d56-41c0695c62c3
                     ip:
                       type: string
                       description: The IP address of the peer
+                      example: 10.0.0.1
                     lastSeen:
                       type: string
                       format: date-time
@@ -222,12 +230,14 @@ paths:
                 items:
                   type: string
                   description: The IP address of the bootstrap server
+                  example: 10.0.0.254
               blacklist:
                 type: array
                 description: List of blacklisted IP addresses
                 items:
                   type: string
                   description: Blacklisted IP address
+                  example: 8.8.8.8
               swarms:
                 type: array
                 description: List of all swarms
@@ -238,24 +248,30 @@ paths:
                       type: string
                       format: uuid
                       description: The swarm identifier
+                      example: aefa6c95-eebc-46c2-bcfe-5872fe4939f4
                     blockCount:
                       type: integer
                       description: The number of blocks in the file
+                      example: 10
                     filename:
                       type: string
                       description: The name of the file
+                      example: virus.exe
                     fileChecksum:
                       type: string
                       description: SHA checksum of the file contents
+                      example: 83e8d1ccf6ae38b21372d3e07d50651e839d0920
                     metadataChecksum:
                       type: string
                       description: SHA checksum of the metadata
+                      example: 7036e004b0506c7de5f1fdb9d9ab486ff46f124a
                     peers:
                       type: array
                       description: List of all IP addresses associated with the swarm
                       items:
                         type: string
                         description: The IP address of a peer
+                        example: 10.0.0.1
         401:
           description: Unauthorized
         default:
@@ -355,6 +371,7 @@ paths:
             description: A list of available blocks
             items:
               type: integer
+              example: 0
         404:
           description: File not found
         default:
@@ -387,16 +404,20 @@ paths:
               sequenceNumber:
                 type: integer
                 description: Block sequence number
+                example: 0
               size:
                 type: integer
                 description: Block size in bytes
+                example: 1024
               checksum:
                 type: string
                 description: Block checksum
+                example: 668d6205211dfdb882189d49d4349b0b8a5baaed
               data:
                 type: string
                 format: byte
                 description: The block data
+                
         404:
           description: Block is not available
         default:
@@ -411,27 +432,33 @@ definitions:
         type: string
         format: uuid
         description: Unique identifier for the client
+        example: 7c0f1e9b-1a7f-4e02-8d56-41c0695c62c3
   SwarmMetadata:
     type: object
     properties:
       blockCount:
         type: string
         description: The number of blocks in the file
+        example: 10
       filename:
         type: string
         description: The name of the file
+        example: virus.exe
       fileChecksum:
         type: string
         description: SHA checksum of the file contents
+        example: 83e8d1ccf6ae38b21372d3e07d50651e839d0920
       metadataChecksum:
         type: string
         description: SHA checksum of the file metadata
+        example: 7036e004b0506c7de5f1fdb9d9ab486ff46f124a
       peers:
         type: array
         description: A list of 2..3 selected peers
         items:
           type: string
           description: The IP address of the peer
+          example: 10.0.0.1
           minItems: 2
           maxItems: 3
   Error:
