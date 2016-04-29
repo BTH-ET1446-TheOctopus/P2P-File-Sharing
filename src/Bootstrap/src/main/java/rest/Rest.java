@@ -8,6 +8,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import json.TestAddress;
@@ -17,6 +18,7 @@ import json.Swarm;
 import json.Swarms;
 import json.SwarmsHelper;
 import json.Peers;
+import json.Sync;
 
 @Path("/rest")
 public class Rest {
@@ -29,6 +31,15 @@ public class Rest {
 		adr.setName("Fidde");
 		adr.setSurename("Lass");
 		return adr;
+	}
+	@GET
+	@Path("/hello/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getHello(@QueryParam("id") String ide)
+	{
+		String id = ide;
+		return id;
+		
 	}
 	
 	@GET
@@ -133,13 +144,25 @@ public class Rest {
 	 * 
 	 */
 	@POST
-    @Path("/swarms/{blockCount}/{filename}/{fileCHecksum}/{metadataChecksum}")
+    @Path("/swarms/")
     @Produces(MediaType.APPLICATION_JSON)
-    public String addPlainText(@PathParam("blockCount") int blockCount, @PathParam("filename") String filename,@PathParam("fileChecksum") String fileChecksum, @PathParam("metadataChecksum") String metadataChecksum) 
+    public String addPlainText(@QueryParam("blockCount") int blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum) 
 	{
         
 		
 		return filename;
     }
-    
+	/*
+	 * Work in progress
+	 * 
+	 * 
+	@GET
+	@Path("/sync/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Sync sync()
+	{
+		
+		return sync;
+	}
+    */
 }
