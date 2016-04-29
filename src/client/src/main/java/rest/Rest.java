@@ -15,7 +15,6 @@ import json.Address;
 import json.Chunk;
 import json.Chunks;
 import json.Peers;
-import json.Swarm;
 
 @Path("/rest")
 public class Rest {
@@ -33,7 +32,8 @@ public class Rest {
 	@GET
 	@Path("/peers/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Peers getPeers(){
+	public Peers getPeers()
+	{
 		Peers peers = new Peers();
 		List<String> ip = new ArrayList<String>();
 		ip.add("1.2.3.4");
@@ -46,18 +46,24 @@ public class Rest {
 	@POST
 	@Path("/search/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String searchFile(@PathParam("filename") String filename, @QueryParam("ip") String ip, @QueryParam("hopLimit") Integer hopLimit){
+	public String searchFile(@PathParam("filename") String filename, @QueryParam("ip") String ip, @QueryParam("hopLimit") Integer hopLimit)
+	{
 		
 		return filename;
 	}
-	
+	@POST
+	@Path("/searchresult/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void searchResult(@QueryParam("id") Integer id, @QueryParam("blockCount") Integer blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum)
+	{
+		
+	}
 	
 	@GET
 	@Path("/file/{id}/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Chunks getFileChunks(@PathParam("id") Integer id){
-		
-		
+	public Chunks getFileChunks(@PathParam("id") Integer id)
+	{	
 		Chunks chunks = new Chunks();
 		System.out.println(id);
 		if(id != 1){
@@ -73,7 +79,8 @@ public class Rest {
 	@GET
 	@Path("/file/{id}/{chunk}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Chunk getFile(@PathParam("id") Integer id, @PathParam("chunk") Integer chunk){
+	public Chunk getFile(@PathParam("id") Integer id, @PathParam("chunk") Integer chunk)
+	{
 		/*
 		 * Here we should use id and chunk to detetermine what the respons should be
 		 * 
