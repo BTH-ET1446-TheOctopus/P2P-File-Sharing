@@ -63,7 +63,7 @@ public class Client {
 		frmOctopusP2P = new JFrame();
 		frmOctopusP2P.setTitle("Octopus P2P");
 		frmOctopusP2P.setResizable(false);
-		frmOctopusP2P.setBounds(100, 100, 800, 600);
+		frmOctopusP2P.setBounds(100, 100, 800, 630);
 		frmOctopusP2P.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmOctopusP2P.getContentPane().setLayout(null);
 		frmOctopusP2P.setLocationRelativeTo(null);
@@ -143,7 +143,7 @@ public class Client {
 		/// Bottom Tabbed Panel
 
 		JTabbedPane tabBottom = new JTabbedPane(JTabbedPane.TOP);
-		tabBottom.setBounds(6, 335, 788, 237);
+		tabBottom.setBounds(6, 365, 788, 237);
 		frmOctopusP2P.getContentPane().add(tabBottom);
 
 		JPanel general = new JPanel();
