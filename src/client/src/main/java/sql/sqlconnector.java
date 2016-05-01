@@ -3,6 +3,10 @@ package sql;
 import java.sql.*;
 import java.util.Properties;
 
+/**
+ * @author Farhan
+ */
+
 public class sqlconnector {
 
 private static final String dbClassName = "com.mysql.jdbc.Driver";

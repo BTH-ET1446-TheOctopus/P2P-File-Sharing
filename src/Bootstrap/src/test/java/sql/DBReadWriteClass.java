@@ -21,7 +21,7 @@ public class DBReadWriteClass {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			String connectionUrl = "jdbc:mysql://localhost:3306/serverdb?autoReconnect=true&useSSL=false";
 			String connectionUser = "root";
-			String connectionPassword = "";
+			String connectionPassword = "farhan";
 			connect = DriverManager.getConnection(connectionUrl, connectionUser, connectionPassword);
 			System.out.println("Connected to server successfully...\n");
 			stmnt = connect.createStatement();
