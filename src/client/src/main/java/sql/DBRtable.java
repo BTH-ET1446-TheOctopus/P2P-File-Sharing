@@ -11,7 +11,7 @@ public class DBRtable {
 	  // The JDBC Connector Class.
 		public static final String dbClassName = "com.mysql.jdbc.Driver";
 		public static final String CONNECTION =
-		                          "jdbc:mysql://127.0.0.1/serverdb";
+		                          "jdbc:mysql://127.0.0.1/clientdb";
 		Statement stmt = null;
 		ResultSet rs = null;
 	
@@ -34,7 +34,7 @@ public class DBRtable {
 		    Properties sqlprop = new Properties();
 		    sqlprop.put("user","farhan");
 		    sqlprop.put("password","farhan");
-		    String sql="SELECT * FROM serverfile where peercount='1'";
+		    String sql="SELECT * FROM clientfile where peercount='1'";
 
 		    // Now try to connect
 		    Connection sqlconn = DriverManager.getConnection(CONNECTION,sqlprop);
