@@ -1,6 +1,6 @@
 Path to DBReadWriteClass.java and DBMain.java:
-~\p2p\src\Bootstrap\src\test\java\sql
-~\p2p\src\client\src\test\java\sql
+~\p2p\src\Bootstrap\src\main\java\sql
+~\p2p\src\client\src\main\java\sql
 
 "DBReadWriteClass.java" tries to "write to" and "read from" the database and show it in the output;
 
