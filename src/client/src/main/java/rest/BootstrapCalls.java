@@ -1,12 +1,17 @@
 package rest;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
+
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 import json.Address;
 import json.Blacklist;
 import json.Bootstraps;
+import json.Chunk;
 import json.Peers;
 import json.Swarm;
 import json.SwarmsHelper;
@@ -14,6 +19,21 @@ import json.SwarmsHelper;
 public class BootstrapCalls {
     static final String REST_URI = "http://localhost:9999/rest/rest/";
     
+    /*
+    public void getFile(){
+    	ClientResponse response = webResource
+    			
+    	
+    	WebResource r = c.resource("http://localhost:8080/xyz");
+
+		
+		Chunk respons = client.target("http://localhost:1337")
+				.path("/rest/file/1/1")
+				.request(MediaType.APPLICATION_JSON)
+				.get(Chunk.class);
+		
+		System.out.println(respons.getSequenceNumber());
+    }
     
     public void getTest(){
     	Client client = ClientBuilder.newClient();
@@ -24,6 +44,7 @@ public class BootstrapCalls {
 				.get(Address.class);
 		
 		System.out.println(respons.toString());
+		
 	}
     
 	public void getPeers(){
@@ -36,18 +57,23 @@ public class BootstrapCalls {
 		
 		System.out.println(respons.toString());
 	}
+	*/
 	
 	public void getBootstraps(){
-		Client client = ClientBuilder.newClient();
+		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
+		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
+		Client client = Client.create(defaultClientConfig);
+		WebResource webResource = client
+				   .resource("http://localhost:9998/rest/rest/bootstraps");
 		
-		Bootstraps respons = client.target(REST_URI)
-				.path("bootstraps")
-				.request(MediaType.APPLICATION_JSON)
-				.get(Bootstraps.class);
+		Bootstraps response = webResource
+				.accept("Content-Type", "application/json")
+                .get(Bootstraps.class);
 		
-		System.out.println(respons.toString());
+		System.out.println(response.toString());
 	}
 	
+	/*
 	public void getBlacklist(){
 		Client client = ClientBuilder.newClient();
 		
@@ -85,4 +111,5 @@ public class BootstrapCalls {
 		
 		System.out.println(respons.toString());
 	}
+	*/
 }

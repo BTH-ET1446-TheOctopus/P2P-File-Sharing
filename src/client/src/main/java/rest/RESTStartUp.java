@@ -1,24 +1,24 @@
 package rest;
 
+import java.io.IOException;
 import java.net.URI;
 
 import javax.ws.rs.core.UriBuilder;
 
-import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
-import org.glassfish.jersey.server.ResourceConfig;
-
+import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.net.httpserver.HttpServer;
 
 public class RESTStartUp implements Runnable {
-	// static final String REST_URI = "http://localhost:9999/rest/rest/";
+	 static final String BASE_URI = "http://localhost:1339/rest/";
 	// //Bootstrap rest adress
 
 	public void run() {
+		BootstrapCalls calls = new BootstrapCalls();
+    	calls.getBootstraps();
 		HttpServer server = null;
 		try {
-			URI baseUri = UriBuilder.fromUri("http://localhost/").port(1337).build();
-			ResourceConfig config = new ResourceConfig(Rest.class);
-			server = JdkHttpServerFactory.createHttpServer(baseUri, config);
+			server = HttpServerFactory.create(BASE_URI);
+            server.start();
 			System.out.println("HTTP server was started");
 			while (true) {
 				Thread.sleep(1000);
@@ -29,6 +29,8 @@ public class RESTStartUp implements Runnable {
 			System.out.println("HTTP server was stopped");
 			server.stop(0);
 			server = null;
+		} catch (IOException e) {
+			e.printStackTrace();
 		} finally {
 			if (server != null) {
 				System.out.println("HTTP server was stopped (force)");
