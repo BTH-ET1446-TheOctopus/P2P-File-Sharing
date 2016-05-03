@@ -3,10 +3,14 @@ package sql;
 import java.sql.*;
 import java.util.Properties;
 
+/**
+ * @author Farhan
+ */
+
 public class sqlconnector {
 
 private static final String dbClassName = "com.mysql.jdbc.Driver";
-private static final String CONNECTION ="jdbc:mysql://127.0.0.1/clientdb";	
+private static final String CONNECTION = "jdbc:mysql://localhost:3306/serverdb";
 private Connection  connection  = null;
 private Statement   statement   = null;
 private ResultSet   set         = null;
@@ -16,6 +20,12 @@ String port;
 String login;
 String password;
 String url;
+String filename="";
+int filesize=0;
+String filetype = "";
+String peers = "";
+int peercount = 0;
+int uniquefileid = 0;
 
 public void connector(String login, String password, String db, String host, String port) {
     this.login = login;
@@ -44,7 +54,7 @@ private void connect() {
     }
 }
 
-public ResultSet Query(String query){
+public ResultSet runquery(String query){
 
     try {
         statement = connection.createStatement();
@@ -54,6 +64,32 @@ public ResultSet Query(String query){
         System.out.println("Exception in query method:\n" + e.getMessage());
     }
     return set;
+}
+
+public void printresult(ResultSet rs){
+	try {
+		while(rs.next()){
+	         //Retrieve by column name
+	 		 filename=rs.getString("filename");
+	         filesize=rs.getInt("filesize");
+	         filetype = rs.getString("filetype");
+	         peers = rs.getString("peers");
+	         peercount = rs.getInt("peercount");
+	         uniquefileid = rs.getInt("uniquefileid");
+	         
+	         //Display values
+	         System.out.printf("filename: %s ", filename);
+	         System.out.printf("filesize: %d ", filesize);
+	         System.out.printf("filetype: %s ", filetype);
+	         System.out.printf("peers: %s ", peers);
+	         System.out.printf("peercount: %d ", peercount);
+	         System.out.printf("uniquefileid: %d\n", uniquefileid);
+	      }
+    }
+    catch (Exception e) {
+        System.out.println("Exception in query method:\n" + e.getMessage());
+    }
+
 }
 
 public boolean Update (String update) {

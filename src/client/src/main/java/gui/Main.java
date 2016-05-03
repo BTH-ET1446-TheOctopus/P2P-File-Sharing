@@ -25,7 +25,7 @@ public class Main {
 			public void run() {
 				try {
 					Client window = new Client();
-					window.frmOctopusP2P.setVisible(true);
+					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
