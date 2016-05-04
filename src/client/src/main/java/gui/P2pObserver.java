@@ -4,7 +4,6 @@ import java.util.List;
 
 import json.Blacklist;
 import json.Peers;
-import json.Swarm;
 import json.Swarms;
 
 public interface P2pObserver {
