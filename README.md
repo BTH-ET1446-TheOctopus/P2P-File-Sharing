@@ -69,20 +69,20 @@ The assumption should be on the left and the "test" to the right.
 ## Logging
 Put this at the top of your class
 ```java
-    private static final Logger LOG = Logger.getLogger(ClassName.class.getName());
+private static final Logger LOG = Logger.getLogger(ClassName.class.getName());
 ```
 Be sure to replace `ClassName` with the name of your class.
 
 ### Examples
 ```java
-    LOG.log(Level.FINE, "Entering processing loop");
-    LOG.log(Level.INFO, "Bootstrap server was started at {0}", server.getAddress().toString());
+LOG.log(Level.FINE, "Entering processing loop");
+LOG.log(Level.INFO, "Bootstrap server was started at {0}", server.getAddress().toString());
 
-    try {
-        functionThatMightThrow();
-    } catch(Exception e) {
-        LOG.log(Level.SEVERE, e.toString(), e);
-    }
+try {
+    functionThatMightThrow();
+} catch(Exception e) {
+    LOG.log(Level.SEVERE, e.toString(), e);
+}
 ```
 ### Logging levels
 Use `Level.FINE` for debugging. Possible levels are:
