@@ -65,3 +65,31 @@ The assumption should be on the left and the "test" to the right.
 		assertEquals(5, sum);
 	}
 ```
+
+## Logging
+Put this at the top of your class
+    private static final Logger LOG = Logger.getLogger(ClassName.class.getName());
+Be sure to replace `ClassName` with the name of your class.
+
+### Examples
+    LOG.log(Level.FINE, "Entering processing loop");
+    LOG.log(Level.INFO, "Bootstrap server was started at {0}", server.getAddress().toString());
+
+    try {
+        functionThatMightThrow();
+    } catch(Exception e) {
+        LOG.log(Level.SEVERE, e.toString(), e);
+    }
+
+### Logging levels
+Use `Level.FINE` for debugging. Possible levels are:
+* Level.SEVERE (highest value)
+* Level.WARNING
+* Level.INFO
+* Level.CONFIG
+* Level.FINE
+* Level.FINER
+* Level.FINEST (lowest value)
+
+### See Also
+* http://docs.oracle.com/javase/8/docs/api/java/util/logging/Logger.html
