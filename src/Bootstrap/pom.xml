@@ -15,7 +15,7 @@
           <manifest>
             <addClasspath>true</addClasspath>
             <classpathPrefix>lib/</classpathPrefix>
-            <mainClass>rest.RESTStartUp</mainClass>
+            <mainClass>rest.Main</mainClass>
           </manifest>
         </archive>
       </configuration>
