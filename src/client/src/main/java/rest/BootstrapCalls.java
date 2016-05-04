@@ -64,7 +64,7 @@ public class BootstrapCalls {
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource("http://localhost:9998/rest/rest/bootstraps");
+				   .resource(REST_URI + "bootstraps");
 		
 		Bootstraps response = webResource
 				.accept("Content-Type", "application/json")
