@@ -6,12 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import backend.rest.RESTStartUp;
 /**
  * @author Kambiz
  */
 
 public class DBReadWriteClass {
 	
+		private static final Logger LOG = Logger.getLogger(DBReadWriteClass.class.getName());
 		Connection connect = null;
 		Statement stmnt = null;
 		ResultSet rs = null;
@@ -23,7 +28,7 @@ public class DBReadWriteClass {
 			String connectionUser = "root";
 			String connectionPassword = "farhan";
 			connect = DriverManager.getConnection(connectionUrl, connectionUser, connectionPassword);
-			System.out.println("Connected to server successfully...\n");
+			LOG.log(Level.INFO, "Connected to server successfully...\n");
 			stmnt = connect.createStatement();
 			
 			stmnt.executeUpdate("INSERT INTO serverpeers (id, latestIP, blacklist, timestamp, files, filecount) " + 
@@ -43,6 +48,14 @@ public class DBReadWriteClass {
 						"\nFiles: " + files +
 						"\nFilecount: " + filecount
 						);
+				//Unable to test yet, remove the above System.out.println and uncomment if it works.
+/*             LOG.log(Level.INFO, "ID: " + id.toString() + 
+						"\nLastestIP: " + latestIP.toString() + 
+						"\nBlacklist: " + blackList.toString() +
+						"\nTimestamp: " + timestamp.toString() +
+						"\nFiles: " + files.toString() +
+						"\nFilecount: " + filecount.toString());
+				*/
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
