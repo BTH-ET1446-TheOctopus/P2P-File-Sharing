@@ -16,8 +16,13 @@ import backend.json.Chunk;
 import backend.json.Chunks;
 import backend.json.Peers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @Path("/rest")
 public class Rest {
+	
+	private static final Logger LOG = Logger.getLogger(Rest.class.getName());
 	@GET
 	@Path("/test/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -67,7 +72,7 @@ public class Rest {
 	public Chunks getFileChunks(@PathParam("id") Integer id)
 	{	
 		Chunks chunks = new Chunks();
-		System.out.println(id);
+		LOG.log(Level.INFO, id.toString());
 		if(id != 1){
 			List<Integer> chunk = new ArrayList<Integer>();
 			chunk.add(1);

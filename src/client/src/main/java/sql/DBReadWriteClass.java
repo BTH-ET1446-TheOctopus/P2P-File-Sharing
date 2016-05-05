@@ -5,6 +5,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import backend.rest.RESTStartUp;
 
 /**
  * @author Kambiz
@@ -12,6 +16,7 @@ import java.sql.Statement;
 
 public class DBReadWriteClass {
 	
+		private static final Logger LOG = Logger.getLogger(DBReadWriteClass.class.getName());
 		Connection connect = null;
 		Statement stmnt = null;
 		ResultSet rs = null;
@@ -22,8 +27,8 @@ public class DBReadWriteClass {
 			String connectionUrl = "jdbc:mysql://localhost:3306/serverdb?autoReconnect=true&useSSL=false";
 			String connectionUser = "root";
 			String connectionPassword = "";
-			connect = DriverManager.getConnection(connectionUrl, connectionUser, connectionPassword);
-			System.out.println("Connected to server successfully...\n");
+			connect = DriverManager.getConnection(connectionUrl, connectionUser, connectionPassword);		
+			LOG.log(Level.INFO,"Connected to server successfully...\n");
 			stmnt = connect.createStatement();
 			
 			stmnt.executeUpdate("INSERT INTO serverpeers (id, latestIP, blacklist, timestamp, files, filecount) " + 
@@ -43,6 +48,13 @@ public class DBReadWriteClass {
 						"\nFiles: " + files +
 						"\nFilecount: " + filecount
 						);
+				/*LOG.log(Level.INFO,"ID: " + id.toString() + 
+						"\nLastestIP: " + latestIP.toString() + 
+						"\nBlacklist: " + blackList.toString() +
+						"\nTimestamp: " + timestamp.toString() +
+						"\nFiles: " + files.toString() +
+						"\nFilecount: " + filecount.toString());
+						*/
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
