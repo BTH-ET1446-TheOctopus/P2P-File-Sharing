@@ -1,4 +1,4 @@
-package rest;
+package backend.rest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import json.Address;
-import json.Chunk;
-import json.Chunks;
-import json.Peers;
+import backend.json.Address;
+import backend.json.Chunk;
+import backend.json.Chunks;
+import backend.json.Peers;
 
 @Path("/rest")
 public class Rest {

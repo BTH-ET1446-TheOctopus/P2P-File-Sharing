@@ -1,4 +1,4 @@
-package rest;
+package backend.rest;
 
 import java.io.IOException;
 import java.net.URI;
@@ -9,7 +9,7 @@ import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.net.httpserver.HttpServer;
 
 public class RESTStartUp implements Runnable {
-	 static final String BASE_URI = "http://localhost:1339/rest/";
+	 static final String BASE_URI = "http://localhost:1337/rest/";
 	// //Bootstrap rest adress
 
 	public void run() {

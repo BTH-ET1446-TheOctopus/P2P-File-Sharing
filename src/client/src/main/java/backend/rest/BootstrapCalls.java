@@ -1,4 +1,4 @@
-package rest;
+package backend.rest;
 
 import javax.ws.rs.core.MediaType;
 
@@ -8,13 +8,13 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
-import json.Address;
-import json.Blacklist;
-import json.Bootstraps;
-import json.Chunk;
-import json.Peers;
-import json.Swarm;
-import json.SwarmsHelper;
+import backend.json.Address;
+import backend.json.Blacklist;
+import backend.json.Bootstraps;
+import backend.json.Chunk;
+import backend.json.Peers;
+import backend.json.Swarm;
+import backend.json.SwarmsHelper;
 
 public class BootstrapCalls {
     static final String REST_URI = "http://localhost:9999/rest/rest/";

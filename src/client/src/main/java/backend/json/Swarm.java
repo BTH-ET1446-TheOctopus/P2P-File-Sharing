@@ -1,4 +1,4 @@
-package json;
+package backend.json;
 
 import java.util.List;
 
