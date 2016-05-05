@@ -15,7 +15,7 @@ public class RESTStartUp implements Runnable {
 	// //Bootstrap rest adress
 
 	public void run() {
-		/*
+		
 		BootstrapCalls calls = new BootstrapCalls();
 		Bootstraps servers = calls.getBootstraps();
 		System.out.println(servers.getbootstraps());
@@ -25,7 +25,7 @@ public class RESTStartUp implements Runnable {
 		calls.getBlacklist();
 		calls.getSwarms();
 		calls.getSwarm("1");
-		*/
+		
 		HttpServer server = null;
 		try {
 			server = HttpServerFactory.create(BASE_URI);
