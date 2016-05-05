@@ -3,6 +3,8 @@ package sql;
 import java.sql.*;
 import java.util.Properties;
 
+import com.mysql.jdbc.PreparedStatement;
+
 /**
  * @author Farhan
  */
@@ -20,12 +22,14 @@ String port;
 String login;
 String password;
 String url;
+
 String filename="";
-int filesize=0;
-String filetype = "";
+int totalblocks=0;
 String peers = "";
 int peercount = 0;
-int uniquefileid = 0;
+String uniquefileid = "";
+String filechecksum = "";
+String metadatachecksum = "";
 
 public void connector(String login, String password, String db, String host, String port) {
     this.login = login;
@@ -68,22 +72,43 @@ public ResultSet runquery(String query){
 
 public void printresult(ResultSet rs){
 	try {
+		System.out.println();
 		while(rs.next()){
 	         //Retrieve by column name
 	 		 filename=rs.getString("filename");
-	         filesize=rs.getInt("filesize");
-	         filetype = rs.getString("filetype");
+	         totalblocks=rs.getInt("totalblocks");
 	         peers = rs.getString("peers");
 	         peercount = rs.getInt("peercount");
-	         uniquefileid = rs.getInt("uniquefileid");
+	         uniquefileid = rs.getString("uniquefileid");
+	         filechecksum = rs.getString("filechecksum");
+	         metadatachecksum = rs.getString("metadatachecksum");
 	         
 	         //Display values
 	         System.out.printf("filename: %s ", filename);
-	         System.out.printf("filesize: %d ", filesize);
-	         System.out.printf("filetype: %s ", filetype);
+	         System.out.printf("totalblocks: %d ", totalblocks);
 	         System.out.printf("peers: %s ", peers);
-	         System.out.printf("peercount: %d ", peercount);
-	         System.out.printf("uniquefileid: %d\n", uniquefileid);
+	         System.out.printf("peercount: %s ", peercount);
+	         System.out.printf("uniquefileid: %s ", uniquefileid);
+	         System.out.printf("filechecksum: %s\n", filechecksum);
+	         System.out.printf("filechecksum: %s\n", metadatachecksum);
+	      }
+    }
+    catch (Exception e) {
+        System.out.println("Exception in query method:\n" + e.getMessage());
+    }
+
+}
+public void printpeersarray(ResultSet rs){
+	try {
+		System.out.println();
+		while(rs.next()){
+	         //Retrieve by column name			
+	         //uniquefileid = rs.getString("uniquefileid");
+	         peers = rs.getString("peers");	         
+	         //Display values 
+	         //System.out.printf("uniquefileid: %s ", uniquefileid);
+	         System.out.printf("peers: %s ", peers);
+	         System.out.println();
 	      }
     }
     catch (Exception e) {
@@ -106,6 +131,33 @@ public boolean Update (String update) {
 
     return true;
 }
+
+/*public boolean write (String write) {
+
+    try {
+    	String writequery = "INSERT INTO serverfile (filename,filesize,filetype,peers,peercount,uniquefileid) "
+    			+ " values (?, ?, ?, ?, ?, ?)";
+	      // create the mysql insert preparedstatement
+	      PreparedStatement preparedStmt = connection.prepareStatement(writequery);
+	      preparedStmt.setString (1, "Barney");
+	      preparedStmt.setString (2, "Rubble");
+	      preparedStmt.setDate   (3, startDate);
+	      preparedStmt.setBoolean(4, false);
+	      preparedStmt.setInt    (5, 5000);
+	 
+	      // execute the preparedstatement
+	      preparedStmt.execute();
+        statement = connection.createStatement();
+        statement.executeUpdate(update);
+
+    }
+    catch (SQLException e) {
+        System.out.println("Exception in update method:\n" + e.getMessage());
+        return false;
+    }
+
+    return true;
+} */
 
 public void closeconnect(){
 

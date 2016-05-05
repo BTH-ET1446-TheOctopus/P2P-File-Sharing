@@ -1,5 +1,6 @@
 package backend.rest;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,9 @@ import backend.json.Swarms;
 import backend.json.SwarmsHelper;
 import backend.json.Sync;
 import backend.json.TestAddress;
+import sql.sqlconnector;
+import java.sql.*;
+import java.util.Properties;
 
 @Path("/rest")
 public class Rest {
@@ -47,13 +51,41 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Peers getPeers()
 	{
+		String readquery="";
+		sqlconnector test = new sqlconnector();
+		ResultSet result;
+		int counter=0;
+		String data="";
+		System.out.println("get 2-3 random peers");
+		test.connector("root", "farhan", "serverdb", "127.0.0.1", "3306");
+		readquery="select distinct peers from peersarray";
+		result = test.runquery(readquery);
+		//test.printresult(result);		
 		Peers peers = new Peers();
 		List<String> ip = new ArrayList<String>();
-		ip.add("1.2.3.4");
-		ip.add("1.2.3.6");
 		
+		try {
+			System.out.println();
+			while(result.next()){
+		         //Retrieve by column name			
+		         //uniquefileid = rs.getString("uniquefileid");
+		         data = result.getString("peers");	         
+		         //Display values 
+		         //System.out.printf("uniquefileid: %s ", uniquefileid);
+		         //System.out.printf("peers: %s ", peers);
+		         //System.out.println();
+		         if(counter<3)
+		         {
+		        	 ip.add(data);
+		         }
+		         counter++;
+		      }
+	    }
+	    catch (Exception e) {
+	        System.out.println("Exception in query method:\n" + e.getMessage());
+	    }
+		test.closeconnect();
 		peers.setpeers(ip);
-
 		
 		return peers;
 	}

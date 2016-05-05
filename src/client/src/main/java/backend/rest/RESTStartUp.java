@@ -22,6 +22,7 @@ public class RESTStartUp implements Runnable {
 	public void run() {
 		
 		calls calls = new BootstrapCalls();
+		
 		Bootstraps servers = calls.getBootstraps();
 		LOG.log(Level.INFO,servers.getbootstraps().toString());
 		
