@@ -1,18 +1,20 @@
 package backend.file;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.FileSystems;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
 
 /**
- * TODO:
- * - Find a way to save availableBlocks. Maybe in filename+".metadata"
- * - Unit tests
+ * Read and write blocks from a file.
+ * 
+ * This implementation limits the file size to Integer.MAX_VALUE * 1024 bytes
+ * (about 2 TB, depending on the JVM)
  * 
  * @author iiMaXii
  *
@@ -22,7 +24,9 @@ public class BlockBuffer {
 
 	private FileChannel fileChannel;
 	private int blockCount;
-	private boolean[] availableBlocks;
+
+	private BlockBuffer() {
+	}
 
 	/**
 	 * Open a file for reading
@@ -33,23 +37,26 @@ public class BlockBuffer {
 	 *            The number of blocks in the file
 	 * @return
 	 * @throws IOException
+	 * @throws NoSuchFileException
 	 */
-	public static BlockBuffer forRead(String filename) throws IOException {
+	public static BlockBuffer openRead(String filename, int blockCount) throws IOException, NoSuchFileException {
 		BlockBuffer fileReader = new BlockBuffer();
-		fileReader.availableBlocks = new boolean[fileReader.blockCount];
+		fileReader.blockCount = blockCount;
 
 		Path filePath = FileSystems.getDefault().getPath(filename);
+		File file = filePath.toFile();
+		if (!file.exists()) {
+			throw new NoSuchFileException(filename);
+		}
+
 		fileReader.fileChannel = FileChannel.open(filePath, StandardOpenOption.READ);
-
-		fileReader.blockCount = (int) (1 + fileReader.fileChannel.size() / BLOCK_SIZE);
-
-		Arrays.fill(fileReader.availableBlocks, true); // TODO
+		// fileReader.blockCount = (int) (1 + fileReader.fileChannel.size() / BLOCK_SIZE);
 
 		return fileReader;
 	}
 
 	/**
-	 * Open a file for reading and writing
+	 * Open an existing file for reading and writing
 	 * 
 	 * @param filename
 	 *            Path to the file
@@ -57,19 +64,16 @@ public class BlockBuffer {
 	 *            The number of blocks in the file
 	 * @return
 	 * @throws IOException
+	 * @throws NoSuchFileException
 	 */
-	public static BlockBuffer forReadWrite(String filename, int blockCount) throws IOException {
+	public static BlockBuffer openReadWrite(String filename, int blockCount) throws IOException, NoSuchFileException {
 		BlockBuffer fileReader = new BlockBuffer();
 		fileReader.blockCount = blockCount;
-		fileReader.availableBlocks = new boolean[fileReader.blockCount];
 
 		Path filePath = FileSystems.getDefault().getPath(filename);
 		File file = filePath.toFile();
 		if (!file.exists()) {
-			file.createNewFile();
-		} else {
-			// Resume download
-			// TODO Update availableBlocks
+			throw new NoSuchFileException(filename);
 		}
 
 		fileReader.fileChannel = FileChannel.open(filePath, StandardOpenOption.READ, StandardOpenOption.WRITE);
@@ -77,11 +81,31 @@ public class BlockBuffer {
 		return fileReader;
 	}
 
-	private BlockBuffer() {
-	}
+	/**
+	 * Creates a new file for reading and writing. If the file already exists it
+	 * will be truncated to zero bytes
+	 * 
+	 * @param filename
+	 *            Path to the file
+	 * @param blockCount
+	 *            The number of blocks in the file
+	 * @return
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
+	public static BlockBuffer createReadWrite(String filename, int blockCount) throws IOException {
+		BlockBuffer fileReader = new BlockBuffer();
+		fileReader.blockCount = blockCount;
 
-	boolean hasBlock(int blockNumber) {
-		return availableBlocks[blockNumber];
+		Path filePath = FileSystems.getDefault().getPath(filename);
+		File file = filePath.toFile();
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+
+		fileReader.fileChannel = FileChannel.open(filePath, StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+
+		return fileReader;
 	}
 
 	/**
@@ -89,20 +113,17 @@ public class BlockBuffer {
 	 * 
 	 * @param buffer
 	 * @param blockNumber
-	 * @return Number of read bytes or -1 if and error occurred
+	 * @return The number of bytes read, possibly zero, or -1 if the given
+	 *         position is greater than or equal to the file's current size
 	 * @throws IOException
 	 */
-	int getBlock(byte[] buffer, int blockNumber) throws IOException {
+	public int getBlock(byte[] buffer, int blockNumber) throws IOException {
 		if (buffer == null) {
 			throw new NullPointerException();
 		}
 
 		if (buffer.length != BLOCK_SIZE) {
 			throw new IllegalArgumentException("Buffer must be of size BLOCK_SIZE");
-		}
-
-		if (!hasBlock(blockNumber)) {
-			return -1;
 		}
 
 		ByteBuffer byteBuffer = ByteBuffer.allocate(BLOCK_SIZE);
@@ -119,21 +140,20 @@ public class BlockBuffer {
 	 * @param buffer
 	 * @param blockSize
 	 * @param blockNumber
-	 * @return
+	 * @return If the buffer was successfully written
 	 * @throws IOException
 	 */
-	int setBlock(byte[] buffer, int blockSize, int blockNumber) throws IOException {
+	public boolean setBlock(byte[] buffer, int blockSize, int blockNumber) throws IOException {
 		if (buffer == null) {
 			throw new NullPointerException();
 		}
 
-		if (buffer.length != BLOCK_SIZE) {
-			throw new IllegalArgumentException("Buffer must be of size BLOCK_SIZE");
+		if (blockSize < 0 || blockSize > BLOCK_SIZE) {
+			throw new IllegalArgumentException("Invalid blockSize");
 		}
 
-		ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
-
-		return fileChannel.write(byteBuffer, blockNumber * BLOCK_SIZE);
+		ByteBuffer byteBuffer = ByteBuffer.wrap(buffer, 0, blockSize);
+		return fileChannel.write(byteBuffer, blockNumber * BLOCK_SIZE) == blockSize;
 	}
 
 	/**
@@ -141,7 +161,7 @@ public class BlockBuffer {
 	 * 
 	 * @return Number of blocks in the file
 	 */
-	int getBlockCount() {
+	public int getBlockCount() {
 		return blockCount;
 	}
 
@@ -150,8 +170,7 @@ public class BlockBuffer {
 	 * 
 	 * @throws IOException
 	 */
-	void close() throws IOException {
+	public void close() throws IOException {
 		fileChannel.close();
 	}
-
 }
