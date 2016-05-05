@@ -11,7 +11,6 @@ public interface calls {
 	
 	 static final String REST_URI = "http://localhost:9999/rest/rest/";
 	
-	  public void getFile();
 	  public Address getTest();
 	  public Peers getPeers();
 	  public Bootstraps getBootstraps();

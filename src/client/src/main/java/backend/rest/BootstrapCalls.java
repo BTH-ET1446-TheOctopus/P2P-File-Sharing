@@ -16,25 +16,13 @@ import backend.json.Peers;
 import backend.json.Swarm;
 import backend.json.SwarmsHelper;
 
-public class BootstrapCalls {
-    static final String REST_URI = "http://localhost:9999/rest/rest/";
-    
-    /*
-    public void getFile(){
-    	ClientResponse response = webResource
-    			
-    	
-    	WebResource r = c.resource("http://localhost:8080/xyz");
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-		
-		Chunk respons = client.target("http://localhost:1337")
-				.path("/rest/file/1/1")
-				.request(MediaType.APPLICATION_JSON)
-				.get(Chunk.class);
-		
-		System.out.println(respons.getSequenceNumber());
-    }
-    */
+public class BootstrapCalls implements calls{
+    static final String REST_URI = "http://localhost:9999/rest/rest/";
+    private static final Logger LOG = Logger.getLogger(BootstrapCalls.class.getName());
+
     public Address getTest(){		
 		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
@@ -46,7 +34,7 @@ public class BootstrapCalls {
 				.accept("Content-Type", "application/json")
                 .get(Address.class);
 		
-		System.out.println(respons.toString());
+		LOG.log(Level.INFO,respons.toString());
 		return respons;
 		
 	}
@@ -61,8 +49,8 @@ public class BootstrapCalls {
 		Peers respons = webResource
 				.accept("Content-Type", "application/json")
                 .get(Peers.class);
-		
-		System.out.println(respons.toString());
+		LOG.log(Level.INFO,respons.toString());
+
 		return respons;
 	}
 	
@@ -76,8 +64,8 @@ public class BootstrapCalls {
 		Bootstraps respons = webResource
 				.accept("Content-Type", "application/json")
                 .get(Bootstraps.class);
-		
-		System.out.println(respons.toString());
+
+		LOG.log(Level.INFO,respons.toString());
 		return respons;
 	}
 	
@@ -92,8 +80,8 @@ public class BootstrapCalls {
 		Blacklist respons = webResource
 				.accept("Content-Type", "application/json")
                 .get(Blacklist.class);
-		
-		System.out.println(respons.toString());
+
+		LOG.log(Level.INFO,respons.toString());
 		return respons;
 	}
 	
@@ -107,8 +95,8 @@ public class BootstrapCalls {
 		SwarmsHelper respons = webResource
 				.accept("Content-Type", "application/json")
                 .get(SwarmsHelper.class);
-		
-		System.out.println(respons.toString());
+
+		LOG.log(Level.INFO,respons.toString());
 		return respons;
 	}
 	
@@ -124,8 +112,7 @@ public class BootstrapCalls {
 		Swarm respons = webResource
 				.accept("Content-Type", "application/json")
                 .get(Swarm.class);
-		
-		System.out.println(respons.toString());
+		LOG.log(Level.INFO,respons.toString());
 		return respons;
 	}
 

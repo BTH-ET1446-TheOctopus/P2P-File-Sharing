@@ -2,6 +2,8 @@ package backend.rest;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ws.rs.core.UriBuilder;
 
@@ -10,15 +12,20 @@ import com.sun.net.httpserver.HttpServer;
 
 import backend.json.Bootstraps;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class RESTStartUp implements Runnable {
 	 static final String BASE_URI = "http://localhost:1337/rest/";
 	// //Bootstrap rest adress
-
+	 private static final Logger LOG = Logger.getLogger(RESTStartUp.class.getName());
 	public void run() {
 		
-		BootstrapCalls calls = new BootstrapCalls();
+		calls calls = new BootstrapCalls();
+		
 		Bootstraps servers = calls.getBootstraps();
-		System.out.println(servers.getbootstraps());
+		LOG.log(Level.INFO,servers.getbootstraps().toString());
+		
 		calls.getTest();
 		calls.getPeers();
 		calls.getBootstraps();
@@ -30,14 +37,14 @@ public class RESTStartUp implements Runnable {
 		try {
 			server = HttpServerFactory.create(BASE_URI);
             server.start();
-			System.out.println("HTTP server was started");
+			LOG.log(Level.INFO, "HTTP server was started");
 			while (true) {
 				Thread.sleep(1000);
 			}
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			System.out.println("HTTP server was stopped");
+			LOG.log(Level.INFO, "HTTP server was stopped");
 			server.stop(0);
 			server = null;
 		} catch (IOException e) {
@@ -45,6 +52,7 @@ public class RESTStartUp implements Runnable {
 		} finally {
 			if (server != null) {
 				System.out.println("HTTP server was stopped (force)");
+				LOG.log(Level.INFO, "HTTP server was stopped (force)");
 				server.stop(0);
 			}
 		}
