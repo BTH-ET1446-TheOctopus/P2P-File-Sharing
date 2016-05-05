@@ -34,82 +34,99 @@ public class BootstrapCalls {
 		
 		System.out.println(respons.getSequenceNumber());
     }
-    
-    public void getTest(){
-    	Client client = ClientBuilder.newClient();
+    */
+    public Address getTest(){		
+		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
+		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
+		Client client = Client.create(defaultClientConfig);
+		WebResource webResource = client
+				   .resource(REST_URI + "test");
 		
-		Address respons = client.target(REST_URI)
-				.path("test")
-				.request(MediaType.APPLICATION_JSON)
-				.get(Address.class);
-		
-		System.out.println(respons.toString());
-		
-	}
-    
-	public void getPeers(){
-		Client client = ClientBuilder.newClient();
-		
-		Peers respons = client.target(REST_URI)
-				.path("peers")
-				.request(MediaType.APPLICATION_JSON)
-				.get(Peers.class);
+		Address respons = webResource
+				.accept("Content-Type", "application/json")
+                .get(Address.class);
 		
 		System.out.println(respons.toString());
+		return respons;
+		
 	}
-	*/
+
+	public Peers getPeers(){		
+		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
+		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
+		Client client = Client.create(defaultClientConfig);
+		WebResource webResource = client
+				   .resource(REST_URI + "peers");
+		
+		Peers respons = webResource
+				.accept("Content-Type", "application/json")
+                .get(Peers.class);
+		
+		System.out.println(respons.toString());
+		return respons;
+	}
 	
-	public void getBootstraps(){
+	public Bootstraps getBootstraps(){
 		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
 				   .resource(REST_URI + "bootstraps");
 		
-		Bootstraps response = webResource
+		Bootstraps respons = webResource
 				.accept("Content-Type", "application/json")
                 .get(Bootstraps.class);
 		
-		System.out.println(response.toString());
+		System.out.println(respons.toString());
+		return respons;
 	}
 	
-	/*
-	public void getBlacklist(){
-		Client client = ClientBuilder.newClient();
+	
+	public Blacklist getBlacklist(){	
+		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
+		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
+		Client client = Client.create(defaultClientConfig);
+		WebResource webResource = client
+				   .resource(REST_URI + "blacklist");
 		
-		Blacklist respons = client.target(REST_URI)
-				.path("blacklist")
-				.request(MediaType.APPLICATION_JSON)
-				.get(Blacklist.class);
+		Blacklist respons = webResource
+				.accept("Content-Type", "application/json")
+                .get(Blacklist.class);
 		
 		System.out.println(respons.toString());
+		return respons;
 	}
 	
-	public void getSwarms(){
+	public SwarmsHelper getSwarms(){	
+		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
+		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
+		Client client = Client.create(defaultClientConfig);
+		WebResource webResource = client
+				   .resource(REST_URI + "swarms");
 		
-		Client client = ClientBuilder.newClient();
-		
-		SwarmsHelper respons = client.target(REST_URI)
-				.path("swarms")
-				.request(MediaType.APPLICATION_JSON)
-				.get(SwarmsHelper.class);
+		SwarmsHelper respons = webResource
+				.accept("Content-Type", "application/json")
+                .get(SwarmsHelper.class);
 		
 		System.out.println(respons.toString());
+		return respons;
 	}
 	
 	
 	
-	public void getSwarm(String id){
+	public Swarm getSwarm(String id){
+		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
+		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
+		Client client = Client.create(defaultClientConfig);
+		WebResource webResource = client
+				   .resource(REST_URI + "swarms/" + id);
 		
-		Client client = ClientBuilder.newClient();
+		Swarm respons = webResource
+				.accept("Content-Type", "application/json")
+                .get(Swarm.class);
+		
+		System.out.println(respons.toString());
+		return respons;
+	}
 
-		Swarm respons = client.target(REST_URI)
-				.path("swarms/")
-				.path(id)
-				.request(MediaType.APPLICATION_JSON)
-				.get(Swarm.class);
-		
-		System.out.println(respons.toString());
-	}
-	*/
 }

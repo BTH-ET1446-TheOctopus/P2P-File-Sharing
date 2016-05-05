@@ -8,13 +8,24 @@ import javax.ws.rs.core.UriBuilder;
 import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.net.httpserver.HttpServer;
 
+import backend.json.Bootstraps;
+
 public class RESTStartUp implements Runnable {
 	 static final String BASE_URI = "http://localhost:1337/rest/";
 	// //Bootstrap rest adress
 
 	public void run() {
+		/*
 		BootstrapCalls calls = new BootstrapCalls();
-    	calls.getBootstraps();
+		Bootstraps servers = calls.getBootstraps();
+		System.out.println(servers.getbootstraps());
+		calls.getTest();
+		calls.getPeers();
+		calls.getBootstraps();
+		calls.getBlacklist();
+		calls.getSwarms();
+		calls.getSwarm("1");
+		*/
 		HttpServer server = null;
 		try {
 			server = HttpServerFactory.create(BASE_URI);
@@ -38,7 +49,7 @@ public class RESTStartUp implements Runnable {
 			}
 		}
 
-		// BootstrapCalls calls = new BootstrapCalls();
+		//BootstrapCalls calls = new BootstrapCalls();
 		// calls.getTest();
 		// calls.getPeers();
 		// calls.getBootstraps();
