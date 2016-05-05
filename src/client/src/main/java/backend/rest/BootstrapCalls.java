@@ -19,22 +19,6 @@ import backend.json.SwarmsHelper;
 public class BootstrapCalls {
     static final String REST_URI = "http://localhost:9999/rest/rest/";
     
-    /*
-    public void getFile(){
-    	ClientResponse response = webResource
-    			
-    	
-    	WebResource r = c.resource("http://localhost:8080/xyz");
-
-		
-		Chunk respons = client.target("http://localhost:1337")
-				.path("/rest/file/1/1")
-				.request(MediaType.APPLICATION_JSON)
-				.get(Chunk.class);
-		
-		System.out.println(respons.getSequenceNumber());
-    }
-    */
     public Address getTest(){		
 		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
