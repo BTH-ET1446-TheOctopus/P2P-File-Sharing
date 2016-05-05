@@ -67,6 +67,12 @@ The assumption should be on the left and the "test" to the right.
 ```
 
 ## Logging
+Use logging instead of System.out.println()
+Import these libraries
+```java
+import java.util.logging.Level;
+import java.util.logging.Logger;
+```
 Put this at the top of your class
 ```java
 private static final Logger LOG = Logger.getLogger(ClassName.class.getName());
