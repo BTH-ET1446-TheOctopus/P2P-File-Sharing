@@ -1,4 +1,4 @@
-package json;
+package backend.json;
 
 public class SwarmId extends Swarm{
 	private String id;

@@ -1,4 +1,6 @@
-package rest;
+package backend;
+
+import backend.rest.RESTStartUp;
 
 public class Main {
 

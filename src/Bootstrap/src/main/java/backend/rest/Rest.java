@@ -1,4 +1,4 @@
-package rest;
+package backend.rest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +11,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import json.TestAddress;
-import json.Blacklist;
-import json.Bootstraps;
-import json.Swarm;
-import json.Swarms;
-import json.SwarmsHelper;
-import json.Peers;
-import json.Sync;
+import backend.json.Blacklist;
+import backend.json.Bootstraps;
+import backend.json.Peers;
+import backend.json.Swarm;
+import backend.json.Swarms;
+import backend.json.SwarmsHelper;
+import backend.json.Sync;
+import backend.json.TestAddress;
 
 @Path("/rest")
 public class Rest {

@@ -1,4 +1,4 @@
-package json;
+package backend.json;
 
 public class Peer {
 	String id;

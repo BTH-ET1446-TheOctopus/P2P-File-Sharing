@@ -1,4 +1,4 @@
-package rest;
+package backend.rest;
 
 import java.io.IOException;
 import java.util.logging.Level;
