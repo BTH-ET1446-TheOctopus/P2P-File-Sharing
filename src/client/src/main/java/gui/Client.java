@@ -84,7 +84,7 @@ public class Client
 		
 		frame = new JFrame("Octopus P2P");
 		frame.getContentPane().setBackground(new Color(245, 245, 245));
-		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(Client.class.getResource("/resources/Octopus.png")));
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(Client.class.getResource("/gui/resources/Octopus.png")));
 		frame.setBounds(100, 100, 680, 400);
 		frame.setLocationRelativeTo(null);
 		frame.setMinimumSize(new Dimension(680, 400));
@@ -102,10 +102,10 @@ public class Client
 		topStatus.setBackground(new Color(255, 255, 255));
 		
 		JButton button = new JButton("");
-		button.setIcon(new ImageIcon(Client.class.getResource("/resources/settings.png")));
+		button.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/settings.png")));
 		
 		JButton button_1 = new JButton("");
-		button_1.setIcon(new ImageIcon(Client.class.getResource("/resources/slowDown.png")));
+		button_1.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/slowDown.png")));
 		
 				JButton createTorrentFile = new JButton("");
 				createTorrentFile.addActionListener(new ActionListener() {
@@ -118,7 +118,7 @@ public class Client
 					}
 				});
 				createTorrentFile.setToolTipText("Create Torrent File");
-				createTorrentFile.setIcon(new ImageIcon(Client.class.getResource("/resources/fileNew.png")));
+				createTorrentFile.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileNew.png")));
 		
 				JButton openTorrentFile = new JButton("");
 				openTorrentFile.setSize(new Dimension(18, 12));
@@ -133,27 +133,27 @@ public class Client
 
 					}
 				});
-				openTorrentFile.setIcon(new ImageIcon(Client.class.getResource("/resources/fileOpen.png")));
+				openTorrentFile.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileOpen.png")));
 				openTorrentFile.setToolTipText("Open Torrent Files");
 		
 				JButton removeTransfer = new JButton("");
 				removeTransfer.setToolTipText("Remove Selected Transfer");
-				removeTransfer.setIcon(new ImageIcon(Client.class.getResource("/resources/fileRemove.png")));
+				removeTransfer.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileRemove.png")));
 		
 				JButton pauseTransfer = new JButton("");
 				pauseTransfer.setToolTipText("Pause Transfer");
-				pauseTransfer.setIcon(new ImageIcon(Client.class.getResource("/resources/filePause.png")));
+				pauseTransfer.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/filePause.png")));
 		
 				JButton resumeTransfer = new JButton("");
-				resumeTransfer.setIcon(new ImageIcon(Client.class.getResource("/resources/fileResume.png")));
+				resumeTransfer.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileResume.png")));
 				resumeTransfer.setToolTipText("Resume Transfer");
 		
 		JButton searchFile = new JButton("");
 		searchFile.setToolTipText("Search");
-		searchFile.setIcon(new ImageIcon(Client.class.getResource("/resources/fileSearch.png")));
+		searchFile.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileSearch.png")));
 		
 		JButton fileInfo = new JButton("");
-		fileInfo.setIcon(new ImageIcon(Client.class.getResource("/resources/fileInfo.png")));
+		fileInfo.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileInfo.png")));
 		
 		
 		// Setting the layout of the Icons bar! ||vvvvvvvvvvvv
@@ -303,12 +303,12 @@ public class Client
 		bottomStatus.setLayout(gl_bottomStatus);
 		
 		JLabel uploadSpeed = new JLabel("999.9 KB/s");
-		uploadSpeed.setIcon(new ImageIcon(Client.class.getResource("/resources/upload.png")));
+		uploadSpeed.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/upload.png")));
 		uploadSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
 		uploadSpeed.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		
 		JLabel downloadSpeed = new JLabel("999.9 KB/s");
-		downloadSpeed.setIcon(new ImageIcon(Client.class.getResource("/resources/download.png")));
+		downloadSpeed.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/download.png")));
 		downloadSpeed.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		downloadSpeed.setAlignmentX(0.5f);
 		GroupLayout gl_topStatus = new GroupLayout(topStatus);
