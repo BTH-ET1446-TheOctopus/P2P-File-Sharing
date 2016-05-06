@@ -56,11 +56,9 @@ public class Rest {
 		ResultSet result;
 		int counter=0;
 		String data="";
-		System.out.println("get 2-3 random peers");
 		test.connector("root", "farhan", "serverdb", "127.0.0.1", "3306");
 		readquery="select distinct peers from peersarray";
-		result = test.runquery(readquery);
-		//test.printresult(result);		
+		result = test.runquery(readquery);	
 		Peers peers = new Peers();
 		List<String> ip = new ArrayList<String>();
 		
@@ -68,12 +66,7 @@ public class Rest {
 			System.out.println();
 			while(result.next()){
 		         //Retrieve by column name			
-		         //uniquefileid = rs.getString("uniquefileid");
 		         data = result.getString("peers");	         
-		         //Display values 
-		         //System.out.printf("uniquefileid: %s ", uniquefileid);
-		         //System.out.printf("peers: %s ", peers);
-		         //System.out.println();
 		         if(counter<3)
 		         {
 		        	 ip.add(data);
@@ -95,11 +88,28 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Bootstraps getBootstraps()
 	{
-	
+		String readquery="";
+		sqlconnector test = new sqlconnector();
+		ResultSet result;
+		String data="";
+		test.connector("root", "farhan", "serverdb", "127.0.0.1", "3306");
+		readquery="select distinct ip from servers";
+		result = test.runquery(readquery);
+		
 		Bootstraps bootstraps = new Bootstraps();
 		List<String> ip = new ArrayList<String>();
-		ip.add("1.2.3.4");
-		ip.add("1.2.3.6");
+		try {
+			System.out.println();
+			while(result.next()){
+		         //Retrieve by column name			
+		         data = result.getString("ip");	         
+		         ip.add(data);
+		      }
+	    }
+	    catch (Exception e) {
+	        System.out.println("Exception in query method:\n" + e.getMessage());
+	    }
+		test.closeconnect();
 		bootstraps.setbootstraps(ip);
 		
 		return bootstraps;
@@ -110,10 +120,28 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Blacklist getBlacklist()
 	{
+		String readquery="";
+		sqlconnector test = new sqlconnector();
+		ResultSet result;
+		String data="";
+		test.connector("root", "farhan", "serverdb", "127.0.0.1", "3306");
+		readquery="select distinct latestip from serverpeers where blacklist='1';";
+		result = test.runquery(readquery);
+
 		Blacklist blacklist = new Blacklist();
 		List<String> ip = new ArrayList<String>();
-		ip.add("1.2.3.4");
-		ip.add("1.2.3.6");
+		try {
+			System.out.println();
+			while(result.next()){
+		         //Retrieve by column name			
+		         data = result.getString("latestip");	         
+		         ip.add(data);
+		      }
+	    }
+	    catch (Exception e) {
+	        System.out.println("Exception in query method:\n" + e.getMessage());
+	    }
+		test.closeconnect();
 		blacklist.setblacklist(ip);
 		
 		return blacklist;
