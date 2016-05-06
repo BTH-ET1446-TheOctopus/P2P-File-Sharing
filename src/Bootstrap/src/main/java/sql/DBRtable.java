@@ -10,8 +10,7 @@ import java.util.Properties;
 public class DBRtable {
 	  // The JDBC Connector Class.
 		public static final String dbClassName = "com.mysql.jdbc.Driver";
-		public static final String CONNECTION =
-		                          "jdbc:mysql://127.0.0.1/serverdb";
+		public static final String CONNECTION = "jdbc:mysql://127.0.0.1/serverdb";
 		Statement stmt = null;
 		ResultSet rs = null;
 	

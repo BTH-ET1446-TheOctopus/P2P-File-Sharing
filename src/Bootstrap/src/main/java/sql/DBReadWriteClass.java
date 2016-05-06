@@ -41,21 +41,14 @@ public class DBReadWriteClass {
 				String timestamp = rs.getString("timestamp");
 				String files = rs.getString("files");
 				String filecount = rs.getString("filecount");
-				System.out.println("ID: " + id + 
-						"\nLastestIP: " + latestIP + 
-						"\nBlacklist: " + blackList +
-						"\nTimestamp: " + timestamp +
-						"\nFiles: " + files +
-						"\nFilecount: " + filecount
-						);
-				//Unable to test yet, remove the above System.out.println and uncomment if it works.
-/*             LOG.log(Level.INFO, "ID: " + id.toString() + 
+				
+             LOG.log(Level.INFO, "ID: " + id.toString() + 
 						"\nLastestIP: " + latestIP.toString() + 
 						"\nBlacklist: " + blackList.toString() +
 						"\nTimestamp: " + timestamp.toString() +
 						"\nFiles: " + files.toString() +
 						"\nFilecount: " + filecount.toString());
-				*/
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
