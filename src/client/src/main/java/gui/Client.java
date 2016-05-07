@@ -99,6 +99,13 @@ public class Client
 		resumeTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileResume.png")));
 		resumeTorrent.setBounds(136, 0, 34, 34);
 	    iconBar.add(resumeTorrent);
+	    
+		// Adding More Info Button
+		
+		JButton moreInfo = new JButton();
+		moreInfo.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileInfo.png")));
+		moreInfo.setBounds(612, 0, 34, 34);
+	    iconBar.add(moreInfo);
 						
 		// Creating the Table Model Variables
 		
