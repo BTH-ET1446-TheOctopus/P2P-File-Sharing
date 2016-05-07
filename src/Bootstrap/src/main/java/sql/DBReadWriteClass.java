@@ -9,30 +9,27 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import backend.rest.RESTStartUp;
-/**
- * @author Kambiz
- */
+//import backend.rest.RESTStartUp;
 
 public class DBReadWriteClass {
 	
-		private static final Logger LOG = Logger.getLogger(DBReadWriteClass.class.getName());
-		Connection connect = null;
-		Statement stmnt = null;
-		ResultSet rs = null;
-		
+	private static final Logger LOG = Logger.getLogger(DBReadWriteClass.class.getName());
+
+	sqlconnector sc = new sqlconnector();
+	
 	public DBReadWriteClass(){
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String connectionUrl = "jdbc:mysql://localhost:3306/serverdb?autoReconnect=true&useSSL=false";
-			String connectionUser = "root";
-			String connectionPassword = "farhan";
-			connect = DriverManager.getConnection(connectionUrl, connectionUser, connectionPassword);
-			LOG.log(Level.INFO, "Connected to server successfully...\n");
-			stmnt = connect.createStatement();
+
+			sqlconnector sc = new sqlconnector();
+			sc.connector("root", "", "serverdb", "localhost", "3306");
 			
+			Connection connect = sc.getConnection();
+			Statement stmnt = sc.getStatement();
+			ResultSet rs = sc.getSet();
+
 			stmnt.executeUpdate("INSERT INTO serverpeers (id, latestIP, blacklist, timestamp, files, filecount) " + 
-	                "VALUES (1026, '192.168.31.52', 1, default,'Captain Ameerica Civil War', 0)");
+					"VALUES (1026, '192.168.31.52', 1, default,'Captain Ameerica Civil War', 0)");
+
 			rs = stmnt.executeQuery("SELECT * FROM serverpeers");
 			while (rs.next()) {
 				String id = rs.getString("id");
@@ -41,21 +38,22 @@ public class DBReadWriteClass {
 				String timestamp = rs.getString("timestamp");
 				String files = rs.getString("files");
 				String filecount = rs.getString("filecount");
-				
-             LOG.log(Level.INFO, "ID: " + id.toString() + 
+
+				LOG.log(Level.INFO, "ID: " + id.toString() + 
 						"\nLastestIP: " + latestIP.toString() + 
 						"\nBlacklist: " + blackList.toString() +
 						"\nTimestamp: " + timestamp.toString() +
 						"\nFiles: " + files.toString() +
 						"\nFilecount: " + filecount.toString());
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-//			try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
-			try { if (stmnt != null) stmnt.close(); } catch (SQLException e) { e.printStackTrace(); }
-			try { if (connect != null) connect.close(); } catch (SQLException e) { e.printStackTrace(); }
 		}
+//		finally {
+//			try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+//			try { if (stmnt != null) stmnt.close(); } catch (SQLException e) { e.printStackTrace(); }
+//			try { if (connect != null) connect.close(); } catch (SQLException e) { e.printStackTrace(); }
+//		}
 	}
 }
