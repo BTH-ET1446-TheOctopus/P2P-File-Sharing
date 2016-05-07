@@ -72,47 +72,54 @@ public class Client
 		settingBar.setLayout(null);
 		frame.getContentPane().add(settingBar);
 		
-		// Adding Create Torrent Button
+		// Adding Create Torrent Button to the iconBar
 		
 		JButton newTorrent = new JButton();
 		newTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileNew.png")));
 		newTorrent.setBounds(0, 0, 34, 34);
 		iconBar.add(newTorrent);
 		
-		// Adding Remove Torrent Button
+		// Adding Remove Torrent Button to the iconBar
 		
 		JButton removeTorrent = new JButton();
 	    removeTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileRemove.png")));
 	    removeTorrent.setBounds(34, 0, 34, 34);
 	    iconBar.add(removeTorrent);
 	    
-		// Adding Pause Selected Row Button
+		// Adding Pause Selected Row Button to the iconBar
 		
 		JButton pauseTorrent = new JButton();
 		pauseTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/filePause.png")));
 		pauseTorrent.setBounds(102, 0, 34, 34);
 	    iconBar.add(pauseTorrent);
 	    
-		// Adding Resume Selected Row Button
+		// Adding Resume Selected Row Button to the iconBar
 		
 		JButton resumeTorrent = new JButton();
 		resumeTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileResume.png")));
 		resumeTorrent.setBounds(136, 0, 34, 34);
 	    iconBar.add(resumeTorrent);
 	    
-		// Adding More Info Button
+		// Adding More Info Button to the iconBar
 		
 		JButton moreInfo = new JButton();
 		moreInfo.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileInfo.png")));
 		moreInfo.setBounds(612, 0, 34, 34);
 	    iconBar.add(moreInfo);
 	    
-		// Adding Search Button
+		// Adding Search Button to the iconBar
 		
 		JButton search = new JButton();
 		search.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileSearch.png")));
 		search.setBounds(646, 0, 34, 34);
 	    iconBar.add(search);
+	    
+		// Adding Setting Button to the Setting Bar
+		
+		JButton setting = new JButton();
+		setting.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/settings.png")));
+		setting.setBounds(0, 0, 34, 34);
+	    settingBar.add(setting);
 						
 		// Creating the Table Model Variables
 		
