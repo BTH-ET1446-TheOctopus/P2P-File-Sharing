@@ -10,6 +10,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
 
 public class Client
 {
@@ -50,7 +52,7 @@ public class Client
 
 		JPanel iconBar = new JPanel();
 		iconBar.setBackground(new Color(245, 245, 245));
-		iconBar.setBounds(0, 0, 680, 40);
+		iconBar.setBounds(0, 0, 680, 34);
 		iconBar.setLayout(null);
 		frame.getContentPane().add(iconBar);
 		
@@ -58,7 +60,7 @@ public class Client
 
 		JPanel statusBar = new JPanel();
 		statusBar.setBackground(new Color(255,255,255));
-		statusBar.setBounds(0, 39, 680, 31);
+		statusBar.setBounds(0, 34, 680, 20);
 		statusBar.setLayout(null);
 		frame.getContentPane().add(statusBar);
 
@@ -66,9 +68,28 @@ public class Client
 
 		JPanel settingBar = new JPanel();
 		settingBar.setBackground(new Color(245, 245, 245));
-		settingBar.setBounds(0, 348, 680, 30);
+		settingBar.setBounds(0, 344, 680, 34);
 		settingBar.setLayout(null);
 		frame.getContentPane().add(settingBar);
+		
+		// Adding Create Torrent Button
+		
+		JButton newTorrent = new JButton();
+		newTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileNew.png")));
+		newTorrent.setBounds(0, 0, 34, 34);
+		iconBar.add(newTorrent);
+		
+		// Adding Remove Torrent Button
+		
+
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		// Creating the Table Model Variables
 		
@@ -92,7 +113,7 @@ public class Client
 		// Creating the tableScroll Panel
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 70, 680, 280);
+		scrollPane.setBounds(0, 54, 680, 291);
 		frame.getContentPane().add(scrollPane);
 		
 		// Creating the Table using the model above
