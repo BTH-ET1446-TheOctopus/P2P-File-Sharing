@@ -11,7 +11,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.awt.event.ActionEvent;
 
 public class Client
 {
@@ -21,6 +25,7 @@ public class Client
 	public JScrollPane	scrollPane;
 	public String[]		columnHeaders;
 	public String[][]	fileStatistics;
+	public String		selectedFile;
 
 	/**
 	 * Create the application.
@@ -97,6 +102,18 @@ public class Client
 		newTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileNew.png")));
 		newTorrent.setBounds(0, 0, 34, 34);
 		iconBar.add(newTorrent);
+
+		// Adding Selecting File Functionality to newTorrent button, it sets the value of the String variable "selectedFile", equal to the path of the selected file!
+		
+		newTorrent.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				JFileChooser file = new JFileChooser();
+				file.showOpenDialog(frame);
+				selectedFile = file.getSelectedFile().toString();
+			}
+		});
 
 		// Adding Remove Torrent Button to the iconBar
 
@@ -191,6 +208,7 @@ public class Client
 
 		String[] columnHeaders =
 		{ "Priority", "Name", "Progress", "Size", "Speed", "Peers", "ETA", "Date Added" };
+
 		String[][] fileStatistics =
 		{
 				{ "1", "Man on the moon.mp4", "65%", "410 MB", "2.0 Mbps", "3", "1h:35m", "23,Sep,16 / 22:28:30" },
