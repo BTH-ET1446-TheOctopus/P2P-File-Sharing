@@ -9,24 +9,25 @@ import java.util.List;
  */
 
 public class Sync {
-	List <Peer> peers;
+	
+	List <PeersInfo> peers;
 	List <Bootstraps> bootstraps;
 	List <Blacklist> blacklist;
-	List <SwarmId> swarms;
+	List <SwarmsInfo> swarms;
 	
 	public Sync() {
 	}
-	public Sync(List<Peer> peers, List<Bootstraps> bootstraps, List<Blacklist> blacklist, List<SwarmId> swarms) {
+	public Sync(List<PeersInfo> peers, List<Bootstraps> bootstraps, List<Blacklist> blacklist, List<SwarmsInfo> swarms) {
 		super();
 		this.peers = peers;
 		this.bootstraps = bootstraps;
 		this.blacklist = blacklist;
 		this.swarms = swarms;
 	}
-	public List<Peer> getPeers() {
+	public List<PeersInfo> getPeers() {
 		return peers;
 	}
-	public void setPeers(List<Peer> peers) {
+	public void setPeers(List<PeersInfo> peers) {
 		this.peers = peers;
 	}
 	public List<Bootstraps> getBootstraps() {
@@ -41,10 +42,10 @@ public class Sync {
 	public void setBlacklist(List<Blacklist> blacklist) {
 		this.blacklist = blacklist;
 	}
-	public List<SwarmId> getSwarms() {
+	public List<SwarmsInfo> getSwarms() {
 		return swarms;
 	}
-	public void setSwarms(List<SwarmId> swarms) {
+	public void setSwarms(List<SwarmsInfo> swarms) {
 		this.swarms = swarms;
 	}
 	

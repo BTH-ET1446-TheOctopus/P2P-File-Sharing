@@ -12,17 +12,26 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import backend.Settings;
 import backend.json.Blacklist;
 import backend.json.Bootstraps;
 import backend.json.Peers;
+import backend.json.PeersInfo;
 import backend.json.Swarm;
 import backend.json.Swarms;
 import backend.json.SwarmsHelper;
 import backend.json.Sync;
 import backend.json.TestAddress;
 import sql.sqlconnector;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.*;
 import java.util.Properties;
+import java.util.UUID;
 
 @Path("/rest")
 public class Rest {
@@ -36,13 +45,52 @@ public class Rest {
 		adr.setSurename("Lass");
 		return adr;
 	}
+	/**
+	 * Gives the client an UUID if it has none and and update the 
+	 * Valid time for the client.  
+	 * 
+	 * @param id The clients UUID if it has any 
+	 * @return the client UUID
+	 */
 	@GET
 	@Path("/hello/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getHello(@QueryParam("id") String ide)
+	public String getHello(@QueryParam("id") String id)
 	{
-		String id = ide;
-		return id;
+		
+		
+		//if id is -1 or it don't exist in db give it a new one save it to db
+		UUID uuid = UUID.randomUUID();
+		
+		//After uuid checking generate timestamp from NTP server
+		Socket so = null;
+		try {
+			so = new Socket(Settings.ntpServer, Settings.daytimeport);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new InputStreamReader (so.getInputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String timestamp = null;
+		try {
+			timestamp = br.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println(timestamp);
+		
+		return uuid.toString();
 		
 	}
 	
@@ -261,21 +309,30 @@ public class Rest {
     @Produces(MediaType.APPLICATION_JSON)
     public String addPlainText(@QueryParam("blockCount") int blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum) 
 	{
-        
+		//Generate UUID for the swarm so it can be downloaded later
+		UUID uuid = UUID.randomUUID();
+		uuid.toString();
 		
 		return filename;
     }
-	/*
-	 * Work in progress
-	 * 
-	 * 
+	
+	/**
+	 * Function used by bootstrap servers to sync whit each other. Could
+	 * @return Bootstrap information for other servers
+	 */
 	@GET
 	@Path("/sync/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Sync sync()
 	{
+		Sync sync = new Sync();
+		
+		PeersInfo peers = new PeersInfo();
+		
+		peers.setId("278f6d83-a707-4aee-8471-affc03c662a9");
+		peers.setIp("129.160.10.2");
+		peers.setLastSeen("07 MAY 2016 14:21:42 UTC");
 		
 		return sync;
 	}
-    */
 }
