@@ -43,29 +43,6 @@ public class Client
 	public JFrame frame;
 	public JTable table;
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args)
-//	{
-//		EventQueue.invokeLater(new Runnable()
-//		{
-//			public void run()
-//			{
-//				try
-//				{
-//					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//
-//					
-//					Client window = new Client();
-//					window.frame.setVisible(true);
-//				} catch (Exception e)
-//				{
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Create the application.
