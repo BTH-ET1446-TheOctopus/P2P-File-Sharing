@@ -8,6 +8,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
+import backend.api.calls;
 import backend.json.Address;
 import backend.json.Blacklist;
 import backend.json.Bootstraps;
