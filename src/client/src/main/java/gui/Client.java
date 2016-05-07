@@ -37,17 +37,31 @@ public class Client
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
 
-		// Creating the iconBar
+		// Creating the iconBar Panel
 
 		JPanel iconBar = new JPanel();
 		iconBar.setBackground(new Color(245, 245, 245));
 		iconBar.setBounds(0, 0, 680, 40);
+		iconBar.setLayout(null);
 		frame.getContentPane().add(iconBar);
+		
+		// Creating the statusBar Panel
 
 		JPanel statusBar = new JPanel();
 		statusBar.setBackground(new Color(255, 255, 255));
 		statusBar.setBounds(0, 40, 680, 30);
+		statusBar.setLayout(null);
 		frame.getContentPane().add(statusBar);
+
+		// Creating the settingBar Panel
+
+		JPanel settingBar = new JPanel();
+		settingBar.setBackground(new Color(245, 245, 245));
+		settingBar.setBounds(0, 348, 680, 30);
+		settingBar.setLayout(null);
+		frame.getContentPane().add(settingBar);
+		
+		
 
 		// Creating the statusBar
 
