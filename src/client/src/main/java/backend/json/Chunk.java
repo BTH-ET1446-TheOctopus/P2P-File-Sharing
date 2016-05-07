@@ -4,7 +4,7 @@ public class Chunk {
 	private Integer sequenceNumber;
 	private Integer size;
 	private String checksum;
-	private String data;
+	private byte[] data;
 	
 	
 	public Integer getSequenceNumber() {
@@ -25,10 +25,10 @@ public class Chunk {
 	public void setChecksum(String checksum) {
 		this.checksum = checksum;
 	}
-	public String getData() {
+	public byte[] getData() {
 		return data;
 	}
-	public void setData(String data) {
+	public void setData(byte[] data) {
 		this.data = data;
 	} 
 	
