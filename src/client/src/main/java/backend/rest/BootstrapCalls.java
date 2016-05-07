@@ -8,6 +8,8 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
+import backend.Settings;
+import backend.api.calls;
 import backend.json.Address;
 import backend.json.Blacklist;
 import backend.json.Bootstraps;
@@ -28,7 +30,7 @@ public class BootstrapCalls implements calls{
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(REST_URI + "test");
+				   .resource(Settings.bootstrapURL + "test");
 		
 		Address respons = webResource
 				.accept("Content-Type", "application/json")
@@ -44,7 +46,7 @@ public class BootstrapCalls implements calls{
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(REST_URI + "peers");
+				   .resource(Settings.bootstrapURL + "peers");
 		
 		Peers respons = webResource
 				.accept("Content-Type", "application/json")
@@ -59,7 +61,7 @@ public class BootstrapCalls implements calls{
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(REST_URI + "bootstraps");
+				   .resource(Settings.bootstrapURL + "bootstraps");
 		
 		Bootstraps respons = webResource
 				.accept("Content-Type", "application/json")
@@ -75,7 +77,7 @@ public class BootstrapCalls implements calls{
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(REST_URI + "blacklist");
+				   .resource(Settings.bootstrapURL + "blacklist");
 		
 		Blacklist respons = webResource
 				.accept("Content-Type", "application/json")
@@ -90,7 +92,7 @@ public class BootstrapCalls implements calls{
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(REST_URI + "swarms");
+				   .resource(Settings.bootstrapURL + "swarms");
 		
 		SwarmsHelper respons = webResource
 				.accept("Content-Type", "application/json")
@@ -107,7 +109,7 @@ public class BootstrapCalls implements calls{
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(REST_URI + "swarms/" + id);
+				   .resource(Settings.bootstrapURL + "swarms/" + id);
 		
 		Swarm respons = webResource
 				.accept("Content-Type", "application/json")

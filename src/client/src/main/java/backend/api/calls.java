@@ -1,4 +1,4 @@
-package backend.rest;
+package backend.api;
 
 import backend.json.Address;
 import backend.json.Blacklist;

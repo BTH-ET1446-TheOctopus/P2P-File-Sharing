@@ -10,32 +10,27 @@ import javax.ws.rs.core.UriBuilder;
 import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.net.httpserver.HttpServer;
 
+import backend.Settings;
+import backend.api.calls;
 import backend.json.Bootstraps;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RESTStartUp implements Runnable {
-	 static final String BASE_URI = "http://localhost:1337/rest/";
-	// //Bootstrap rest adress
-	 private static final Logger LOG = Logger.getLogger(RESTStartUp.class.getName());
+	private static final Logger LOG = Logger.getLogger(RESTStartUp.class.getName());
+	
 	public void run() {
+		//function to test connection client -> bootstrap -> client
+		// testBoostrapConnection();
 		
-		calls calls = new BootstrapCalls();
-		
-		Bootstraps servers = calls.getBootstraps();
-		LOG.log(Level.INFO,servers.getbootstraps().toString());
-		
-		calls.getTest();
-		calls.getPeers();
-		calls.getBootstraps();
-		calls.getBlacklist();
-		calls.getSwarms();
-		calls.getSwarm("1");
-		
+		/**
+		 * Start the HTTP server that is used for the rest calls.
+		 * The URL that the Rest server will run on is determined in file settings.
+		 */
 		HttpServer server = null;
 		try {
-			server = HttpServerFactory.create(BASE_URI);
+			server = HttpServerFactory.create(Settings.clientURL);
             server.start();
 			LOG.log(Level.INFO, "HTTP server was started");
 			while (true) {
@@ -56,14 +51,27 @@ public class RESTStartUp implements Runnable {
 				server.stop(0);
 			}
 		}
-
-		//BootstrapCalls calls = new BootstrapCalls();
-		// calls.getTest();
-		// calls.getPeers();
-		// calls.getBootstraps();
-		// calls.getBlacklist();
-		// calls.getSwarms();
-		// calls.getSwarm("1");
-
+	}
+	/**
+	 * Function in order to test the connectivity to bootstrap.  
+	 * The function will show you some information that is retrieved from bootstrap
+	 * if the function gives you error it could mean that bootstrap is not available. 
+	 * Otherwise that the port/ip address is incorrect. 
+	 */
+	private void testBoostrapConnection()
+	{
+		/**
+		 * Trying the connection to bootstrap
+		 */
+		calls calls = new BootstrapCalls();
+		Bootstraps servers = calls.getBootstraps();
+		LOG.log(Level.INFO,servers.getbootstraps().toString());
+		
+		calls.getTest();
+		calls.getPeers();
+		calls.getBootstraps();
+		calls.getBlacklist();
+		calls.getSwarms();
+		calls.getSwarm("1");
 	}
 }
