@@ -10,13 +10,14 @@ import javax.ws.rs.core.UriBuilder;
 import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.net.httpserver.HttpServer;
 
+import backend.Settings;
 import backend.json.Bootstraps;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RESTStartUp implements Runnable {
-	 static final String BASE_URI = "http://localhost:1337/rest/";
+	 //static final String BASE_URI = "http://localhost:1337/rest/";
 	// //Bootstrap rest adress
 	 private static final Logger LOG = Logger.getLogger(RESTStartUp.class.getName());
 	public void run() {
@@ -35,7 +36,7 @@ public class RESTStartUp implements Runnable {
 		
 		HttpServer server = null;
 		try {
-			server = HttpServerFactory.create(BASE_URI);
+			server = HttpServerFactory.create(Settings.clientURL);
             server.start();
 			LOG.log(Level.INFO, "HTTP server was started");
 			while (true) {
