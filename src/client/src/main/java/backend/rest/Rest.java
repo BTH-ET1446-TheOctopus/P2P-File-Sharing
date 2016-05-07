@@ -1,6 +1,7 @@
 package backend.rest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -95,8 +96,12 @@ public class Rest {
 		
 		Chunk chunko = new Chunk();
 		chunko.setSequenceNumber(0);
-		chunko.setSize(3);
-		chunko.setData("ABC");
+		chunko.setSize(20);
+		
+		byte[] data = new byte[20];
+		Arrays.fill(data, (byte)'A');
+		
+		chunko.setData(data);
 		chunko.setChecksum("XXXY");
 
 		return chunko;
