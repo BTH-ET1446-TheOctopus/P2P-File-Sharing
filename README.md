@@ -1,7 +1,7 @@
 This project deals about the file sharing among peers. This application is developed using Java.
-At start peers are connected to bootstrap server and requests for data.Bootstrap server provides the information of random peers who has the data along with the blacklisted IPs.
-Peers periodically refreshes their validity time and connect to one of the addresses related to swarms to download through HTTPS/REST.
-When another peer requests for the same file as former peer, now it has two sources to download simultaneously.
+At start,the peers are connected to bootstrap server and request for data.Bootstrap server provides the information of random peers who have the data along with the blacklisted IPs.
+Peers periodically refresh their validity time and connect to one of the addresses related to swarms to download through HTTPS/REST.
+When another peer requests for the same file as the former peer, it now has two sources to download simultaneously.
 
 The repo both contains what was called Bootstrap and client before. 
 
@@ -39,18 +39,18 @@ Make sure you have maven: *mvn -version*
  
 
 
-NOTE if the server can't come up you need to close the existing connection or change port. 
-A program that can be used is TCPView but it is only for windows.
+NOTE : If the server can't come up you need to close the existing connection or change port. 
+A program that can be used is TCPView but it is only for Windows.
 
 Create folder tmp in order to have a folder that will not be included in git repository. 
 If one wants another folder name, please add the folder name to git ignore. 
 
 # Should be in wiki
 ## General info Junit
-The bootstrap and client can be built whit
+The bootstrap and client can be built with
 mvn -package
 
-If a junit test is created which fails,then maven wont build the project and you will see what junit tests are failing. 
+If a junit test is created which fails,then maven will not build the project and you will see what junit tests are failing. 
 The junit tests should be added in src/test/java/test
 
 If you want to create a new junit test class add it to the package mention above and name it Test* otherwise you will get into trouble and have a hard time to find the error. 
@@ -59,9 +59,9 @@ If you want to create a new junit test class add it to the package mention above
 ## How to write test
 As you see in the function below it is simple. 
 You use assertEquals to see that the test you are doing produce the expected output. 
-For the test below the test is "sum = 2 + 3". My assumption is that this generates 5. 
-Now we compare whit assertEquals the assumption and the variables sum. 
-The assumption should be on the left and the "test" to the right. 
+For the test below the test is "sum = 2 + 3". The assumption is that this generates 5. 
+Now we compare with assertEquals the assumption and the variables sum. 
+The "assumption" should be on the left and the "test" to the right. 
 ```java
 	@org.junit.Test
 	public void test() {
@@ -108,7 +108,6 @@ Use `Level.FINE` for debugging. Possible levels are:
 ### See Also
 
 
-Note :
-If the data in the database is not encrypted, it is always possible to copy and restore the data to a different SQL server.
+NOTE : If the data in the database is not encrypted, it is always possible to copy and restore the data to a different SQL server.
 In order to protect the data from such attacks, it is important to encrypt it i.e., data should be protected from SQL injections.
 Injections are new entities that are entered into the database.
