@@ -85,6 +85,13 @@ public class Client
 	    removeTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileRemove.png")));
 	    removeTorrent.setBounds(34, 0, 34, 34);
 	    iconBar.add(removeTorrent);
+	    
+		// Adding Pause Selected Row Button
+		
+		JButton pauseTorrent = new JButton();
+		pauseTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/filePause.png")));
+		pauseTorrent.setBounds(102, 0, 34, 34);
+	    iconBar.add(pauseTorrent);
 						
 		// Creating the Table Model Variables
 		
