@@ -18,7 +18,7 @@ The repo both contains what was called Bootstrap and client before.
 4. Now it should be open in Project Explorer
 5. run the project as normally 
 6. Something should be loading now and lots of red lines will appear
-7. Type in webbrowser http://localhost:9999/rest/rest/test/
+7. Type in webbrowser http://localhost:9999/rest/test/
 
 8. {"name":"Fidde","surename":"Lass","age":32} should apper and you are ready to go!
 
