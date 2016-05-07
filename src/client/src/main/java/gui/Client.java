@@ -1,15 +1,24 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.Color;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 public class Client
 {
 
 	public JFrame frame;
+	public JTable table;
+	public JScrollPane scrollPane;
+	public String[] columnHeaders;
+	public String[][] fileStatistics;
 
 	/**
 	 * Create the application.
@@ -48,8 +57,8 @@ public class Client
 		// Creating the statusBar Panel
 
 		JPanel statusBar = new JPanel();
-		statusBar.setBackground(new Color(255, 255, 255));
-		statusBar.setBounds(0, 40, 680, 30);
+		statusBar.setBackground(new Color(255,255,255));
+		statusBar.setBounds(0, 39, 680, 31);
 		statusBar.setLayout(null);
 		frame.getContentPane().add(statusBar);
 
@@ -61,16 +70,51 @@ public class Client
 		settingBar.setLayout(null);
 		frame.getContentPane().add(settingBar);
 		
-		// For Creating the table Panel
+		// Creating the Table Model Variables
+		
+		String[] columnHeaders = { "Priority", "Name", "Progress", "Size", "Speed", "Peers", "ETA", "Date Added" };
+		String[][] fileStatistics = {
+				{ "1", "Man on the moon.mp4", "65%", "410 MB", "2.0 Mbps", "3","1h:35m", "23,Sep,16 / 22:28:30" },
+				{ "2", "Woman on the earth.mp4", "32%", "610 MB", "1.2 Mbps", "3", "2h:15m", "23,Sep,16 / 21:13:19" },
+				{ "3", "Boy on the mars.mp4", "15%", "330 MB", "4.5 Mbps", "3", "0h:23m", "23,Sep,16 / 20:08:00" },
+				{ "4", "Man on the moon.mp4", "65%", "410 MB", "2.0 Mbps", "3", "1h:35m", "23,Sep,16 / 22:28:30" },
+				{ "5", "Woman on the earth.mp4", "32%", "610 MB", "1.2 Mbps", "3", "2h:15m", "23,Sep,16 / 21:13:19" },
+				{ "6", "Boy on the mars.mp4", "15%", "330 MB", "4.5 Mbps", "3", "0h:23m", "23,Sep,16 / 20:08:00" },
+				{ "7", "Man on the moon.mp4", "65%", "410 MB", "2.0 Mbps", "3", "1h:35m", "23,Sep,16 / 22:28:30" },
+				{ "8", "Woman on the earth.mp4", "32%", "610 MB", "1.2 Mbps", "3", "2h:15m", "23,Sep,16 / 21:13:19" },
+				{ "9", "Boy on the mars.mp4", "15%", "330 MB", "4.5 Mbps", "3", "0h:23m", "23,Sep,16 / 20:08:00" },
+				{ "10", "Man on the moon.mp4", "65%", "410 MB", "2.0 Mbps", "3", "1h:35m", "23,Sep,16 / 22:28:30" },
+				{ "11", "Woman on the earth.mp4", "32%", "610 MB", "1.2 Mbps", "3", "2h:15m", "23,Sep,16 / 21:13:19" },
+				{ "12", "Boy on the mars.mp4", "15%", "330 MB", "4.5 Mbps", "3", "0h:23m", "23,Sep,16 / 20:08:00" }, };
 
-	    JPanel tablePanel = new JPanel();
-	    tablePanel.setBackground(new Color(235, 235, 235));
-	    tablePanel.setBounds(0, 70, 680, 280);
-	    tablePanel.setLayout(null);
-	    frame.getContentPane().add(tablePanel);
+		DefaultTableModel model = new DefaultTableModel(fileStatistics,columnHeaders); 
+		
+		// Creating the tableScroll Panel
 
-		// Creating the statusBar
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 70, 680, 280);
+		frame.getContentPane().add(scrollPane);
+		
+		// Creating the Table using the model above
 
+		table = new JTable(model);
+		table.setRowHeight(30);
+		scrollPane.setViewportView(table);
+
+
+		// Setting the table columns to align to Center
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		
+		table.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
+		table.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+		table.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
+		table.getColumnModel().getColumn(3).setCellRenderer( centerRenderer );
+		table.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );
+		table.getColumnModel().getColumn(5).setCellRenderer( centerRenderer );
+		table.getColumnModel().getColumn(6).setCellRenderer( centerRenderer );
+		table.getColumnModel().getColumn(7).setCellRenderer( centerRenderer );
+		
 	}
-
 }
