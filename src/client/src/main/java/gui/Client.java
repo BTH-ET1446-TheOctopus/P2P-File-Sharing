@@ -127,6 +127,14 @@ public class Client
 		slowDown.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/slowDown.png")));
 		slowDown.setBounds(34, 0, 34, 34);
 	    settingBar.add(slowDown);
+	    
+		// Adding Download Speed statusBar label to the statusBar
+		
+		JLabel download = new JLabel();
+		download.setText("999.9 MB");
+		download.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/download.png")));
+		download.setBounds(595, 0, 85, 20);
+	    statusBar.add(download);
 						
 		// Creating the Table Model Variables
 		
