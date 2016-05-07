@@ -1,3 +1,8 @@
+This project deals about the file sharing among peers. This application is developed using Java.
+At start peers are connected to bootstrap server and requests for data.Bootstrap server provides the information of random peers who has the data along with the blacklisted IPs.
+Peers periodically refreshes their validity time and connect to one of the addresses related to swarms to download through HTTPS/REST.
+When another peer requests for the same file as former peer, now it has two sources to download simultaneously.
+
 The repo both contains what was called Bootstrap and client before. 
 
 # Install JAVA
@@ -16,11 +21,11 @@ The repo both contains what was called Bootstrap and client before.
 2. Maven -> Existing Maven project -> next -> choose root directory
 3. Chose project /Octopus/P2P/pom.xml-> finish
 4. Now it should be open in Project Explorer
-5. run the project as normally 
+5. Run the project as normally 
 6. Something should be loading now and lots of red lines will appear
-7. Type in webbrowser http://localhost:9999/rest/rest/test/
+7. Type in web browser http://localhost:9999/rest/rest/test/
 
-8. {"name":"Fidde","surename":"Lass","age":32} should apper and you are ready to go!
+8. {"name":"Fidde","surename":"Lass","age":32} should appear and you are ready to go!
 
 
 # Build whit Maven
@@ -35,10 +40,10 @@ Make sure you have maven: *mvn -version*
 
 
 NOTE if the server can't come up you need to close the existing connection or change port. 
-A program that can be used is TCPView but it is only for windows
+A program that can be used is TCPView but it is only for windows.
 
 Create folder tmp in order to have a folder that will not be included in git repository. 
-If one wants another folder name please add the folder name to git ignore. 
+If one wants another folder name, please add the folder name to git ignore. 
 
 # Should be in wiki
 ## General info Junit
