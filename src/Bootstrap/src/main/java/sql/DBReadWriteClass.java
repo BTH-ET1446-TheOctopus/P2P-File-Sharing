@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-//import backend.rest.RESTStartUp;
+import backend.rest.RESTStartUp;
 
 public class DBReadWriteClass {
 	
