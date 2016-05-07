@@ -18,7 +18,7 @@ The repo both contains what was called Bootstrap and client before.
 4. Now it should be open in Project Explorer
 5. run the project as normally 
 6. Something should be loading now and lots of red lines will appear
-7. Type in webbrowser http://localhost:9999/rest/test/
+7. Type in webbrowser http://localhost:9999/rest/rest/test/
 
 8. {"name":"Fidde","surename":"Lass","age":32} should apper and you are ready to go!
 
@@ -45,10 +45,10 @@ If one wants another folder name please add the folder name to git ignore.
 The bootstrap and client can be built whit
 mvn -package
 
-If a junit test is created which fail maven wont build the project and you will see what junit test are failing. 
+If a junit test is created which fails,then maven wont build the project and you will see what junit tests are failing. 
 The junit tests should be added in src/test/java/test
 
-If you want to create a new junit test class add it to tha package mention above and name it Test* otherwise you will get into trouble and have a hard time to find the error. 
+If you want to create a new junit test class add it to the package mention above and name it Test* otherwise you will get into trouble and have a hard time to find the error. 
 
 
 ## How to write test
@@ -101,4 +101,9 @@ Use `Level.FINE` for debugging. Possible levels are:
 * `Level.FINEST` (lowest value)
 
 ### See Also
-* http://docs.oracle.com/javase/8/docs/api/java/util/logging/Logger.html
+
+
+Note :
+If the data in the database is not encrypted, it is always possible to copy and restore the data to a different SQL server.
+In order to protect the data from such attacks, it is important to encrypt it i.e., data should be protected from SQL injections.
+Injections are new entities that are entered into the database.
