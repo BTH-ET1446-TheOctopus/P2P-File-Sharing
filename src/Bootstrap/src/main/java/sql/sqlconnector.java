@@ -37,6 +37,11 @@ public class sqlconnector {
 	String filechecksum = "";
 	String metadatachecksum = "";
 
+	public sqlconnector(){
+		/* sql user,pass,database name, host, port */
+		connector("root", "", "Serverdb", "localhost", "3306");
+	}
+	
 	public void connector(String login, String password, String db, String host, String port) {
 		this.login = login;
 		this.password = password;
