@@ -106,6 +106,13 @@ public class Client
 		moreInfo.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileInfo.png")));
 		moreInfo.setBounds(612, 0, 34, 34);
 	    iconBar.add(moreInfo);
+	    
+		// Adding Search Button
+		
+		JButton search = new JButton();
+		search.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileSearch.png")));
+		search.setBounds(646, 0, 34, 34);
+	    iconBar.add(search);
 						
 		// Creating the Table Model Variables
 		
