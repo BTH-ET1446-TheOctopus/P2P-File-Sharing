@@ -81,16 +81,11 @@ public class Client
 		
 		// Adding Remove Torrent Button
 		
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		JButton removeTorrent = new JButton();
+	    removeTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileRemove.png")));
+	    removeTorrent.setBounds(34, 0, 34, 34);
+	    iconBar.add(removeTorrent);
+						
 		// Creating the Table Model Variables
 		
 		String[] columnHeaders = { "Priority", "Name", "Progress", "Size", "Speed", "Peers", "ETA", "Date Added" };
