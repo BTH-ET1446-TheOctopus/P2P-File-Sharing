@@ -61,7 +61,13 @@ public class Client
 		settingBar.setLayout(null);
 		frame.getContentPane().add(settingBar);
 		
-		
+		// For Creating the table Panel
+
+	    JPanel tablePanel = new JPanel();
+	    tablePanel.setBackground(new Color(235, 235, 235));
+	    tablePanel.setBounds(0, 70, 680, 280);
+	    tablePanel.setLayout(null);
+	    frame.getContentPane().add(tablePanel);
 
 		// Creating the statusBar
 
