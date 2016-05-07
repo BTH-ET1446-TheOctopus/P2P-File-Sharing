@@ -120,6 +120,13 @@ public class Client
 		setting.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/settings.png")));
 		setting.setBounds(0, 0, 34, 34);
 	    settingBar.add(setting);
+	    
+		// Adding SlowDown Button to the Setting Bar
+		
+		JButton slowDown = new JButton();
+		slowDown.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/slowDown.png")));
+		slowDown.setBounds(34, 0, 34, 34);
+	    settingBar.add(slowDown);
 						
 		// Creating the Table Model Variables
 		
