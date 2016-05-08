@@ -187,7 +187,19 @@ public class Client
 		setting.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/settings.png")));
 		setting.setBounds(0, 0, 34, 34);
 		settingBar.add(setting);
-
+		
+		// Adding Action to Settings 
+		setting.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+								
+				BasicSettings s = new BasicSettings();
+				s.setVisible(true);
+			}
+		});
+		
+		
 		// Adding SlowDown Button to the Setting Bar
 
 		JButton slowDown = new JButton();

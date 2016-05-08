@@ -28,7 +28,7 @@ public class BasicSettings extends JFrame{
 
     public BasicSettings() {
     	
-    	setTitle("Checkbox for going Drak");
+    	setTitle("Checkbox for going Dark");
         JCheckBox dp = new JCheckBox("Dark Peer");
         setSize(300,300);
         getContentPane().add(dp);
