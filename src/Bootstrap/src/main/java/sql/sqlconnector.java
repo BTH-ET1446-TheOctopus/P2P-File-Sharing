@@ -294,14 +294,6 @@ public class sqlconnector {
 		this.set = set;
 	}
 
-//	public String getTableName() {
-//		return tableName;
-//	}
-//
-//	public void setTableName(String tableName) {
-//		this.tableName = tableName;
-//	}
-
 	public void Disconnect () {
 		connection = null;
 	}

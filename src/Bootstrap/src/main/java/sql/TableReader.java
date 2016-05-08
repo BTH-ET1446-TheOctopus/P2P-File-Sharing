@@ -7,21 +7,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 //import backend.rest.RESTStartUp;
 
-public class DBRead {
+public class TableReader {
 
-	private static final Logger LOG = Logger.getLogger(DBRead.class.getName());
+	private static final Logger LOG = Logger.getLogger(TableReader.class.getName());
 	
 	//create an object from sqlconnector, to eb able to connect to the database
 	sqlconnector sc = new sqlconnector();
 
 	ResultSet rs = null;
 
-	public DBRead(String tableName){	
+	public TableReader(String tableName){	
 
 		try {
 			
-			/* call connection to database */
-			sqlconnector sc = new sqlconnector();
+			/* sql user,pass,database name, host, port defined to connect to the database */
+			sc.connector("root", "", "serverdb", "localhost", "3306");
 
 			//read data from specific table, which we passed to function
 			if(tableName.equals("serverpeers")){
