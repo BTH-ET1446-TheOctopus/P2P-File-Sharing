@@ -1,7 +1,11 @@
-This project deals about the file sharing among peers. This application is developed using Java.
+P2P file sharing application is developed using Java.
+
 At start,the peers are connected to bootstrap server and request for data.Bootstrap server provides the information of random peers who have the data along with the blacklisted IPs.
 Peers periodically refresh their validity time and connect to one of the addresses related to swarms to download through HTTPS/REST.
-When another peer requests for the same file as the former peer, it now has two sources to download simultaneously.
+When another peer requests for the same file as the former peer, it now has two sources to download from simultaneously.
+
+When a peer/client searches for data,a request is sent to the backend,which in turn communicates with database and processes 
+the request and returns the relevant data.
 
 The repo both contains what was called Bootstrap and client before. 
 
@@ -47,7 +51,7 @@ If one wants another folder name, please add the folder name to git ignore.
 
 # Should be in wiki
 ## General info Junit
-The bootstrap and client can be built with
+The bootstrap and client can be built whit
 mvn -package
 
 If a junit test is created which fails,then maven will not build the project and you will see what junit tests are failing. 
