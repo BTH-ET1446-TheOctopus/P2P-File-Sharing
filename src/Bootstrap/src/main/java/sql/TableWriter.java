@@ -16,17 +16,17 @@ public class TableWriter {
 	sqlconnector sc = new sqlconnector();
 
 	public TableWriter(){
-		try {
+//		try {
 			
 			/* sql user,pass,database name, host, port */
-			sc.connector("root", "", "serverdb", "localhost", "3306");
+//			sc.connector("root", "", "serverdb", "localhost", "3306");
 			/* stablish the connection to database */
-			Connection connect = sc.getConnection();
-			Statement stmnt = sc.getStatement();
-			ResultSet rs = sc.getSet();
+//			Connection connect = sc.getConnection();
+//			Statement stmnt = sc.getStatement();
+//			ResultSet rs = sc.getSet();
 			
 			/* tablename to write data to, choose one below */
-			String tableName = "servers";
+//			String tableName = "servers";
 			//String tableName = "serverpeers";
 			//String tableName = "serverfile";
 			
@@ -43,13 +43,13 @@ public class TableWriter {
 //				TableReader rt = new TableReader(tableName);
 //				
 //			}
-			if (tableName.equals("serverpeers")){
-				stmnt.executeUpdate("INSERT INTO "+tableName+" (id, latestIP, blacklist, timestamp, files, filecount) " + 
-						"VALUES (1026, '192.168.31.52', 1, default,'Captain Ameerica Civil War', 0)");
-
-				TableReader rt = new TableReader(tableName);
-				
-			}
+//			if (tableName.equals("serverpeers")){
+//				stmnt.executeUpdate("INSERT INTO "+tableName+" (id, latestIP, blacklist, timestamp, files, filecount) " + 
+//						"VALUES (1026, '192.168.31.52', 1, default,'Captain Ameerica Civil War', 0)");
+//
+//				TableReader rt = new TableReader(tableName);
+//				
+//			}
 //			else if (tableName.equals("servers")){
 //				stmnt.executeUpdate("INSERT INTO "+tableName+" (ip, name, timestamp, clientcount, servercount) " + 
 //						"VALUES ('192.168.54.68', 'Backup01', default,2, 1)");
@@ -57,17 +57,17 @@ public class TableWriter {
 //				TableReader rt = new TableReader(tableName);
 //				
 //			}
-		else {
-				System.out.println("There is no such table name in server database!");
-			}
-
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-		finally {  //close all connection to database
-			sc.closeconnect();
-		}
+//		else {
+//				System.out.println("There is no such table name in server database!");
+//			}
+//
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} 
+//		finally {  //close all connection to database
+//			sc.closeconnect();
+//		}
 		
 		
 	}
@@ -112,5 +112,26 @@ public class TableWriter {
 		}
 
 		TableReader rt = new TableReader("serverfile");
+	}
+	
+	public void addPeers(){  //This method writes to 'serverpeers' table
+		sqlconnector sc = new sqlconnector();
+		
+		/* stablish the connection to database */
+		Connection connect = sc.getConnection();
+		Statement stmnt = sc.getStatement();
+		ResultSet rs = sc.getSet();
+		
+		try {
+			stmnt.executeUpdate("INSERT INTO serverpeers (id, latestIP, blacklist, timestamp, files, filecount) " + 
+					"VALUES (1026, '192.168.31.52', 1, default,'Captain Ameerica Civil War', 0)");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {  //close all connection to database
+			sc.closeconnect();
+		}
+
+		TableReader rt = new TableReader("serverpeers");
 	}
 }
