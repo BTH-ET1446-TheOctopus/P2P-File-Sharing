@@ -57,19 +57,22 @@ public class DBRead {
 			while(rs.next()){
 				//Retrieve by column name
 				String filename=rs.getString("filename");
-				String filesize=rs.getString("filesize");
-				String filetype=rs.getString("filetype");
+				String totalblocks=rs.getString("totalblocks");
 				String peers = rs.getString("peers");
 				String peercount = rs.getString("peercount");
 				String uniquefileid = rs.getString("uniquefileid");
+				String filechecksum = rs.getString("filechecksum");
+				String metadatachecksum = rs.getString("metadatachecksum");
 
 				//Display values
 				LOG.log(Level.INFO, "filename: " + filename.toString() + 
-						"\nfilesize: " + filesize.toString() + 
-						"\nfiletype: " + filetype.toString() +
+						"\ntotalblocks: " + totalblocks.toString() + 
 						"\npeers: " + peers.toString() +
 						"\npeercount: " + peercount.toString() +
-						"\nuniquefileid: " + uniquefileid.toString());
+						"\nuniquefileid: " + uniquefileid.toString() +
+						"\nfilechecksum: " + filechecksum.toString() +
+						"\nmetadatachecksum: " + metadatachecksum.toString()
+						);
 			}
 		} catch (SQLException ex){
 			// handle any errors
@@ -90,15 +93,12 @@ public class DBRead {
 				String latestIP = rs.getString("latestIP");
 				String blackList = rs.getString("blacklist");
 				String timestamp = rs.getString("timestamp");
-				String files = rs.getString("files");
-				String filecount = rs.getString("filecount");
 
 				LOG.log(Level.INFO, "ID: " + id.toString() + 
 						"\nLastestIP: " + latestIP.toString() + 
 						"\nBlacklist: " + blackList.toString() +
-						"\nTimestamp: " + timestamp.toString() +
-						"\nFiles: " + files.toString() +
-						"\nFilecount: " + filecount.toString());
+						"\nTimestamp: " + timestamp.toString()
+						);
 
 			}
 		} catch (SQLException ex){

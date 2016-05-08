@@ -47,8 +47,8 @@ public class DBWrite {
 		ResultSet rs = sc.getSet();
 		
 		try {
-			stmnt.executeUpdate("INSERT INTO serverfile (filename, filesize, filetype, peers, peercount, uniquefileid) " + 
-					"VALUES ('Pirates Carrabian', 10000, 'MP4', '192.168.2.2', 1, 2255 )");
+			stmnt.executeUpdate("INSERT INTO serverfile (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
+					"VALUES ('Pirates Carrabian', 10000, '192.168.2.2', 1, 2255, 'filechecksum', 'metadatachecksum' )");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -66,12 +66,11 @@ public class DBWrite {
 		ResultSet rs = sc.getSet();
 		
 		try {
-			stmnt.executeUpdate("INSERT INTO serverpeers (id, latestIP, blacklist, timestamp, files, filecount) " + 
-					"VALUES (1026, '192.168.31.52', 1, default,'Captain Ameerica Civil War', 0)");
+			stmnt.executeUpdate("INSERT INTO serverpeers (id, latestIP, blacklist, timestamp) " + 
+					"VALUES (1026, '192.168.31.52', 0, default)");
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {  //close all connection to database
+		} finally {  //close all connection to database
 			sc.closeconnect();
 		}
 	}
