@@ -21,17 +21,45 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import java.awt.*;
+import javax.swing.JSplitPane;
 
 
 public class BasicSettings extends JFrame{
+
+	
     public JCheckBox dp;
+    public JButton b;
+    
 
     public BasicSettings() {
-    	
-    	setTitle("Checkbox for going Dark");
-        JCheckBox dp = new JCheckBox("Dark Peer");
+
+    	settingWizard();
+    }
+    
+    private void settingWizard()
+    	{    
+        
+      	setTitle("Checkbox for going Dark");    	
+        getContentPane().setLayout(new FlowLayout());
         setSize(300,300);
+        
+        JCheckBox dp= new JCheckBox("Dark Peer");
         getContentPane().add(dp);
+
+        JButton ap=new JButton("Apply");
+        ap.addActionListener(new ActionListener() 
+        {
+    	   public void actionPerformed(ActionEvent e)
+    	   {
+       		
+       	   }
+        });
+
+        getContentPane().add(ap);     
+        setSize(400,400);
         setVisible(true);
+        
+        
     }
 }
