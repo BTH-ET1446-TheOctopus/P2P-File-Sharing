@@ -1,22 +1,17 @@
-//package sql;
+package sql;
 
 /* class to test writing to/reading from database */
 
-//public class ShowResult {
-//
-//	public static void main(String[] args) {
+public class ShowResult {
+
+	public static void main(String[] args) {
 		
-//			DBWrite drw = new DBWrite();
+			DBWrite drw = new DBWrite();			
+			drw.addBootstrapServer();
 			
-//			drw.addBootstrapServer();
-			
-//			System.out.println("\n");
-			
-//			drw.addPeers();
-			
-//			System.out.println("\n");
-			
-//			drw.addSwarm();
-//	}
-//
-//}
+			DBRead dbr = new DBRead();
+			dbr.getBootstrapServer();
+
+	}
+
+}

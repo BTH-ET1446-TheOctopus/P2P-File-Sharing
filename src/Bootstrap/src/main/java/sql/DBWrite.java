@@ -37,7 +37,7 @@ public class DBWrite {
 			sc.closeconnect();
 		}
 
-		DBRead rt = new DBRead("servers");
+		//DBRead rt = new DBRead("servers");
 	}
 
 	public void addSwarm(){   //This method writes to 'serverfile' table

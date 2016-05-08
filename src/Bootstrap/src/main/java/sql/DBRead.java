@@ -65,25 +65,6 @@ public class DBRead {
 							"\nuniquefileid: " + uniquefileid.toString());
 				}	
 
-			} else if (tableName.equals("servers")) {
-				rs = sc.runquery("SELECT * FROM "+tableName);
-
-				while(rs.next()){
-					//Retrieve by column name
-					String ip=rs.getString("ip");
-					String name=rs.getString("name");
-					String timestamp=rs.getString("timestamp");
-					String clientcount = rs.getString("clientcount");
-					String servercount = rs.getString("servercount");
-
-					//Display values
-					LOG.log(Level.INFO, "ip: " + ip.toString() + 
-							"\nname: " + name.toString() + 
-							"\ntimestamp: " + timestamp.toString() +
-							"\nclientcount: " + clientcount.toString() +
-							"\nservercount: " + servercount.toString());
-				}	
-
 			}
 		}
 		catch (SQLException ex){
@@ -95,4 +76,39 @@ public class DBRead {
 			sc.closeconnect();
 		}
 	}
+	
+	public DBRead() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public void getBootstrapServer() {
+		rs = sc.runquery("SELECT * FROM servers");
+
+		try {
+			while(rs.next()){
+				//Retrieve by column name
+				String ip=rs.getString("ip");
+				String name=rs.getString("name");
+				String timestamp=rs.getString("timestamp");
+				String clientcount = rs.getString("clientcount");
+				String servercount = rs.getString("servercount");
+
+				//Display values
+				LOG.log(Level.INFO, "ip: " + ip.toString() + 
+						"\nname: " + name.toString() + 
+						"\ntimestamp: " + timestamp.toString() +
+						"\nclientcount: " + clientcount.toString() +
+						"\nservercount: " + servercount.toString());
+			}
+		} catch (SQLException ex){
+			// handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		} finally  {
+			sc.closeconnect();
+		}	
+
+	}
+
 }
