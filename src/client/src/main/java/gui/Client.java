@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,6 +35,84 @@ public class Client
 	public Client()
 	{
 		initialize();
+	}
+
+	private void createTable(List<TableInitialize> transfers)
+	{
+
+		////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////
+		/////////////////////// Table Contents /////////////////////////////
+
+		// Creating the Table Model Variables
+
+		fileStatistics = new String[transfers.size()][8];
+
+		String[] columnHeaders =
+		{ "Priority", "Name", "Progress", "Size", "Speed", "Peers", "ETC", "Date Added" };
+
+		int rowIndex = 0;
+
+		for (TableInitialize transfer : transfers)
+		{
+
+			List<String> row = transfer.rowCreation();
+			for (int columnIndex = 0; columnIndex < columnHeaders.length; columnIndex++)
+			{
+				fileStatistics[rowIndex][columnIndex] = row.get(columnIndex);
+			}
+
+			rowIndex++;
+		}
+
+		DefaultTableModel model = new DefaultTableModel(fileStatistics, columnHeaders);
+
+		/////////////////////// Table Contents /////////////////////////////
+		////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////
+
+		////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////
+		/////////////////////// Table ScrollBar ////////////////////////////
+
+		// Creating the tableScroll Panel
+
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 54, 680, 291);
+		frame.getContentPane().add(scrollPane);
+
+		/////////////////////// Table ScrollBar ////////////////////////////
+		////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////
+
+		////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////
+		//////////////////////////// Table /////////////////////////////////
+
+		// Creating the Table using the model above
+
+		table = new JTable(model);
+		table.setRowHeight(30);
+		scrollPane.setViewportView(table);
+
+		// Setting the table columns to align to Center
+
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
+
+		//////////////////////////// Table /////////////////////////////////
+		////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////
+
 	}
 
 	/**
@@ -102,8 +182,10 @@ public class Client
 		newTorrent.setBounds(0, 0, 34, 34);
 		iconBar.add(newTorrent);
 
-		// Adding Selecting File Functionality to newTorrent button, it sets the value of the String variable "selectedFile", equal to the path of the selected file!
-		
+		// Adding Selecting File Functionality to newTorrent button, it sets the
+		// value of the String variable "selectedFile", equal to the path of the
+		// selected file!
+
 		newTorrent.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -187,19 +269,18 @@ public class Client
 		setting.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/settings.png")));
 		setting.setBounds(0, 0, 34, 34);
 		settingBar.add(setting);
-		
-		// Adding Action to Settings 
+
+		// Adding Action to Settings
 		setting.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-								
+
 				BasicSettings s = new BasicSettings();
 				s.setVisible(true);
 			}
 		});
-		
-		
+
 		// Adding SlowDown Button to the Setting Bar
 
 		JButton slowDown = new JButton();
@@ -213,73 +294,28 @@ public class Client
 
 		////////////////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////////////////
-		/////////////////////// Table Variables ////////////////////////////
+		//////////////////// Table Creation Sample /////////////////////////
 
-		// Creating the Table Model Variables
+		// This is how back-end should update and create the table!
 
-		String[] columnHeaders =
-		{ "Priority", "Name", "Progress", "Size", "Speed", "Peers", "ETA", "Date Added" };
+		List<TableInitialize> tableRows = new ArrayList<>();
 
-		String[][] fileStatistics =
-		{
-				{ "1", "Man on the moon.mp4", "65%", "410 MB", "2.0 Mbps", "3", "1h:35m", "23,Sep,16 / 22:28:30" },
-				{ "2", "Woman on the earth.mp4", "32%", "610 MB", "1.2 Mbps", "3", "2h:15m", "23,Sep,16 / 21:13:19" },
-				{ "3", "Boy on the mars.mp4", "15%", "330 MB", "4.5 Mbps", "3", "0h:23m", "23,Sep,16 / 20:08:00" },
-				{ "4", "Man on the moon.mp4", "65%", "410 MB", "2.0 Mbps", "3", "1h:35m", "23,Sep,16 / 22:28:30" },
-				{ "5", "Woman on the earth.mp4", "32%", "610 MB", "1.2 Mbps", "3", "2h:15m", "23,Sep,16 / 21:13:19" },
-				{ "6", "Boy on the mars.mp4", "15%", "330 MB", "4.5 Mbps", "3", "0h:23m", "23,Sep,16 / 20:08:00" },
-				{ "7", "Man on the moon.mp4", "65%", "410 MB", "2.0 Mbps", "3", "1h:35m", "23,Sep,16 / 22:28:30" },
-				{ "8", "Woman on the earth.mp4", "32%", "610 MB", "1.2 Mbps", "3", "2h:15m", "23,Sep,16 / 21:13:19" },
-				{ "9", "Boy on the mars.mp4", "15%", "330 MB", "4.5 Mbps", "3", "0h:23m", "23,Sep,16 / 20:08:00" },
-				{ "10", "Man on the moon.mp4", "65%", "410 MB", "2.0 Mbps", "3", "1h:35m", "23,Sep,16 / 22:28:30" },
-				{ "11", "Woman on the earth.mp4", "32%", "610 MB", "1.2 Mbps", "3", "2h:15m", "23,Sep,16 / 21:13:19" },
-				{ "12", "Boy on the mars.mp4", "15%", "330 MB", "4.5 Mbps", "3", "0h:23m", "23,Sep,16 / 20:08:00" }, };
+		TableInitialize sampleRow1 = new TableInitialize("1", "Man on the moon.mp4", "65%", "410 MB", "2.0 Mbps", "3",
+				"1h:35m", "23,Sep,16 / 22:28:30");
 
-		DefaultTableModel model = new DefaultTableModel(fileStatistics, columnHeaders);
+		TableInitialize sampleRow2 = new TableInitialize("2", "Woman on the earth.mp4", "32%", "610 MB", "1.2 Mbps",
+				"3", "2h:15m", "23,Sep,16 / 21:13:19");
 
-		/////////////////////// Table Variables ////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
+		TableInitialize sampleRow3 = new TableInitialize("3", "Boy on the mars.mp4", "15%", "330 MB", "4.5 Mbps", "3",
+				"0h:23m", "23,Sep,16 / 20:08:00");
 
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		/////////////////////// Table ScrollBar ////////////////////////////
+		tableRows.add(sampleRow1);
+		tableRows.add(sampleRow2);
+		tableRows.add(sampleRow3);
 
-		// Creating the tableScroll Panel
+		createTable(tableRows);
 
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 54, 680, 291);
-		frame.getContentPane().add(scrollPane);
-
-		/////////////////////// Table ScrollBar ////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		//////////////////////////// Table /////////////////////////////////
-
-		// Creating the Table using the model above
-
-		table = new JTable(model);
-		table.setRowHeight(30);
-		scrollPane.setViewportView(table);
-
-		// Setting the table columns to align to Center
-
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
-		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
-
-		//////////////////////////// Table /////////////////////////////////
+		//////////////////// Table Creation Sample /////////////////////////
 		////////////////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////////////////
 
