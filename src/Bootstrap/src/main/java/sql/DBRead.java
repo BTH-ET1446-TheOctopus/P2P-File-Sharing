@@ -16,6 +16,11 @@ public class DBRead {
 
 	ResultSet rs = null;
 
+	public DBRead() {
+
+	}
+
+	
 	public DBRead(String tableName){	
 
 		try {
@@ -44,28 +49,7 @@ public class DBRead {
 
 				}
 				
-			} else if (tableName.equals("serverfile")) {
-				rs = sc.runquery("SELECT * FROM "+tableName+" where peercount='1'");
-
-				while(rs.next()){
-					//Retrieve by column name
-					String filename=rs.getString("filename");
-					String filesize=rs.getString("filesize");
-					String filetype=rs.getString("filetype");
-					String peers = rs.getString("peers");
-					String peercount = rs.getString("peercount");
-					String uniquefileid = rs.getString("uniquefileid");
-
-					//Display values
-					LOG.log(Level.INFO, "filename: " + filename.toString() + 
-							"\nfilesize: " + filesize.toString() + 
-							"\nfiletype: " + filetype.toString() +
-							"\npeers: " + peers.toString() +
-							"\npeercount: " + peercount.toString() +
-							"\nuniquefileid: " + uniquefileid.toString());
-				}	
-
-			}
+			} 
 		}
 		catch (SQLException ex){
 			// handle any errors
@@ -77,11 +61,7 @@ public class DBRead {
 		}
 	}
 	
-	public DBRead() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public void getBootstrapServer() {
+	public void getBootstrapServer() {  //This method reads from 'servers' table
 		rs = sc.runquery("SELECT * FROM servers");
 
 		try {
@@ -109,6 +89,37 @@ public class DBRead {
 			sc.closeconnect();
 		}	
 
+	}
+	
+	public void getSwarm() {  //This method reads from 'serverfile' table
+		rs = sc.runquery("SELECT * FROM serverfile where peercount='1'");
+
+		try {
+			while(rs.next()){
+				//Retrieve by column name
+				String filename=rs.getString("filename");
+				String filesize=rs.getString("filesize");
+				String filetype=rs.getString("filetype");
+				String peers = rs.getString("peers");
+				String peercount = rs.getString("peercount");
+				String uniquefileid = rs.getString("uniquefileid");
+
+				//Display values
+				LOG.log(Level.INFO, "filename: " + filename.toString() + 
+						"\nfilesize: " + filesize.toString() + 
+						"\nfiletype: " + filetype.toString() +
+						"\npeers: " + peers.toString() +
+						"\npeercount: " + peercount.toString() +
+						"\nuniquefileid: " + uniquefileid.toString());
+			}
+		} catch (SQLException ex){
+			// handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		} finally  {
+			sc.closeconnect();
+		}	
 	}
 
 }

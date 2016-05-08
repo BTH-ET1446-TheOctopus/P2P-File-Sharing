@@ -36,8 +36,6 @@ public class DBWrite {
 		finally {  //close all connection to database
 			sc.closeconnect();
 		}
-
-		//DBRead rt = new DBRead("servers");
 	}
 
 	public void addSwarm(){   //This method writes to 'serverfile' table
@@ -57,8 +55,6 @@ public class DBWrite {
 		finally {  //close all connection to database
 			sc.closeconnect();
 		}
-
-		DBRead rt = new DBRead("serverfile");
 	}
 	
 	public void addPeers(){  //This method writes to 'serverpeers' table
