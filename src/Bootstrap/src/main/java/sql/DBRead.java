@@ -19,47 +19,6 @@ public class DBRead {
 	public DBRead() {
 
 	}
-
-	
-	public DBRead(String tableName){	
-
-		try {
-			
-			/* call connection to database */
-			sqlconnector sc = new sqlconnector();
-
-			//read data from specific table, which we passed to function
-			if(tableName.equals("serverpeers")){
-				rs = sc.runquery("SELECT * FROM "+tableName);
-
-				while (rs.next()) {
-					String id = rs.getString("id");
-					String latestIP = rs.getString("latestIP");
-					String blackList = rs.getString("blacklist");
-					String timestamp = rs.getString("timestamp");
-					String files = rs.getString("files");
-					String filecount = rs.getString("filecount");
-
-					LOG.log(Level.INFO, "ID: " + id.toString() + 
-							"\nLastestIP: " + latestIP.toString() + 
-							"\nBlacklist: " + blackList.toString() +
-							"\nTimestamp: " + timestamp.toString() +
-							"\nFiles: " + files.toString() +
-							"\nFilecount: " + filecount.toString());
-
-				}
-				
-			} 
-		}
-		catch (SQLException ex){
-			// handle any errors
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-		} finally  {
-			sc.closeconnect();
-		}
-	}
 	
 	public void getBootstrapServer() {  //This method reads from 'servers' table
 		rs = sc.runquery("SELECT * FROM servers");
@@ -121,5 +80,36 @@ public class DBRead {
 			sc.closeconnect();
 		}	
 	}
+	
+	public void getPeers(){   //This method reads from 'serverpeers' table
+		rs = sc.runquery("SELECT * FROM serverpeers");
+
+		try {
+			while (rs.next()) {
+				String id = rs.getString("id");
+				String latestIP = rs.getString("latestIP");
+				String blackList = rs.getString("blacklist");
+				String timestamp = rs.getString("timestamp");
+				String files = rs.getString("files");
+				String filecount = rs.getString("filecount");
+
+				LOG.log(Level.INFO, "ID: " + id.toString() + 
+						"\nLastestIP: " + latestIP.toString() + 
+						"\nBlacklist: " + blackList.toString() +
+						"\nTimestamp: " + timestamp.toString() +
+						"\nFiles: " + files.toString() +
+						"\nFilecount: " + filecount.toString());
+
+			}
+		} catch (SQLException ex){
+			// handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		} finally  {
+			sc.closeconnect();
+		}
+		
+	} 
 
 }

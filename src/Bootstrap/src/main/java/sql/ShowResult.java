@@ -11,10 +11,10 @@
 //			drw.addSwarm();
 //			drw.addPeers();
 //			
-////			DBRead dbr = new DBRead();
+//			DBRead dbr = new DBRead();
 //			dbr.getBootstrapServer();
 //			dbr.getSwarm();
-//			
+//			dbr.getPeers();
 //
 //	}
 //

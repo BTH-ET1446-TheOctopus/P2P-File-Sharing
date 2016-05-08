@@ -74,8 +74,6 @@ public class DBWrite {
 		finally {  //close all connection to database
 			sc.closeconnect();
 		}
-
-		DBRead rt = new DBRead("serverpeers");
 	}
 	
 	}
