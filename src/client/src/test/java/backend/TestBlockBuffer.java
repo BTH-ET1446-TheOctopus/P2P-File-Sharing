@@ -25,23 +25,23 @@ public class TestBlockBuffer {
 
 	@After
 	public void tearDown() throws Exception {
-		(new File("tmp/writeread.bin")).delete();
+		(new File("tmp/TestReadWrite.bin")).delete();
 		(new File("tmp/")).delete();
 	}
 
 	@Test(expected = NoSuchFileException.class)
 	public void testOpenReadNonExistent() throws NoSuchFileException, IOException {
-		BlockBuffer.openRead("tmp/file_that_does_not_exist", 10);
+		new BlockBuffer("tmp/file_that_does_not_exist", BlockBuffer.Mode.READ);
 	}
 
 	@Test(expected = NoSuchFileException.class)
 	public void testOpenReadWriteNonExistent() throws NoSuchFileException, IOException {
-		BlockBuffer.openReadWrite("tmp/file_that_does_not_exist", 10);
+		new BlockBuffer("tmp/file_that_does_not_exist", BlockBuffer.Mode.READ_WRITE);
 	}
 
 	@Test
 	public void createReadWrite() throws IOException {
-		BlockBuffer b = BlockBuffer.createReadWrite("tmp/TestReadWrite.bin", 10);
+		BlockBuffer b = new BlockBuffer("tmp/TestReadWrite.bin", BlockBuffer.Mode.CREATE_READ_WRITE);
 
 		// Write a block to file
 		byte[] buffer = new byte[BlockBuffer.BLOCK_SIZE];
