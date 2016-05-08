@@ -36,13 +36,14 @@ public class TableWriter {
 			 * and you can provide an "else" for each one
 			 */
 			
-			if (tableName.equals("serverfile")){
-				stmnt.executeUpdate("INSERT INTO "+tableName+" (filename, filesize, filetype, peers, peercount, uniquefileid) " + 
-						"VALUES ('Pirates Carrabian', 10000, 'MP4', '192.168.2.2', 1, 2255 )");
-
-				TableReader rt = new TableReader(tableName);
-				
-			} else if (tableName.equals("serverpeers")){
+//			if (tableName.equals("serverfile")){
+//				stmnt.executeUpdate("INSERT INTO "+tableName+" (filename, filesize, filetype, peers, peercount, uniquefileid) " + 
+//						"VALUES ('Pirates Carrabian', 10000, 'MP4', '192.168.2.2', 1, 2255 )");
+//
+//				TableReader rt = new TableReader(tableName);
+//				
+//			}
+			if (tableName.equals("serverpeers")){
 				stmnt.executeUpdate("INSERT INTO "+tableName+" (id, latestIP, blacklist, timestamp, files, filecount) " + 
 						"VALUES (1026, '192.168.31.52', 1, default,'Captain Ameerica Civil War', 0)");
 
@@ -90,5 +91,26 @@ public class TableWriter {
 		}
 
 		TableReader rt = new TableReader("servers");
+	}
+	
+	public void addSwarm(){   //This method writes to 'serverfile' table
+		sqlconnector sc = new sqlconnector();
+		
+		/* stablish the connection to database */
+		Connection connect = sc.getConnection();
+		Statement stmnt = sc.getStatement();
+		ResultSet rs = sc.getSet();
+		
+		try {
+			stmnt.executeUpdate("INSERT INTO serverfile (filename, filesize, filetype, peers, peercount, uniquefileid) " + 
+					"VALUES ('Pirates Carrabian', 10000, 'MP4', '192.168.2.2', 1, 2255 )");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {  //close all connection to database
+			sc.closeconnect();
+		}
+
+		TableReader rt = new TableReader("serverfile");
 	}
 }
