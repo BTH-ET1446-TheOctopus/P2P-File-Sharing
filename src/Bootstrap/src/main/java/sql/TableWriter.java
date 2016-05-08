@@ -2,6 +2,7 @@ package sql;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.util.logging.Logger;
@@ -47,13 +48,15 @@ public class TableWriter {
 
 				TableReader rt = new TableReader(tableName);
 				
-			} else if (tableName.equals("servers")){
-				stmnt.executeUpdate("INSERT INTO "+tableName+" (ip, name, timestamp, clientcount, servercount) " + 
-						"VALUES ('192.168.54.68', 'Backup01', default,2, 1)");
-
-				TableReader rt = new TableReader(tableName);
-				
-			} else {
+			}
+//			else if (tableName.equals("servers")){
+//				stmnt.executeUpdate("INSERT INTO "+tableName+" (ip, name, timestamp, clientcount, servercount) " + 
+//						"VALUES ('192.168.54.68', 'Backup01', default,2, 1)");
+//
+//				TableReader rt = new TableReader(tableName);
+//				
+//			}
+		else {
 				System.out.println("There is no such table name in server database!");
 			}
 
@@ -64,5 +67,28 @@ public class TableWriter {
 		finally {  //close all connection to database
 			sc.closeconnect();
 		}
+		
+		
+	}
+	
+	public void addBootstrapServer(){  //This method writes to 'servers' table
+		sqlconnector sc = new sqlconnector();
+		
+		/* stablish the connection to database */
+		Connection connect = sc.getConnection();
+		Statement stmnt = sc.getStatement();
+		ResultSet rs = sc.getSet();
+		
+		try {
+			stmnt.executeUpdate("INSERT INTO servers (ip, name, timestamp, clientcount, servercount) " + 
+					"VALUES ('192.168.54.68', 'Backup01', default,2, 1)");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {  //close all connection to database
+			sc.closeconnect();
+		}
+
+		TableReader rt = new TableReader("servers");
 	}
 }

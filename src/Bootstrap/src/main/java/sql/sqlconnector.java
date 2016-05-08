@@ -1,9 +1,9 @@
 package sql;
 
 import java.sql.*;
-import java.util.Properties;
+//import java.util.Properties;
 
-import com.mysql.jdbc.PreparedStatement;
+//import com.mysql.jdbc.PreparedStatement;
 
 /**
  * @author Farhan
