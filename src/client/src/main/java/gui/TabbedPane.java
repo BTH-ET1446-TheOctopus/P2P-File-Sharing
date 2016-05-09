@@ -25,11 +25,12 @@ public class TabbedPane extends JFrame {
         setSize(400,400);
      
         JPanel tab1 = new JPanel();
-        JLabel lb1 = new JLabel();
-        lb1.setText("Basic Features");
-        tab1.add(lb1);
         jmenu.addTab("General", tab1);
         
+        JCheckBox cb = new JCheckBox("Dark Peer", true);
+        tab1.add(cb);
+        JButton btn1 = new JButton("Apply Changes");
+        tab1.add(btn1);
          
         JPanel tab2 = new JPanel();      
         JLabel lb2 = new JLabel();
@@ -38,6 +39,4 @@ public class TabbedPane extends JFrame {
         jmenu.addTab("Advanced", tab2);
     }
     
-
-
 }
