@@ -11,28 +11,27 @@ USE clientdb;
 
 -- Table: peersarray
 CREATE TABLE peersarray (
-    uniquefileid int NOT NULL,    
-    peers varchar(100) NOT NULL,
+    uniquefileid varchar(100) NOT NULL,    
+    peers varchar(15) NOT NULL,
     CONSTRAINT peersarray_pk PRIMARY KEY (uniquefileid)
 );
 
 -- Table: clientfile
 CREATE TABLE clientfile (
-     filename char(40) NOT NULL,
+    filename char(40) NOT NULL,
     totalblocks int NOT NULL,
-    filetype char(20) NOT NULL,
-    peers varchar(100) NOT NULL,
+    peers varchar(15) NOT NULL,
     peercount int NOT NULL,
     uniquefileid int NOT NULL,
-    filechecksum int NOT NULL,
-    metadatachecksum int NOT NULL,		
+    filechecksum varchar(100) NOT NULL,
+    metadatachecksum varchar(100) NOT NULL,		
     CONSTRAINT clientfile_pk PRIMARY KEY (uniquefileid)
 );
 
 -- Table: clientpeers
 CREATE TABLE clientpeers (
-    id int NOT NULL,
-    latestip int NOT NULL,
+    id varchar(100) NOT NULL,
+    latestip varchar(15) NOT NULL,
     blaklist binary(1) NOT NULL,
     timestamp timestamp NOT NULL,
     files varchar(100) NOT NULL,
