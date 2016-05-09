@@ -20,6 +20,7 @@ import backend.json.PeersInfo;
 import backend.json.Swarm;
 import backend.json.Swarms;
 import backend.json.SwarmsHelper;
+import backend.json.SwarmsInfo;
 import backend.json.Sync;
 import backend.json.TestAddress;
 import sql.sqlconnector;
@@ -243,7 +244,7 @@ public class Rest {
 	@GET
 	@Path("/swarms/{id}/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Swarm getSwarm(@PathParam("id") int id)
+	public Swarm getSwarm(@PathParam("id") String id)
 	{
 		String readquery="";
 		sqlconnector test = new sqlconnector();
@@ -327,11 +328,60 @@ public class Rest {
 	{
 		Sync sync = new Sync();
 		
-		PeersInfo peers = new PeersInfo();
+		// Create fake peer data
+		PeersInfo peer = new PeersInfo();
+		peer.setId("278f6d83-a707-4aee-8471-affc03c662a9");
+		peer.setIp("129.160.10.2");
+		peer.setLastSeen("07 MAY 2016 14:21:42 UTC");
 		
-		peers.setId("278f6d83-a707-4aee-8471-affc03c662a9");
-		peers.setIp("129.160.10.2");
-		peers.setLastSeen("07 MAY 2016 14:21:42 UTC");
+		List<PeersInfo> peers = new ArrayList<PeersInfo>();
+		peers.add(peer);
+		
+		//Create bootstrap data
+		
+		Bootstraps bootstraps = new Bootstraps();
+		List<String> bootstrap = new ArrayList<String>();
+		bootstrap.add("1.2.3.4");
+		bootstrap.add("1.2.3.6");
+		bootstraps.setbootstraps(bootstrap);
+		
+		
+		//Create blacklist data
+		
+		Blacklist blacklist = new Blacklist();
+		List<String> ip = new ArrayList<String>();
+ 		ip.add("1.2.3.4");
+ 		ip.add("1.2.3.6");
+ 		blacklist.setblacklist(ip);
+ 		
+		
+ 		//SwarmsInfo 
+ 		List<SwarmsInfo> swarmInfoList = new ArrayList<SwarmsInfo>();
+ 	
+ 		SwarmsInfo swarmInfo = new SwarmsInfo();
+ 		swarmInfo.setBlockCount(4);
+ 		swarmInfo.setFileChecksum("XXXD");
+ 		swarmInfo.setfilename("Movie.mp3");
+ 		swarmInfo.setid("278f6d83-a707-4aee-8471-affc03c662a9");
+ 		swarmInfo.setMetadataChecksum("XYYYX");
+ 		
+ 		Peers swarmPeers = new Peers();
+ 		List<String> swarmPeer = new ArrayList<String>();
+ 		
+ 		swarmPeer.add("1.2.3.4");
+ 		swarmPeer.add("1.2.3.5");
+ 		
+ 		swarmPeers.setpeers(swarmPeer);
+ 		swarmInfo.setPeers(swarmPeers);
+ 		
+ 		
+ 		swarmInfoList.add(swarmInfo);
+ 		
+ 		//add data to sync class
+ 		sync.setPeers(peers);
+ 		sync.setBootstraps(bootstraps);
+		sync.setBlacklist(blacklist);
+		sync.setSwarmsInfo(swarmInfoList);
 		
 		return sync;
 	}
