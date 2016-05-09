@@ -35,7 +35,7 @@ public class DBRead {
 				String metadatachecksum = rs.getString("metadatachecksum");
 
 				//Display values
-				LOG.log(Level.INFO, "filename: " + filename.toString() + 
+				LOG.log(Level.INFO, "\nfilename: " + filename.toString() + 
 						"\nfilesize: " + totalblocks.toString() + 
 						"\npeers: " + peers.toString() +
 						"\npeercount: " + peercount.toString() +
@@ -66,7 +66,7 @@ public class DBRead {
 				String files = rs.getString("files");
 				String filecount = rs.getString("filecount");
 
-				LOG.log(Level.INFO, "ID: " + id.toString() + 
+				LOG.log(Level.INFO, "\nID: " + id.toString() + 
 						"\nLastestip: " + latestip.toString() + 
 						"\nBlacklist: " + blackList.toString() +
 						"\nTimestamp: " + timestamp.toString() +
@@ -95,7 +95,7 @@ public class DBRead {
 				String peers=rs.getString("peers");
 
 				//Display values
-				LOG.log(Level.INFO, "uniquefileid: " + uniquefileid.toString() + 
+				LOG.log(Level.INFO, "\nuniquefileid: " + uniquefileid.toString() + 
 						"\npeers: " + peers.toString());
 			}
 		} catch (SQLException ex){
