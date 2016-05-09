@@ -18,7 +18,7 @@ public class Search extends JDialog
 		addSearchTextField();
 		addSearchButton();
 		addSearchResultTable();
-
+		addDownloadButton();
 	}
 
 	private void createSearchJDialog(JFrame parent)
@@ -55,7 +55,13 @@ public class Search extends JDialog
 		JScrollPane resultTableScrolPane = new JScrollPane(searchResultTable);
 		resultTableScrolPane.setBounds(6, 40, 588, 190);
 		frame.getContentPane().add(resultTableScrolPane);
-		
+	}
+	
+	private void addDownloadButton()
+	{
+		JButton downloadButton = new JButton("Download");
+		downloadButton.setBounds(487, 242, 107, 30);
+		frame.getContentPane().add(downloadButton);		
 	}
 
 }
