@@ -19,8 +19,8 @@ CREATE TABLE servers (
 
 -- Table: servers
 CREATE TABLE peersarray (
-    uniquefileid int NOT NULL,    
-    peers varchar(100) NOT NULL,
+    uniquefileid varchar(100)  NOT NULL,    
+    peers varchar(15) NOT NULL,
     CONSTRAINT peersarray_pk PRIMARY KEY (uniquefileid)
 );
 
@@ -28,9 +28,9 @@ CREATE TABLE peersarray (
 CREATE TABLE serverfile (
     filename char(40) NOT NULL,
     totalblocks int NOT NULL,
-    peers varchar(100) NOT NULL,
+    peers varchar(15) NOT NULL,
     peercount int NOT NULL,
-    uniquefileid int NOT NULL,
+    uniquefileid varchar(100) NOT NULL,
     filechecksum varchar(100) NOT NULL,
     metadatachecksum varchar(100) NOT NULL,		
     CONSTRAINT serverfile_pk PRIMARY KEY (uniquefileid)
@@ -38,8 +38,8 @@ CREATE TABLE serverfile (
 
 -- Table: serverpeers
 CREATE TABLE serverpeers (
-    id int NOT NULL,
-    latestIP varchar(100) NOT NULL,
+    id varchar(100) NOT NULL,
+    latestIP varchar(15) NOT NULL,
     blacklist binary(1) NOT NULL,
     timestamp timestamp NOT NULL,
     CONSTRAINT serverpeers_pk PRIMARY KEY (id)
