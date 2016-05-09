@@ -1,15 +1,18 @@
 package sql;
 
-import java.sql.DriverManager;
+//import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+//import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import backend.rest.RESTStartUp;
+import oldCodes.sqlconnector;
+
+//import backend.rest.RESTStartUp;
 
 public class DBReadWriteClass {
 	
@@ -55,5 +58,23 @@ public class DBReadWriteClass {
 //			try { if (stmnt != null) stmnt.close(); } catch (SQLException e) { e.printStackTrace(); }
 //			try { if (connect != null) connect.close(); } catch (SQLException e) { e.printStackTrace(); }
 //		}
+	}
+	public void addSwarm(){   //This method writes to 'serverfile' table
+		sqlconnector sc = new sqlconnector();
+		
+		/* stablish the connection to database */
+		Connection connect = sc.getConnection();
+		Statement stmnt = sc.getStatement();
+		ResultSet rs = sc.getSet();
+		
+		try {
+			stmnt.executeUpdate("INSERT INTO clientfile (filename, filesize, filetype, peers, peercount, uniquefileid) " + 
+					"VALUES ('Pirates Carrabian', 10000, 'MP4', '192.168.2.2', 1, 2255 )");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {  //close all connection to database
+			sc.closeconnect();
+		}
 	}
 }
