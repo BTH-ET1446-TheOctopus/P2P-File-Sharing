@@ -1,14 +1,12 @@
 package sql;
 
-//import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-//import java.sql.SQLException;
 import java.sql.Statement;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 public class DBReadWriteClass {
 	
@@ -49,11 +47,24 @@ public class DBReadWriteClass {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-//		finally {
-//			try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
-//			try { if (stmnt != null) stmnt.close(); } catch (SQLException e) { e.printStackTrace(); }
-//			try { if (connect != null) connect.close(); } catch (SQLException e) { e.printStackTrace(); }
-//		}
-	}
 
+	}
+	public void addPeers(){  //This method writes to 'clientpeers' table
+		sqlconnector sc = new sqlconnector();
+		
+		/* stablish the connection to database */
+		Connection connect = sc.getConnection();
+		Statement stmnt = sc.getStatement();
+		ResultSet rs = sc.getSet();
+		
+		try {
+			stmnt.executeUpdate("INSERT INTO clientpeers (id, latestIP, blacklist, timestamp, files, filecount) " + 
+					"VALUES (1026, '192.168.31.52', 1, default,'Captain Ameerica Civil War', 0)");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {  //close all connection to database
+			sc.closeconnect();
+		}
+	}
 }
