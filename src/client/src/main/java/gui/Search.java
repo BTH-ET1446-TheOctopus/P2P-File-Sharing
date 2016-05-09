@@ -3,6 +3,8 @@ package gui;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 public class Search extends JDialog
@@ -15,6 +17,7 @@ public class Search extends JDialog
 		createSearchJDialog(parent);
 		addSearchTextField();
 		addSearchButton();
+		addSearchResultTable();
 
 	}
 
@@ -43,6 +46,16 @@ public class Search extends JDialog
 		JButton searchButton = new JButton("Search");
 		searchButton.setBounds(524, 6, 70, 30);
 		frame.getContentPane().add(searchButton);
+	}
+	
+	private void addSearchResultTable()
+	{
+		JTable searchResultTable = new JTable();
+
+		JScrollPane resultTableScrolPane = new JScrollPane(searchResultTable);
+		resultTableScrolPane.setBounds(6, 40, 588, 190);
+		frame.getContentPane().add(resultTableScrolPane);
+		
 	}
 
 }
