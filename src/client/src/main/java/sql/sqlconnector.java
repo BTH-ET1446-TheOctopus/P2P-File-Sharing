@@ -1,21 +1,27 @@
 package sql;
 
 import java.sql.*;
-import java.util.Properties;
+//import java.util.Properties;
 
-import com.mysql.jdbc.PreparedStatement;
+//import com.mysql.jdbc.PreparedStatement;
 
 /**
  * @author Farhan
  */
 
 public class sqlconnector {
+	
+	/* You're doing the connection in connector() method below in the code.
+	 * These two lines are redundant! You can delete them, Farhan. 
+	 */
+	
+	//private static final String dbClassName = "com.mysql.jdbc.Driver";
+	//private static final String CONNECTION = "jdbc:mysql://localhost:3306/serverdb";
 
-	private static final String dbClassName = "com.mysql.jdbc.Driver";
-	private static final String CONNECTION = "jdbc:mysql://localhost:3306/serverdb";
 	private Connection  connection  = null;
 	private Statement   statement   = null;
 	private ResultSet   set         = null;
+//	private String tableName = null;
 
 	String host;
 	String port;
@@ -31,6 +37,11 @@ public class sqlconnector {
 	String filechecksum = "";
 	String metadatachecksum = "";
 
+	public sqlconnector(){
+		/* sql user,pass,database name, host, port */
+		connector("root", "", "Serverdb", "localhost", "3306");
+	}
+	
 	public void connector(String login, String password, String db, String host, String port) {
 		this.login = login;
 		this.password = password;
@@ -65,53 +76,57 @@ public class sqlconnector {
 		}
 		return set;
 	}
-
-	public void printresult(ResultSet rs){
-		try {
-			System.out.println();
-			while(rs.next()){
-				//Retrieve by column name
-				filename=rs.getString("filename");
-				totalblocks=rs.getInt("totalblocks");
-				peers = rs.getString("peers");
-				peercount = rs.getInt("peercount");
-				uniquefileid = rs.getString("uniquefileid");
-				filechecksum = rs.getString("filechecksum");
-				metadatachecksum = rs.getString("metadatachecksum");
-
-				//Display values
-				System.out.printf("filename: %s ", filename);
-				System.out.printf("totalblocks: %d ", totalblocks);
-				System.out.printf("peers: %s ", peers);
-				System.out.printf("peercount: %s ", peercount);
-				System.out.printf("uniquefileid: %s ", uniquefileid);
-				System.out.printf("filechecksum: %s\n", filechecksum);
-				System.out.printf("filechecksum: %s\n", metadatachecksum);
-			}
-		}
-		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
-		}
-
-	}
-	public void printpeersarray(ResultSet rs){
-		try {
-			System.out.println();
-			while(rs.next()){
-				//Retrieve by column name			
-				//uniquefileid = rs.getString("uniquefileid");
-				peers = rs.getString("peers");	         
-				//Display values 
-				//System.out.printf("uniquefileid: %s ", uniquefileid);
-				System.out.printf("peers: %s ", peers);
-				System.out.println();
-			}
-		}
-		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
-		}
-
-	}
+	/*Farhan: Read from tables is done in "readFromTables" class
+	 * It's your call, but we don't need to do it here
+	*/
+	
+//	public void printresult(ResultSet rs){
+//		try {
+//			System.out.println();
+//			while(rs.next()){
+//				//Retrieve by column name
+//				filename=rs.getString("filename");
+//				totalblocks=rs.getInt("totalblocks");
+//				peers = rs.getString("peers");
+//				peercount = rs.getInt("peercount");
+//				uniquefileid = rs.getString("uniquefileid");
+//				filechecksum = rs.getString("filechecksum");
+//				metadatachecksum = rs.getString("metadatachecksum");
+//
+//				//Display values
+//				System.out.printf("filename: %s ", filename);
+//				System.out.printf("totalblocks: %d ", totalblocks);
+//				System.out.printf("peers: %s ", peers);
+//				System.out.printf("peercount: %s ", peercount);
+//				System.out.printf("uniquefileid: %s ", uniquefileid);
+//				System.out.printf("filechecksum: %s\n", filechecksum);
+//				System.out.printf("filechecksum: %s\n", metadatachecksum);
+//			}
+//		}
+//		catch (Exception e) {
+//			System.out.println("Exception in query method:\n" + e.getMessage());
+//		}
+//
+//	}
+	
+//	public void printpeersarray(ResultSet rs){
+//		try {
+//			System.out.println();
+//			while(rs.next()){
+//				//Retrieve by column name			
+//				//uniquefileid = rs.getString("uniquefileid");
+//				peers = rs.getString("peers");	         
+//				//Display values 
+//				//System.out.printf("uniquefileid: %s ", uniquefileid);
+//				System.out.printf("peers: %s ", peers);
+//				System.out.println();
+//			}
+//		}
+//		catch (Exception e) {
+//			System.out.println("Exception in query method:\n" + e.getMessage());
+//		}
+//
+//	}
 
 	public boolean Update (String update) {
 
@@ -248,16 +263,13 @@ public class sqlconnector {
 } */
 
 	public void closeconnect(){
+		//Close all connection to MySQL
+		try { if (set != null) set.close(); set = null; } catch (SQLException e) { e.printStackTrace(); }
+		try { if (statement != null) statement.close(); statement = null; } catch (SQLException e) { e.printStackTrace(); }
+		try { if (connection != null) connection.close(); connection = null; } catch (SQLException e) { e.printStackTrace(); }
 
-		try {
-			connection.close();
-			connection = null;
-		}
-		catch(Exception e)         {
-			System.out.println("Problem in closing connection ");
-		}
 	}
-	
+
 	public Connection getConnection() {
 		return connection;
 	}
