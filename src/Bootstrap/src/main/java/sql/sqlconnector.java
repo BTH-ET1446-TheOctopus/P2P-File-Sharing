@@ -1,9 +1,9 @@
 package sql;
 
 import java.sql.*;
-import java.util.Properties;
+//import java.util.Properties;
 
-import com.mysql.jdbc.PreparedStatement;
+//import com.mysql.jdbc.PreparedStatement;
 
 /**
  * @author Farhan
@@ -37,6 +37,11 @@ public class sqlconnector {
 	String filechecksum = "";
 	String metadatachecksum = "";
 
+	public sqlconnector(){
+		/* sql user,pass,database name, host, port */
+		connector("root", "", "Serverdb", "localhost", "3306");
+	}
+	
 	public void connector(String login, String password, String db, String host, String port) {
 		this.login = login;
 		this.password = password;
@@ -288,14 +293,6 @@ public class sqlconnector {
 	public void setSet(ResultSet set) {
 		this.set = set;
 	}
-
-//	public String getTableName() {
-//		return tableName;
-//	}
-//
-//	public void setTableName(String tableName) {
-//		this.tableName = tableName;
-//	}
 
 	public void Disconnect () {
 		connection = null;

@@ -1,0 +1,39 @@
+Path to sql classes:
+~\p2p\src\Bootstrap\src\main\java\sql
+~\p2p\src\client\src\main\java\sql
+
+"sqlconnector.java":
+This class provide connection to the database and also it provides sql query
+
+"DBWrite.java" :
+This class is used to write data to server database; It has three main method (addBootstrapServer, addPeers, addSwarm); Soon there is a version for the client part as well.
+
+"DBRead":
+This class is used to read data from server database; It has three main method (getBootstrapServer, getPeers, getSwarm); Soon there is a version for the client part as well.
+
+Using 'ShowResult.java':
+we first write some sample data into serverdb tables and read these data from it and show it in console.
+
+- There is already some example provided in this file which shows how to create object of the two other classes.
+
+How to use it in your machine:
+1. one can create a separate project in Eclipse, import these above files into the project's package.
+
+2. first comment out the ShowResult.java file; create object of DBWrite class to put sample data in any of its methods;
+
+3. Create object of DBRead class to read those samples from any server tables; 
+
+4. Run the project normally; You should get some info in the console.
+
+4. When we run the project, we actually put these samples into the table in the database, so we should then delete them, because this is just a test and we don't want to mess up our database. So use "truncate serverpeers" in command line to delete these sample data.
+- Be careful about command "truncate"; Never use it in real world, unless you know what you're doing!
+- It is a good approach if first make a back up of the db, before any testing.
+- for each run of the test, first delete previous data;
+
+
+NOTICE:
+a) It's assumed you installed mysql in your machine correctly and also bind sql connector/J to your Eclipse. (Google it in case you don't setup these yet.)
+b) One should use his/her own sql username and password for sql running in his/her machine.
+
+
+//@Author: Kambiz

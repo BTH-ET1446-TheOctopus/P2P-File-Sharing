@@ -9,7 +9,7 @@ USE serverdb;
 -- tables
 -- Table: servers
 CREATE TABLE servers (
-    ip int NOT NULL,
+    ip varchar(100) NOT NULL,
     name char(20) NOT NULL,
     timestamp timestamp NOT NULL,
     clientcount int NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE servers (
 
 -- Table: servers
 CREATE TABLE peersarray (
-    uniquefileid varchar(100) NOT NULL,    
+    uniquefileid int NOT NULL,    
     peers varchar(100) NOT NULL,
     CONSTRAINT peersarray_pk PRIMARY KEY (uniquefileid)
 );
@@ -30,7 +30,7 @@ CREATE TABLE serverfile (
     totalblocks int NOT NULL,
     peers varchar(100) NOT NULL,
     peercount int NOT NULL,
-    uniquefileid varchar(100) NOT NULL,
+    uniquefileid int NOT NULL,
     filechecksum varchar(100) NOT NULL,
     metadatachecksum varchar(100) NOT NULL,		
     CONSTRAINT serverfile_pk PRIMARY KEY (uniquefileid)
@@ -39,7 +39,7 @@ CREATE TABLE serverfile (
 -- Table: serverpeers
 CREATE TABLE serverpeers (
     id int NOT NULL,
-    latestIP int NOT NULL,
+    latestIP varchar(100) NOT NULL,
     blacklist binary(1) NOT NULL,
     timestamp timestamp NOT NULL,
     CONSTRAINT serverpeers_pk PRIMARY KEY (id)
