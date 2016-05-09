@@ -1,17 +1,11 @@
 package sql;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import java.util.logging.Logger;
 
 //import backend.rest.RESTStartUp;
 
 public class DBWrite {
-
-	private static final Logger LOG = Logger.getLogger(DBWrite.class.getName());
 	
 	sqlconnector sc = new sqlconnector();
 
