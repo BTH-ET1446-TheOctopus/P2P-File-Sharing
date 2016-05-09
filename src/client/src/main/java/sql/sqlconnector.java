@@ -1,18 +1,9 @@
 package sql;
 
 import java.sql.*;
-import java.util.Properties;
-
-import com.mysql.jdbc.PreparedStatement;
-
-/**
- * @author Farhan
- */
 
 public class sqlconnector {
 
-	private static final String dbClassName = "com.mysql.jdbc.Driver";
-	private static final String CONNECTION = "jdbc:mysql://localhost:3306/serverdb";
 	private Connection  connection  = null;
 	private Statement   statement   = null;
 	private ResultSet   set         = null;
@@ -31,6 +22,11 @@ public class sqlconnector {
 	String filechecksum = "";
 	String metadatachecksum = "";
 
+	public sqlconnector(){
+		/* sql user,pass,database name, host, port */
+		connector("root", "", "clientdb", "localhost", "3306");
+	}
+	
 	public void connector(String login, String password, String db, String host, String port) {
 		this.login = login;
 		this.password = password;
@@ -66,53 +62,6 @@ public class sqlconnector {
 		return set;
 	}
 
-	public void printresult(ResultSet rs){
-		try {
-			System.out.println();
-			while(rs.next()){
-				//Retrieve by column name
-				filename=rs.getString("filename");
-				totalblocks=rs.getInt("totalblocks");
-				peers = rs.getString("peers");
-				peercount = rs.getInt("peercount");
-				uniquefileid = rs.getString("uniquefileid");
-				filechecksum = rs.getString("filechecksum");
-				metadatachecksum = rs.getString("metadatachecksum");
-
-				//Display values
-				System.out.printf("filename: %s ", filename);
-				System.out.printf("totalblocks: %d ", totalblocks);
-				System.out.printf("peers: %s ", peers);
-				System.out.printf("peercount: %s ", peercount);
-				System.out.printf("uniquefileid: %s ", uniquefileid);
-				System.out.printf("filechecksum: %s\n", filechecksum);
-				System.out.printf("filechecksum: %s\n", metadatachecksum);
-			}
-		}
-		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
-		}
-
-	}
-	public void printpeersarray(ResultSet rs){
-		try {
-			System.out.println();
-			while(rs.next()){
-				//Retrieve by column name			
-				//uniquefileid = rs.getString("uniquefileid");
-				peers = rs.getString("peers");	         
-				//Display values 
-				//System.out.printf("uniquefileid: %s ", uniquefileid);
-				System.out.printf("peers: %s ", peers);
-				System.out.println();
-			}
-		}
-		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
-		}
-
-	}
-
 	public boolean Update (String update) {
 
 		try {
@@ -128,32 +77,58 @@ public class sqlconnector {
 		return true;
 	}
 
-	//Function to Create Server DB Once
-	public void createserverdb(){
-		//Create Table01 servers
+	//Function to Create Client DB Once
+	public void createclientdb(){
+		
+		//Create Table01 clientfile
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "servers", null);
+			ResultSet tables = dbm.getTables(null, null, "clientfile", null);
 			if (tables.next()) {
 				// Table exists Don't Create Table
 			}
 			else {
 				//Table Doesn't Exist, Create Table
-				String createtable = " CREATE TABLE servers ( " +
-						" ip varchar(100) NOT NULL, " +
-						" name char(20) NOT NULL, " +
-						" timestamp timestamp NOT NULL, " +
-						" clientcount int NOT NULL, " +
-						" servercount int NOT NULL, " +
-						" CONSTRAINT Servers_pk PRIMARY KEY (ip))";
-
+				String createtable = "CREATE TABLE clientfile ( " +
+						" filename char(40) NOT NULL, " +
+						" totalblocks int(11) NOT NULL, " +
+						" peers varchar(15) NOT NULL, " +
+						" peercount int(11) NOT NULL, " +
+						" uniquefileid varchar(100) NOT NULL, " +
+						" filechecksum varchar(100) NOT NULL, " +
+						" metadatachecksum int(100) NOT NULL, " +		
+						" CONSTRAINT serverfile_pk PRIMARY KEY (uniquefileid))";
 				this.Update(createtable);
 			}
 		}
 		catch (Exception e) {
 			System.out.println("Exception in query method:\n" + e.getMessage());
 		}
-		//Create Table02 peersarray
+		//Create Table02 clientpeers
+		try {
+			DatabaseMetaData dbm = connection.getMetaData();
+			ResultSet tables = dbm.getTables(null, null, "clientpeers", null);
+			if (tables.next()) {
+				// Table exists Don't Create Table
+			}
+			else {
+				//Table Doesn't Exist, Create Table
+				String createtable = "CREATE TABLE clientpeers ( " +
+						" id varchar(100) NOT NULL, " +
+						" latestIP varchar(15) NOT NULL, " +
+						" blacklist binary(1) NOT NULL, " +
+						" timestamp timestamp NOT NULL, " +
+						" files varchar(100) NOT NULL, " +
+						" filecount int(11) NOT NULL, " +
+						" CONSTRAINT serverpeers_pk PRIMARY KEY (id))";
+				this.Update(createtable);
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Exception in query method:\n" + e.getMessage());
+		}
+
+		//Create Table03 peersarray
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
 			ResultSet tables = dbm.getTables(null, null, "peersarray", null);
@@ -165,7 +140,7 @@ public class sqlconnector {
 				//Table Doesn't Exist, Create Table
 				String createtable = "CREATE TABLE peersarray ( " +
 						" uniquefileid varchar(100) NOT NULL, " +    
-						" peers varchar(100) NOT NULL, " +
+						" peers varchar(15) NOT NULL, " +
 						" CONSTRAINT peersarray_pk PRIMARY KEY (uniquefileid))";
 				this.Update(createtable);
 			}
@@ -173,91 +148,17 @@ public class sqlconnector {
 		catch (Exception e) {
 			System.out.println("Exception in query method:\n" + e.getMessage());
 		}
-		//Create Table03 serverfile
-		try {
-			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "serverfile", null);
-			if (tables.next()) {
-				// Table exists Don't Create Table
-			}
-			else {
-				//Table Doesn't Exist, Create Table
-				String createtable = "CREATE TABLE serverfile ( " +
-						" filename char(40) NOT NULL, " +
-						" totalblocks int NOT NULL, " +
-						" peers varchar(100) NOT NULL, " +
-						" peercount int NOT NULL, " +
-						" uniquefileid varchar(100) NOT NULL, " +
-						" filechecksum varchar(100) NOT NULL, " +
-						" metadatachecksum varchar(100) NOT NULL, " +		
-						" CONSTRAINT serverfile_pk PRIMARY KEY (uniquefileid))";
-				this.Update(createtable);
-			}
-		}
-		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
-		}
-		//Create Table04 serverpeers
-		try {
-			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "serverpeers", null);
-			if (tables.next()) {
-				// Table exists Don't Create Table
-			}
-			else {
-				//Table Doesn't Exist, Create Table
-				String createtable = "CREATE TABLE serverpeers ( " +
-						" id int NOT NULL, " +
-						" latestIP varchar(100) NOT NULL, " +
-						" blacklist binary(1) NOT NULL, " +
-						" timestamp timestamp NOT NULL, " +
-						" CONSTRAINT serverpeers_pk PRIMARY KEY (id))";
-				this.Update(createtable);
-			}
-		}
-		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
-		}
+
 	}
-
-	/*public boolean write (String write) {
-
-    try {
-    	String writequery = "INSERT INTO serverfile (filename,filesize,filetype,peers,peercount,uniquefileid) "
-    			+ " values (?, ?, ?, ?, ?, ?)";
-	      // create the mysql insert preparedstatement
-	      PreparedStatement preparedStmt = connection.prepareStatement(writequery);
-	      preparedStmt.setString (1, "Barney");
-	      preparedStmt.setString (2, "Rubble");
-	      preparedStmt.setDate   (3, startDate);
-	      preparedStmt.setBoolean(4, false);
-	      preparedStmt.setInt    (5, 5000);
-
-	      // execute the preparedstatement
-	      preparedStmt.execute();
-        statement = connection.createStatement();
-        statement.executeUpdate(update);
-
-    }
-    catch (SQLException e) {
-        System.out.println("Exception in update method:\n" + e.getMessage());
-        return false;
-    }
-
-    return true;
-} */
 
 	public void closeconnect(){
+		//Close all connection to MySQL
+		try { if (set != null) set.close(); set = null; } catch (SQLException e) { e.printStackTrace(); }
+		try { if (statement != null) statement.close(); statement = null; } catch (SQLException e) { e.printStackTrace(); }
+		try { if (connection != null) connection.close(); connection = null; } catch (SQLException e) { e.printStackTrace(); }
 
-		try {
-			connection.close();
-			connection = null;
-		}
-		catch(Exception e)         {
-			System.out.println("Problem in closing connection ");
-		}
 	}
-	
+
 	public Connection getConnection() {
 		return connection;
 	}

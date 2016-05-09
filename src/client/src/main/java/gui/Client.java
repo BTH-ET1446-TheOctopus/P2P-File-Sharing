@@ -45,43 +45,16 @@ public class Client
 
 	////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////
-	///////////////////// Settings Windows /////////////////////////////
+	///////////////// Setting DarkPeer Button //////////////////////////
 
-	private void settingsDialog()
+	private void setDarkPeerBtn(boolean status)
 	{
-		settings = new JDialog(frame, "Settings");
-		settings.setDefaultCloseOperation(settings.DO_NOTHING_ON_CLOSE);
-		settings.setSize(300, 200);
-		settings.setLocationRelativeTo(frame);
-		settings.setResizable(false);
-		settings.getContentPane().setLayout(null);
-		frame.setEnabled(false);
-		settings.setVisible(true);
-
-		darkPeer = new JCheckBox("Go Dark!");
-		darkPeer.setToolTipText("Your Machine Becomes Invisible to the Servers");
-		darkPeer.setBounds(10, 10, 100, 50);
-		darkPeer.setSelected(darkStatus);
-		settings.getContentPane().add(darkPeer);
-		applySetting = new JButton("Apply Changes");
-		applySetting.setBounds(75, 140, 150, 35);
-		settings.getContentPane().add(applySetting);
-	}
-	///////////////////// Settings Windows /////////////////////////////
-	////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////
-
-	////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////
-	//////////////////// Setting Dark Mode /////////////////////////////
-
-	private void setDarkPeerStatus()
-	{
-		if (darkPeer.isSelected() == true)
+		if (status == true)
 		{
 			darkStatus = true;
 			darkPeerbtn.setToolTipText("Your machine is invisible to the servers!");
 			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/darkPeer.png")));
+
 		} else
 		{
 			darkStatus = false;
@@ -89,11 +62,9 @@ public class Client
 			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/brightPeer.png")));
 
 		}
-		frame.setEnabled(true);
-		settings.setVisible(false);
 	}
 
-	//////////////////// Setting Dark Mode /////////////////////////////
+	///////////////// Setting DarkPeer Button //////////////////////////
 	////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////
 
@@ -287,6 +258,13 @@ public class Client
 		// Adding Search Button to the iconBar
 
 		JButton search = new JButton();
+		search.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Search search = new Search(frame);
+				
+			}
+		});
 		search.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileSearch.png")));
 		search.setBounds(646, 0, 34, 34);
 		iconBar.add(search);
@@ -323,61 +301,31 @@ public class Client
 		////////////////////////////////////////////////////////////////////
 		////////////////////////// Setting Bar//////////////////////////////
 
-		// Adding Setting Button to the Setting Bar
-
-		JButton setting = new JButton();
-		setting.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/settings.png")));
-		setting.setBounds(0, 0, 34, 34);
-		settingBar.add(setting);
-
-		setting.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				settingsDialog();
-
-				applySetting.addActionListener(new ActionListener()
-				{
-					public void actionPerformed(ActionEvent e)
-					{
-						setDarkPeerStatus();
-					}
-				});
-			}
-		});
-
-		// Adding SlowDown Button to the Setting Bar
+		// Adding Go Dark Button to the Setting Bar
 
 		darkPeerbtn = new JButton();
-		if (darkStatus == true)
-		{
-			setDarkPeerBtn(true);
-
-		} else
+		if (darkStatus == false)
 		{
 			setDarkPeerBtn(false);
 
+		} else
+		{
+			setDarkPeerBtn(true);
+
 		}
-		darkPeerbtn.setBounds(34, 0, 34, 34);
+		darkPeerbtn.setBounds(0, 0, 34, 34);
 		settingBar.add(darkPeerbtn);
 
 		darkPeerbtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				if (darkStatus == true)
+				if (darkStatus == false)
 				{
-
-					darkStatus = false;
-					setDarkPeerBtn(false);
-
-
+					setDarkPeerBtn(true);
 				} else
 				{
-
-					darkStatus = true;
-					setDarkPeerBtn(true);
-
+					setDarkPeerBtn(false);
 				}
 
 			}
@@ -416,18 +364,4 @@ public class Client
 
 	}
 
-	private void setDarkPeerBtn(boolean status)
-	{
-		if (status == true)
-		{
-			darkPeerbtn.setToolTipText("Your machine is invisible to the servers!");
-			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/darkPeer.png")));
-
-		} else
-		{
-			darkPeerbtn.setToolTipText("Your machine is visible to the servers!");
-			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/brightPeer.png")));
-
-		}
-	}
 }
