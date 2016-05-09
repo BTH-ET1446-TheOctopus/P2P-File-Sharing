@@ -38,8 +38,7 @@ public class sqlconnector {
 	String metadatachecksum = "";
 
 	public sqlconnector(){
-		/* sql user,pass,database name, host, port */
-		connector("root", "", "Serverdb", "localhost", "3306");
+	
 	}
 	
 	public void connector(String login, String password, String db, String host, String port) {
@@ -145,6 +144,26 @@ public class sqlconnector {
 
 	//Function to Create Server DB Once
 	public void createserverdb(){
+		//Create Serverdb
+		try {
+			DatabaseMetaData dbm = connection.getMetaData();
+			ResultSet tables = dbm.getTables(null, null, "servers", null);
+			if (tables.next()) {
+				// Table exists Don't Create Table
+			}
+			else {
+				//Table Doesn't Exist, Create Table
+				String createdb = "CREATE database serverdb";
+				this.Update(createdb);		
+				createdb = "USE serverdb";
+				this.Update(createdb);
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Exception in query method:\n" + e.getMessage());
+		}
+
+
 		//Create Table01 servers
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
