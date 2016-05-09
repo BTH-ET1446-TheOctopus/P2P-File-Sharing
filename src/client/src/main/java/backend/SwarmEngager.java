@@ -3,7 +3,7 @@ package backend;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import backend.api.RestObserver;
+import backend.api.BackendObserver;
 import backend.json.Chunk;
 import backend.json.Chunks;
 import backend.json.Swarm;
@@ -21,16 +21,18 @@ public class SwarmEngager extends Thread {
 
 	private String swarmId;
 
-	private RestObserver restObserver;
+	private BackendObserver restObserver;
 	private BootstrapCalls bootstrapCalls;
 	private ClientCalls clientCalls;
+	private FileHandler fileHandler;
 
-	public SwarmEngager(String swarmId, RestObserver restObserver, BootstrapCalls bootstrapCalls,
-			ClientCalls clientCalls) {
+	public SwarmEngager(String swarmId, BackendObserver restObserver, BootstrapCalls bootstrapCalls,
+			ClientCalls clientCalls, FileHandler fileHandler) {
 		this.swarmId = swarmId;
 		this.restObserver = restObserver;
 		this.bootstrapCalls = bootstrapCalls;
 		this.clientCalls = clientCalls;
+		this.fileHandler = fileHandler;
 	}
 
 	public void run() {
