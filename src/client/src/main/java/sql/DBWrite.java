@@ -1,31 +1,37 @@
 package sql;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-
-public class DBReadWriteClass {
-	
-	private static final Logger LOG = Logger.getLogger(DBReadWriteClass.class.getName());
+public class DBWrite {
 
 	sqlconnector sc = new sqlconnector();
-	
-	public DBReadWriteClass(){
 
+	public DBWrite(){
+		
 	}
 	
+	public void addPeerArray(){  //This method writes to 'peersarray' table
+		sqlconnector sc = new sqlconnector();
+
+		Statement stmnt = sc.getStatement();
+		
+		try {
+			stmnt.executeUpdate("INSERT INTO peersarray (uniquefileid, peers) " + 
+					"VALUES ( '2sdfd5sdf6dsf5', '192.168.54.68')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {  //close all connection to database
+			sc.closeconnect();
+		}
+	}
+
 	public void addSwarm(){   //This method writes to 'clientfile' table
 		sqlconnector sc = new sqlconnector();
-		
-		/* stablish the connection to database */
-		Connection connect = sc.getConnection();
+
 		Statement stmnt = sc.getStatement();
-		ResultSet rs = sc.getSet();
-		
+				
 		try {
 			stmnt.executeUpdate("INSERT INTO clientfile (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
 					"VALUES ('Pirates Carrabian', 10000, '192.168.2.2', 1, 2255, 'filechecksum', 'metadatachecksum' )");
@@ -39,11 +45,8 @@ public class DBReadWriteClass {
 	
 	public void addPeers(){  //This method writes to 'clientpeers' table
 		sqlconnector sc = new sqlconnector();
-		
-		/* stablish the connection to database */
-		Connection connect = sc.getConnection();
+
 		Statement stmnt = sc.getStatement();
-		ResultSet rs = sc.getSet();
 		
 		try {
 			stmnt.executeUpdate("INSERT INTO clientpeers (id, latestIP, blacklist, timestamp, files, filecount) " + 
@@ -55,4 +58,5 @@ public class DBReadWriteClass {
 			sc.closeconnect();
 		}
 	}
-}
+	
+	}
