@@ -1,14 +1,16 @@
 package backend.json;
 
+import java.util.List;
+
 public class SwarmsInfo extends Swarms{
 	private int blockCount;
 	private String fileChecksum;
 	private String metadataChecksum;
-	private Peers peers;
+	private List<String> peers;
 	
 	public SwarmsInfo() {}
 	
-	public SwarmsInfo(String swarmID, String fileName, int blockCount, String fileChecksum, String metadataChecksum, Peers peers) 
+	public SwarmsInfo(String swarmID, String fileName, int blockCount, String fileChecksum, String metadataChecksum, List<String> peers) 
 	{
 		super(swarmID, fileName);
 		this.blockCount = blockCount;
@@ -41,11 +43,11 @@ public class SwarmsInfo extends Swarms{
 	{
 		this.metadataChecksum = metadataChecksum;
 	}
-	public Peers getPeers() 
+	public List<String> getPeers() 
 	{
 		return peers;
 	}
-	public void setPeers(Peers peers) 
+	public void setPeers(List<String> peers) 
 	{
 		this.peers = peers;
 	}
