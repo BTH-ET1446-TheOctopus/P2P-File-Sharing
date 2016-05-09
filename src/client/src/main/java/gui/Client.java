@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,13 +22,16 @@ import javax.swing.table.DefaultTableModel;
 
 public class Client
 {
-
+	public boolean		darkStatus;
 	public JFrame		frame;
 	public JTable		table;
 	public JScrollPane	scrollPane;
 	public String[]		columnHeaders;
 	public String[][]	fileStatistics;
 	public String		selectedFile;
+	public JDialog		settings;
+	public JCheckBox	darkPeer;
+	public JButton		applySetting;
 
 	/**
 	 * Create the application.
@@ -36,6 +41,55 @@ public class Client
 	{
 		initialize();
 	}
+
+	////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////
+	///////////////////// Settings Windows /////////////////////////////
+
+	private void settingsDialog()
+	{
+		settings = new JDialog(frame, "Settings");
+		settings.setDefaultCloseOperation(settings.DO_NOTHING_ON_CLOSE);
+		settings.setSize(300, 200);
+		settings.setLocationRelativeTo(frame);
+		settings.setResizable(false);
+		settings.setLayout(null);
+		frame.setEnabled(false);
+		settings.setVisible(true);
+
+		darkPeer = new JCheckBox("Go Dark!");
+		darkPeer.setToolTipText("Your Machine Becomes Invisible to the Servers");
+		darkPeer.setBounds(10, 10, 100, 50);
+		darkPeer.setSelected(darkStatus);
+		settings.add(darkPeer);
+		applySetting = new JButton("Apply Changes");
+		applySetting.setBounds(75, 140, 150, 35);
+		settings.add(applySetting);
+	}
+	///////////////////// Settings Windows /////////////////////////////
+	////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////
+	//////////////////// Setting Dark Mode /////////////////////////////
+
+	private void setDarkPeerStatus()
+	{
+		if (darkPeer.isSelected() == true)
+		{
+			darkStatus = true;
+		} else
+		{
+			darkStatus = false;
+		}
+		frame.setEnabled(true);
+		settings.setVisible(false);
+	}
+
+	//////////////////// Setting Dark Mode /////////////////////////////
+	////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////
 
 	private void createTable(List<TableInitialize> transfers)
 	{
@@ -270,14 +324,19 @@ public class Client
 		setting.setBounds(0, 0, 34, 34);
 		settingBar.add(setting);
 
-		// Adding Action to Settings
 		setting.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+				settingsDialog();
 
-				BasicSettings s = new BasicSettings();
-				s.setVisible(true);
+				applySetting.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						setDarkPeerStatus();
+					}
+				});
 			}
 		});
 
