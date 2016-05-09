@@ -20,6 +20,40 @@ public class DBRead {
 
 	}
 	
+	public void getSwarm() {  //This method reads from 'clientfile' table
+		rs = sc.runquery("SELECT * FROM clientfile where peercount='1'");
+
+		try {
+			while(rs.next()){
+				//Retrieve by column name
+				String filename=rs.getString("filename");
+				String totalblocks=rs.getString("totalblocks");
+				String peers = rs.getString("peers");
+				String peercount = rs.getString("peercount");
+				String uniquefileid = rs.getString("uniquefileid");
+				String filechecksum = rs.getString("filechecksum");
+				String metadatachecksum = rs.getString("metadatachecksum");
+
+				//Display values
+				LOG.log(Level.INFO, "filename: " + filename.toString() + 
+						"\nfilesize: " + totalblocks.toString() + 
+						"\npeers: " + peers.toString() +
+						"\npeercount: " + peercount.toString() +
+						"\nuniquefileid: " + uniquefileid.toString() +
+						"\nfilechecksum: " + filechecksum.toString() +
+						"\nmetadatachecksum: " + metadatachecksum.toString()
+						);
+			}
+		} catch (SQLException ex){
+			// handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		} finally  {
+			sc.closeconnect();
+		}	
+	}
+	
 	public void getPeerArray() {  //This method reads from 'peersarray' table
 		rs = sc.runquery("SELECT * FROM peersarray");
 
