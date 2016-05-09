@@ -5,7 +5,7 @@ package sql;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//import backend.rest.RESTStartUp;
+
 
 public class DBRead {
 
@@ -33,9 +33,9 @@ public class DBRead {
 				String servercount = rs.getString("servercount");
 
 				//Display values
-				LOG.log(Level.INFO, "ip: " + ip.toString() + 
+				LOG.log(Level.INFO, "\nip: " + ip.toString() + 
 						"\nname: " + name.toString() + 
-						"\ntimestamp: " + timestamp + //.toString() +
+						"\ntimestamp: " + timestamp.toString() +
 						"\nclientcount: " + clientcount.toString() +
 						"\nservercount: " + servercount.toString());
 			}
@@ -65,7 +65,7 @@ public class DBRead {
 				String metadatachecksum = rs.getString("metadatachecksum");
 
 				//Display values
-				LOG.log(Level.INFO, "filename: " + filename.toString() + 
+				LOG.log(Level.INFO, "\nfilename: " + filename.toString() + 
 						"\ntotalblocks: " + totalblocks.toString() + 
 						"\npeers: " + peers.toString() +
 						"\npeercount: " + peercount.toString() +
@@ -94,7 +94,7 @@ public class DBRead {
 				String blackList = rs.getString("blacklist");
 				String timestamp = rs.getString("timestamp");
 
-				LOG.log(Level.INFO, "ID: " + id.toString() + 
+				LOG.log(Level.INFO, "\nID: " + id.toString() + 
 						"\nLastestIP: " + latestIP.toString() + 
 						"\nBlacklist: " + blackList.toString() +
 						"\nTimestamp: " + timestamp.toString()
