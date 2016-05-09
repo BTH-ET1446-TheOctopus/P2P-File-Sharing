@@ -36,7 +36,7 @@ public class DBWrite {
 				
 		try {
 			stmnt.executeUpdate("INSERT INTO serverfile (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
-					"VALUES ('"+filename+"', "+totalblocks+", '"+peers+"', "+peercount+", "+uniquefileid+")");
+					"VALUES ('"+filename+"', "+totalblocks+", '"+peers+"', "+peercount+", "+uniquefileid+",'filechecksum', 'metadatachecksum')");
 			//"VALUES ('Pirates Carrabian', 10000, '192.168.2.2', 1, 2255, 'filechecksum', 'metadatachecksum' )");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -46,7 +46,7 @@ public class DBWrite {
 		}
 	}
 	
-	public void addPeers(int id, String latestIP, int blacklist){  //This method writes to 'serverpeers' table
+	public void addPeers(String id, String latestIP, int blacklist){  //This method writes to 'serverpeers' table
 		sqlconnector sc = new sqlconnector();
 		Statement stmnt = sc.getStatement();
 		
