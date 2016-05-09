@@ -34,7 +34,7 @@ public class DBWrite {
 				
 		try {
 			stmnt.executeUpdate("INSERT INTO clientfile (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
-					"VALUES ('Pirates Carrabian', 10000, '192.168.2.2', 1, 2255, 'filechecksum', 'metadatachecksum' )");
+					"VALUES ('Pirates Carrabian', 10000, '192.168.2.2', 1, 'sdfsdggh22255', 'filechecksum', 'metadatachecksum' )");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -50,7 +50,7 @@ public class DBWrite {
 		
 		try {
 			stmnt.executeUpdate("INSERT INTO clientpeers (id, latestIP, blacklist, timestamp, files, filecount) " + 
-					"VALUES (1026, '192.168.31.52', 0, default,'Captain Ameerica Civil War', 0)");
+					"VALUES ('21dfg1df1g21g', '192.168.31.52', 0, default,'Captain Ameerica Civil War', 0)");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
