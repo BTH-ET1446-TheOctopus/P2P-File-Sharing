@@ -54,6 +54,37 @@ public class DBRead {
 		}	
 	}
 	
+	public void getPeers(){   //This method reads from 'clientpeers' table
+		rs = sc.runquery("SELECT * FROM clientpeers");
+
+		try {
+			while (rs.next()) {
+				String id = rs.getString("id");
+				String latestip = rs.getString("latestip");
+				String blackList = rs.getString("blacklist");
+				String timestamp = rs.getString("timestamp");
+				String files = rs.getString("files");
+				String filecount = rs.getString("filecount");
+
+				LOG.log(Level.INFO, "ID: " + id.toString() + 
+						"\nLastestip: " + latestip.toString() + 
+						"\nBlacklist: " + blackList.toString() +
+						"\nTimestamp: " + timestamp.toString() +
+						"\nFiles: " + files.toString() +
+						"\nFilecount: " + filecount.toString());
+
+			}
+		} catch (SQLException ex){
+			// handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		} finally  {
+			sc.closeconnect();
+		}
+		
+	}
+	
 	public void getPeerArray() {  //This method reads from 'peersarray' table
 		rs = sc.runquery("SELECT * FROM peersarray");
 
