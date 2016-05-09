@@ -35,20 +35,21 @@ public class DBRead {
 				String metadatachecksum = rs.getString("metadatachecksum");
 
 				//Display values
-				LOG.log(Level.INFO, "\nfilename: " + filename.toString() + 
-						"\nfilesize: " + totalblocks.toString() + 
-						"\npeers: " + peers.toString() +
-						"\npeercount: " + peercount.toString() +
-						"\nuniquefileid: " + uniquefileid.toString() +
-						"\nfilechecksum: " + filechecksum.toString() +
-						"\nmetadatachecksum: " + metadatachecksum.toString()
+				LOG.log(Level.INFO, "\nfilename: " + filename + 
+						"\nfilesize: " + totalblocks + 
+						"\npeers: " + peers +
+						"\npeercount: " + peercount +
+						"\nuniquefileid: " + uniquefileid +
+						"\nfilechecksum: " + filechecksum +
+						"\nmetadatachecksum: " + metadatachecksum
 						);
 			}
 		} catch (SQLException ex){
 			// handle any errors
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
+			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
+			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
+			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
+			
 		} finally  {
 			sc.closeconnect();
 		}	
@@ -66,19 +67,19 @@ public class DBRead {
 				String files = rs.getString("files");
 				String filecount = rs.getString("filecount");
 
-				LOG.log(Level.INFO, "\nID: " + id.toString() + 
-						"\nLastestip: " + latestip.toString() + 
-						"\nBlacklist: " + blackList.toString() +
-						"\nTimestamp: " + timestamp.toString() +
-						"\nFiles: " + files.toString() +
-						"\nFilecount: " + filecount.toString());
+				LOG.log(Level.INFO, "\nID: " + id + 
+						"\nLastestip: " + latestip + 
+						"\nBlacklist: " + blackList +
+						"\nTimestamp: " + timestamp +
+						"\nFiles: " + files +
+						"\nFilecount: " + filecount);
 
 			}
 		} catch (SQLException ex){
 			// handle any errors
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
+			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
+			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
+			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
 		} finally  {
 			sc.closeconnect();
 		}
@@ -95,14 +96,14 @@ public class DBRead {
 				String peers=rs.getString("peers");
 
 				//Display values
-				LOG.log(Level.INFO, "\nuniquefileid: " + uniquefileid.toString() + 
-						"\npeers: " + peers.toString());
+				LOG.log(Level.INFO, "\nuniquefileid: " + uniquefileid + 
+						"\npeers: " + peers);
 			}
 		} catch (SQLException ex){
 			// handle any errors
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
+			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
+			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
+			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
 		} finally  {
 			sc.closeconnect();
 		}	

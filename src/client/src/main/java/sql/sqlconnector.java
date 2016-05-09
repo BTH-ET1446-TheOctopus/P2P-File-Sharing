@@ -1,6 +1,10 @@
 package sql;
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
 
 public class sqlconnector {
 
@@ -21,6 +25,8 @@ public class sqlconnector {
 	String uniquefileid = "";
 	String filechecksum = "";
 	String metadatachecksum = "";
+	
+	private static final Logger LOG = Logger.getLogger(sqlconnector.class.getName());
 
 	public sqlconnector(){
 		/* sql user,pass,database name, host, port */
@@ -44,9 +50,9 @@ public class sqlconnector {
 
 		catch (SQLException ex) {
 			// handle any errors
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
+			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
+			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
+			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
 		}
 	}
 
@@ -57,7 +63,7 @@ public class sqlconnector {
 			set = statement.executeQuery(query);
 		}
 		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 		}
 		return set;
 	}
@@ -70,7 +76,7 @@ public class sqlconnector {
 
 		}
 		catch (SQLException e) {
-			System.out.println("Exception in update method:\n" + e.getMessage());
+			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 			return false;
 		}
 
@@ -102,7 +108,7 @@ public class sqlconnector {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 		}
 		//Create Table02 clientpeers
 		try {
@@ -125,7 +131,7 @@ public class sqlconnector {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 		}
 
 		//Create Table03 peersarray
@@ -146,16 +152,16 @@ public class sqlconnector {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 		}
 
 	}
 
 	public void closeconnect(){
 		//Close all connection to MySQL
-		try { if (set != null) set.close(); set = null; } catch (SQLException e) { e.printStackTrace(); }
-		try { if (statement != null) statement.close(); statement = null; } catch (SQLException e) { e.printStackTrace(); }
-		try { if (connection != null) connection.close(); connection = null; } catch (SQLException e) { e.printStackTrace(); }
+		try { if (set != null) set.close(); set = null; } catch (SQLException e) { LOG.log(Level.INFO, e.getMessage(), e); }
+		try { if (statement != null) statement.close(); statement = null; } catch (SQLException e) { LOG.log(Level.INFO, e.getMessage(), e); }
+		try { if (connection != null) connection.close(); connection = null; } catch (SQLException e) { LOG.log(Level.INFO, e.getMessage(), e); }
 
 	}
 
