@@ -229,21 +229,15 @@ public class Rest {
 		peers.add(peer);
 		
 		//Create bootstrap data
-		
-		Bootstraps bootstraps = new Bootstraps();
-		List<String> bootstrap = new ArrayList<String>();
-		bootstrap.add("1.2.3.4");
-		bootstrap.add("1.2.3.6");
-		bootstraps.setbootstraps(bootstrap);
-		
+		List<String> bootstraps = new ArrayList<String>();
+		bootstraps.add("1.2.3.4");
+		bootstraps.add("1.2.3.6");
 		
 		//Create blacklist data
-		
-		Blacklist blacklist = new Blacklist();
-		List<String> ip = new ArrayList<String>();
- 		ip.add("1.2.3.4");
- 		ip.add("1.2.3.6");
- 		blacklist.setblacklist(ip);
+		List<String> blacklist = new ArrayList<String>();
+		blacklist.add("1.2.3.4");
+		blacklist.add("1.2.3.6");
+ 		
  		
 		
  		//SwarmsInfo 
@@ -256,15 +250,13 @@ public class Rest {
  		swarmInfo.setid("278f6d83-a707-4aee-8471-affc03c662a9");
  		swarmInfo.setMetadataChecksum("XYYYX");
  		
- 		Peers swarmPeers = new Peers();
- 		List<String> swarmPeer = new ArrayList<String>();
+
+ 		List<String> swarmPeers = new ArrayList<String>();
  		
- 		swarmPeer.add("1.2.3.4");
- 		swarmPeer.add("1.2.3.5");
+ 		swarmPeers.add("1.2.3.4");
+ 		swarmPeers.add("1.2.3.5");
  		
- 		swarmPeers.setpeers(swarmPeer);
  		swarmInfo.setPeers(swarmPeers);
- 		
  		
  		swarmInfoList.add(swarmInfo);
  		
