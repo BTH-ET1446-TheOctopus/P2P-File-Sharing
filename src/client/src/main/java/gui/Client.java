@@ -258,6 +258,13 @@ public class Client
 		// Adding Search Button to the iconBar
 
 		JButton search = new JButton();
+		search.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Search search = new Search(frame);
+				
+			}
+		});
 		search.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileSearch.png")));
 		search.setBounds(646, 0, 34, 34);
 		iconBar.add(search);
@@ -320,8 +327,6 @@ public class Client
 				{
 					setDarkPeerBtn(false);
 				}
-				
-				System.out.println(darkStatus);
 
 			}
 		});
