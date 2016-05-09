@@ -11,7 +11,7 @@ public class DBRead {
 
 	private static final Logger LOG = Logger.getLogger(DBRead.class.getName());
 	
-	//create an object from sqlconnector, to be able to connect to the database
+	//create an object from sqlconnector, to eb able to connect to the database
 	sqlconnector sc = new sqlconnector();
 
 	ResultSet rs = null;
@@ -33,9 +33,9 @@ public class DBRead {
 				String servercount = rs.getString("servercount");
 
 				//Display values
-				LOG.log(Level.INFO, "\nip: " + ip.toString() + 
+				LOG.log(Level.INFO, "ip: " + ip.toString() + 
 						"\nname: " + name.toString() + 
-						"\ntimestamp: " + timestamp.toString() +
+						"\ntimestamp: " + timestamp + //.toString() +
 						"\nclientcount: " + clientcount.toString() +
 						"\nservercount: " + servercount.toString());
 			}
@@ -65,7 +65,7 @@ public class DBRead {
 				String metadatachecksum = rs.getString("metadatachecksum");
 
 				//Display values
-				LOG.log(Level.INFO, "\nfilename: " + filename.toString() + 
+				LOG.log(Level.INFO, "filename: " + filename.toString() + 
 						"\ntotalblocks: " + totalblocks.toString() + 
 						"\npeers: " + peers.toString() +
 						"\npeercount: " + peercount.toString() +
@@ -94,11 +94,12 @@ public class DBRead {
 				String blackList = rs.getString("blacklist");
 				String timestamp = rs.getString("timestamp");
 
-				LOG.log(Level.INFO, "\nID: " + id.toString() + 
+				LOG.log(Level.INFO, "ID: " + id.toString() + 
 						"\nLastestIP: " + latestIP.toString() + 
 						"\nBlacklist: " + blackList.toString() +
 						"\nTimestamp: " + timestamp.toString()
 						);
+
 			}
 		} catch (SQLException ex){
 			// handle any errors

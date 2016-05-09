@@ -60,4 +60,20 @@ public class DBWrite {
 		}
 	}
 	
+	public void addPeerArray(String uniquefileid, String peers){  //This method writes to 'peersarray' table
+		sqlconnector sc = new sqlconnector();
+
+		Statement stmnt = sc.getStatement();
+		
+		try {
+			stmnt.executeUpdate("INSERT INTO peersarray (uniquefileid, peers) " + 
+					"VALUES ( '"+uniquefileid+"', '"+peers+"')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {  //close all connection to database
+			sc.closeconnect();
+		}
+	}
+	
 	}
