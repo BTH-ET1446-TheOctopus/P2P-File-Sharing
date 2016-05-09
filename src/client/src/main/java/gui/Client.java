@@ -32,6 +32,7 @@ public class Client
 	public JDialog		settings;
 	public JCheckBox	darkPeer;
 	public JButton		applySetting;
+	public JButton		darkPeerbtn;
 
 	/**
 	 * Create the application.
@@ -53,7 +54,7 @@ public class Client
 		settings.setSize(300, 200);
 		settings.setLocationRelativeTo(frame);
 		settings.setResizable(false);
-		settings.setLayout(null);
+		settings.getContentPane().setLayout(null);
 		frame.setEnabled(false);
 		settings.setVisible(true);
 
@@ -61,10 +62,10 @@ public class Client
 		darkPeer.setToolTipText("Your Machine Becomes Invisible to the Servers");
 		darkPeer.setBounds(10, 10, 100, 50);
 		darkPeer.setSelected(darkStatus);
-		settings.add(darkPeer);
+		settings.getContentPane().add(darkPeer);
 		applySetting = new JButton("Apply Changes");
 		applySetting.setBounds(75, 140, 150, 35);
-		settings.add(applySetting);
+		settings.getContentPane().add(applySetting);
 	}
 	///////////////////// Settings Windows /////////////////////////////
 	////////////////////////////////////////////////////////////////////
@@ -79,9 +80,14 @@ public class Client
 		if (darkPeer.isSelected() == true)
 		{
 			darkStatus = true;
+			darkPeerbtn.setToolTipText("Your machine is invisible to the servers!");
+			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/darkPeer.png")));
 		} else
 		{
 			darkStatus = false;
+			darkPeerbtn.setToolTipText("Your machine is visible to the servers!");
+			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/brightPeer.png")));
+
 		}
 		frame.setEnabled(true);
 		settings.setVisible(false);
@@ -342,10 +348,40 @@ public class Client
 
 		// Adding SlowDown Button to the Setting Bar
 
-		JButton slowDown = new JButton();
-		slowDown.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/slowDown.png")));
-		slowDown.setBounds(34, 0, 34, 34);
-		settingBar.add(slowDown);
+		darkPeerbtn = new JButton();
+		if (darkStatus == true)
+		{
+			setDarkPeerBtn(true);
+
+		} else
+		{
+			setDarkPeerBtn(false);
+
+		}
+		darkPeerbtn.setBounds(34, 0, 34, 34);
+		settingBar.add(darkPeerbtn);
+
+		darkPeerbtn.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if (darkStatus == true)
+				{
+
+					darkStatus = false;
+					setDarkPeerBtn(false);
+
+
+				} else
+				{
+
+					darkStatus = true;
+					setDarkPeerBtn(true);
+
+				}
+
+			}
+		});
 
 		////////////////////////// Setting Bar//////////////////////////////
 		////////////////////////////////////////////////////////////////////
@@ -378,5 +414,20 @@ public class Client
 		////////////////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////////////////
 
+	}
+
+	private void setDarkPeerBtn(boolean status)
+	{
+		if (status == true)
+		{
+			darkPeerbtn.setToolTipText("Your machine is invisible to the servers!");
+			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/darkPeer.png")));
+
+		} else
+		{
+			darkPeerbtn.setToolTipText("Your machine is visible to the servers!");
+			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/brightPeer.png")));
+
+		}
 	}
 }
