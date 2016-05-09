@@ -45,7 +45,7 @@ public class SwarmEngager extends Thread {
 				"Swarm metadata: swarmId={0}, filename={1}, blockCount={2}, fileChecksum={3}, metadataChecksum={3}",
 				new Object[] { swarmId, swarm.getfilename(), swarm.getblockCount(), swarm.getfileChecksum(),
 						swarm.getmetadataChecksum() });
-		restObserver.newSwarm(swarmId, swarm.getfilename(), swarm.getblockCount());
+		restObserver.newSwarm(swarmId, swarm.getfilename(), swarm.getblockCount(), "null");
 
 		// boolean[] downloadedBlocks = new boolean[swarm.getblockCount()]; //
 		// This should be in the database

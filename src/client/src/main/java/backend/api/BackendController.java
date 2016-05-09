@@ -55,7 +55,7 @@ public interface BackendController {
 	/**
 	 * Create a new swarm. The function will return immediately. When the swarm
 	 * has been created the backend will issue a call to
-	 * {@link BackendObserver#newSwarm(String, String, int)}.
+	 * {@link BackendObserver#newSwarm(String, String, int, String)}.
 	 * 
 	 * @param filename
 	 */
