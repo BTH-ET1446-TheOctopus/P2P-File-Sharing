@@ -1,8 +1,10 @@
 package backend;
 
 import backend.rest.RESTStartUp;
+import sql.sqlconnector;
 
 /*
+ 
  * starts the rest server in a new thread and adds a shutdown hook 
  * that is excuted when the program exits
  * 
@@ -16,8 +18,10 @@ public class Main {
 	public static void main(String[] args) {
 		/*The below command line is calling a method/class "RESTStartUp"
 		 where the bootstrap is initiated, interrupted and terminated  */
-		
-		
+		sqlconnector test=new sqlconnector();
+		test.createserverdb();
+		//Dbase d1=new Dbase();
+		//d1.insert();
 		
 		final Thread restServerThread = new Thread(new RESTStartUp());
 		restServerThread.start();
