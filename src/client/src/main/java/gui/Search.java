@@ -1,5 +1,6 @@
 package gui;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
@@ -13,6 +14,7 @@ public class Search extends JDialog
 	{
 		createSearchJDialog(parent);
 		addSearchTextField();
+		addSearchButton();
 
 	}
 
@@ -34,6 +36,13 @@ public class Search extends JDialog
 		searchTextField.setToolTipText("Enter what ever you are looking for here");
 		searchTextField.setBounds(6, 6, 506, 30);
 		frame.getContentPane().add(searchTextField);
+	}
+	
+	private void addSearchButton()
+	{
+		JButton searchButton = new JButton("Search");
+		searchButton.setBounds(524, 6, 70, 30);
+		frame.getContentPane().add(searchButton);
 	}
 
 }
