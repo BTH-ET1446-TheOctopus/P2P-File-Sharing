@@ -33,6 +33,7 @@ public class Client
 	public JButton		resumeTorrent;
 	public JButton		moreInfo;
 	public JButton		search;
+	public JLabel		download;
 	public JTable		table;
 	public JScrollPane	scrollPane;
 	public String[]		columnHeaders;
@@ -172,26 +173,11 @@ public class Client
 		createResumeTorrentButton();
 		createMoreInfoButton();
 		createSearchButton();
-
-		// Adding Search Button to the iconBar
-
-
-
-		//////////////////////////// Icon Bar///////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		/////////////////////////// Status Bar//////////////////////////////
+		createDownloadLable();
 
 		// Adding Download Speed statusBar label to the statusBar
 
-		JLabel download = new JLabel();
-		download.setText("999.9 MB");
-		download.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/download.png")));
-		download.setBounds(595, 0, 85, 20);
-		statusBar.add(download);
+
 
 		// Adding Download Speed statusBar label to the statusBar
 
@@ -359,7 +345,6 @@ public class Client
 		moreInfo.setBounds(612, 0, 34, 34);
 		iconBar.add(moreInfo);
 	}
-	
 
 	private void createSearchButton()
 	{
@@ -376,6 +361,15 @@ public class Client
 
 			}
 		});
+	}
+	
+	private void createDownloadLable()
+	{
+		download = new JLabel();
+		download.setText("999.9 MB");
+		download.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/download.png")));
+		download.setBounds(595, 0, 85, 20);
+		statusBar.add(download);		
 	}
 
 }
