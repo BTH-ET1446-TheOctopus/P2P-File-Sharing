@@ -55,30 +55,6 @@ public class Client
 		initialize();
 	}
 
-	////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////
-	///////////////// Setting DarkPeer Button //////////////////////////
-
-	private void setDarkPeerBtn(boolean status)
-	{
-		if (status == true)
-		{
-			darkStatus = true;
-			darkPeerbtn.setToolTipText("Your machine is invisible to the servers!");
-			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/darkPeer.png")));
-
-		} else
-		{
-			darkStatus = false;
-			darkPeerbtn.setToolTipText("Your machine is visible to the servers!");
-			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/brightPeer.png")));
-
-		}
-	}
-
-	///////////////// Setting DarkPeer Button //////////////////////////
-	////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////
 
 	private void createTable(List<TableInitialize> transfers)
 	{
@@ -110,29 +86,11 @@ public class Client
 
 		DefaultTableModel model = new DefaultTableModel(fileStatistics, columnHeaders);
 
-		/////////////////////// Table Contents /////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
 
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		/////////////////////// Table ScrollBar ////////////////////////////
+		createScrollPanel();
+		
 
-		// Creating the tableScroll Panel
 
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 54, 680, 291);
-		frame.getContentPane().add(scrollPane);
-
-		/////////////////////// Table ScrollBar ////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		//////////////////////////// Table /////////////////////////////////
-
-		// Creating the Table using the model above
 
 		table = new JTable(model);
 		table.setRowHeight(30);
@@ -152,11 +110,11 @@ public class Client
 		table.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
 		table.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 
-		//////////////////////////// Table /////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
 
 	}
+
+
+
 
 	/**
 	 * Initialize the contents of the frame.
@@ -356,6 +314,30 @@ public class Client
 		tableRows.add(sampleRow3);
 
 		createTable(tableRows);		
+	}
+	
+	private void setDarkPeerBtn(boolean status)
+	{
+		if (status == true)
+		{
+			darkStatus = true;
+			darkPeerbtn.setToolTipText("Your machine is invisible to the servers!");
+			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/darkPeer.png")));
+
+		} else
+		{
+			darkStatus = false;
+			darkPeerbtn.setToolTipText("Your machine is visible to the servers!");
+			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/brightPeer.png")));
+
+		}
+	}
+	
+	private void createScrollPanel()
+	{
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 54, 680, 291);
+		frame.getContentPane().add(scrollPane);		
 	}
 
 }
