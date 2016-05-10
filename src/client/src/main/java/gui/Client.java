@@ -36,6 +36,7 @@ public class Client
 	public JLabel		download;
 	public JLabel		upload;
 	public JTable		table;
+	public List<TableInitialize> tableRows;
 	public JScrollPane	scrollPane;
 	public String[]		columnHeaders;
 	public String[][]	fileStatistics;
@@ -176,73 +177,11 @@ public class Client
 		createSearchButton();
 		createDownloadLable();
 		createUploadLable();
-
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		////////////////////////// Setting Bar//////////////////////////////
-
-		// Adding Go Dark Button to the Setting Bar
-
-		darkPeerbtn = new JButton();
-		if (darkStatus == false)
-		{
-			setDarkPeerBtn(false);
-
-		} else
-		{
-			setDarkPeerBtn(true);
-
-		}
-		darkPeerbtn.setBounds(0, 0, 34, 34);
-		settingBar.add(darkPeerbtn);
-
-		darkPeerbtn.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if (darkStatus == false)
-				{
-					setDarkPeerBtn(true);
-				} else
-				{
-					setDarkPeerBtn(false);
-				}
-
-			}
-		});
-
-		////////////////////////// Setting Bar//////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		//////////////////// Table Creation Sample /////////////////////////
-
-		// This is how back-end should update and create the table!
-
-		List<TableInitialize> tableRows = new ArrayList<>();
-
-		TableInitialize sampleRow1 = new TableInitialize("1", "Man on the moon.mp4", "65%", "410 MB", "2.0 Mbps", "3",
-				"1h:35m", "23,Sep,16 / 22:28:30");
-
-		TableInitialize sampleRow2 = new TableInitialize("2", "Woman on the earth.mp4", "32%", "610 MB", "1.2 Mbps",
-				"3", "2h:15m", "23,Sep,16 / 21:13:19");
-
-		TableInitialize sampleRow3 = new TableInitialize("3", "Boy on the mars.mp4", "15%", "330 MB", "4.5 Mbps", "3",
-				"0h:23m", "23,Sep,16 / 20:08:00");
-
-		tableRows.add(sampleRow1);
-		tableRows.add(sampleRow2);
-		tableRows.add(sampleRow3);
-
-		createTable(tableRows);
-
-		//////////////////// Table Creation Sample /////////////////////////
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
+		createDarkPeerButton();
+		addSampleDataToTable();
 
 	}
+
 
 	private void createMainJFrame()
 	{
@@ -365,6 +304,58 @@ public class Client
 		upload.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/upload.png")));
 		upload.setBounds(510, 0, 85, 20);
 		statusBar.add(upload);		
+	}
+	
+	private void createDarkPeerButton()
+	{
+		darkPeerbtn = new JButton();
+		darkPeerbtn.setBounds(0, 0, 34, 34);
+
+		if (darkStatus == false)
+		{
+			setDarkPeerBtn(false);
+
+		} else
+		{
+			setDarkPeerBtn(true);
+
+		}
+		settingBar.add(darkPeerbtn);
+
+		darkPeerbtn.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if (darkStatus == false)
+				{
+					setDarkPeerBtn(true);
+				} else
+				{
+					setDarkPeerBtn(false);
+				}
+
+			}
+		});		
+	}
+	
+	private void addSampleDataToTable()
+	{
+		tableRows = new ArrayList<>();
+
+		TableInitialize sampleRow1 = new TableInitialize("1", "Man on the moon.mp4", "65%", "410 MB", "2.0 Mbps", "3",
+				"1h:35m", "23,Sep,16 / 22:28:30");
+
+		TableInitialize sampleRow2 = new TableInitialize("2", "Woman on the earth.mp4", "32%", "610 MB", "1.2 Mbps",
+				"3", "2h:15m", "23,Sep,16 / 21:13:19");
+
+		TableInitialize sampleRow3 = new TableInitialize("3", "Boy on the mars.mp4", "15%", "330 MB", "4.5 Mbps", "3",
+				"0h:23m", "23,Sep,16 / 20:08:00");
+
+		tableRows.add(sampleRow1);
+		tableRows.add(sampleRow2);
+		tableRows.add(sampleRow3);
+
+		createTable(tableRows);		
 	}
 
 }
