@@ -26,6 +26,7 @@ public class Client
 	public JFrame		frame;
 	public JPanel		iconBar;
 	public JPanel		statusBar;
+	public JPanel		settingBar;
 	public JTable		table;
 	public JScrollPane	scrollPane;
 	public String[]		columnHeaders;
@@ -158,26 +159,8 @@ public class Client
 		createMainJFrame();
 		createIconBar();
 		createStatusBar();
+		createSettingBar();
 
-		// Creating the statusBar Panel
-
-
-
-		// Creating the settingBar Panel
-
-		JPanel settingBar = new JPanel();
-		settingBar.setBackground(new Color(245, 245, 245));
-		settingBar.setBounds(0, 344, 680, 34);
-		settingBar.setLayout(null);
-		frame.getContentPane().add(settingBar);
-
-		//////////////////////////// Panels ////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		//////////////////////////// Icon Bar///////////////////////////////
 
 		// Adding Create Torrent Button to the iconBar
 
@@ -360,14 +343,23 @@ public class Client
 		iconBar.setLayout(null);
 		frame.getContentPane().add(iconBar);
 	}
-	
+
 	private void createStatusBar()
 	{
 		statusBar = new JPanel();
 		statusBar.setBackground(new Color(255, 255, 255));
 		statusBar.setBounds(0, 34, 680, 20);
 		statusBar.setLayout(null);
-		frame.getContentPane().add(statusBar);		
+		frame.getContentPane().add(statusBar);
+	}
+	
+	private void createSettingBar()
+	{
+		settingBar = new JPanel();
+		settingBar.setBackground(new Color(245, 245, 245));
+		settingBar.setBounds(0, 344, 680, 34);
+		settingBar.setLayout(null);
+		frame.getContentPane().add(settingBar);		
 	}
 
 }
