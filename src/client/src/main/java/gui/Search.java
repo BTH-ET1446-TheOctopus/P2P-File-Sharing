@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Search extends JDialog
 {
@@ -17,12 +19,15 @@ public class Search extends JDialog
 	private JButton searchButton;
 	private JTable searchResultTable;
 	private JButton downloadButton;
+	private JTextField textField;
 	
 	public Search(JFrame parent)
 	{
 		createSearchJDialog(parent);
 		addSearchTextField();
 		addSearchButton();
+		addsearch2TextField();
+		addsearch2Button();
 		addSearchResultTable();
 		addDownloadButton();
 	}
@@ -35,7 +40,7 @@ public class Search extends JDialog
 	private void createSearchJDialog(JFrame parent)
 	{
 		frame = new JDialog(parent, "Search");
-		frame.setBounds(0, 0, 600, 300);
+		frame.setBounds(0, 0, 600, 380);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		frame.setMinimumSize(null);
@@ -53,7 +58,7 @@ public class Search extends JDialog
 	{
 		searchTextField = new JTextField("");
 		searchTextField.setToolTipText("Enter what ever you are looking for here");
-		searchTextField.setBounds(6, 6, 506, 30);
+		searchTextField.setBounds(6, 6, 390, 30);
 		frame.getContentPane().add(searchTextField);
 	}
 	
@@ -64,9 +69,29 @@ public class Search extends JDialog
 	
 	private void addSearchButton()
 	{
-		searchButton = new JButton("Search");
-		searchButton.setBounds(524, 6, 70, 30);
+		searchButton = new JButton("Search Neighbors");
+		searchButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		searchButton.setBounds(408, 5, 180, 30);
 		frame.getContentPane().add(searchButton);
+	}
+	
+	private void addsearch2TextField()
+	{
+		textField = new JTextField("");
+		textField.setToolTipText("Enter what ever you are looking for here");
+		textField.setBounds(6, 48, 390, 30);
+		frame.getContentPane().add(textField);
+	}
+	
+	
+	private void addsearch2Button()
+	{
+		JButton button = new JButton("Search on Server");
+		button.setBounds(410, 48, 178, 30);
+		frame.getContentPane().add(button);
 	}
 	
 	/**
@@ -78,7 +103,7 @@ public class Search extends JDialog
 	{
 		searchResultTable = new JTable();
 		JScrollPane resultTableScrolPane = new JScrollPane(searchResultTable);
-		resultTableScrolPane.setBounds(6, 40, 588, 190);
+		resultTableScrolPane.setBounds(6, 90, 588, 202);
 		frame.getContentPane().add(resultTableScrolPane);
 	}
 	
@@ -90,8 +115,8 @@ public class Search extends JDialog
 	private void addDownloadButton()
 	{
 		downloadButton = new JButton("Download");
-		downloadButton.setBounds(487, 242, 107, 30);
+		downloadButton.setBounds(481, 310, 107, 30);
 		frame.getContentPane().add(downloadButton);		
+		
 	}
-
 }
