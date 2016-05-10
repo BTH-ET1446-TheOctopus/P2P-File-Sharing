@@ -36,6 +36,7 @@ public class Client
 	public JLabel		download;
 	public JLabel		upload;
 	public JTable		table;
+	public DefaultTableModel model;
 	public List<TableInitialize> tableRows;
 	public JScrollPane	scrollPane;
 	public String[]		columnHeaders;
@@ -84,37 +85,15 @@ public class Client
 			rowIndex++;
 		}
 
-		DefaultTableModel model = new DefaultTableModel(fileStatistics, columnHeaders);
+		model = new DefaultTableModel(fileStatistics, columnHeaders);
 
 
 		createScrollPanel();
 		
-
-
-
-		table = new JTable(model);
-		table.setRowHeight(30);
-		scrollPane.setViewportView(table);
-
-		// Setting the table columns to align to Center
-
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
-		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
+		createTable();
 
 
 	}
-
-
-
 
 	/**
 	 * Initialize the contents of the frame.
@@ -338,6 +317,26 @@ public class Client
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 54, 680, 291);
 		frame.getContentPane().add(scrollPane);		
+	}
+	
+	private void createTable()
+	{
+		table = new JTable(model);
+		table.setRowHeight(30);
+		scrollPane.setViewportView(table);
+
+
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);		
 	}
 
 }
