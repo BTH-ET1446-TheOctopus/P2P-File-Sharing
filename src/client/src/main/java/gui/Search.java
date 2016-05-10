@@ -101,10 +101,25 @@ public class Search extends JDialog
 	
 	private void addsearch2TextField()
 	{
-		textField = new JTextField();
+		textField = new JTextField("Type here");
 		//textField.setToolTipText("Enter what ever you are looking for here");
 		textField.setBounds(6, 48, 390, 30);
 		frame.getContentPane().add(textField);
+		
+		/**
+		 * This method displays prompt text in search2TextField 
+		 */
+		
+		textField.addFocusListener(new FocusListener(){
+			
+		    public void focusGained(FocusEvent e) {
+		    	textField.setText("");
+		    }
+			public void focusLost(FocusEvent e) {
+				if(textField.getText().isEmpty())
+				textField.setText("Type here");
+			}
+			});
 	}
 	
 	/**
