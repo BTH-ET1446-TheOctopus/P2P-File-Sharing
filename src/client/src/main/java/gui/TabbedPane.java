@@ -40,11 +40,11 @@ public class TabbedPane extends JFrame {
         JPanel tab1 = new JPanel();
         jmenu.addTab("General", tab1);
         
-        
-        sp = new JPanel();
-        sp.setBorder(new TitledBorder(new LineBorder(Color.blue, 2),"Sub Panel"));
-        sp.add(new JLabel("TitledBorder using LineBorder"));
-        content.add(sp);
+//        
+//        sp = new JPanel();
+//        sp.setBorder(new TitledBorder(new LineBorder(Color.blue, 2),"Sub Panel"));
+//        sp.add(new JLabel("TitledBorder using LineBorder"));
+//        content.add(sp);
         
         
         JCheckBox cb = new JCheckBox("Dark Peer", true);
