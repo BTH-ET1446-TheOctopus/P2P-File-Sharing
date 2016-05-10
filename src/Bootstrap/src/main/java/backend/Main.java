@@ -1,5 +1,7 @@
 package backend;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import backend.rest.RESTStartUp;
 import sql.sqlconnector;
 
@@ -15,6 +17,8 @@ public class Main {
 	 * #@param args
 	 */
 
+	private static final Logger LOG = Logger.getLogger(Main.class.getName());
+	
 	public static void main(String[] args) {
 		/*The below command line is calling a method/class "RESTStartUp"
 		 where the bootstrap is initiated, interrupted and terminated  */
@@ -35,7 +39,7 @@ public class Main {
 				try {
 					restServerThread.join();//This command line is defining the user to join the peer network
 				} catch (InterruptedException e) {
-					e.printStackTrace();//Jakson is disconnected from peer network
+					LOG.log(Level.INFO, e.getMessage(), e);//Jakson is disconnected from peer network
 				}
 			}
 		});

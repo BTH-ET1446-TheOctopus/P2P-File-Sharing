@@ -33,9 +33,13 @@ import java.sql.*;
 import java.util.Properties;
 import java.util.UUID;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Path("/rest")
 public class Rest {
+	
+	private static final Logger LOG = Logger.getLogger(Rest.class.getName());
 	@GET
 	@Path("/test/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -68,9 +72,9 @@ public class Rest {
 		try {
 			so = new Socket(Settings.ntpServer, Settings.daytimeport);
 		} catch (UnknownHostException e) {
-			e.printStackTrace();
+			LOG.log(Level.WARNING, e.getMessage(), e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, e.getMessage(), e);
 		}
 		
 		BufferedReader br = null;
@@ -78,7 +82,7 @@ public class Rest {
 			br = new BufferedReader(new InputStreamReader (so.getInputStream()));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, e.getMessage(), e);
 		}
 		
 		String timestamp = null;
@@ -86,10 +90,10 @@ public class Rest {
 			timestamp = br.readLine();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, e.getMessage(), e);
 		}
 		
-		System.out.println(timestamp);
+		LOG.log(Level.INFO, timestamp);
 		
 		return uuid.toString();
 		
@@ -172,7 +176,7 @@ public class Rest {
 	{
 
 		Swarm swarm = new Swarm();
-		System.out.println(id);
+		LOG.log(Level.INFO, id);
 
 		//if(id == 1)
 		//{
