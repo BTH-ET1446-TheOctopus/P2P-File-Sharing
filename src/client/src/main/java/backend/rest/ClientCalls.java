@@ -49,7 +49,7 @@ public class ClientCalls {
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(clientIP + "/rest/" + fileID);
+				   .resource(clientIP + "/rest/file/" + fileID);
 		
 		Chunks respons = webResource
 				.accept("Content-Type", "application/json")
@@ -75,7 +75,7 @@ public class ClientCalls {
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(clientIP + "/rest" + fileID + "/" + chunk);
+				   .resource(clientIP + "/rest/file/" + fileID + "/" + chunk);
 		
 		Chunk respons = webResource
 				.accept("Content-Type", "application/json")

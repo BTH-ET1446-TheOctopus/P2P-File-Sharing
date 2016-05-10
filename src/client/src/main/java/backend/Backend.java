@@ -10,7 +10,6 @@ public class Backend {
 
 	private ClientCalls clientCalls;
 	private BootstrapCalls bootstrapCalls;
-	private FileHandler fileHandler;
 
 	public Backend(BackendObserver restObserver) {
 		this.restObserver = restObserver;
@@ -20,7 +19,7 @@ public class Backend {
 	}
 
 	public void engageSwarm(String id) {
-		(new SwarmEngager(id, restObserver, bootstrapCalls, clientCalls, fileHandler)).start();
+		(new SwarmEngager(id, restObserver, bootstrapCalls, clientCalls)).start();
 	}
 	
 }
