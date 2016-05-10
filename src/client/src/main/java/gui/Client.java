@@ -27,6 +27,7 @@ public class Client
 	public JPanel		iconBar;
 	public JPanel		statusBar;
 	public JPanel		settingBar;
+	public JButton		newTorrent;
 	public JTable		table;
 	public JScrollPane	scrollPane;
 	public String[]		columnHeaders;
@@ -160,14 +161,11 @@ public class Client
 		createIconBar();
 		createStatusBar();
 		createSettingBar();
-
+		createNewTorrentButton();
 
 		// Adding Create Torrent Button to the iconBar
 
-		JButton newTorrent = new JButton();
-		newTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileNew.png")));
-		newTorrent.setBounds(0, 0, 34, 34);
-		iconBar.add(newTorrent);
+
 
 		// Adding Selecting File Functionality to newTorrent button, it sets the
 		// value of the String variable "selectedFile", equal to the path of the
@@ -322,8 +320,6 @@ public class Client
 
 	}
 
-
-
 	private void createMainJFrame()
 	{
 		frame = new JFrame("The Octopus P2P");
@@ -352,14 +348,22 @@ public class Client
 		statusBar.setLayout(null);
 		frame.getContentPane().add(statusBar);
 	}
-	
+
 	private void createSettingBar()
 	{
 		settingBar = new JPanel();
 		settingBar.setBackground(new Color(245, 245, 245));
 		settingBar.setBounds(0, 344, 680, 34);
 		settingBar.setLayout(null);
-		frame.getContentPane().add(settingBar);		
+		frame.getContentPane().add(settingBar);
+	}
+	
+	private void createNewTorrentButton()
+	{
+		newTorrent = new JButton();
+		newTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileNew.png")));
+		newTorrent.setBounds(0, 0, 34, 34);
+		iconBar.add(newTorrent);		
 	}
 
 }
