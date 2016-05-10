@@ -17,14 +17,12 @@ import backend.BlockBuffer.Mode;
  * @author iiMaXii
  *
  */
-public class FileHandler {
+public final class FileHandler {
 	private static final Logger LOG = Logger.getLogger(FileHandler.class.getName());
 
-	HashMap<String, BlockBuffer> files;
+	private static HashMap<String, BlockBuffer> files = new HashMap<String, BlockBuffer>();
 
-	public FileHandler() {
-		files = new HashMap<String, BlockBuffer>();
-	}
+	private FileHandler() {}
 
 	/**
 	 * Get a file handle for reading. If the file is not open an attempt will be
@@ -34,7 +32,7 @@ public class FileHandler {
 	 * @return The requested file, may be null if the file does not exist or if
 	 *         an IOException occurred
 	 */
-	BlockBuffer read(String filename) {
+	public static BlockBuffer read(String filename) {
 		BlockBuffer file = files.get(filename);
 
 		if (file == null) {
@@ -59,7 +57,7 @@ public class FileHandler {
 	 * @return The requested file, may be null if the file does not exist or if
 	 *         an IOException occurred
 	 */
-	BlockBuffer write(String filename) {
+	public static BlockBuffer write(String filename) {
 		BlockBuffer file = files.get(filename);
 
 		if (file != null && file.getMode() == Mode.READ) {
@@ -97,7 +95,7 @@ public class FileHandler {
 	 * @return The requested file, may be null if the file already exist or if
 	 *         an IOException occurred
 	 */
-	BlockBuffer create(String filename) {
+	public static BlockBuffer create(String filename) {
 		BlockBuffer file = files.get(filename);
 
 		if (file != null) {
@@ -119,7 +117,7 @@ public class FileHandler {
 		return file;
 	}
 
-	public void destroy() {
+	public static void destroy() {
 		for (BlockBuffer blockBuffer : files.values()) {
 			try {
 				blockBuffer.close();
