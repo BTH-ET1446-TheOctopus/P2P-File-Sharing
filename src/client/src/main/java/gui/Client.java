@@ -32,6 +32,7 @@ public class Client
 	public JButton		pauseTorrent;
 	public JButton		resumeTorrent;
 	public JButton		moreInfo;
+	public JButton		search;
 	public JTable		table;
 	public JScrollPane	scrollPane;
 	public String[]		columnHeaders;
@@ -170,22 +171,11 @@ public class Client
 		createPauseTorrentButton();
 		createResumeTorrentButton();
 		createMoreInfoButton();
+		createSearchButton();
 
 		// Adding Search Button to the iconBar
 
-		JButton search = new JButton();
-		search.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
 
-				Search search = new Search(frame);
-
-			}
-		});
-		search.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileSearch.png")));
-		search.setBounds(646, 0, 34, 34);
-		iconBar.add(search);
 
 		//////////////////////////// Icon Bar///////////////////////////////
 		////////////////////////////////////////////////////////////////////
@@ -361,13 +351,31 @@ public class Client
 		resumeTorrent.setBounds(136, 0, 34, 34);
 		iconBar.add(resumeTorrent);
 	}
-	
+
 	private void createMoreInfoButton()
 	{
 		moreInfo = new JButton();
 		moreInfo.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileInfo.png")));
 		moreInfo.setBounds(612, 0, 34, 34);
-		iconBar.add(moreInfo);		
+		iconBar.add(moreInfo);
+	}
+	
+
+	private void createSearchButton()
+	{
+		search = new JButton();
+		search.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileSearch.png")));
+		search.setBounds(646, 0, 34, 34);
+		iconBar.add(search);
+		search.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+
+				Search search = new Search(frame);
+
+			}
+		});
 	}
 
 }
