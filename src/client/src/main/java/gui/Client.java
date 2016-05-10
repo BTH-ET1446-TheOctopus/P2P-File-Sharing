@@ -10,7 +10,6 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,33 +21,34 @@ import javax.swing.table.DefaultTableModel;
 
 public class Client
 {
-	public boolean		darkStatus;
-	public JFrame		frame;
-	public JPanel		iconBar;
-	public JPanel		statusBar;
-	public JPanel		settingBar;
-	public JButton		newTorrent;
-	public JButton		removeTorrent;
-	public JButton		pauseTorrent;
-	public JButton		resumeTorrent;
-	public JButton		moreInfo;
-	public JButton		search;
-	public JLabel		download;
-	public JLabel		upload;
-	public JTable		table;
-	public DefaultTableModel model;
-	public List<TableInitialize> tableRows;
-	public JScrollPane	scrollPane;
-	public String[]		columnHeaders;
-	public String[][]	fileStatistics;
-	public String		selectedFile;
-	public JDialog		settings;
-	public JCheckBox	darkPeer;
-	public JButton		applySetting;
-	public JButton		darkPeerbtn;
+	public boolean					darkStatus;
+	public JFrame					frame;
+	public JPanel					iconBar;
+	public JPanel					statusBar;
+	public JPanel					settingBar;
+	public JButton					newTorrent;
+	public JButton					removeTorrent;
+	public JButton					pauseTorrent;
+	public JButton					resumeTorrent;
+	public JButton					moreInfo;
+	public JButton					search;
+	public JButton					darkPeerbtn;
+	public JLabel					download;
+	public JLabel					upload;
+	public JScrollPane				scrollPane;
+	public JTable					table;
+	public String[]					columnHeaders = { "Priority", "Name", "Progress", "Size", "Speed", "Peers", "ETC", "Date Added" };
+	public String[][]				fileStatistics;
+	public String					selectedFile;
+	public DefaultTableModel		model;
+	public List<TableInitialize>	tableRows;
+	public JCheckBox				darkPeer;
+	public Search					searchWindows;
 
 	/**
-	 * Create the application.
+	 * This method creates the Octopus P2P client GUI.
+	 * 
+	 * @author Kamran Alipoursimakani
 	 */
 
 	public Client()
@@ -56,47 +56,11 @@ public class Client
 		initialize();
 	}
 
-
-	private void createTable(List<TableInitialize> transfers)
-	{
-
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		/////////////////////// Table Contents /////////////////////////////
-
-		// Creating the Table Model Variables
-
-		fileStatistics = new String[transfers.size()][8];
-
-		String[] columnHeaders =
-		{ "Priority", "Name", "Progress", "Size", "Speed", "Peers", "ETC", "Date Added" };
-
-		int rowIndex = 0;
-
-		for (TableInitialize transfer : transfers)
-		{
-
-			List<String> row = transfer.rowCreation();
-			for (int columnIndex = 0; columnIndex < columnHeaders.length; columnIndex++)
-			{
-				fileStatistics[rowIndex][columnIndex] = row.get(columnIndex);
-			}
-
-			rowIndex++;
-		}
-
-		model = new DefaultTableModel(fileStatistics, columnHeaders);
-
-
-		createScrollPanel();
-		
-		createTable();
-
-
-	}
-
 	/**
-	 * Initialize the contents of the frame.
+	 * This method initializes the contents of the main frame in the Octopus P2P
+	 * client.
+	 * 
+	 * @author Kamran Alipoursimakani
 	 */
 
 	private void initialize()
@@ -116,9 +80,17 @@ public class Client
 		createUploadLable();
 		createDarkPeerButton();
 		addSampleDataToTable();
+		createScrollPanel();
+		createTable();
 
 	}
 
+	/**
+	 * This method creates the main frame of the Octopus P2P client.
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
 
 	private void createMainJFrame()
 	{
@@ -131,6 +103,14 @@ public class Client
 		frame.setVisible(true);
 	}
 
+	/**
+	 * This method creates the icon bar at the top of the main frame of the
+	 * Octopus P2P client.
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
+
 	private void createIconBar()
 	{
 		iconBar = new JPanel();
@@ -139,6 +119,14 @@ public class Client
 		iconBar.setLayout(null);
 		frame.getContentPane().add(iconBar);
 	}
+
+	/**
+	 * This method creates the status bar at the top of the main frame of the
+	 * Octopus P2P client.
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
 
 	private void createStatusBar()
 	{
@@ -149,6 +137,14 @@ public class Client
 		frame.getContentPane().add(statusBar);
 	}
 
+	/**
+	 * This method creates the setting bar at the bottom of the main frame of
+	 * the Octopus P2P client.
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
+
 	private void createSettingBar()
 	{
 		settingBar = new JPanel();
@@ -157,6 +153,14 @@ public class Client
 		settingBar.setLayout(null);
 		frame.getContentPane().add(settingBar);
 	}
+
+	/**
+	 * This method creates the "Create New Torrent" button at the icon bar of
+	 * the main frame of the Octopus P2P client.
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
 
 	private void createNewTorrentButton()
 	{
@@ -176,6 +180,14 @@ public class Client
 		});
 	}
 
+	/**
+	 * This method creates the "Remove Torrent" button at the icon bar of the
+	 * main frame of the Octopus P2P client.
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
+
 	private void createRemoveTorrentButton()
 	{
 		removeTorrent = new JButton();
@@ -183,6 +195,16 @@ public class Client
 		removeTorrent.setBounds(34, 0, 34, 34);
 		iconBar.add(removeTorrent);
 	}
+
+	/**
+	 * This method creates the "Pause Selected Torrent" button at the icon bar
+	 * of the main frame of the Octopus P2P client. It is not part of the final
+	 * design due to lack of time, but if we find enough time at the end, we
+	 * might keep it!
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
 
 	private void createPauseTorrentButton()
 	{
@@ -192,6 +214,16 @@ public class Client
 		iconBar.add(pauseTorrent);
 	}
 
+	/**
+	 * This method creates the "Resume Selected Torrent" button at the icon bar
+	 * of the main frame of the Octopus P2P client. It is not part of the final
+	 * design due to lack of time, but if we find enough time at the end, we
+	 * might keep it!
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
+
 	private void createResumeTorrentButton()
 	{
 		resumeTorrent = new JButton();
@@ -200,6 +232,14 @@ public class Client
 		iconBar.add(resumeTorrent);
 	}
 
+	/**
+	 * This method creates the "More Info" button at the icon bar of the main
+	 * frame of the Octopus P2P client.
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
+
 	private void createMoreInfoButton()
 	{
 		moreInfo = new JButton();
@@ -207,6 +247,14 @@ public class Client
 		moreInfo.setBounds(612, 0, 34, 34);
 		iconBar.add(moreInfo);
 	}
+
+	/**
+	 * This method creates the "Search" button at the icon bar of the main frame
+	 * of the Octopus P2P client.
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
 
 	private void createSearchButton()
 	{
@@ -219,11 +267,19 @@ public class Client
 			public void actionPerformed(ActionEvent e)
 			{
 
-				Search search = new Search(frame);
+				searchWindows = new Search(frame);
 
 			}
 		});
 	}
+
+	/**
+	 * This method creates the "Download" label at the status bar of the main
+	 * frame of the Octopus P2P client.
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
 
 	private void createDownloadLable()
 	{
@@ -233,16 +289,32 @@ public class Client
 		download.setBounds(595, 0, 85, 20);
 		statusBar.add(download);
 	}
-	
+
+	/**
+	 * This method creates the "Upload" label at the status bar of the main
+	 * frame of the Octopus P2P client.
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
+
 	private void createUploadLable()
 	{
 		upload = new JLabel();
 		upload.setText("999.9 MB");
 		upload.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/upload.png")));
 		upload.setBounds(510, 0, 85, 20);
-		statusBar.add(upload);		
+		statusBar.add(upload);
 	}
-	
+
+	/**
+	 * This method creates the "Dark Peer" button at the setting bar of the main
+	 * frame of the Octopus P2P client.
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
+
 	private void createDarkPeerButton()
 	{
 		darkPeerbtn = new JButton();
@@ -272,9 +344,18 @@ public class Client
 				}
 
 			}
-		});		
+		});
 	}
-	
+
+	/**
+	 * This method adds sample data to the table in the main frame of the
+	 * Octopus P2P client. This method should be removed when the connection
+	 * between back and front end is established!
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
+
 	private void addSampleDataToTable()
 	{
 		tableRows = new ArrayList<>();
@@ -292,9 +373,17 @@ public class Client
 		tableRows.add(sampleRow2);
 		tableRows.add(sampleRow3);
 
-		createTable(tableRows);		
+		createTableDataModel(tableRows);
 	}
-	
+
+	/**
+	 * This method changes the status of the "status" variable and also changes
+	 * the icon of the DarkPeer button.
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
+
 	private void setDarkPeerBtn(boolean status)
 	{
 		if (status == true)
@@ -311,20 +400,35 @@ public class Client
 
 		}
 	}
-	
+
+	/**
+	 * This method creates the ScrollPane for the table in the main frame of the
+	 * Octopus P2P client.
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
+
 	private void createScrollPanel()
 	{
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 54, 680, 291);
-		frame.getContentPane().add(scrollPane);		
+		frame.getContentPane().add(scrollPane);
 	}
-	
+
+	/**
+	 * This method creates the Table in the main frame of the Octopus P2P
+	 * client.
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
+
 	private void createTable()
 	{
 		table = new JTable(model);
 		table.setRowHeight(30);
 		scrollPane.setViewportView(table);
-
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -336,7 +440,37 @@ public class Client
 		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 		table.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);		
+		table.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
+	}
+
+	/**
+	 * This method creates the Data Model for the Table in the main frame of the
+	 * Octopus P2P client.
+	 * 
+	 * @author Kamran Alipoursimakani
+	 *
+	 */
+
+	private void createTableDataModel(List<TableInitialize> transfers)
+	{
+
+		fileStatistics = new String[transfers.size()][8];
+
+		int rowIndex = 0;
+
+		for (TableInitialize transfer : transfers)
+		{
+
+			List<String> row = transfer.rowCreation();
+			for (int columnIndex = 0; columnIndex < columnHeaders.length; columnIndex++)
+			{
+				fileStatistics[rowIndex][columnIndex] = row.get(columnIndex);
+			}
+
+			rowIndex++;
+		}
+
+		model = new DefaultTableModel(fileStatistics, columnHeaders);
 	}
 
 }
