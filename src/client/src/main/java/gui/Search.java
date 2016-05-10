@@ -50,7 +50,7 @@ public class Search extends JDialog
 	}
 	
 	/**
-	 * This method adds "searchTextField" text field to the search dialog
+	 * This method adds "searchTextField" text field to the search dialog1
 	 * @author Kamran Alipoursimakani
 	 */
 
@@ -63,7 +63,7 @@ public class Search extends JDialog
 	}
 	
 	/**
-	 * This method adds the "Search" button to the search dialog
+	 * This method adds the "Search Neighbors" button to the search dialog
 	 * @author Kamran Alipoursimakani
 	 */
 	
@@ -78,6 +78,10 @@ public class Search extends JDialog
 		frame.getContentPane().add(searchButton);
 	}
 	
+	/**
+	 * This method adds the "Search Neighbors" button to the search dialog2
+	 */
+	
 	private void addsearch2TextField()
 	{
 		textField = new JTextField("");
@@ -86,12 +90,15 @@ public class Search extends JDialog
 		frame.getContentPane().add(textField);
 	}
 	
+	/**
+	 * This method adds the "Search on Servers" button to the search dialog2
+	 */ 
 	
 	private void addsearch2Button()
 	{
-		JButton button = new JButton("Search on Server");
-		button.setBounds(410, 48, 178, 30);
-		frame.getContentPane().add(button);
+		searchButton = new JButton("Search on Server");
+		searchButton.setBounds(410, 48, 178, 30);
+		frame.getContentPane().add(searchButton);
 	}
 	
 	/**
@@ -104,6 +111,7 @@ public class Search extends JDialog
 		searchResultTable = new JTable();
 		JScrollPane resultTableScrolPane = new JScrollPane(searchResultTable);
 		resultTableScrolPane.setBounds(6, 90, 588, 202);
+		resultTableScrolPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		frame.getContentPane().add(resultTableScrolPane);
 	}
 	
