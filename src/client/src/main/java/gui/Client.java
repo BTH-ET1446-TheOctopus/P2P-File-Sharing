@@ -25,6 +25,7 @@ public class Client
 	public boolean		darkStatus;
 	public JFrame		frame;
 	public JPanel		iconBar;
+	public JPanel		statusBar;
 	public JTable		table;
 	public JScrollPane	scrollPane;
 	public String[]		columnHeaders;
@@ -154,18 +155,13 @@ public class Client
 	private void initialize()
 	{
 
-
 		createMainJFrame();
 		createIconBar();
-
+		createStatusBar();
 
 		// Creating the statusBar Panel
 
-		JPanel statusBar = new JPanel();
-		statusBar.setBackground(new Color(255, 255, 255));
-		statusBar.setBounds(0, 34, 680, 20);
-		statusBar.setLayout(null);
-		frame.getContentPane().add(statusBar);
+
 
 		// Creating the settingBar Panel
 
@@ -343,6 +339,8 @@ public class Client
 
 	}
 
+
+
 	private void createMainJFrame()
 	{
 		frame = new JFrame("The Octopus P2P");
@@ -361,6 +359,15 @@ public class Client
 		iconBar.setBounds(0, 0, 680, 34);
 		iconBar.setLayout(null);
 		frame.getContentPane().add(iconBar);
+	}
+	
+	private void createStatusBar()
+	{
+		statusBar = new JPanel();
+		statusBar.setBackground(new Color(255, 255, 255));
+		statusBar.setBounds(0, 34, 680, 20);
+		statusBar.setLayout(null);
+		frame.getContentPane().add(statusBar);		
 	}
 
 }
