@@ -28,6 +28,7 @@ public class Client
 	public JPanel		statusBar;
 	public JPanel		settingBar;
 	public JButton		newTorrent;
+	public JButton		removeTorrent;
 	public JTable		table;
 	public JScrollPane	scrollPane;
 	public String[]		columnHeaders;
@@ -162,31 +163,9 @@ public class Client
 		createStatusBar();
 		createSettingBar();
 		createNewTorrentButton();
-
-		// Adding Create Torrent Button to the iconBar
-
-
-
-		// Adding Selecting File Functionality to newTorrent button, it sets the
-		// value of the String variable "selectedFile", equal to the path of the
-		// selected file!
-
-		newTorrent.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				JFileChooser file = new JFileChooser();
-				file.showOpenDialog(frame);
-				selectedFile = file.getSelectedFile().toString();
-			}
-		});
+		createRemoveTorrentButton();
 
 		// Adding Remove Torrent Button to the iconBar
-
-		JButton removeTorrent = new JButton();
-		removeTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileRemove.png")));
-		removeTorrent.setBounds(34, 0, 34, 34);
-		iconBar.add(removeTorrent);
 
 		// Adding Pause Selected Row Button to the iconBar
 
@@ -357,13 +336,31 @@ public class Client
 		settingBar.setLayout(null);
 		frame.getContentPane().add(settingBar);
 	}
-	
+
 	private void createNewTorrentButton()
 	{
 		newTorrent = new JButton();
 		newTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileNew.png")));
 		newTorrent.setBounds(0, 0, 34, 34);
-		iconBar.add(newTorrent);		
+		iconBar.add(newTorrent);
+
+		newTorrent.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				JFileChooser file = new JFileChooser();
+				file.showOpenDialog(frame);
+				selectedFile = file.getSelectedFile().toString();
+			}
+		});
+	}
+	
+	private void createRemoveTorrentButton()
+	{
+		removeTorrent = new JButton();
+		removeTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileRemove.png")));
+		removeTorrent.setBounds(34, 0, 34, 34);
+		iconBar.add(removeTorrent);
 	}
 
 }
