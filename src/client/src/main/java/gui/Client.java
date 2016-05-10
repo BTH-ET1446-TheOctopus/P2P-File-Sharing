@@ -29,6 +29,7 @@ public class Client
 	public JPanel		settingBar;
 	public JButton		newTorrent;
 	public JButton		removeTorrent;
+	public JButton		pauseTorrent;
 	public JTable		table;
 	public JScrollPane	scrollPane;
 	public String[]		columnHeaders;
@@ -164,15 +165,10 @@ public class Client
 		createSettingBar();
 		createNewTorrentButton();
 		createRemoveTorrentButton();
-
-		// Adding Remove Torrent Button to the iconBar
-
+		createPauseTorrentButton();
 		// Adding Pause Selected Row Button to the iconBar
 
-		JButton pauseTorrent = new JButton();
-		pauseTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/filePause.png")));
-		pauseTorrent.setBounds(102, 0, 34, 34);
-		iconBar.add(pauseTorrent);
+
 
 		// Adding Resume Selected Row Button to the iconBar
 
@@ -354,13 +350,21 @@ public class Client
 			}
 		});
 	}
-	
+
 	private void createRemoveTorrentButton()
 	{
 		removeTorrent = new JButton();
 		removeTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileRemove.png")));
 		removeTorrent.setBounds(34, 0, 34, 34);
 		iconBar.add(removeTorrent);
+	}
+	
+	private void createPauseTorrentButton()
+	{
+		pauseTorrent = new JButton();
+		pauseTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/filePause.png")));
+		pauseTorrent.setBounds(102, 0, 34, 34);
+		iconBar.add(pauseTorrent);		
 	}
 
 }
