@@ -34,6 +34,7 @@ public class Client
 	public JButton		moreInfo;
 	public JButton		search;
 	public JLabel		download;
+	public JLabel		upload;
 	public JTable		table;
 	public JScrollPane	scrollPane;
 	public String[]		columnHeaders;
@@ -174,22 +175,7 @@ public class Client
 		createMoreInfoButton();
 		createSearchButton();
 		createDownloadLable();
-
-		// Adding Download Speed statusBar label to the statusBar
-
-
-
-		// Adding Download Speed statusBar label to the statusBar
-
-		JLabel upload = new JLabel();
-		upload.setText("999.9 MB");
-		upload.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/upload.png")));
-		upload.setBounds(510, 0, 85, 20);
-		statusBar.add(upload);
-
-		/////////////////////////// Status Bar//////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
+		createUploadLable();
 
 		////////////////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////////////////
@@ -362,14 +348,23 @@ public class Client
 			}
 		});
 	}
-	
+
 	private void createDownloadLable()
 	{
 		download = new JLabel();
 		download.setText("999.9 MB");
 		download.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/download.png")));
 		download.setBounds(595, 0, 85, 20);
-		statusBar.add(download);		
+		statusBar.add(download);
+	}
+	
+	private void createUploadLable()
+	{
+		upload = new JLabel();
+		upload.setText("999.9 MB");
+		upload.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/upload.png")));
+		upload.setBounds(510, 0, 85, 20);
+		statusBar.add(upload);		
 	}
 
 }
