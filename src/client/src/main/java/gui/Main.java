@@ -6,31 +6,42 @@ import java.util.logging.Logger;
 
 import backend.rest.RESTStartUp;
 
-public class Main {
-	public static void main(String[] args) {
+public class Main
+{
+
+	public static void main(String[] args)
+	{
 		Logger.getLogger("com.sun.jersey").setLevel(Level.WARNING);
-		
+
 		final Thread restServerThread = new Thread(new RESTStartUp());
 		restServerThread.start();
 
-		Runtime.getRuntime().addShutdownHook(new Thread() {
+		Runtime.getRuntime().addShutdownHook(new Thread()
+		{
 			@Override
-			public void run() {
+			public void run()
+			{
 				restServerThread.interrupt();
-				try {
+				try
+				{
 					restServerThread.join();
-				} catch (InterruptedException e) {
+				} catch (InterruptedException e)
+				{
 					e.printStackTrace();
 				}
 			}
 		});
 
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				try
+				{
 					Client window = new Client();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
+					window.getFrame().setVisible(true);
+				} catch (Exception e)
+				{
 					e.printStackTrace();
 				}
 			}

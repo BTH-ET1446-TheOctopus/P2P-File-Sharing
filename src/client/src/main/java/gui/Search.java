@@ -10,14 +10,13 @@ import javax.swing.JTextField;
 public class Search extends JDialog
 {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private JDialog frame;
-
-	
+	private JTextField searchTextField;
+	private JButton searchButton;
+	private JTable searchResultTable;
+	private JButton downloadButton;
 	
 	public Search(JFrame parent)
 	{
@@ -52,7 +51,7 @@ public class Search extends JDialog
 
 	private void addSearchTextField()
 	{
-		JTextField searchTextField = new JTextField("");
+		searchTextField = new JTextField("");
 		searchTextField.setToolTipText("Enter what ever you are looking for here");
 		searchTextField.setBounds(6, 6, 506, 30);
 		frame.getContentPane().add(searchTextField);
@@ -65,7 +64,7 @@ public class Search extends JDialog
 	
 	private void addSearchButton()
 	{
-		JButton searchButton = new JButton("Search");
+		searchButton = new JButton("Search");
 		searchButton.setBounds(524, 6, 70, 30);
 		frame.getContentPane().add(searchButton);
 	}
@@ -77,8 +76,7 @@ public class Search extends JDialog
 	
 	private void addSearchResultTable()
 	{
-		JTable searchResultTable = new JTable();
-
+		searchResultTable = new JTable();
 		JScrollPane resultTableScrolPane = new JScrollPane(searchResultTable);
 		resultTableScrolPane.setBounds(6, 40, 588, 190);
 		frame.getContentPane().add(resultTableScrolPane);
@@ -91,7 +89,7 @@ public class Search extends JDialog
 	
 	private void addDownloadButton()
 	{
-		JButton downloadButton = new JButton("Download");
+		downloadButton = new JButton("Download");
 		downloadButton.setBounds(487, 242, 107, 30);
 		frame.getContentPane().add(downloadButton);		
 	}

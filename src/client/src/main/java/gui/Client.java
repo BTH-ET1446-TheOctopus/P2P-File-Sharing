@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,29 +20,28 @@ import javax.swing.table.DefaultTableModel;
 
 public class Client
 {
-	public boolean					darkStatus;
-	public JFrame					frame;
-	public JPanel					iconBar;
-	public JPanel					statusBar;
-	public JPanel					settingBar;
-	public JButton					newTorrent;
-	public JButton					removeTorrent;
-	public JButton					pauseTorrent;
-	public JButton					resumeTorrent;
-	public JButton					moreInfo;
-	public JButton					search;
-	public JButton					darkPeerbtn;
-	public JLabel					download;
-	public JLabel					upload;
-	public JScrollPane				scrollPane;
-	public JTable					table;
-	public String[]					columnHeaders = { "Priority", "Name", "Progress", "Size", "Speed", "Peers", "ETC", "Date Added" };
-	public String[][]				fileStatistics;
-	public String					selectedFile;
-	public DefaultTableModel		model;
-	public List<TableInitialize>	tableRows;
-	public JCheckBox				darkPeer;
-	public Search					searchWindows;
+	private boolean					darkStatus;
+	private JFrame					frame;
+	private JPanel					iconBar;
+	private JPanel					statusBar;
+	private JPanel					settingBar;
+	private JButton					newTorrent;
+	private JButton					removeTorrent;
+	private JButton					pauseTorrent;
+	private JButton					resumeTorrent;
+	private JButton					moreInfo;
+	private JButton					search;
+	private JButton					darkPeerbtn;
+	private JLabel					download;
+	private JLabel					upload;
+	private JScrollPane				scrollPane;
+	private JTable					table;
+	private String[]				columnHeaders = { "Priority", "Name", "Progress", "Size", "Speed", "Peers", "ETC", "Date Added" };
+	private String[][]				fileStatistics;
+	private String					selectedFile;
+	private DefaultTableModel		model;
+	private List<TableInitialize>	tableRows;
+	private Search					searchWindows;
 
 	/**
 	 * This method creates the Octopus P2P client GUI.
@@ -320,7 +318,7 @@ public class Client
 		darkPeerbtn = new JButton();
 		darkPeerbtn.setBounds(0, 0, 34, 34);
 
-		if (darkStatus == false)
+		if (this.darkStatus == false)
 		{
 			setDarkPeerBtn(false);
 
@@ -388,13 +386,13 @@ public class Client
 	{
 		if (status == true)
 		{
-			darkStatus = true;
+			this.darkStatus = true;
 			darkPeerbtn.setToolTipText("Your machine is invisible to the servers!");
 			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/darkPeer.png")));
 
 		} else
 		{
-			darkStatus = false;
+			this.darkStatus = false;
 			darkPeerbtn.setToolTipText("Your machine is visible to the servers!");
 			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/brightPeer.png")));
 
@@ -471,6 +469,36 @@ public class Client
 		}
 
 		model = new DefaultTableModel(fileStatistics, columnHeaders);
+	}
+	
+	public JFrame getFrame()
+	{
+		return frame;
+	}
+
+	public void setFrame(JFrame frame)
+	{
+		this.frame = frame;
+	}
+	
+	public String getSelectedFile()
+	{
+		return selectedFile;
+	}
+
+	public void setSelectedFile(String selectedFile)
+	{
+		this.selectedFile = selectedFile;
+	}
+
+	public Search getSearchWindows()
+	{
+		return searchWindows;
+	}
+
+	public void setSearchWindows(Search searchWindows)
+	{
+		this.searchWindows = searchWindows;
 	}
 
 }

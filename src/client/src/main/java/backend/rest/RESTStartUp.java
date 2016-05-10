@@ -107,6 +107,13 @@ public class RESTStartUp implements Runnable {
 
 			}
 
+			@Override
+			public void newSwarm(String id, String filename, int blockCount)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+
 		});
 		
 		backend.engageSwarm("abc123");
