@@ -24,6 +24,7 @@ public class Client
 {
 	public boolean		darkStatus;
 	public JFrame		frame;
+	public JPanel		iconBar;
 	public JTable		table;
 	public JScrollPane	scrollPane;
 	public String[]		columnHeaders;
@@ -152,35 +153,11 @@ public class Client
 
 	private void initialize()
 	{
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		////////////////////////// Main Frame //////////////////////////////
 
-		// Creating the main frame
 
-		frame = new JFrame("The Octopus P2P");
-		frame.setSize(new Dimension(680, 400));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
-		frame.getContentPane().setLayout(null);
-		frame.setVisible(true);
+		createMainJFrame();
+		createIconBar();
 
-		////////////////////////// Main Frame //////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-
-		////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////
-		//////////////////////////// Panels ////////////////////////////////
-
-		// Creating the iconBar Panel
-
-		JPanel iconBar = new JPanel();
-		iconBar.setBackground(new Color(245, 245, 245));
-		iconBar.setBounds(0, 0, 680, 34);
-		iconBar.setLayout(null);
-		frame.getContentPane().add(iconBar);
 
 		// Creating the statusBar Panel
 
@@ -258,11 +235,13 @@ public class Client
 		// Adding Search Button to the iconBar
 
 		JButton search = new JButton();
-		search.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
+		search.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+
 				Search search = new Search(frame);
-				
+
 			}
 		});
 		search.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileSearch.png")));
@@ -362,6 +341,26 @@ public class Client
 		////////////////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////////////////
 
+	}
+
+	private void createMainJFrame()
+	{
+		frame = new JFrame("The Octopus P2P");
+		frame.setSize(new Dimension(680, 400));
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
+		frame.getContentPane().setLayout(null);
+		frame.setVisible(true);
+	}
+
+	private void createIconBar()
+	{
+		iconBar = new JPanel();
+		iconBar.setBackground(new Color(245, 245, 245));
+		iconBar.setBounds(0, 0, 680, 34);
+		iconBar.setLayout(null);
+		frame.getContentPane().add(iconBar);
 	}
 
 }
