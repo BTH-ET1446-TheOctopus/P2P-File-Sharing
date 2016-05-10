@@ -7,6 +7,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ActionEvent;
 
 public class Search extends JDialog
@@ -56,10 +58,25 @@ public class Search extends JDialog
 
 	private void addSearchTextField()
 	{
-		searchTextField = new JTextField("");
-		searchTextField.setToolTipText("Enter what ever you are looking for here");
+		searchTextField = new JTextField("Type here");
+		//searchTextField.setToolTipText("Enter what ever you are looking for here");
 		searchTextField.setBounds(6, 6, 390, 30);
 		frame.getContentPane().add(searchTextField);
+		
+		/**
+		 * This method handles the prompt text in searchTextField 
+		 */
+		
+		searchTextField.addFocusListener(new FocusListener(){
+			
+		    public void focusGained(FocusEvent e) {
+		    	searchTextField.setText("");
+		    }
+			public void focusLost(FocusEvent e) {
+				if(searchTextField.getText().isEmpty())
+				searchTextField.setText("Type here");
+			}
+			});
 	}
 	
 	/**
@@ -84,8 +101,8 @@ public class Search extends JDialog
 	
 	private void addsearch2TextField()
 	{
-		textField = new JTextField("");
-		textField.setToolTipText("Enter what ever you are looking for here");
+		textField = new JTextField();
+		//textField.setToolTipText("Enter what ever you are looking for here");
 		textField.setBounds(6, 48, 390, 30);
 		frame.getContentPane().add(textField);
 	}
@@ -112,6 +129,7 @@ public class Search extends JDialog
 		JScrollPane resultTableScrolPane = new JScrollPane(searchResultTable);
 		resultTableScrolPane.setBounds(6, 90, 588, 202);
 		resultTableScrolPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		resultTableScrolPane.setVerticalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		frame.getContentPane().add(resultTableScrolPane);
 	}
 	
