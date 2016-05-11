@@ -35,7 +35,7 @@ public class RESTStartUp implements Runnable {
 		 */
 		HttpServer server = null;
 		try {
-			server = HttpServerFactory.create(Settings.clientURL);
+			server = HttpServerFactory.create(Settings.CLIENT_URL);
 			server.start();
 			LOG.log(Level.INFO, "HTTP server was started");
 			while (true) {

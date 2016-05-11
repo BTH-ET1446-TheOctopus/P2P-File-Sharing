@@ -30,7 +30,7 @@ public class BootstrapCalls implements calls{
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(Settings.bootstrapURL + "test");
+				   .resource(Settings.BOOTSTRAP_URL + "test");
 		
 		Address respons = webResource
 				.accept("Content-Type", "application/json")
@@ -46,7 +46,7 @@ public class BootstrapCalls implements calls{
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(Settings.bootstrapURL + "peers");
+				   .resource(Settings.BOOTSTRAP_URL + "peers");
 		
 		Peers respons = webResource
 				.accept("Content-Type", "application/json")
@@ -61,7 +61,7 @@ public class BootstrapCalls implements calls{
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(Settings.bootstrapURL + "bootstraps");
+				   .resource(Settings.BOOTSTRAP_URL + "bootstraps");
 		
 		Bootstraps respons = webResource
 				.accept("Content-Type", "application/json")
@@ -77,7 +77,7 @@ public class BootstrapCalls implements calls{
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(Settings.bootstrapURL + "blacklist");
+				   .resource(Settings.BOOTSTRAP_URL + "blacklist");
 		
 		Blacklist respons = webResource
 				.accept("Content-Type", "application/json")
@@ -92,7 +92,7 @@ public class BootstrapCalls implements calls{
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(Settings.bootstrapURL + "swarms");
+				   .resource(Settings.BOOTSTRAP_URL + "swarms");
 		
 		SwarmsHelper respons = webResource
 				.accept("Content-Type", "application/json")
@@ -109,7 +109,7 @@ public class BootstrapCalls implements calls{
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(Settings.bootstrapURL + "swarms/" + id);
+				   .resource(Settings.BOOTSTRAP_URL + "swarms/" + id);
 		
 		Swarm respons = webResource
 				.accept("Content-Type", "application/json")
