@@ -99,24 +99,19 @@ public class sqlconnector {
 	public void createserverdb(){
 		//Create Serverdb
 		try {
-			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "servers", null);
-			if (tables.next()) {
-				// Table exists Don't Create Table
-			}
-			else {
-				//Table Doesn't Exist, Create Table
-				String createdb = "CREATE database serverdb";
-				this.Update(createdb);		
-				createdb = "USE serverdb";
-				this.runquery(createdb);
-			}
+			String createdb = "create database if not exists serverdb";
+			this.Update(createdb);		
+			String usedb = "USE serverdb";
+			this.runquery(usedb);
 		}
 		catch (Exception e) {
 			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 		}
-
-
+		
+		//Close Connection and Connect to Client DB
+		this.closeconnect();
+		this.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
+		
 		//Create Table01 servers
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
@@ -209,26 +204,21 @@ public class sqlconnector {
 	//Function to Create Client DB
 	//Check if it already exists, then do nothing
 	public void createclientdb(){
-		//Create Clientdb
+		//Create Client DB
 		try {
-			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "clientfile", null);
-			if (tables.next()) {
-				// Table exists Don't Create Table
-			}
-			else {
-				//Table Doesn't Exist, Create Table
-				String createdb = "CREATE database clientdb";
-				this.Update(createdb);		
-				createdb = "USE clientdb";
-				this.runquery(createdb);
-			}
+			String createdb = "create database if not exists clientdb";
+			this.Update(createdb);		
+			String usedb = "USE clientdb";
+			this.runquery(usedb);
 		}
 		catch (Exception e) {
 			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 		}
-
-
+		
+		//Close Connection and Connect to Client DB
+		this.closeconnect();
+		this.connector("root", "farhan123", "clientdb", "127.0.0.1", "3306");
+		
 		//Create Table01 peersarray
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
