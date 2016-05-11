@@ -1,10 +1,14 @@
 package backend.rest;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.sun.jersey.api.container.httpserver.HttpServerFactory;
+import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.server.ResourceConfig;
+
+//import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.net.httpserver.HttpServer;
 
 import backend.Settings;
@@ -15,6 +19,10 @@ public class RESTStartUp implements Runnable {
 	public void run() {
 		Logger.getLogger("com.sun.jersey").setLevel(Level.WARNING);
 		
+		final ResourceConfig rc = new ResourceConfig().packages("backend.rest");
+		GrizzlyHttpServerFactory.createHttpServer(URI.create(Settings.bootstrapURL), rc);
+		
+		/*
 		HttpServer server = null;
 		try {
 			server = HttpServerFactory.create(Settings.bootstrapURL);
@@ -37,5 +45,6 @@ public class RESTStartUp implements Runnable {
 				LOG.log(Level.WARNING, "Bootstrap server was stopped by force");
 			}
 		}
+		*/
 	}
 }

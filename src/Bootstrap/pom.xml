@@ -2,7 +2,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>Octopus</groupId>
   <artifactId>Bootstrap</artifactId>
+  <packaging>jar</packaging>
   <version>0.0.1-SNAPSHOT</version>
+ 
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <plugins>
@@ -20,7 +22,7 @@
         </archive>
       </configuration>
       </plugin>
-      
+   
     <plugin>
     	<groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -45,13 +47,33 @@
  	</plugin> 
   </plugins>
   </build>
+  <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.glassfish.jersey</groupId>
+                <artifactId>jersey-bom</artifactId>
+                <version>${jersey.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+  </dependencyManagement>
+  
   <dependencies>
+  	<!--
   	<dependency>
       <groupId>asm</groupId>
       <artifactId>asm</artifactId>
       <version>3.3.1</version>
       <scope>compile</scope>
     </dependency>
+
+    <dependency>
+        <groupId>javax.ws.rs</groupId>
+        <artifactId>jsr311-api</artifactId>
+        <version>1.1.1</version>
+    </dependency>
+   
   	<dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-bundle</artifactId>
@@ -67,13 +89,13 @@
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-server</artifactId>
-      <version>1.19</version>
+      <version>1.9</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-core</artifactId>
-      <version>1.19</version>
+      <version>1.9</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -89,14 +111,51 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+		<groupId>com.sun.jersey</groupId>
+		<artifactId>jersey-client</artifactId>
+		<version>1.19.1</version>
+	</dependency>
+    -->
+    <!--
+	<dependency>
+	<groupId>javax.servlet</groupId>
+		<artifactId>javax.servlet-api</artifactId>
+		<version>4.0.0-b01</version>
+	</dependency>
+	 -->
+	<dependency>
+		<groupId>org.glassfish.jersey.media</groupId>
+		<artifactId>jersey-media-json-jackson</artifactId>
+		<version>2.22.2</version>
+	</dependency>
+	<dependency>
+    	<groupId>org.glassfish.jersey.containers</groupId>
+    	<artifactId>jersey-container-grizzly2-http</artifactId>
+    </dependency>
+	<dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.2.3</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
 		<groupId>junit</groupId>
 		<artifactId>junit</artifactId>
 		<version>4.9</version>
+		<scope>test</scope>
 	</dependency>
+	
 	<dependency>
-	<groupId>mysql</groupId>
-	<artifactId>mysql-connector-java</artifactId>
-	<version>5.1.38</version>
-</dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>5.1.38</version>
+	</dependency>
   </dependencies>
+     
+     
+     <properties>
+        <jersey.version>2.22.2</jersey.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+     </properties> 
+  
 </project>
