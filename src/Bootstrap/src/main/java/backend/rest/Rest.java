@@ -244,7 +244,6 @@ public class Rest {
  		ResultSet result;
  		String filename="";
  		String uniquefileid="";
- 		
  		//test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
  		readquery="select * from serverfile";
  		result = test.runquery(readquery);
