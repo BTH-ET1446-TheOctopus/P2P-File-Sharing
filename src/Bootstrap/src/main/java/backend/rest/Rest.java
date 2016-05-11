@@ -145,7 +145,7 @@ public class Rest {
  		sqlconnector test = new sqlconnector();
  		ResultSet result;
  		String data="";
- 		//test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
+ 		test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
  		readquery="select distinct peers from peersarray";
  		result = test.runquery(readquery);
 		Peers peers = new Peers();
@@ -177,7 +177,7 @@ public class Rest {
  		sqlconnector test = new sqlconnector();
  		ResultSet result;
  		String data="";
- 		//test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
+ 		test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
  		readquery="select distinct ip from servers";
  		result = test.runquery(readquery);
 		Bootstraps bootstraps = new Bootstraps();
@@ -208,7 +208,7 @@ public class Rest {
  		sqlconnector test = new sqlconnector();
  		ResultSet result;
  		String data="";
- 		//test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
+ 		test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
  		readquery="select distinct latestip from serverpeers where blacklist='1';";
  		result = test.runquery(readquery);
 		Blacklist blacklist = new Blacklist();
@@ -244,7 +244,7 @@ public class Rest {
  		ResultSet result;
  		String filename="";
  		String uniquefileid="";
- 		//test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
+ 		test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
  		readquery="select * from serverfile";
  		result = test.runquery(readquery);
 		SwarmsHelper swarmHelp = new SwarmsHelper();
@@ -284,7 +284,7 @@ public class Rest {
  		String metadatachecksum="";
  		String filepeers="";
  		
- 		//test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
+ 		test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
  		readquery="select * from serverfile where uniquefileid = "+ id;
  		result = test.runquery(readquery);
 
