@@ -1,16 +1,19 @@
 package gui;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
+
+import backend.Backend;
 
 public class Search extends JDialog
 {
@@ -81,6 +84,8 @@ public class Search extends JDialog
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+				Backend back = new Backend(null);
+				back.searchSwarm(searchTextField.getText());
 			}
 		});
 		searchButton.setBounds(414, 48, 180, 30);
@@ -96,6 +101,15 @@ public class Search extends JDialog
 		searchButton = new JButton("Search on Server");
 		searchButton.setBounds(6, 48, 180, 30);
 		frame.getContentPane().add(searchButton);
+
+		searchButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				Backend back = new Backend(null);
+				back.searchSwarm(searchTextField.getText());
+			}
+		});
 	}
 
 	/**

@@ -5,36 +5,36 @@ import java.util.List;
 
 public class TableInitialize
 {
-	String	priority;
+	String	id;
 	String	name;
 	String	progress;
 	String	size;
 	String	speed;
 	String	peers;
-	String	etc;
+	String	due;
 	String	dateAdded;
 
-	public TableInitialize(String priority, String name, String progress, String size, String speed, String peers,
-			String etc, String dateAdded)
+	public TableInitialize(String id, String name, String progress, String size, String speed, String peers,
+			String due, String dateAdded)
 	{
-		this.priority = priority;
+		this.id = id;
 		this.name = name;
 		this.progress = progress;
 		this.size = size;
 		this.speed = speed;
 		this.peers = peers;
-		this.etc = etc;
+		this.due = due;
 		this.dateAdded = dateAdded;
 	}
 
 	public String getPriority()
 	{
-		return priority;
+		return id;
 	}
 
 	public void setPriority(String priority)
 	{
-		this.priority = priority;
+		this.id = priority;
 	}
 
 	public String getName()
@@ -89,12 +89,12 @@ public class TableInitialize
 
 	public String getEtc()
 	{
-		return etc;
+		return due;
 	}
 
 	public void setEtc(String etc)
 	{
-		this.etc = etc;
+		this.due = etc;
 	}
 
 	public String getDateAdded()
@@ -111,13 +111,13 @@ public class TableInitialize
 	{
 		List<String> columnList = new ArrayList<>();
 
-		columnList.add(priority);
+		columnList.add(id);
 		columnList.add(name);
 		columnList.add(progress);
 		columnList.add(size);
 		columnList.add(speed);
 		columnList.add(peers);
-		columnList.add(etc);
+		columnList.add(due);
 		columnList.add(dateAdded);
 
 		return columnList;
