@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import backend.rest.RESTStartUp;
+import sql.sqlconnector;
 
 public class Main
 {
@@ -12,7 +13,12 @@ public class Main
 	public static void main(String[] args)
 	{
 		Logger.getLogger("com.sun.jersey").setLevel(Level.WARNING);
-
+		
+		sqlconnector test=new sqlconnector();
+		test.connector("root", "sql", "mysql", "127.0.0.1", "3306");
+		//Creates Client DB on Runtime
+		test.createclientdb();
+		
 		final Thread restServerThread = new Thread(new RESTStartUp());
 		restServerThread.start();
 
@@ -25,6 +31,10 @@ public class Main
 				try
 				{
 					restServerThread.join();
+					sqlconnector test=new sqlconnector();
+					test.connector("root", "sql", "mysql", "127.0.0.1", "3306");
+					//Creates Client DB on Runtime
+					test.createclientdb();
 				} catch (InterruptedException e)
 				{
 					e.printStackTrace();
