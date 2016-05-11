@@ -8,7 +8,7 @@ import sql.sqlconnector;
 /*
  
  * starts the rest server in a new thread and adds a shutdown hook 
- * that is excuted when the program exits
+ * that is executed when the program exits
  * 
  */
 
@@ -22,8 +22,10 @@ public class Main {
 	public static void main(String[] args) {
 		/*The below command line is calling a method/class "RESTStartUp"
 		 where the bootstrap is initiated, interrupted and terminated  */
-		//sqlconnector test=new sqlconnector();
-		//test.createserverdb();
+		sqlconnector test=new sqlconnector();
+		test.connector("root", "farhan123", "mysql", "127.0.0.1", "3306");
+		test.createserverdb();
+		test.createclientdb();
 
 		final Thread restServerThread = new Thread(new RESTStartUp());
 		restServerThread.start();
