@@ -36,7 +36,7 @@ public class Client
 	private JLabel					upload;
 	private JScrollPane				scrollPane;
 	private JTable					table;
-	private String[]				columnHeaders = { "Priority", "Name", "Progress", "Size", "Speed", "Peers", "ETC", "Date Added" };
+	private String[]				columnHeaders = { "ID", "Name", "Progress", "Size", "Speed", "Peers", "Due", "Added" };
 	private String[][]				fileStatistics;
 	private String					selectedFile;
 	private DefaultTableModel		model;
@@ -358,8 +358,8 @@ public class Client
 	{
 		tableRows = new ArrayList<>();
 
-		TableInitialize sampleRow1 = new TableInitialize("1", "Man on the moon.mp4", "65%", "410 MB", "2.0 Mbps", "3",
-				"1h:35m", "23,Sep,16 / 22:28:30");
+		TableInitialize sampleRow1 = new TableInitialize("1", "Man on the moon.mp4", "100%", "999.9 MB", "999.0 Mbps", "3",
+				"99h:59m", "23,Sep,16 / 22:28:30");
 
 		TableInitialize sampleRow2 = new TableInitialize("2", "Woman on the earth.mp4", "32%", "610 MB", "1.2 Mbps",
 				"3", "2h:15m", "23,Sep,16 / 21:13:19");
@@ -430,14 +430,34 @@ public class Client
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
+		table.setAutoResizeMode(table.AUTO_RESIZE_LAST_COLUMN);
 		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(0).setWidth(40);
+		table.getColumnModel().getColumn(0).setMaxWidth(40);
+		table.getColumnModel().getColumn(0).setMinWidth(40);
 		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(1).setWidth(156);
+		table.getColumnModel().getColumn(1).setMinWidth(156);
 		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(2).setWidth(60);
+		table.getColumnModel().getColumn(2).setMaxWidth(60);
+		table.getColumnModel().getColumn(2).setMinWidth(60);
 		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(3).setWidth(70);
+		table.getColumnModel().getColumn(3).setMaxWidth(70);
+		table.getColumnModel().getColumn(3).setMinWidth(70);
 		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(4).setWidth(90);
+		table.getColumnModel().getColumn(4).setMaxWidth(90);
+		table.getColumnModel().getColumn(4).setMinWidth(90);
 		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(5).setWidth(40);
+		table.getColumnModel().getColumn(5).setMaxWidth(40);
+		table.getColumnModel().getColumn(5).setMinWidth(40);
 		table.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(6).setWidth(70);
+		table.getColumnModel().getColumn(6).setMaxWidth(70);
+		table.getColumnModel().getColumn(6).setMinWidth(70);
 		table.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 	}
 
