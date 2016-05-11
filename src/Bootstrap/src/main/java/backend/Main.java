@@ -22,11 +22,9 @@ public class Main {
 	public static void main(String[] args) {
 		/*The below command line is calling a method/class "RESTStartUp"
 		 where the bootstrap is initiated, interrupted and terminated  */
-		sqlconnector test=new sqlconnector();
-		test.createserverdb();
-		//Dbase d1=new Dbase();
-		//d1.insert();
-		
+		//sqlconnector test=new sqlconnector();
+		//test.createserverdb();
+
 		final Thread restServerThread = new Thread(new RESTStartUp());
 		restServerThread.start();
 
