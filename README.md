@@ -31,6 +31,20 @@ The repo both contains what was called Bootstrap and client before.
 
 8. {"name":"Fidde","surename":"Lass","age":32} should appear and you are ready to go!
 
+#Install Mysql
+
+A. Under Ubuntu OS
+1.Install mysql using the following command.
+    sudo apt-get install mysql-server
+2.After installation,connect to the MySQL database server use the following command.
+    mysql -u root -p
+3. After setup, create any database.
+
+B.Under Windows OS
+1. Download the community edition from the link below
+http://dev.mysql.com/downloads/
+2. Follow the installer program instructions.
+3. After setup, create any database.
 
 # Build whit Maven
 Make sure you have maven: *mvn -version*
