@@ -25,7 +25,7 @@ public class RESTStartUp implements Runnable {
 
 	public void run() {
 		// function to test connection client -> bootstrap -> client
-		// testBoostrapConnection();
+		testBoostrapConnection();
 		
 		//testClientConnection();
 		
@@ -77,7 +77,7 @@ public class RESTStartUp implements Runnable {
 		calls.getBootstraps();
 		calls.getBlacklist();
 		calls.getSwarms();
-		calls.getSwarm("1");
+		calls.getSwarm("abc123");
 	}
 
 	private void testClientConnection() {

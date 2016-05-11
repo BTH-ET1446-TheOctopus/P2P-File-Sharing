@@ -41,7 +41,7 @@ public class sqlconnector {
 	private static final Logger LOG = Logger.getLogger(sqlconnector.class.getName());
 
 	public sqlconnector(){
-	
+		this.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
 	}
 	
 	public void connector(String login, String password, String db, String host, String port) {
