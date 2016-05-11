@@ -4,7 +4,6 @@ import java.sql.*;
 //import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//import com.mysql.jdbc.PreparedStatement;
 
 /**
  * @author Farhan
@@ -12,13 +11,6 @@ import java.util.logging.Logger;
 
 public class sqlconnector {
 	
-	/* You're doing the connection in connector() method below in the code.
-	 * These two lines are redundant! You can delete them, Farhan. 
-	 */
-	
-	//private static final String dbClassName = "com.mysql.jdbc.Driver";
-	//private static final String CONNECTION = "jdbc:mysql://localhost:3306/clientdb";
-
 	private Connection  connection  = null;
 	private Statement   statement   = null;
 	private ResultSet   set         = null;
@@ -29,14 +21,6 @@ public class sqlconnector {
 	String login;
 	String password;
 	String url;
-
-	String filename="";
-	int totalblocks=0;
-	String peers = "";
-	int peercount = 0;
-	String uniquefileid = "";
-	String filechecksum = "";
-	String metadatachecksum = "";
 	
 	private static final Logger LOG = Logger.getLogger(sqlconnector.class.getName());
 
@@ -218,7 +202,6 @@ public class sqlconnector {
 		//Close Connection and Connect to Client DB
 		this.closeconnect();
 		this.connector("root", "farhan123", "clientdb", "127.0.0.1", "3306");
-		
 		//Create Table01 peersarray
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
