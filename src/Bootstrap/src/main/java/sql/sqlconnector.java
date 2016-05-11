@@ -17,7 +17,7 @@ public class sqlconnector {
 	 */
 	
 	//private static final String dbClassName = "com.mysql.jdbc.Driver";
-	//private static final String CONNECTION = "jdbc:mysql://localhost:3306/serverdb";
+	//private static final String CONNECTION = "jdbc:mysql://localhost:3306/clientdb";
 
 	private Connection  connection  = null;
 	private Statement   statement   = null;
@@ -145,7 +145,8 @@ public class sqlconnector {
 		return true;
 	}
 
-	//Function to Create Server DB Once
+	//Function to Create Server DB
+	//Check if it already exists, then do nothing
 	public void createserverdb(){
 		//Create Serverdb
 		try {
@@ -257,6 +258,98 @@ public class sqlconnector {
 		}
 	}
 
+	//Function to Create Client DB
+	//Check if it already exists, then do nothing
+	public void createclientdb(){
+		//Create Clientdb
+		try {
+			DatabaseMetaData dbm = connection.getMetaData();
+			ResultSet tables = dbm.getTables(null, null, "clientfile", null);
+			if (tables.next()) {
+				// Table exists Don't Create Table
+			}
+			else {
+				//Table Doesn't Exist, Create Table
+				String createdb = "CREATE database clientdb";
+				this.Update(createdb);		
+				createdb = "USE clientdb";
+				this.Update(createdb);
+			}
+		}
+		catch (Exception e) {
+			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
+		}
+
+
+		//Create Table01 peersarray
+		try {
+			DatabaseMetaData dbm = connection.getMetaData();
+			ResultSet tables = dbm.getTables(null, null, "peersarray", null);
+			if (tables.next()) {
+				// Table exists Don't Create Table
+			}
+			else {
+				//Table Doesn't Exist, Create Table
+				String createtable = "CREATE TABLE peersarray ( "
+							+ " id int NOT NULL AUTO_INCREMENT, "		
+							+ " uniquefileid varchar(100) NOT NULL, "    
+							+ " peers varchar(15) NOT NULL, "
+							+ " CONSTRAINT peersarray_pk PRIMARY KEY (id))";
+
+				this.Update(createtable);
+			}
+		}
+		catch (Exception e) {
+			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
+		}
+		//Create Table02 clientfile
+		try {
+			DatabaseMetaData dbm = connection.getMetaData();
+			ResultSet tables = dbm.getTables(null, null, "clientfile", null);
+			if (tables.next()) {
+				// Table exists Don't Create Table
+			}
+			else {
+				//Table Doesn't Exist, Create Table
+				String createtable = "CREATE TABLE clientfile ("
+							+ " filename char(40) NOT NULL, "
+							+ " totalblocks int NOT NULL, "
+							+ " peers varchar(15) NOT NULL, "
+							+ " peercount int NOT NULL, "
+							+ " uniquefileid varchar(100) NOT NULL, "
+							+ " filechecksum varchar(100) NOT NULL, "
+							+ " metadatachecksum varchar(100) NOT NULL, "		
+							+ " CONSTRAINT clientfile_pk PRIMARY KEY (uniquefileid))";
+				this.Update(createtable);
+			}
+		}
+		catch (Exception e) {
+			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
+		}
+		//Create Table03 clientpeers
+		try {
+			DatabaseMetaData dbm = connection.getMetaData();
+			ResultSet tables = dbm.getTables(null, null, "clientpeers", null);
+			if (tables.next()) {
+				// Table exists Don't Create Table
+			}
+			else {
+				//Table Doesn't Exist, Create Table
+				String createtable = "CREATE TABLE clientpeers ( "
+							+ " id varchar(100) NOT NULL, "
+							+ " latestip varchar(15) NOT NULL, "
+							+ " blaklist binary(1) NOT NULL, "
+							+ " timestamp timestamp NOT NULL, "
+							+ " files varchar(100) NOT NULL, "
+							+ " filecount int NOT NULL, "
+							+ " CONSTRAINT clientpeers_pk PRIMARY KEY (id))";
+				this.Update(createtable);
+			}
+		}
+		catch (Exception e) {
+			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
+		}
+	}
 	/*public boolean write (String write) {
 
     try {
