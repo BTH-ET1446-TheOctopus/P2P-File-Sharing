@@ -27,7 +27,7 @@ public class Main {
 		test.connector("root", "farhan123", "mysql", "127.0.0.1", "3306");
 		//Creates Server DB on Runtime
 		test.createserverdb();
-		//Create Client DB on Runtime
+		//Insert Sample Data in Server DB
 		insample.insertbdb();
 		
 
