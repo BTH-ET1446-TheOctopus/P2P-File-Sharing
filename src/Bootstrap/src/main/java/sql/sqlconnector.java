@@ -25,7 +25,7 @@ public class sqlconnector {
 	private static final Logger LOG = Logger.getLogger(sqlconnector.class.getName());
 
 	public sqlconnector(){
-		//this.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
+		//this.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
 	}
 	
 	public void connector(String login, String password, String db, String host, String port) {
@@ -94,7 +94,7 @@ public class sqlconnector {
 		
 		//Close Connection and Connect to Client DB
 		this.closeconnect();
-		this.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
+		this.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
 		
 		//Create Table01 servers
 		try {
@@ -201,7 +201,7 @@ public class sqlconnector {
 		
 		//Close Connection and Connect to Client DB
 		this.closeconnect();
-		this.connector("root", "farhan123", "clientdb", "127.0.0.1", "3306");
+		this.connector("root", "sql", "clientdb", "127.0.0.1", "3306");
 		//Create Table01 peersarray
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();

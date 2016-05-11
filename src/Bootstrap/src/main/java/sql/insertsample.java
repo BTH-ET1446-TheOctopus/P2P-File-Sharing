@@ -5,7 +5,7 @@ public class insertsample {
 	public void insertbdb(){
 		sqlconnector sample= new sqlconnector();
 		String writequery="";
-		sample.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
+		sample.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
 		
 		//Write Sample Data to servers table
 		writequery="insert into servers (ip,name,timestamp,clientcount,servercount) " 
@@ -27,7 +27,7 @@ public class insertsample {
 	public void insertcdb(){
 		sqlconnector sample= new sqlconnector();
 		String writequery="";
-		sample.connector("root", "farhan123", "clientdb", "127.0.0.1", "3306");
+		sample.connector("root", "sql", "clientdb", "127.0.0.1", "3306");
 
 		//Write Sample Data to peersarray table
 		writequery="insert into peersarray (uniquefileid,peers) " 
