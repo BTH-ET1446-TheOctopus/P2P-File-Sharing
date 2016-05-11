@@ -48,9 +48,31 @@ public interface BackendController {
 	 * {@link BackendObserver#updateSwarmBlock(String, int, boolean)}
 	 * 
 	 * @param id
-	 * @return
+	 *            The swarm uuid
+	 * @return True on success or false if the swarm has already been added
 	 */
+	public boolean engageSwarm(String id);
+
+	/**
+	 * Remove a swarm.
+	 * 
+	 * @param id
+	 *            The swarm uuid
+	 * @return True on success or false if the swarm doesn't exist
+	 */
+	public boolean disengageSwarm(String id);
+
+	/**
+	 * @deprecated Replaced by {@link #engageSwarm(String)}
+	 */
+	@Deprecated
 	public Swarm getSwarm(String id);
+
+	/**
+	 * @deprecated Replaced by {@link #disengageSwarm(String)}
+	 */
+	@Deprecated
+	public void removeSwarm(String id);
 
 	/**
 	 * Create a new swarm. The function will return immediately. When the swarm
@@ -60,14 +82,6 @@ public interface BackendController {
 	 * @param filename
 	 */
 	public void createSwarm(String filename);
-
-	/**
-	 * Remove a swarm.
-	 * 
-	 * @param id
-	 *            The swarm id
-	 */
-	public void removeSwarm(String id);
 
 	/**
 	 * Search for a file among other peers. The function will return
