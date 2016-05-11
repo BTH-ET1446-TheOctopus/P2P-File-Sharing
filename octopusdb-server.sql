@@ -9,7 +9,7 @@ USE serverdb;
 -- tables
 -- Table: servers
 CREATE TABLE servers (
-    ip varchar(100) NOT NULL,
+    ip varchar(15) NOT NULL,
     name char(20) NOT NULL,
     timestamp timestamp NOT NULL,
     clientcount int NOT NULL,

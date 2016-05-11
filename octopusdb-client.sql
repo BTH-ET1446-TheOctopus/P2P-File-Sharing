@@ -11,9 +11,10 @@ USE clientdb;
 
 -- Table: peersarray
 CREATE TABLE peersarray (
+    id int NOT NULL AUTO_INCREMENT,		
     uniquefileid varchar(100) NOT NULL,    
     peers varchar(15) NOT NULL,
-    CONSTRAINT peersarray_pk PRIMARY KEY (uniquefileid)
+    CONSTRAINT peersarray_pk PRIMARY KEY (id)
 );
 
 -- Table: clientfile
@@ -22,7 +23,7 @@ CREATE TABLE clientfile (
     totalblocks int NOT NULL,
     peers varchar(15) NOT NULL,
     peercount int NOT NULL,
-    uniquefileid int NOT NULL,
+    uniquefileid varchar(100) NOT NULL,
     filechecksum varchar(100) NOT NULL,
     metadatachecksum varchar(100) NOT NULL,		
     CONSTRAINT clientfile_pk PRIMARY KEY (uniquefileid)
