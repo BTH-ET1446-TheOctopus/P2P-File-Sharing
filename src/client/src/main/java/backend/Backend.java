@@ -1,7 +1,6 @@
 package backend;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -11,6 +10,7 @@ import backend.api.BackendController;
 import backend.api.BackendObserver;
 import backend.api.datatypes.SwarmMetadataShort;
 import backend.json.Swarm;
+import backend.json.Swarms;
 import backend.rest.BootstrapCalls;
 import backend.rest.ClientCalls;
 
@@ -25,6 +25,7 @@ public class Backend implements BackendController {
 	private BootstrapCalls bootstrapCalls;
 
 	private BootstrapHelloThread bootstrapHelloThread;
+	private BootstrapDataThread bootstrapDataThread;
 
 	public Backend(BackendObserver restObserver) {
 		activeSwarms = new HashMap<String, SwarmEngager>();
@@ -35,10 +36,10 @@ public class Backend implements BackendController {
 		bootstrapCalls = new BootstrapCalls();
 
 		bootstrapHelloThread = new BootstrapHelloThread(bootstrapCalls);
-
-		// TODO Start bootstrap data retrieval thread (/peers, /bootstraps, /blacklist, etc)
+		bootstrapDataThread = new BootstrapDataThread(bootstrapCalls);
 
 		bootstrapHelloThread.start();
+		bootstrapDataThread.start();
 	}
 
 	public boolean engageSwarm(String id) {
@@ -70,35 +71,29 @@ public class Backend implements BackendController {
 
 	@Override
 	public List<SwarmMetadataShort> getSwarms() {
+		List<Swarms> json_swarms = bootstrapDataThread.getSwarms();
 		List<SwarmMetadataShort> swarms = new ArrayList<SwarmMetadataShort>();
-
-		swarms.add(new SwarmMetadataShort() {
-			public String getId() {
-				return "abc123";
-			}
-
-			@Override
-			public String getFilename() {
-				return "pom.xml";
-			}
-		});
-
+		
+		for (Swarms json_swarm : json_swarms) {
+			swarms.add(new SwarmMetadataShort(json_swarm.getid(), json_swarm.getfilename()));
+		}
+		
 		return swarms;
 	}
 
 	@Override
 	public List<String> getPeers() {
-		return Arrays.asList("192.168.0.100", "192.168.0.200");
+		return bootstrapDataThread.getPeers();
 	}
 
 	@Override
 	public List<String> getBootstraps() {
-		return Arrays.asList("192.168.0.1", "192.168.0.2");
+		return bootstrapDataThread.getBootstraps();
 	}
 
 	@Override
 	public List<String> getBlacklist() {
-		return Arrays.asList("8.8.8.8", "8.8.4.4");
+		return bootstrapDataThread.getBlacklist();
 	}
 
 	@Override

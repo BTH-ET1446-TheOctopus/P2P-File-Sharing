@@ -6,8 +6,7 @@ import java.util.logging.Logger;
 import backend.rest.BootstrapCalls;
 
 /**
- * This thread is responsible for saying hello to the bootstrap server, with a 2
- * minute interval.
+ * This thread is responsible for saying hello to the bootstrap server.
  * 
  * @author iiMaXii
  *
@@ -28,7 +27,7 @@ public class BootstrapHelloThread extends Thread {
 
 				// TODO bootstrapCalls.getHello(id);
 
-				Thread.sleep(2 * 60 * 1000);
+				Thread.sleep(Settings.BOOTSTRAP_HELLO_INTERVAL * 1000);
 			}
 		} catch (InterruptedException e) {
 			LOG.log(Level.FINE, "Thread interrupted");
