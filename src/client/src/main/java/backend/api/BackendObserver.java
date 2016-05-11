@@ -55,4 +55,6 @@ public interface BackendObserver {
 	 * @param blockCount
 	 */
 	public void searchResult(String clientAddress, String id, String filename, int blockCount);
+
+	void newSwarm(String id, String filename, int blockCount);
 }

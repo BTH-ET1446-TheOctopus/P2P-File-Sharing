@@ -42,6 +42,8 @@ import java.sql.*;
 import java.util.Properties;
 import java.util.UUID;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Path("/rest")
 public class Rest {
@@ -58,6 +60,7 @@ public class Rest {
 	}
 	*/
 	
+	private static final Logger LOG = Logger.getLogger(Rest.class.getName());
 	@GET
 	@Path("/test/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -102,17 +105,18 @@ public class Rest {
 		try {
 			so = new Socket(Settings.ntpServer, Settings.daytimeport);
 		} catch (UnknownHostException e) {
-			e.printStackTrace();
+			LOG.log(Level.WARNING, e.getMessage(), e);
 		} catch (IOException e) {
-			e.printStackTrace();
-		}	
+			LOG.log(Level.SEVERE, e.getMessage(), e);
+		}
+
 		
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new InputStreamReader (so.getInputStream()));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, e.getMessage(), e);
 		}
 		
 		String timestamp = null;
@@ -120,17 +124,16 @@ public class Rest {
 			timestamp = br.readLine();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, e.getMessage(), e);
 		}
 		
 		System.out.println(timestamp);
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MM yyyy HH:mm:ss");
 		String currentTime = sdf.format(timestamp);
-		
-		System.out.println(currentTime);
+
+		LOG.log(Level.INFO, timestamp);
 		
 		return uuid.toString();
-		
 	}
 	
 	@GET
@@ -138,14 +141,30 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Peers getPeers()
 	{
+		String readquery="";
+ 		sqlconnector test = new sqlconnector();
+ 		ResultSet result;
+ 		String data="";
+ 		test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
+ 		readquery="select distinct ip from servers";
+ 		result = test.runquery(readquery);
 		Peers peers = new Peers();
 		List<String> ip = new ArrayList<String>();
-		ip.add("1.2.3.4");
-		ip.add("1.2.3.6");
 		
+		try {
+ 			System.out.println();
+ 			while(result.next()){
+ 		         //Retrieve by column name			
+ 		         data = result.getString("ip");	         
+ 		         ip.add(data);
+	
+ 		      }
+ 	    }
+ 	    catch (Exception e) {
+ 	        System.out.println("Exception in query method:\n" + e.getMessage());
+ 	    }
+ 		test.closeconnect();
 		peers.setpeers(ip);
-
-		
 		return peers;
 	}
 	
@@ -154,11 +173,27 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Bootstraps getBootstraps()
 	{
-	
+		String readquery="";
+ 		sqlconnector test = new sqlconnector();
+ 		ResultSet result;
+ 		String data="";
+ 		test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
+ 		readquery="select distinct ip from servers";
+ 		result = test.runquery(readquery);
 		Bootstraps bootstraps = new Bootstraps();
 		List<String> ip = new ArrayList<String>();
-		ip.add("1.2.3.4");
-		ip.add("1.2.3.6");
+ 		try {
+ 			System.out.println();
+ 			while(result.next()){
+ 		         //Retrieve by column name			
+ 		         data = result.getString("ip");	         
+ 		         ip.add(data);
+ 		      }
+ 	    }
+ 	    catch (Exception e) {
+ 	        System.out.println("Exception in query method:\n" + e.getMessage());
+ 	    }
+ 		test.closeconnect();
 		bootstraps.setbootstraps(ip);
 		
 		return bootstraps;
@@ -169,10 +204,27 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Blacklist getBlacklist()
 	{
+		String readquery="";
+ 		sqlconnector test = new sqlconnector();
+ 		ResultSet result;
+ 		String data="";
+ 		test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
+ 		readquery="select distinct latestip from serverpeers where blacklist='1';";
+ 		result = test.runquery(readquery);
 		Blacklist blacklist = new Blacklist();
 		List<String> ip = new ArrayList<String>();
-		ip.add("1.2.3.4");
-		ip.add("1.2.3.6");
+		try {
+ 			System.out.println();
+ 			while(result.next()){
+ 		         //Retrieve by column name			
+ 		         data = result.getString("latestip");	         
+ 		         ip.add(data);
+ 		      }
+ 	    }
+ 	    catch (Exception e) {
+ 	        System.out.println("Exception in query method:\n" + e.getMessage());
+ 	    }
+ 		test.closeconnect();
 		blacklist.setblacklist(ip);
 		
 		return blacklist;
@@ -187,18 +239,33 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public SwarmsHelper getSwarms()
 	{
+ 		String readquery="";
+ 		sqlconnector test = new sqlconnector();
+ 		ResultSet result;
+ 		String filename="";
+ 		String uniquefileid="";
+ 		
+ 		test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
+ 		readquery="select * from serverfile";
+ 		result = test.runquery(readquery);
 		SwarmsHelper swarmHelp = new SwarmsHelper();
 		Swarms swarm = new Swarms();
 		List<Swarms> swarms = new ArrayList<Swarms>(); 
-		swarm.setfilename("ninda.exe");
-		swarm.setid("test");
-		
-		swarms.add(swarm);
-		swarm.setfilename("virus.exe");
-		swarm.setid("DDDDEEEFFF");
-		swarms.add(swarm);
-		swarmHelp.setSwarms(swarms);
-		
+		try {
+ 			System.out.println();
+ 			while(result.next()){
+ 		        //Retrieve by column name			
+ 		        filename = result.getString("filename");
+ 		        uniquefileid = result.getString("uniquefileid");
+ 		        swarm.setfilename(filename);
+ 				swarm.setid(uniquefileid);
+ 				swarms.add(swarm);
+ 		    }
+ 	    }
+ 	    catch (Exception e) {
+ 	        System.out.println("Exception in query method:\n" + e.getMessage());
+ 	    }
+ 		test.closeconnect();
 		
 		return swarmHelp;
 	}
@@ -208,23 +275,57 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Swarm getSwarm(@PathParam("id") String id)
 	{
+ 		String readquery="";
+ 		sqlconnector test = new sqlconnector();
+ 		ResultSet result;
+ 		int blockcount=0;
+ 		String filename="";
+	
+ 		String filechecksum="";
+ 		String metadatachecksum="";
+ 		String filepeers="";
+ 		
+ 		test.connector("root", "farhan123", "serverdb", "127.0.0.1", "3306");
+ 		readquery="select * from serverfile where uniquefileid = "+ id;
+ 		result = test.runquery(readquery);
 
 		Swarm swarm = new Swarm();
-		System.out.println(id);
+		LOG.log(Level.INFO, id);
 
-		//if(id == 1)
-		//{
-			swarm.setBlockCount(2);
-			swarm.setFilename("virus.exe");
-			swarm.setFileChecksum("XXXYYY");
-			swarm.setMetadataChecksum("XXXYYY");
-			
-			List<String> peers = new ArrayList<String>();
-			peers.add("1.2.3.4");
-			peers.add("1.2.3.5");
-			
-			swarm.setPeers(peers);
-		//}
+ 		List<String> peers = new ArrayList<String>();
+ 		try {
+ 			System.out.println();
+ 			while(result.next()){
+ 		        //Retrieve by column name			
+ 		        filename = result.getString("filename");	         
+ 		        blockcount= result.getInt("totalblocks");
+ 		     	filechecksum=result.getString("filechecksum");
+ 		     	metadatachecksum=result.getString("metadatachecksum");
+	
+ 	         	swarm.setBlockCount(blockcount);
+ 				swarm.setFilename(filename);
+ 				swarm.setFileChecksum(filechecksum);
+ 				swarm.setMetadataChecksum(metadatachecksum);
+ 		    }
+ 	    }
+ 	    catch (Exception e) {
+ 	        System.out.println("Exception in query method:\n" + e.getMessage());
+ 	    }
+ 		readquery="select distinct peers from peersarray where uniquefileid =" + id;
+ 		result = test.runquery(readquery);
+ 		try {
+ 			System.out.println();
+ 			while(result.next()){
+ 		        //Retrieve by column name			
+ 		        filepeers = result.getString("peers");	         
+ 		        peers.add(filepeers);
+ 		    }
+ 	    }
+ 	    catch (Exception e) {
+ 	        System.out.println("Exception in query method:\n" + e.getMessage());
+ 	    }
+ 		test.closeconnect();	
+ 		swarm.setPeers(peers);
 		return swarm;
 	}
 	

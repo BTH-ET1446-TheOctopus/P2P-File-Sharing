@@ -10,8 +10,11 @@ import backend.json.Chunk;
 import backend.json.Chunks;
 import backend.json.Peers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 public class ClientCalls {
     
+	private static final Logger LOG = Logger.getLogger(ClientCalls.class.getName());
 	/**
 	 * If no bootstrap server is available the client can request peers 
 	 * from remote clients.
@@ -30,8 +33,7 @@ public class ClientCalls {
 		Peers respons = webResource
 				.accept("Content-Type", "application/json")
                 .get(Peers.class);
-		
-		System.out.println(respons.toString());
+		LOG.log(Level.INFO,respons.toString());
 		return respons;
     }
     
@@ -49,13 +51,13 @@ public class ClientCalls {
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(clientIP + "/rest/" + fileID);
+				   .resource(clientIP + "/rest/file/" + fileID);
 		
 		Chunks respons = webResource
 				.accept("Content-Type", "application/json")
                 .get(Chunks.class);
 		
-		System.out.println(respons.toString());
+		LOG.log(Level.INFO,respons.toString());
 		return respons;
 	}
 	
@@ -75,13 +77,13 @@ public class ClientCalls {
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
-				   .resource(clientIP + "/rest" + fileID + "/" + chunk);
+				   .resource(clientIP + "/rest/file/" + fileID + "/" + chunk);
 		
 		Chunk respons = webResource
 				.accept("Content-Type", "application/json")
                 .get(Chunk.class);
 		
-		System.out.println(respons.toString());
+		LOG.log(Level.INFO,respons.toString());
 		return respons;
 	}
 }

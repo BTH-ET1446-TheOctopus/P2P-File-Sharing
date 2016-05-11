@@ -2,13 +2,15 @@ package sql;
 
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 //import backend.rest.RESTStartUp;
 
 public class DBWrite {
 	
 	sqlconnector sc = new sqlconnector();
-
+	
+	private static final Logger LOG = Logger.getLogger(DBWrite.class.getName());
 	public DBWrite(){
 		
 	}
@@ -23,7 +25,7 @@ public class DBWrite {
 			//"VALUES ('192.168.54.68', 'Backup01', default,2, 1)");
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOG.log(Level.INFO, e.getMessage(), e);
 		}
 		finally {  //close all connection to database
 			sc.closeconnect();
@@ -39,7 +41,7 @@ public class DBWrite {
 					"VALUES ('"+filename+"', "+totalblocks+", '"+peers+"', "+peercount+", "+uniquefileid+",'filechecksum', 'metadatachecksum')");
 			//"VALUES ('Pirates Carrabian', 10000, '192.168.2.2', 1, 2255, 'filechecksum', 'metadatachecksum' )");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOG.log(Level.INFO, e.getMessage(), e);
 		}
 		finally {  //close all connection to database
 			sc.closeconnect();
@@ -54,7 +56,7 @@ public class DBWrite {
 			stmnt.executeUpdate("INSERT INTO serverpeers (id, latestIP, blacklist, timestamp) " + 
 					"VALUES ("+id+", '"+latestIP+"', "+blacklist+", default)");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOG.log(Level.INFO, e.getMessage(), e);
 		} finally {  //close all connection to database
 			sc.closeconnect();
 		}
@@ -69,7 +71,7 @@ public class DBWrite {
 			stmnt.executeUpdate("INSERT INTO peersarray (uniquefileid, peers) " + 
 					"VALUES ( '"+uniquefileid+"', '"+peers+"')");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOG.log(Level.INFO, e.getMessage(), e);
 		}
 		finally {  //close all connection to database
 			sc.closeconnect();
