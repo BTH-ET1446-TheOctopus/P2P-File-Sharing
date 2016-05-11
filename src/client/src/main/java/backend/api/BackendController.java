@@ -2,6 +2,7 @@ package backend.api;
 
 import java.util.List;
 
+import backend.api.datatypes.SwarmMetadataShort;
 import backend.json.Swarm;
 
 /**
@@ -17,7 +18,7 @@ public interface BackendController {
 	 * 
 	 * @return A list of swarm metadata
 	 */
-	public List<Swarm> getSwarms();
+	public List<SwarmMetadataShort> getSwarms();
 
 	/**
 	 * Get a list of known peers.
