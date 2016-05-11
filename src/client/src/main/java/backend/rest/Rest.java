@@ -62,7 +62,7 @@ public class Rest {
 	@POST
 	@Path("/searchresult/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public void searchResult(@QueryParam("id") Integer id, @QueryParam("blockCount") Integer blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum)
+	public void searchResult(@QueryParam("id") String id, @QueryParam("blockCount") Integer blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum)
 	{
 		
 	}
@@ -70,11 +70,11 @@ public class Rest {
 	@GET
 	@Path("/file/{id}/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Chunks getFileChunks(@PathParam("id") Integer id)
+	public Chunks getFileChunks(@PathParam("id") String id)
 	{	
 		Chunks chunks = new Chunks();
 		LOG.log(Level.INFO, id.toString());
-		if(id != 1){
+		if(id != "1"){
 			List<Integer> chunk = new ArrayList<Integer>();
 			chunk.add(1);
 			chunk.add(2);
@@ -87,7 +87,7 @@ public class Rest {
 	@GET
 	@Path("/file/{id}/{chunk}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Chunk getFile(@PathParam("id") Integer id, @PathParam("chunk") Integer chunk)
+	public Chunk getFile(@PathParam("id") String id, @PathParam("chunk") Integer chunk)
 	{
 		/*
 		 * Here we should use id and chunk to detetermine what the respons should be

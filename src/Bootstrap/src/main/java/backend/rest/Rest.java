@@ -9,7 +9,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
+import javax.ws.rs.core.UriInfo;
+/*
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+*/
 
 import backend.Settings;
 import backend.json.Blacklist;
@@ -36,6 +45,19 @@ import java.util.UUID;
 
 @Path("/rest")
 public class Rest {
+	//@javax.ws.rs.core.Context HttpServletRequest req;
+
+	  //@Resource WebServiceContext webServiceContext;
+	/*
+	@Context UriInfo uriInfo;
+	@Context Request request;
+	public Rest(UriInfo uriInfo, Request request)
+	{
+		this.uriInfo = uriInfo;
+		this.request = request;
+	}
+	*/
+	
 	@GET
 	@Path("/test/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -44,6 +66,8 @@ public class Rest {
 		adr.setAge(32);
 		adr.setName("Fidde");
 		adr.setSurename("Lass");
+		
+		//System.out.println(uriInfo.getBaseUri());
 		return adr;
 	}
 	/**
@@ -56,10 +80,20 @@ public class Rest {
 	@GET
 	@Path("/hello/")
 	@Produces(MediaType.APPLICATION_JSON)
+	//public String getHello(@Context HttpServletRequest req, @QueryParam("id") String id)
 	public String getHello(@QueryParam("id") String id)
 	{
-		
-		
+		/*
+		MessageContext messageContext = webServiceContext.getMessageContext();
+	      HttpServletRequest request = (HttpServletRequest) messageContext.get(MessageContext.SERVLET_REQUEST); 
+	      String callerIpAddress = request.getRemoteAddr();
+
+	      System.out.println("Caller IP = " + callerIpAddress); 
+		//System.out.println(req.getRemoteAddr());
+		 * */
+		 
+		//String remoteHost = req.getRemoteHost();
+		//System.out.println(remoteHost);
 		//if id is -1 or it don't exist in db give it a new one save it to db
 		UUID uuid = UUID.randomUUID();
 		
@@ -71,7 +105,7 @@ public class Rest {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}	
 		
 		BufferedReader br = null;
 		try {
@@ -90,6 +124,10 @@ public class Rest {
 		}
 		
 		System.out.println(timestamp);
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MM yyyy HH:mm:ss");
+		String currentTime = sdf.format(timestamp);
+		
+		System.out.println(currentTime);
 		
 		return uuid.toString();
 		
