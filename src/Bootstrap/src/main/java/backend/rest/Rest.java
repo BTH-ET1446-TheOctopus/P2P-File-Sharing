@@ -145,6 +145,7 @@ public class Rest {
  		sqlconnector test = new sqlconnector();
  		ResultSet result;
  		String data="";
+ 		int counter=0;
  		test.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
  		readquery="select distinct peers from peersarray";
  		result = test.runquery(readquery);
@@ -155,9 +156,11 @@ public class Rest {
  			System.out.println();
  			while(result.next()){
  		         //Retrieve by column name			
- 		         data = result.getString("ip");	         
- 		         ip.add(data);
-	
+ 		         data = result.getString("peers");	         
+ 		         if (counter<3){
+ 		        	 ip.add(data);
+ 		         }
+ 		         counter++;
  		      }
  	    }
  	    catch (Exception e) {
@@ -265,7 +268,6 @@ public class Rest {
  	        System.out.println("Exception in query method:\n" + e.getMessage());
  	    }
  		test.closeconnect();
-		
 		return swarmHelp;
 	}
 	
@@ -283,9 +285,10 @@ public class Rest {
  		String filechecksum="";
  		String metadatachecksum="";
  		String filepeers="";
+ 		String swarmid="'"+id+"'";
  		
  		test.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
- 		readquery="select * from serverfile where uniquefileid = "+ id;
+ 		readquery="select * from serverfile where uniquefileid = "+ swarmid;
  		result = test.runquery(readquery);
 
 		Swarm swarm = new Swarm();
@@ -310,7 +313,7 @@ public class Rest {
  	    catch (Exception e) {
  	        System.out.println("Exception in query method:\n" + e.getMessage());
  	    }
- 		readquery="select distinct peers from peersarray where uniquefileid =" + id;
+ 		readquery="select distinct peers from peersarray where uniquefileid =" + swarmid;
  		result = test.runquery(readquery);
  		try {
  			System.out.println();

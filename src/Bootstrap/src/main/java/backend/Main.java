@@ -28,7 +28,7 @@ public class Main {
 		//Creates Server DB on Runtime
 		test.createserverdb();
 		//Insert Sample Data in Server DB
-		insample.insertbdb();
+		//insample.insertbdb();
 		
 
 		final Thread restServerThread = new Thread(new RESTStartUp());
