@@ -24,6 +24,8 @@ public class Backend implements BackendController {
 	private ClientCalls clientCalls;
 	private BootstrapCalls bootstrapCalls;
 
+	private BootstrapHelloThread bootstrapHelloThread;
+
 	public Backend(BackendObserver restObserver) {
 		activeSwarms = new HashMap<String, SwarmEngager>();
 
@@ -32,10 +34,11 @@ public class Backend implements BackendController {
 		clientCalls = new ClientCalls();
 		bootstrapCalls = new BootstrapCalls();
 
-		// TODO Start bootstrap hello thread (/hello)
+		bootstrapHelloThread = new BootstrapHelloThread(bootstrapCalls);
 
 		// TODO Start bootstrap data retrieval thread (/peers, /bootstraps, /blacklist, etc)
 
+		bootstrapHelloThread.start();
 	}
 
 	public boolean engageSwarm(String id) {
