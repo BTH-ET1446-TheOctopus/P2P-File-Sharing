@@ -31,7 +31,7 @@ The repo both contains what was called Bootstrap and client before.
 
 8. {"name":"Fidde","surename":"Lass","age":32} should appear and you are ready to go!
 
-#Install Mysql
+# Install Mysql:
 
 A. Under Ubuntu OS
 1.Install mysql using the following command.
