@@ -1,6 +1,7 @@
 package backend.rest;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +21,7 @@ import backend.json.Address;
 import backend.json.Chunk;
 import backend.json.Chunks;
 import backend.json.Peers;
+import sql.sqlconnector;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,10 +48,31 @@ public class Rest {
 	public Peers getPeers() {
 		Peers peers = new Peers();
 		List<String> ip = new ArrayList<String>();
-		ip.add("1.2.3.4");
-		ip.add("1.2.3.6");
-
-		peers.setpeers(ip);
+		String readquery="";
+ 		sqlconnector test = new sqlconnector("clientdb");
+ 		ResultSet result;
+ 		String data="";
+ 		int counter=0;
+ 		readquery="select distinct peers from peersarray";
+ 		result = test.runquery(readquery);
+		
+		try {
+ 			System.out.println();
+ 			while(result.next()){
+ 		         //Retrieve by column name			
+ 		         data = result.getString("peers");	         
+ 		         if (counter<3){
+ 		        	 ip.add(data);
+ 		         }
+ 		         counter++;
+ 		      }
+ 	    }
+ 	    catch (Exception e) {
+ 	        System.out.println("Exception in query method:\n" + e.getMessage());
+ 	    }
+ 		test.closeconnect();
+ 		
+ 		peers.setpeers(ip);
 		return peers;
 	}
 
