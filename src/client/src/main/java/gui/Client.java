@@ -338,19 +338,6 @@ public class Client
 		darkPeerbtn = new JButton();
 		darkPeerbtn.setBounds(0, 0, 34, 34);
 		
-		
-		// For Enabling and Disabling a peer as DarkPeer.
-		darkPeerbtn.addActionListener(new ActionListener()
-				{
-		public void actionPerformed(ActionEvent e)
-		{
-	
-			TabbedPane tp =new TabbedPane();
-			tp.setVisible(true);							
-		}
-	});
-
-
 		if (this.darkStatus == false)
 		{
 			setDarkPeerBtn(false);
