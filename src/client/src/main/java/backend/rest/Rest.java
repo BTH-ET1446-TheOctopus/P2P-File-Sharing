@@ -117,8 +117,22 @@ public class Rest {
 
 		// Database code:
 		//  - Get the filename from 'id'
+ 		sqlconnector test = new sqlconnector("clientdb");
+ 		ResultSet result;
+ 		String fname="";
+ 		String readquery="select distinct filename from clientfile where filename='id'";
+ 		result = test.runquery(readquery);
+		//Retrieve by column name
+ 		try {
+ 			fname = result.getString("filename");
+ 	    }
+ 	    catch (Exception e) {
+ 	        System.out.println("Exception in query method:\n" + e.getMessage());
+ 	    }
+			         
+ 		test.closeconnect();
 		//  - Check if the block number 'chunk' is downloaded
-		
+ 		
 		Chunk chunko = new Chunk();
 		chunko.setSequenceNumber(chunk);
 
