@@ -19,6 +19,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JDialog;
 
+import backend.Backend;
+
 public class Client
 {
 	private boolean					darkStatus;
@@ -40,7 +42,6 @@ public class Client
 	private String[]				columnHeaders	=
 	{ "ID", "Name", "Progress", "Size", "Speed", "Peers", "Due", "Added" };
 	private String[][]				fileStatistics;
-	private String					selectedFile;
 	private DefaultTableModel		model;
 	private List<TableInitialize>	tableRows;
 	private Search					searchWindows;
@@ -179,7 +180,8 @@ public class Client
 			{
 				JFileChooser file = new JFileChooser();
 				file.showOpenDialog(frame);
-				selectedFile = file.getSelectedFile().toString();
+				Backend be = new Backend(null);
+				be.createSwarm(file.getSelectedFile().toString());
 			}
 		});
 	}
@@ -388,19 +390,18 @@ public class Client
 	private void addSampleDataToTable()
 	{
 		tableRows = new ArrayList<>();
-
-		TableInitialize sampleRow1 = new TableInitialize("1", "Man on the moon.mp4", "100%", "999.9 MB", "999.0 Mbps",
-				"3", "99h:59m", "23,Sep,16 / 22:28:30");
-
-		TableInitialize sampleRow2 = new TableInitialize("2", "Woman on the earth.mp4", "32%", "610 MB", "1.2 Mbps",
-				"3", "2h:15m", "23,Sep,16 / 21:13:19");
-
-		TableInitialize sampleRow3 = new TableInitialize("3", "Boy on the mars.mp4", "15%", "330 MB", "4.5 Mbps", "3",
-				"0h:23m", "23,Sep,16 / 20:08:00");
-
-		tableRows.add(sampleRow1);
-		tableRows.add(sampleRow2);
-		tableRows.add(sampleRow3);
+		List<String> sampleRow1 = new ArrayList<>();
+		sampleRow1.add("1");
+		sampleRow1.add("Man on the moon.mp4");
+		sampleRow1.add("100%");
+		sampleRow1.add("999.9 MB");
+		sampleRow1.add("999.0 Mbps");
+		sampleRow1.add("999");
+		sampleRow1.add("99h:59m");
+		sampleRow1.add("23,Sep,16 / 22:28:30");
+		TableInitialize object = new TableInitialize();
+		object.setRowTable(sampleRow1);
+		tableRows.add(object);
 
 		createTableDataModel(tableRows);
 	}
@@ -509,11 +510,10 @@ public class Client
 		fileStatistics = new String[transfers.size()][8];
 
 		int rowIndex = 0;
-
 		for (TableInitialize transfer : transfers)
 		{
 
-			List<String> row = transfer.rowCreation();
+			List<String> row = transfer.getRowTable();
 			for (int columnIndex = 0; columnIndex < columnHeaders.length; columnIndex++)
 			{
 				fileStatistics[rowIndex][columnIndex] = row.get(columnIndex);
@@ -521,7 +521,7 @@ public class Client
 
 			rowIndex++;
 		}
-
+System.out.println(fileStatistics);
 		model = new DefaultTableModel(fileStatistics, columnHeaders);
 	}
 
@@ -533,16 +533,6 @@ public class Client
 	public void setFrame(JFrame frame)
 	{
 		this.frame = frame;
-	}
-
-	public String getSelectedFile()
-	{
-		return selectedFile;
-	}
-
-	public void setSelectedFile(String selectedFile)
-	{
-		this.selectedFile = selectedFile;
 	}
 
 	public Search getSearchWindows()
