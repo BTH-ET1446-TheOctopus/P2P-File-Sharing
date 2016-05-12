@@ -11,14 +11,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
-import javax.ws.rs.core.UriInfo;
-/*
-import javax.xml.ws.WebServiceContext;
-import javax.xml.ws.handler.MessageContext;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-*/
 
 import backend.Settings;
 import backend.json.Blacklist;
@@ -39,7 +31,6 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.sql.*;
-import java.util.Properties;
 import java.util.UUID;
 
 import java.util.logging.Level;
@@ -47,24 +38,13 @@ import java.util.logging.Logger;
 
 @Path("/rest")
 public class Rest {
-	//@javax.ws.rs.core.Context HttpServletRequest req;
-
-	  //@Resource WebServiceContext webServiceContext;
-	/*
-	@Context UriInfo uriInfo;
-	@Context Request request;
-	public Rest(UriInfo uriInfo, Request request)
-	{
-		this.uriInfo = uriInfo;
-		this.request = request;
-	}
-	*/
-	
 	private static final Logger LOG = Logger.getLogger(Rest.class.getName());
+	
 	@GET
 	@Path("/test/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public TestAddress convertCtoF(){
+	public TestAddress convertCtoF(@Context org.glassfish.grizzly.http.server.Request re){
+		System.out.println(re.getRemoteAddr());
 		TestAddress adr = new TestAddress();
 		adr.setAge(32);
 		adr.setName("Fidde");
@@ -86,18 +66,6 @@ public class Rest {
 	//public String getHello(@Context HttpServletRequest req, @QueryParam("id") String id)
 	public String getHello(@QueryParam("id") String id)
 	{
-		/*
-		MessageContext messageContext = webServiceContext.getMessageContext();
-	      HttpServletRequest request = (HttpServletRequest) messageContext.get(MessageContext.SERVLET_REQUEST); 
-	      String callerIpAddress = request.getRemoteAddr();
-
-	      System.out.println("Caller IP = " + callerIpAddress); 
-		//System.out.println(req.getRemoteAddr());
-		 * */
-		 
-		//String remoteHost = req.getRemoteHost();
-		//System.out.println(remoteHost);
-		//if id is -1 or it don't exist in db give it a new one save it to db
 		UUID uuid = UUID.randomUUID();
 		
 		//After uuid checking generate timestamp from NTP server
@@ -128,14 +96,14 @@ public class Rest {
 		}
 		
 		System.out.println(timestamp);
-		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MM yyyy HH:mm:ss");
-		String currentTime = sdf.format(timestamp);
-
 		LOG.log(Level.INFO, timestamp);
 		
 		return uuid.toString();
 	}
-	
+	/**
+	 * Used by the client to retrive data about the peers that the server is knowing of
+	 * @return Peers, list of peers connected to bootstrap
+	 */
 	@GET
 	@Path("/peers/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -170,6 +138,11 @@ public class Rest {
 		peers.setpeers(ip);
 		return peers;
 	}
+	/**
+	 * Used by the client to get all the bootstrap servers the bootstrap server is aware of. 
+	 * This is in case somethings happen to our main bootstrap
+	 * @return list of all bootstraps that the bootstrap knows of
+	 */
 	
 	@GET
 	@Path("/bootstraps/")
@@ -201,6 +174,10 @@ public class Rest {
 		
 		return bootstraps;
 	}
+	/**
+	 * Used by the client to get the blacklist from the bootstrap. 
+	 * @return list of blacklisted peers
+	 */
 	
 	@GET
 	@Path("/blacklist/")
@@ -237,6 +214,12 @@ public class Rest {
 	/*
 	 * Should be an array that is called swarms
 	 */
+	
+	/**
+	 * Gives the client a list of all swarms that the bootstrap has. In order to get more informaiton
+	 * about those swarms one need to use the UUID that is provided in the response
+	 * @return list of swarms
+	 */
 	@GET
 	@Path("/swarms/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -270,12 +253,24 @@ public class Rest {
  		test.closeconnect();
 		return swarmHelp;
 	}
+	/**
+	 * The client wants to downloade a certain file and use the UUID as a id. This 
+	 * gives the client access to the information needed to start downloade the file
+	 * from different peers
+	 * @param re used to access clients ip
+	 * @param id the UUID of the file the client wants
+	 * @return detaild information about a specific swarm
+	 */
 	
 	@GET
 	@Path("/swarms/{id}/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Swarm getSwarm(@PathParam("id") String id)
+	public Swarm getSwarm(@Context org.glassfish.grizzly.http.server.Request re, @PathParam("id") String id)
 	{
+		//IP 
+		//String callerIP = re.getRemoteAddr();
+		
+		
  		String readquery="";
  		sqlconnector test = new sqlconnector();
  		ResultSet result;
@@ -337,14 +332,35 @@ public class Rest {
 	 * 
 	 * 
 	 */
+	
+	/**
+	 * Used by the client to push a new swarm to the bootstraps database to make it 
+	 * public and may be used by otheres peers to access the file
+	 * 
+	 * @param re used to access pers ip
+	 * @param blockCount number of blocks the file contains of
+	 * @param filename what the name of the file is
+	 * @param fileChecksum the SHA sum used for file
+	 * @param metadataChecksum The SHA sum used for the files header
+	 * @return 
+	 */
 	@POST
     @Path("/swarms/")
     @Produces(MediaType.APPLICATION_JSON)
-    public String addPlainText(@QueryParam("blockCount") int blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum) 
+    public String addPlainText(@Context org.glassfish.grizzly.http.server.Request re, @QueryParam("blockCount") int blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum) 
 	{
+		if(blockCount <= 0)
+		{
+			return "Can't have zero blocks";
+		}
+		
+		
+		String callerIP = re.getRemoteAddr();
 		//Generate UUID for the swarm so it can be downloaded later
 		UUID uuid = UUID.randomUUID();
 		uuid.toString();
+		
+		System.out.println(callerIP);
 		
 		return filename;
     }
