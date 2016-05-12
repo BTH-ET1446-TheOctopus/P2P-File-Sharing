@@ -8,7 +8,10 @@ import java.util.logging.Logger;
 
 import javax.ws.rs.core.UriBuilder;
 
-import com.sun.jersey.api.container.httpserver.HttpServerFactory;
+import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.server.ResourceConfig;
+
+//import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.net.httpserver.HttpServer;
 
 import backend.Backend;
@@ -22,7 +25,7 @@ import java.util.logging.Logger;
 
 public class RESTStartUp implements Runnable {
 	private static final Logger LOG = Logger.getLogger(RESTStartUp.class.getName());
-
+	private final ResourceConfig rc = new ResourceConfig().packages("backend.rest");
 	public void run() {
 		// function to test connection client -> bootstrap -> client
 		testBoostrapConnection();
@@ -30,9 +33,17 @@ public class RESTStartUp implements Runnable {
 		//testClientConnection();
 		
 		/**
+		 *  Updating HTTP server 
+		 */
+		Logger.getLogger("com.sun.jersey").setLevel(Level.WARNING);
+		GrizzlyHttpServerFactory.createHttpServer(URI.create(Settings.CLIENT_URL), rc);
+		
+		
+		/**
 		 * Start the HTTP server that is used for the rest calls. The URL that
 		 * the Rest server will run on is determined in file settings.
 		 */
+		/*
 		HttpServer server = null;
 		try {
 			server = HttpServerFactory.create(Settings.CLIENT_URL);
@@ -56,6 +67,7 @@ public class RESTStartUp implements Runnable {
 				server.stop(0);
 			}
 		}
+		*/
 	}
 
 	/**
@@ -76,8 +88,8 @@ public class RESTStartUp implements Runnable {
 		calls.getPeers();
 		calls.getBootstraps();
 		calls.getBlacklist();
-		calls.getSwarms();
-		calls.getSwarm("abc123");
+		//calls.getSwarms();
+		//calls.getSwarm("abc123");
 	}
 
 	private void testClientConnection() {

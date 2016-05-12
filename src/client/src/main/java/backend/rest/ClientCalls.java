@@ -1,9 +1,9 @@
 package backend.rest;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
+//import com.sun.jersey.api.client.Client;
+//import com.sun.jersey.api.client.WebResource;
+//import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 import backend.json.Address;
 import backend.json.Chunk;
@@ -12,6 +12,10 @@ import backend.json.Peers;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
 public class ClientCalls {
     
 	private static final Logger LOG = Logger.getLogger(ClientCalls.class.getName());
@@ -24,15 +28,23 @@ public class ClientCalls {
 	 */
     public Peers getPeers(String clientIP)
     {
+    	Client client = ClientBuilder.newClient();
+    	
+    	Peers respons = client.target(clientIP)
+    			.path("/rest/peers")
+    			.request(MediaType.APPLICATION_JSON)
+    			.get(Peers.class);
+    	/*
     	DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
 		WebResource webResource = client
 				   .resource(clientIP + "/rest/peers");
-		
+
 		Peers respons = webResource
 				.accept("Content-Type", "application/json")
                 .get(Peers.class);
+		*/
 		LOG.log(Level.INFO,respons.toString());
 		return respons;
     }
@@ -47,6 +59,14 @@ public class ClientCalls {
      */
 	public Chunks getFileChunks(String clientIP, String fileID)
 	{
+		Client client = ClientBuilder.newClient();
+    	
+		Chunks respons = client.target(clientIP)
+    			.path("/rest/file/" + fileID)
+    			.request(MediaType.APPLICATION_JSON)
+    			.get(Chunks.class);
+    	
+		/*
 		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
@@ -56,7 +76,7 @@ public class ClientCalls {
 		Chunks respons = webResource
 				.accept("Content-Type", "application/json")
                 .get(Chunks.class);
-		
+		*/
 		LOG.log(Level.INFO,respons.toString());
 		return respons;
 	}
@@ -73,6 +93,14 @@ public class ClientCalls {
 	 */
 	public Chunk getFileChunk(String clientIP, String fileID, int chunk)
 	{
+		Client client = ClientBuilder.newClient();
+    	
+		Chunk respons = client.target(clientIP)
+    			.path("/rest/file/" + fileID + "/" + chunk)
+    			.request(MediaType.APPLICATION_JSON)
+    			.get(Chunk.class);
+		
+		/*
 		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
 		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 		Client client = Client.create(defaultClientConfig);
@@ -82,7 +110,7 @@ public class ClientCalls {
 		Chunk respons = webResource
 				.accept("Content-Type", "application/json")
                 .get(Chunk.class);
-		
+		*/
 		LOG.log(Level.INFO,respons.toString());
 		return respons;
 	}

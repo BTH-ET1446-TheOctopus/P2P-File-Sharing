@@ -5,6 +5,8 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import backend.Settings;
+
 /**
  * @author Farhan
  */
@@ -25,7 +27,9 @@ public class sqlconnector {
 	private static final Logger LOG = Logger.getLogger(sqlconnector.class.getName());
 
 	public sqlconnector(){
-		//this.connector("root", "sql", "clientdb", "127.0.0.1", "3306");
+
+		this.connector(Settings.MYSQL_USERNAME, Settings.MYSQL_PASSWORD, Settings.MYSQL_DATABASE, Settings.MYSQL_HOST, Settings.MYSQL_PORT);
+
 	}
 	
 	public void connector(String login, String password, String db, String host, String port) {
