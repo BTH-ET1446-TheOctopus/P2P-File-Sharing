@@ -16,14 +16,38 @@ public class ServerPeerTest {
  		readquery="select distinct blacklist from serverspeers";
   		rdrs = test.runquery(readquery);
  		
- 		String writequery="insert into serverspeers (id,latestIP,blacklist,timestamp)"
+  		/**
+ 		 * 
+ 		 * For Writing Database record from serverdb
+ 		 *
+ 		 */
+  		
+  		 		String writequery="insert into serverspeers (id,latestIP,blacklist,timestamp)"
  				+ "VALUES ('1016,'192.12.58.40',0,2016-05-10 03:14:07)";	
 		test.Update(writequery);
+		
+		/**
+ 		 * 
+ 		 * For Reading Database record from serverdb
+ 		 *
+ 		 */
+		
+		try{
 		
  			while(rdrs.next()){
  		         rddata = rdrs.getString("blacklist");	         	
  		      }
- 	   
+		}
+		catch (Exception e) {
+	        System.out.print("Problem with the sql query: ");
+	        System.out.println(e.getMessage());
+			}
+		
+		/**
+ 		 * 
+ 		 * Assert method for comparing query written and query read.
+ 		 *
+ 		 */
  		assertEquals(wrdata, rddata);
  		test.closeconnect();
 	}
