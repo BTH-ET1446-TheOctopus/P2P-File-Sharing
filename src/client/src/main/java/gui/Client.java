@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JDialog;
 
 public class Client
 {
@@ -101,6 +102,7 @@ public class Client
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
+		frame.setDefaultLookAndFeelDecorated(true);
 	}
 
 	/**
@@ -152,6 +154,7 @@ public class Client
 		settingBar.setBounds(0, 344, 680, 34);
 		settingBar.setLayout(null);
 		frame.getContentPane().add(settingBar);
+		JDialog.setDefaultLookAndFeelDecorated(true);
 	}
 
 	/**
@@ -332,6 +335,19 @@ public class Client
 	{
 		darkPeerbtn = new JButton();
 		darkPeerbtn.setBounds(0, 0, 34, 34);
+		
+		
+		// For Enabling and Disabling a peer as DarkPeer.
+		darkPeerbtn.addActionListener(new ActionListener()
+				{
+		public void actionPerformed(ActionEvent e)
+		{
+	
+			TabbedPane tp =new TabbedPane();
+			tp.setVisible(true);							
+		}
+	});
+
 
 		if (this.darkStatus == false)
 		{
