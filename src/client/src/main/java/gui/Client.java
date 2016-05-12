@@ -18,6 +18,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import org.jfree.ui.RefineryUtilities;
+
 public class Client
 {
 	private boolean					darkStatus;
@@ -36,12 +38,14 @@ public class Client
 	private JLabel					upload;
 	private JScrollPane				scrollPane;
 	private JTable					table;
-	private String[]				columnHeaders = { "ID", "Name", "Progress", "Size", "Speed", "Peers", "Due", "Added" };
+	private String[]				columnHeaders	=
+	{ "ID", "Name", "Progress", "Size", "Speed", "Peers", "Due", "Added" };
 	private String[][]				fileStatistics;
 	private String					selectedFile;
 	private DefaultTableModel		model;
 	private List<TableInitialize>	tableRows;
 	private Search					searchWindows;
+	private SpeedChart				window;
 
 	/**
 	 * This method creates the Octopus P2P client GUI.
@@ -244,6 +248,18 @@ public class Client
 		moreInfo.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileInfo.png")));
 		moreInfo.setBounds(612, 0, 34, 34);
 		iconBar.add(moreInfo);
+
+		moreInfo.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				window = new SpeedChart(table.getValueAt(table.getSelectedRow(), 1).toString());
+				window.pack();
+				RefineryUtilities.centerFrameOnScreen(window);
+				window.setVisible(true);
+			}
+
+		});
 	}
 
 	/**
@@ -358,8 +374,8 @@ public class Client
 	{
 		tableRows = new ArrayList<>();
 
-		TableInitialize sampleRow1 = new TableInitialize("1", "Man on the moon.mp4", "100%", "999.9 MB", "999.0 Mbps", "3",
-				"99h:59m", "23,Sep,16 / 22:28:30");
+		TableInitialize sampleRow1 = new TableInitialize("1", "Man on the moon.mp4", "100%", "999.9 MB", "999.0 Mbps",
+				"3", "99h:59m", "23,Sep,16 / 22:28:30");
 
 		TableInitialize sampleRow2 = new TableInitialize("2", "Woman on the earth.mp4", "32%", "610 MB", "1.2 Mbps",
 				"3", "2h:15m", "23,Sep,16 / 21:13:19");
@@ -430,7 +446,7 @@ public class Client
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-		table.setAutoResizeMode(table.AUTO_RESIZE_LAST_COLUMN);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 		table.getColumnModel().getColumn(0).setWidth(40);
 		table.getColumnModel().getColumn(0).setMaxWidth(40);
@@ -490,7 +506,7 @@ public class Client
 
 		model = new DefaultTableModel(fileStatistics, columnHeaders);
 	}
-	
+
 	public JFrame getFrame()
 	{
 		return frame;
@@ -500,7 +516,7 @@ public class Client
 	{
 		this.frame = frame;
 	}
-	
+
 	public String getSelectedFile()
 	{
 		return selectedFile;
