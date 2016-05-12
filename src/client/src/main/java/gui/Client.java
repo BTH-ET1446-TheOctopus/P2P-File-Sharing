@@ -18,8 +18,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import org.jfree.ui.RefineryUtilities;
-
 public class Client
 {
 	private boolean					darkStatus;
@@ -31,7 +29,7 @@ public class Client
 	private JButton					removeTorrent;
 	private JButton					pauseTorrent;
 	private JButton					resumeTorrent;
-	private JButton					moreInfo;
+	private JButton					speedChart;
 	private JButton					search;
 	private JButton					darkPeerbtn;
 	private JLabel					download;
@@ -45,7 +43,7 @@ public class Client
 	private DefaultTableModel		model;
 	private List<TableInitialize>	tableRows;
 	private Search					searchWindows;
-	private SpeedChart				window;
+	private SpeedChart				speedChartWindow;
 
 	/**
 	 * This method creates the Octopus P2P client GUI.
@@ -76,7 +74,7 @@ public class Client
 		createRemoveTorrentButton();
 		createPauseTorrentButton();
 		createResumeTorrentButton();
-		createMoreInfoButton();
+		createSpeedChartButton();
 		createSearchButton();
 		createDownloadLable();
 		createUploadLable();
@@ -167,6 +165,7 @@ public class Client
 	private void createNewTorrentButton()
 	{
 		newTorrent = new JButton();
+		newTorrent.setToolTipText("Create New Torrent");
 		newTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileNew.png")));
 		newTorrent.setBounds(0, 0, 34, 34);
 		iconBar.add(newTorrent);
@@ -193,6 +192,7 @@ public class Client
 	private void createRemoveTorrentButton()
 	{
 		removeTorrent = new JButton();
+		removeTorrent.setToolTipText("Remove Selected Transmition");
 		removeTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileRemove.png")));
 		removeTorrent.setBounds(34, 0, 34, 34);
 		iconBar.add(removeTorrent);
@@ -211,6 +211,7 @@ public class Client
 	private void createPauseTorrentButton()
 	{
 		pauseTorrent = new JButton();
+		pauseTorrent.setToolTipText("Pause Selected Transmition");
 		pauseTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/filePause.png")));
 		pauseTorrent.setBounds(102, 0, 34, 34);
 		iconBar.add(pauseTorrent);
@@ -229,6 +230,7 @@ public class Client
 	private void createResumeTorrentButton()
 	{
 		resumeTorrent = new JButton();
+		resumeTorrent.setToolTipText("Resume Selected Transmition");
 		resumeTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileResume.png")));
 		resumeTorrent.setBounds(136, 0, 34, 34);
 		iconBar.add(resumeTorrent);
@@ -242,21 +244,19 @@ public class Client
 	 *
 	 */
 
-	private void createMoreInfoButton()
+	private void createSpeedChartButton()
 	{
-		moreInfo = new JButton();
-		moreInfo.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileInfo.png")));
-		moreInfo.setBounds(612, 0, 34, 34);
-		iconBar.add(moreInfo);
+		speedChart = new JButton();
+		speedChart.setToolTipText("Speed Chart For Selected Transmition");
+		speedChart.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileInfo.png")));
+		speedChart.setBounds(612, 0, 34, 34);
+		iconBar.add(speedChart);
 
-		moreInfo.addActionListener(new ActionListener()
+		speedChart.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				window = new SpeedChart(table.getValueAt(table.getSelectedRow(), 1).toString());
-				window.pack();
-				RefineryUtilities.centerFrameOnScreen(window);
-				window.setVisible(true);
+				setSpeedChartWindow(new SpeedChart(table.getValueAt(table.getSelectedRow(), 1).toString(), frame));
 			}
 
 		});
@@ -273,6 +273,7 @@ public class Client
 	private void createSearchButton()
 	{
 		search = new JButton();
+		search.setToolTipText("Search");
 		search.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileSearch.png")));
 		search.setBounds(646, 0, 34, 34);
 		iconBar.add(search);
@@ -280,9 +281,7 @@ public class Client
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-
 				searchWindows = new Search(frame);
-
 			}
 		});
 	}
@@ -441,7 +440,10 @@ public class Client
 	private void createTable()
 	{
 		table = new JTable(model);
-		table.setRowHeight(30);
+		table.setBackground(new Color(212, 239, 253));
+		table.setGridColor(new Color(192, 192, 192));
+		table.setToolTipText("Your Active Transmitions");
+		table.setRowHeight(40);
 		scrollPane.setViewportView(table);
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -535,6 +537,16 @@ public class Client
 	public void setSearchWindows(Search searchWindows)
 	{
 		this.searchWindows = searchWindows;
+	}
+
+	public SpeedChart getSpeedChartWindow()
+	{
+		return speedChartWindow;
+	}
+
+	public void setSpeedChartWindow(SpeedChart speedChartWindow)
+	{
+		this.speedChartWindow = speedChartWindow;
 	}
 
 }
