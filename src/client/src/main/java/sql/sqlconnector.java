@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import backend.Settings;
-//import com.mysql.jdbc.PreparedStatement;
 
 /**
  * @author Farhan
@@ -14,13 +13,6 @@ import backend.Settings;
 
 public class sqlconnector {
 	
-	/* You're doing the connection in connector() method below in the code.
-	 * These two lines are redundant! You can delete them, Farhan. 
-	 */
-	
-	//private static final String dbClassName = "com.mysql.jdbc.Driver";
-	//private static final String CONNECTION = "jdbc:mysql://localhost:3306/clientdb";
-
 	private Connection  connection  = null;
 	private Statement   statement   = null;
 	private ResultSet   set         = null;
@@ -31,19 +23,13 @@ public class sqlconnector {
 	String login;
 	String password;
 	String url;
-
-	String filename="";
-	int totalblocks=0;
-	String peers = "";
-	int peercount = 0;
-	String uniquefileid = "";
-	String filechecksum = "";
-	String metadatachecksum = "";
 	
 	private static final Logger LOG = Logger.getLogger(sqlconnector.class.getName());
 
 	public sqlconnector(){
+
 		this.connector(Settings.MYSQL_USERNAME, Settings.MYSQL_PASSWORD, Settings.MYSQL_DATABASE, Settings.MYSQL_HOST, Settings.MYSQL_PORT);
+
 	}
 	
 	public void connector(String login, String password, String db, String host, String port) {
@@ -80,57 +66,6 @@ public class sqlconnector {
 		}
 		return set;
 	}
-	/*Farhan: Read from tables is done in "readFromTables" class
-	 * It's your call, but we don't need to do it here
-	*/
-	
-//	public void printresult(ResultSet rs){
-//		try {
-//			System.out.println();
-//			while(rs.next()){
-//				//Retrieve by column name
-//				filename=rs.getString("filename");
-//				totalblocks=rs.getInt("totalblocks");
-//				peers = rs.getString("peers");
-//				peercount = rs.getInt("peercount");
-//				uniquefileid = rs.getString("uniquefileid");
-//				filechecksum = rs.getString("filechecksum");
-//				metadatachecksum = rs.getString("metadatachecksum");
-//
-//				//Display values
-//				System.out.printf("filename: %s ", filename);
-//				System.out.printf("totalblocks: %d ", totalblocks);
-//				System.out.printf("peers: %s ", peers);
-//				System.out.printf("peercount: %s ", peercount);
-//				System.out.printf("uniquefileid: %s ", uniquefileid);
-//				System.out.printf("filechecksum: %s\n", filechecksum);
-//				System.out.printf("filechecksum: %s\n", metadatachecksum);
-//			}
-//		}
-//		catch (Exception e) {
-//			System.out.println("Exception in query method:\n" + e.getMessage());
-//		}
-//
-//	}
-	
-//	public void printpeersarray(ResultSet rs){
-//		try {
-//			System.out.println();
-//			while(rs.next()){
-//				//Retrieve by column name			
-//				//uniquefileid = rs.getString("uniquefileid");
-//				peers = rs.getString("peers");	         
-//				//Display values 
-//				//System.out.printf("uniquefileid: %s ", uniquefileid);
-//				System.out.printf("peers: %s ", peers);
-//				System.out.println();
-//			}
-//		}
-//		catch (Exception e) {
-//			System.out.println("Exception in query method:\n" + e.getMessage());
-//		}
-//
-//	}
 
 	public boolean Update (String update) {
 
@@ -152,24 +87,19 @@ public class sqlconnector {
 	public void createserverdb(){
 		//Create Serverdb
 		try {
-			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "servers", null);
-			if (tables.next()) {
-				// Table exists Don't Create Table
-			}
-			else {
-				//Table Doesn't Exist, Create Table
-				String createdb = "CREATE database serverdb";
-				this.Update(createdb);		
-				createdb = "USE serverdb";
-				this.Update(createdb);
-			}
+			String createdb = "create database if not exists serverdb";
+			this.Update(createdb);		
+			String usedb = "USE serverdb";
+			this.runquery(usedb);
 		}
 		catch (Exception e) {
 			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 		}
-
-
+		
+		//Close Connection and Connect to Client DB
+		this.closeconnect();
+		this.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
+		
 		//Create Table01 servers
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
@@ -180,13 +110,12 @@ public class sqlconnector {
 			else {
 				//Table Doesn't Exist, Create Table
 				String createtable = " CREATE TABLE servers ( " +
-						" ip varchar(100) NOT NULL, " +
+						" ip varchar(15) NOT NULL, " +
 						" name char(20) NOT NULL, " +
 						" timestamp timestamp NOT NULL, " +
 						" clientcount int NOT NULL, " +
 						" servercount int NOT NULL, " +
 						" CONSTRAINT Servers_pk PRIMARY KEY (ip))";
-
 				this.Update(createtable);
 			}
 		}
@@ -205,7 +134,7 @@ public class sqlconnector {
 				//Table Doesn't Exist, Create Table
 				String createtable = "CREATE TABLE peersarray ( " +
 						" uniquefileid varchar(100) NOT NULL, " +    
-						" peers varchar(100) NOT NULL, " +
+						" peers varchar(15) NOT NULL, " +
 						" CONSTRAINT peersarray_pk PRIMARY KEY (uniquefileid))";
 				this.Update(createtable);
 			}
@@ -247,8 +176,8 @@ public class sqlconnector {
 			else {
 				//Table Doesn't Exist, Create Table
 				String createtable = "CREATE TABLE serverpeers ( " +
-						" id int NOT NULL, " +
-						" latestIP varchar(100) NOT NULL, " +
+						" id varchar(100) NOT NULL, " +
+						" latestIP varchar(15) NOT NULL, " +
 						" blacklist binary(1) NOT NULL, " +
 						" timestamp timestamp NOT NULL, " +
 						" CONSTRAINT serverpeers_pk PRIMARY KEY (id))";
@@ -263,30 +192,24 @@ public class sqlconnector {
 	//Function to Create Client DB
 	//Check if it already exists, then do nothing
 	public void createclientdb(){
-		//Create Clientdb
+		//Create Client DB
 		try {
-			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "clientfile", null);
-			if (tables.next()) {
-				// Table exists Don't Create Table
-			}
-			else {
-				//Table Doesn't Exist, Create Table
-				String createdb = "CREATE database clientdb";
-				this.Update(createdb);		
-				createdb = "USE clientdb";
-				this.Update(createdb);
-			}
+			String createdb = "create database if not exists clientdb";
+			this.Update(createdb);		
+			String usedb = "USE clientdb";
+			this.runquery(usedb);
 		}
 		catch (Exception e) {
 			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 		}
-
-
+		
+		//Close Connection and Connect to Client DB
+		this.closeconnect();
+		this.connector("root", "sql", "clientdb", "127.0.0.1", "3306");
 		//Create Table01 peersarray
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "peersarray", null);
+			ResultSet tables = dbm.getTables(null, null, "clientdb.peersarray", null);
 			if (tables.next()) {
 				// Table exists Don't Create Table
 			}
@@ -297,7 +220,6 @@ public class sqlconnector {
 							+ " uniquefileid varchar(100) NOT NULL, "    
 							+ " peers varchar(15) NOT NULL, "
 							+ " CONSTRAINT peersarray_pk PRIMARY KEY (id))";
-
 				this.Update(createtable);
 			}
 		}
@@ -352,32 +274,7 @@ public class sqlconnector {
 			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 		}
 	}
-	/*public boolean write (String write) {
 
-    try {
-    	String writequery = "INSERT INTO serverfile (filename,filesize,filetype,peers,peercount,uniquefileid) "
-    			+ " values (?, ?, ?, ?, ?, ?)";
-	      // create the mysql insert preparedstatement
-	      PreparedStatement preparedStmt = connection.prepareStatement(writequery);
-	      preparedStmt.setString (1, "Barney");
-	      preparedStmt.setString (2, "Rubble");
-	      preparedStmt.setDate   (3, startDate);
-	      preparedStmt.setBoolean(4, false);
-	      preparedStmt.setInt    (5, 5000);
-
-	      // execute the preparedstatement
-	      preparedStmt.execute();
-        statement = connection.createStatement();
-        statement.executeUpdate(update);
-
-    }
-    catch (SQLException e) {
-        System.out.println("Exception in update method:\n" + e.getMessage());
-        return false;
-    }
-
-    return true;
-} */
 
 	public void closeconnect(){
 		//Close all connection to MySQL
