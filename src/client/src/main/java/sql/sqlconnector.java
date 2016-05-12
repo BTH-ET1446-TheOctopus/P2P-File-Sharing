@@ -31,6 +31,13 @@ public class sqlconnector {
 		this.connector(Settings.MYSQL_USERNAME, Settings.MYSQL_PASSWORD, Settings.MYSQL_DATABASE, Settings.MYSQL_HOST, Settings.MYSQL_PORT);
 
 	}
+
+	//Overloaded Constructor to Open Connection with Specified DB
+	public sqlconnector(String dbname){
+
+		this.connector(Settings.MYSQL_USERNAME, Settings.MYSQL_PASSWORD, dbname, Settings.MYSQL_HOST, Settings.MYSQL_PORT);
+	}
+
 	
 	public void connector(String login, String password, String db, String host, String port) {
 		this.login = login;

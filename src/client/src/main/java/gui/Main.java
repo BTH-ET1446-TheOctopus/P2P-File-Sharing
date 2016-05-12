@@ -14,8 +14,7 @@ public class Main
 	{
 		Logger.getLogger("com.sun.jersey").setLevel(Level.WARNING);
 		
-		sqlconnector test=new sqlconnector();
-		test.connector("root", "sql", "mysql", "127.0.0.1", "3306");
+		sqlconnector test=new sqlconnector("mysql");
 		//Creates Client DB on Runtime
 		test.createclientdb();
 		
@@ -31,10 +30,10 @@ public class Main
 				try
 				{
 					restServerThread.join();
-					sqlconnector test=new sqlconnector();
-					test.connector("root", "sql", "mysql", "127.0.0.1", "3306");
+					//sqlconnector test=new sqlconnector();
+					//test.connector("root", "sql", "mysql", "127.0.0.1", "3306");
 					//Creates Client DB on Runtime
-					test.createclientdb();
+					//test.createclientdb();
 				} catch (InterruptedException e)
 				{
 					e.printStackTrace();

@@ -88,8 +88,8 @@ public class RESTStartUp implements Runnable {
 		calls.getPeers();
 		calls.getBootstraps();
 		calls.getBlacklist();
-		//calls.getSwarms();
-		//calls.getSwarm("abc123");
+		calls.getSwarms();
+		calls.getSwarm("abc123");
 	}
 
 	private void testClientConnection() {
