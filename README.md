@@ -1,13 +1,18 @@
-P2P file sharing application is developed using Java.
+The P2P file sharing application is developed using Java.
 
-At start,the peers are connected to bootstrap server and request for data.Bootstrap server provides the information of random peers who have the data along with the blacklisted IPs.
-Peers periodically refresh their validity time and connect to one of the addresses related to swarms to download through HTTPS/REST.
-When another peer requests for the same file as the former peer, it now has two sources to download from simultaneously.
+Upon start,the peers are connected to the bootstrap server.Bootstrap server displays the IP addresses of
+random peers,along with the blacklisted IPs.
 
-When a peer/client searches for data,a request is sent to the backend,which in turn communicates with database and processes 
-the request and returns the relevant data.
+Peers are responsible for periodically refreshing the validity time for their IP addresses. The peer attempts to
+establish connections to the peers received from the bootstrap server through HTTPS/REST.
 
-The repo both contains what was called Bootstrap and client before. 
+When another peer requests for the same file as the former peer, it now has two sources to download from
+simultaneously.
+
+When a peer/client searches for data,a request is sent to the backend,which in turn communicates with database and
+processes the request, and responds with the relevant data.
+
+The repo both contains what was called Bootstrap and Client before. 
 
 # Install JAVA
 1. http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
@@ -29,7 +34,7 @@ The repo both contains what was called Bootstrap and client before.
 6. Something should be loading now and lots of red lines will appear
 7. Type in web browser http://localhost:9999/rest/rest/test/
 
-8. {"name":"Fidde","surename":"Lass","age":32} should appear and you are ready to go!
+8. {"name":"Fidde","surname":"Lass","age":32} should appear and you are ready to go!
 
 # Install Mysql:
 
@@ -47,7 +52,8 @@ http://dev.mysql.com/downloads/
 2. Follow the installer program instructions.
 2. when asked for username and password, set both username and password as "root".
 3. After setup, create any database.
-Note: Be careful about setting the above mentioned username and password otherwise you may find trouble in connecting to database.
+Note: Be careful while setting the above mentioned username and password to avoid trouble in
+connecting to database.
 
 
 # Build whit Maven
@@ -56,10 +62,6 @@ Make sure you have maven: *mvn -version*
 2. mvn package
 3. cd target
 4. java -jar .\Octopus-0.0.1-SNAPSHOT.jar
-
-
- 
-
 
 NOTE : If the server can't come up you need to close the existing connection or change port. 
 A program that can be used is TCPView but it is only for Windows.
