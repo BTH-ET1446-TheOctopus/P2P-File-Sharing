@@ -19,18 +19,27 @@ public class DatabaseCalls implements DatabaseAPI{
 	ResultSet rs = null;
 	
 	public SwarmMetadata getSwarm() {  //This method reads from 'clientfile' table
+		
+		String filename          = null;
+		String totalblocks       = null;
+		String peers             = null;
+		String peercount         = null;
+		String uniquefileid      = null;
+		String filechecksum      = null;
+		String metadatachecksum  = null;
+		
 		rs = sc.runquery("SELECT * FROM clientfile where peercount='1'");
 
 		try {
 			while(rs.next()){
 				//Retrieve by column name
-				String filename=rs.getString("filename");
-				String totalblocks=rs.getString("totalblocks");
-				String peers = rs.getString("peers");
-				String peercount = rs.getString("peercount");
-				String uniquefileid = rs.getString("uniquefileid");
-				String filechecksum = rs.getString("filechecksum");
-				String metadatachecksum = rs.getString("metadatachecksum");
+				filename=rs.getString("filename");
+				totalblocks=rs.getString("totalblocks");
+				peers = rs.getString("peers");
+				peercount = rs.getString("peercount");
+				uniquefileid = rs.getString("uniquefileid");
+				filechecksum = rs.getString("filechecksum");
+				metadatachecksum = rs.getString("metadatachecksum");
 
 				//Display values
 				LOG.log(Level.INFO, "\nfilename: " + filename + 
@@ -47,11 +56,11 @@ public class DatabaseCalls implements DatabaseAPI{
 			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
 			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
-			
+			return null;
 		} finally  {
 			sc.closeconnect();
 		}
-		//return new SwarmMetadata(uniquefileid, filename, fileChecksum, metadataChecksum, blockCount);
+		return new SwarmMetadata(uniquefileid, filename, totalblocks, filechecksum, metadatachecksum, getPeers());
 	}
 	
 	public List<String> getPeers(){   //This method reads from 'clientpeers' table
@@ -84,6 +93,7 @@ public class DatabaseCalls implements DatabaseAPI{
 			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
 			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
+			return null;
 		} finally  {
 			sc.closeconnect();
 		}
@@ -113,6 +123,8 @@ public class DatabaseCalls implements DatabaseAPI{
 		}	
 
 	} 
+	
+	// WRITES TO TABLES IN 'CLIENTDB'
 	public void addPeerArray(String uniquefileid, String peers){  //This method writes to 'peersarray' table
 		sqlconnector sc = new sqlconnector();
 
@@ -159,12 +171,6 @@ public class DatabaseCalls implements DatabaseAPI{
 		finally {  //close all connection to database
 			sc.closeconnect();
 		}
-	}
-
-	@Override
-	public void addPeerArray() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
