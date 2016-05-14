@@ -1,5 +1,4 @@
--- Created by Farhan Ahmad
--- Last modification date: 2016-05-6 17:17:55.701
+-- Last modification date: 2016-05-14 16:12:19.232
 -- Client Database
 
 -- Create Client Database
@@ -17,8 +16,8 @@ CREATE TABLE peersarray (
     CONSTRAINT peersarray_pk PRIMARY KEY (id)
 );
 
--- Table: clientfile
-CREATE TABLE clientfile (
+-- Table: clientswarm
+CREATE TABLE clientswarm (
     filename char(40) NOT NULL,
     totalblocks int NOT NULL,
     peers varchar(15) NOT NULL,
@@ -26,7 +25,7 @@ CREATE TABLE clientfile (
     uniquefileid varchar(100) NOT NULL,
     filechecksum varchar(100) NOT NULL,
     metadatachecksum varchar(100) NOT NULL,		
-    CONSTRAINT clientfile_pk PRIMARY KEY (uniquefileid)
+    CONSTRAINT clientswarm_pk PRIMARY KEY (uniquefileid)
 );
 
 -- Table: clientpeers
