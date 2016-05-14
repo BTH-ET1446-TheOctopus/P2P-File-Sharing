@@ -3,21 +3,21 @@ package sql;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import sql.api.DatabaseAPI;
+import backend.api.datatypes.SwarmMetadata;
+//import sql.api.DatabaseAPI;
 
 public class DatabaseCalls implements DatabaseAPI{
 	private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName());
 	
 	//create an object from sqlconnector, to be able to connect to the database
 	sqlconnector sc = new sqlconnector();
-
 	ResultSet rs = null;
-
 	
-	public void getSwarm() {  //This method reads from 'clientfile' table
+	public SwarmMetadata getSwarm() {  //This method reads from 'clientfile' table
 		rs = sc.runquery("SELECT * FROM clientfile where peercount='1'");
 
 		try {
@@ -52,7 +52,7 @@ public class DatabaseCalls implements DatabaseAPI{
 		}	
 	}
 	
-	public void getPeers(){   //This method reads from 'clientpeers' table
+	public List<String> getPeers(){   //This method reads from 'clientpeers' table
 		rs = sc.runquery("SELECT * FROM clientpeers");
 
 		try {
@@ -122,14 +122,14 @@ public class DatabaseCalls implements DatabaseAPI{
 		}
 	}
 
-	public void addSwarm(){   //This method writes to 'clientfile' table
+	public void addSwarm(String id, String filename, String fileChecksum, String metadataChecksum, int blockCount){   //This method writes to 'clientfile' table
 		sqlconnector sc = new sqlconnector();
-
 		Statement stmnt = sc.getStatement();
 				
 		try {
 			stmnt.executeUpdate("INSERT INTO clientfile (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
-					"VALUES ('Pirates Carrabian', 10000, '192.168.2.2', 1, 'sdfsdggh22255', 'filechecksum', 'metadatachecksum' )");
+					"VALUES ('"+filename+"', "+blockCount+", '192.168.2.2', 1, '"+id+"', '"+fileChecksum+"', '"+metadataChecksum+"' )");
+					//"VALUES ('Pirates Carrabian', 10000, '192.168.2.2', 1, 'sdfsdggh22255', 'filechecksum', 'metadatachecksum' )");
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
@@ -138,14 +138,14 @@ public class DatabaseCalls implements DatabaseAPI{
 		}
 	}
 	
-	public void addPeers(){  //This method writes to 'clientpeers' table
+	public void addPeers(String swarmId, String ip){  //This method writes to 'clientpeers' table
 		sqlconnector sc = new sqlconnector();
 
 		Statement stmnt = sc.getStatement();
 		
 		try {
 			stmnt.executeUpdate("INSERT INTO clientpeers (id, latestIP, blacklist, timestamp, files, filecount) " + 
-					"VALUES ('21dfg1df1g21g', '192.168.31.52', 0, default,'Captain Ameerica Civil War', 0)");
+					"VALUES ('"+swarmId+"', '"+ip+"', 0, default,'Captain Ameerica Civil War', 0)");
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
