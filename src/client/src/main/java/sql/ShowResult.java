@@ -7,11 +7,9 @@ package sql;
 //
 //	public static void main(String[] args) {
 //		
-//			DBWrite drw = new DBWrite();			
-//			drw.addPeers();
-//			
-//			DBRead dbr = new DBRead();
-//		    dbr.getPeers();
+//			DatabaseCalls drw = new DatabaseCalls();			
+//			drw.addPeers(id, ip);
+//		    drw.getPeers();
 //
 //	}
 //

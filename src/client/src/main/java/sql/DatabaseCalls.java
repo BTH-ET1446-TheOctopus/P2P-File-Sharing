@@ -3,12 +3,13 @@ package sql;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import backend.api.datatypes.SwarmMetadata;
-//import sql.api.DatabaseAPI;
+import sql.api.DatabaseAPI;
 
 public class DatabaseCalls implements DatabaseAPI{
 	private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName());
@@ -49,12 +50,15 @@ public class DatabaseCalls implements DatabaseAPI{
 			
 		} finally  {
 			sc.closeconnect();
-		}	
+		}
+		//return new SwarmMetadata(uniquefileid, filename, fileChecksum, metadataChecksum, blockCount);
 	}
 	
 	public List<String> getPeers(){   //This method reads from 'clientpeers' table
+		
+		List<String> result = new ArrayList<String>();
 		rs = sc.runquery("SELECT * FROM clientpeers");
-
+		
 		try {
 			while (rs.next()) {
 				String id = rs.getString("id");
@@ -63,7 +67,9 @@ public class DatabaseCalls implements DatabaseAPI{
 				String timestamp = rs.getString("timestamp");
 				String files = rs.getString("files");
 				String filecount = rs.getString("filecount");
-
+				
+				result.add(latestip);
+				
 				LOG.log(Level.INFO, "\nID: " + id + 
 						"\nLastestip: " + latestip + 
 						"\nBlacklist: " + blackList +
@@ -72,6 +78,7 @@ public class DatabaseCalls implements DatabaseAPI{
 						"\nFilecount: " + filecount);
 
 			}
+			
 		} catch (SQLException ex){
 			// handle any errors
 			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
@@ -80,7 +87,7 @@ public class DatabaseCalls implements DatabaseAPI{
 		} finally  {
 			sc.closeconnect();
 		}
-		
+		return result;
 	}
 	
 	public void getPeerArray() {  //This method reads from 'peersarray' table
@@ -153,4 +160,11 @@ public class DatabaseCalls implements DatabaseAPI{
 			sc.closeconnect();
 		}
 	}
+
+	@Override
+	public void addPeerArray() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
