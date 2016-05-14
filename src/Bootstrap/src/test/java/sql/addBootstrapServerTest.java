@@ -15,11 +15,12 @@ public class addBootstrapServerTest {
 	private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName());
 	
 	@Test
-	public void SuccessfuladdBootstrapServerTest() {
+	public void SuccessfuladdBootstrapServerTest() { //Test write to 'servers' table in serverdb
 		
 		sqlconnector sc = new sqlconnector();
 		ResultSet rs = null;
 		
+		//Initialize table columns
 		String ip = null;
 		String name = null;
 		String clientcount = null;
@@ -27,18 +28,22 @@ public class addBootstrapServerTest {
 		
 		
 		DatabaseCalls dbc = new DatabaseCalls();
+		//Call the method to put some sample data into it to do the testing
 		dbc.addBootstrapServer("192.168.2.5", "Backup01", 2, 1);
 		
+		//get info from the table
 		rs = sc.runquery("SELECT * FROM servers");
 		
 		try {
 			while(rs.next()){
+				//Retrieve by column name
 				ip = rs.getString("ip");
 				name=rs.getString("name");
 				clientcount = rs.getString("clientcount");
 				servercount = rs.getString("servercount");
 			}
 		} catch (SQLException ex){
+			// handle any errors
 			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
 			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
@@ -46,6 +51,12 @@ public class addBootstrapServerTest {
 			sc.closeconnect();
 		}
 		
+		/* Test to see if the same sample data written into the table?
+		 * After each test run, try to insert a different "primary key"
+		 * or you can just 'truncate' your table in command line to delete previous data	
+		 * NOTE: Truncate your data just for the test, in real application running,
+		 * You do not truncate any table, unless you know what you're doing!
+		 */
 		assertNotNull(ip);
 		assertEquals("192.168.2.5", ip);
 		
