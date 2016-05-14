@@ -96,19 +96,7 @@ public class RESTStartUp implements Runnable {
 		Backend backend = new Backend(new BackendObserver() {
 
 			@Override
-			public void newSwarm(String id, String filename, int blockCount, String dateAdded) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void updateSwarmBlock(String id, int blockNumber, boolean correctChecksum) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void updateSwarm(double progress, double speed, List<String> peers, String timeToCompletion) {
+			public void newSwarm(String id, String filename, int blockCount) {
 				// TODO Auto-generated method stub
 
 			}
@@ -120,7 +108,8 @@ public class RESTStartUp implements Runnable {
 			}
 
 			@Override
-			public void newSwarm(String id, String filename, int blockCount)
+			public void updateSwarm(String id, double progress, double speed, List<String> peers,
+					String timeToCompletion)
 			{
 				// TODO Auto-generated method stub
 				
