@@ -20,7 +20,7 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 		Statement stmnt = sc.getStatement();
 		
 		try {
-			stmnt.executeUpdate("INSERT INTO servers (ip, name, timestamp, clientcount, servercount) " + 
+			stmnt.executeUpdate("INSERT INTO bootstrapserver (ip, name, timestamp, clientcount, servercount) " + 
 					"VALUES ('"+ip+"', '"+name+"', default,"+clientcount+", "+servercount+")");
 			//"VALUES ('192.168.54.68', 'Backup01', default,2, 1)");
 			
@@ -37,7 +37,7 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 		Statement stmnt = sc.getStatement();
 				
 		try {
-			stmnt.executeUpdate("INSERT INTO serverfile (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
+			stmnt.executeUpdate("INSERT INTO serverswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
 					"VALUES ('"+filename+"', "+totalblocks+", '"+peers+"', "+peercount+", "+uniquefileid+",'filechecksum', 'metadatachecksum')");
 			//"VALUES ('Pirates Carrabian', 10000, '192.168.2.2', 1, 2255, 'filechecksum', 'metadatachecksum' )");
 		} catch (SQLException e) {
@@ -79,8 +79,8 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 	}
 
 	
-	public void getBootstrapServer() {  //This method reads from 'servers' table
-		rs = sc.runquery("SELECT * FROM servers");
+	public void getBootstrapServer() {  //This method reads from 'bootstrapserver' table
+		rs = sc.runquery("SELECT * FROM bootstrapserver");
 
 		try {
 			while(rs.next()){
@@ -109,8 +109,8 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 
 	}
 	
-	public void getSwarm() {  //This method reads from 'serverfile' table
-		rs = sc.runquery("SELECT * FROM serverfile where peercount='1'");
+	public void getSwarm() {  //This method reads from 'serverswarm' table
+		rs = sc.runquery("SELECT * FROM serverswarm where peercount='1'");
 
 		try {
 			while(rs.next()){

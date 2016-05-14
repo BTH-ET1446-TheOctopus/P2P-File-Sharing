@@ -91,22 +91,22 @@ public class sqlconnector {
 		this.closeconnect();
 		this.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
 		
-		//Create Table01 servers
+		//Create Table01 bootstrapserver
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "servers", null);
+			ResultSet tables = dbm.getTables(null, null, "bootstrapserver", null);
 			if (tables.next()) {
 				// Table exists Don't Create Table
 			}
 			else {
 				//Table Doesn't Exist, Create Table
-				String createtable = " CREATE TABLE servers ( " +
+				String createtable = " CREATE TABLE bootstrapserver ( " +
 						" ip varchar(15) NOT NULL, " +
 						" name char(20) NOT NULL, " +
 						" timestamp timestamp NOT NULL, " +
 						" clientcount int NOT NULL, " +
 						" servercount int NOT NULL, " +
-						" CONSTRAINT Servers_pk PRIMARY KEY (ip))";
+						" CONSTRAINT bootstrapserver_pk PRIMARY KEY (ip))";
 				this.Update(createtable);
 			}
 		}
@@ -133,16 +133,16 @@ public class sqlconnector {
 		catch (Exception e) {
 			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 		}
-		//Create Table03 serverfile
+		//Create Table03 serverswarm
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "serverfile", null);
+			ResultSet tables = dbm.getTables(null, null, "serverswarm", null);
 			if (tables.next()) {
 				// Table exists Don't Create Table
 			}
 			else {
 				//Table Doesn't Exist, Create Table
-				String createtable = "CREATE TABLE serverfile ( " +
+				String createtable = "CREATE TABLE serverswarm ( " +
 						" filename char(40) NOT NULL, " +
 						" totalblocks int NOT NULL, " +
 						" peers varchar(100) NOT NULL, " +
@@ -150,7 +150,7 @@ public class sqlconnector {
 						" uniquefileid varchar(100) NOT NULL, " +
 						" filechecksum varchar(100) NOT NULL, " +
 						" metadatachecksum varchar(100) NOT NULL, " +		
-						" CONSTRAINT serverfile_pk PRIMARY KEY (uniquefileid))";
+						" CONSTRAINT serverswarm_pk PRIMARY KEY (uniquefileid))";
 				this.Update(createtable);
 			}
 		}
@@ -217,16 +217,16 @@ public class sqlconnector {
 		catch (Exception e) {
 			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 		}
-		//Create Table02 clientfile
+		//Create Table02 clientswarm
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "clientfile", null);
+			ResultSet tables = dbm.getTables(null, null, "clientswarm", null);
 			if (tables.next()) {
 				// Table exists Don't Create Table
 			}
 			else {
 				//Table Doesn't Exist, Create Table
-				String createtable = "CREATE TABLE clientfile ("
+				String createtable = "CREATE TABLE clientswarm ("
 							+ " filename char(40) NOT NULL, "
 							+ " totalblocks int NOT NULL, "
 							+ " peers varchar(15) NOT NULL, "
@@ -234,7 +234,7 @@ public class sqlconnector {
 							+ " uniquefileid varchar(100) NOT NULL, "
 							+ " filechecksum varchar(100) NOT NULL, "
 							+ " metadatachecksum varchar(100) NOT NULL, "		
-							+ " CONSTRAINT clientfile_pk PRIMARY KEY (uniquefileid))";
+							+ " CONSTRAINT clientswarm_pk PRIMARY KEY (uniquefileid))";
 				this.Update(createtable);
 			}
 		}

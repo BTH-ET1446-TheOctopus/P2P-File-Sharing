@@ -18,7 +18,7 @@ public class DatabaseCalls implements DatabaseAPI{
 	sqlconnector sc = new sqlconnector();
 	ResultSet rs = null;
 	
-	public SwarmMetadata getSwarm() {  //This method reads from 'clientfile' table
+	public SwarmMetadata getSwarm() {  //This method reads from 'clientswarm' table
 		
 		String filename          = null;
 		String totalblocks       = null;
@@ -28,7 +28,7 @@ public class DatabaseCalls implements DatabaseAPI{
 		String filechecksum      = null;
 		String metadatachecksum  = null;
 		
-		rs = sc.runquery("SELECT * FROM clientfile where peercount='1'");
+		rs = sc.runquery("SELECT * FROM clientswarm where peercount='1'");
 
 		try {
 			while(rs.next()){
@@ -146,7 +146,7 @@ public class DatabaseCalls implements DatabaseAPI{
 		Statement stmnt = sc.getStatement();
 				
 		try {
-			stmnt.executeUpdate("INSERT INTO clientfile (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
+			stmnt.executeUpdate("INSERT INTO clientswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
 					"VALUES ('"+filename+"', "+blockCount+", '192.168.2.2', 1, '"+id+"', '"+fileChecksum+"', '"+metadataChecksum+"' )");
 					//"VALUES ('Pirates Carrabian', 10000, '192.168.2.2', 1, 'sdfsdggh22255', 'filechecksum', 'metadatachecksum' )");
 		} catch (SQLException e) {
