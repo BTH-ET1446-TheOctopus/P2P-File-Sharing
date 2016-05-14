@@ -105,7 +105,7 @@ public class Client implements BackendObserver
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(null);
-		frame.setVisible(true);
+//		frame.setVisible(true);
 		frame.setDefaultLookAndFeelDecorated(true);
 	}
 
@@ -507,35 +507,6 @@ public class Client implements BackendObserver
 		table.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 	}
 
-	/**
-	 * This method creates the Data Model for the Table in the main frame of the
-	 * Octopus P2P client.
-	 * 
-	 * @author Kamran Alipoursimakani
-	 *
-	 */
-
-//	private void createTableDataModel(List<SwarmMetadataShort> swarms)
-//	{
-//
-//		swarmData = new String[swarms.size()][8];
-//
-//		int rowIndex = 0;
-//		for (SwarmMetadataShort swarm : swarms)
-//		{
-//
-////			List<String> row = swarm.getRowTable();
-//			for (int columnIndex = 0; columnIndex < columnHeaders.length; columnIndex++)
-//			{
-//				swarmData[rowIndex][columnIndex] = row.get(columnIndex);
-//			}
-//
-//			rowIndex++;
-//		}
-//		System.out.println(swarmData);
-//		model = new DefaultTableModel(swarmData, columnHeaders);
-//	}
-
 	@Override
 	public void newSwarm(String id, String filename, int blockCount)
 	{
@@ -588,8 +559,7 @@ public class Client implements BackendObserver
 	@Override
 	public void searchResult(String clientAddress, String id, String filename, int blockCount)
 	{
-		// TODO Auto-generated method stub
-
+		Search.fillSearchTable(clientAddress, id, filename, blockCount);
 	}
 
 
@@ -598,26 +568,26 @@ public class Client implements BackendObserver
 		return frame;
 	}
 
-	public void setFrame(JFrame frame)
-	{
-		this.frame = frame;
-	}
-
-	public Search getSearchWindows()
-	{
-		return searchWindows;
-	}
-
-	public void setSearchWindows(Search searchWindows)
-	{
-		this.searchWindows = searchWindows;
-	}
-
-	public SpeedChart getSpeedChartWindow()
-	{
-		return speedChartWindow;
-	}
-
+//	public void setFrame(JFrame frame)
+//	{
+//		this.frame = frame;
+//	}
+//
+//	public Search getSearchWindows()
+//	{
+//		return searchWindows;
+//	}
+//
+//	public void setSearchWindows(Search searchWindows)
+//	{
+//		this.searchWindows = searchWindows;
+//	}
+//
+//	public SpeedChart getSpeedChartWindow()
+//	{
+//		return speedChartWindow;
+//	}
+//
 	public void setSpeedChartWindow(SpeedChart speedChartWindow)
 	{
 		this.speedChartWindow = speedChartWindow;

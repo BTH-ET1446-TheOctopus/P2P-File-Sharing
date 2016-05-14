@@ -1,51 +1,76 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.EventQueue;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 import backend.Backend;
+import backend.api.datatypes.SwarmMetadataShort;
+
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.awt.event.ActionEvent;
 
 public class Search extends JDialog
 {
 
-	private static final long	serialVersionUID	= 1L;
-
-	private JDialog				frame;
-	private HintTextField		searchTextField;
-	private JButton				searchButton;
-	private JTable				searchResultTable;
-	private JScrollPane			resultTableScrolPane;
-	private JButton				downloadButton;
+	private JDialog			frame;
+	private JTabbedPane		panelSearch;
+	private JPanel			panelServers;
+	private JPanel			panelNeighbors;
+	private JTextField		txtServers;
+	private JTextField		txtNeighbors;
+	private static JScrollPane		scrollPaneNeighbors;
+	private JScrollPane		scrollPaneServers;
+	private JTable			searchServersResultTable;
+	private static JTable	searchNeighborsResultTable;
+	Backend backend = new Backend(null);
+	
 
 	public Search(JFrame parent)
 	{
-		createSearchJDialog(parent);
-		addSearchTextField();
-		addServerSearchButton();
-		addLocalSearchButton();
-		addSearchResultTable();
-		addDownloadButton();
+		initialize(parent);
 	}
 
-	/**
-	 * This method creates the Search Dialog and sets the Main frame of the
-	 * Octopus P2P client as the parent for it
-	 * 
-	 * @author Kamran Alipoursimakani
-	 */
+	private void initialize(JFrame parent)
+	{
+		createSearchJDialog(parent);
 
+		addTabbedPanel();
+		
+		addServerPanel();
+		addNeighborsPanel();
+
+
+		addServerScrollPanel();
+		addServerDownloadButton();
+		addServerRefreshButton();
+		addServerTextField();
+		addServersSearchResultTable();
+
+		addNeighborsScrollPanel();
+		addNeighborsSearchButton();
+		addNeighborsDownloadButton();
+		addNeighborsTextField();
+		addNeighborsSearchResultTable();
+
+	}
+	
 	private void createSearchJDialog(JFrame parent)
 	{
+		
 		frame = new JDialog(parent, "Search");
 		frame.setBounds(0, 0, 600, 380);
 		frame.getContentPane().setLayout(null);
@@ -54,142 +79,272 @@ public class Search extends JDialog
 		frame.setLocationRelativeTo(parent);
 		frame.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		frame.setVisible(true);
+		
+		
 	}
 
-	/**
-	 * This method adds "searchTextField" text field to the search dialog1
-	 * 
-	 * @author Kamran Alipoursimakani
-	 */
-
-	private void addSearchTextField()
+	private void addServersSearchResultTable()
 	{
-		searchTextField = new HintTextField("What is it that you are looking for.!?");
-		searchTextField.setBounds(6, 6, 588, 30);
+		searchServersResultTable = new JTable();
+		searchServersResultTable.setRowHeight(30);
+		searchServersResultTable.setGridColor(Color.LIGHT_GRAY);
+		searchServersResultTable.setBackground(new Color(212, 239, 253));
+		searchServersResultTable.setGridColor(new Color(192, 192, 192));
+		searchServersResultTable.setRowHeight(40);
 
-		frame.getContentPane().add(searchTextField);
+		
+		createServersDataModel();
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		searchServersResultTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		searchServersResultTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		searchServersResultTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+		searchServersResultTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		searchServersResultTable.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 
 	}
 
-	/**
-	 * This method adds the "Search Neighbors" button to the search dialog
-	 * 
-	 * @author Kamran Alipoursimakani
-	 */
-
-	private void addLocalSearchButton()
+	private void createServersDataModel()
 	{
-		searchButton = new JButton("Search Neighbors");
-		searchButton.addActionListener(new ActionListener()
+		searchServersResultTable.setModel(new DefaultTableModel(new Object[][] {}, new String[]
+		{ "ID", "Name", "Size", "Peers" })
+
 		{
-			public void actionPerformed(ActionEvent e)
+			private static final long	serialVersionUID	= 1L;
+
+			@SuppressWarnings("rawtypes")
+			Class[]	types = new Class[] { String.class, String.class, Integer.class, Integer.class };
+			boolean[] canEdit = new boolean[] { false, false, false, false };
+
+			@SuppressWarnings(
+			{ "unchecked", "rawtypes" })
+			public Class getColumnClass(int columnIndex)
 			{
-				Backend back = new Backend(null);
-				back.searchSwarm(searchTextField.getText());
+				return types[columnIndex];
 			}
-		});
-		searchButton.setBounds(414, 48, 180, 30);
-		frame.getContentPane().add(searchButton);
-	}
 
-	/**
-	 * This method adds the "Search on Servers" button to the search dialog2
-	 */
-
-	private void addServerSearchButton()
-	{
-		searchButton = new JButton("Show Swarms on Server");
-		searchButton.setBounds(6, 48, 180, 30);
-		frame.getContentPane().add(searchButton);
-
-		searchButton.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
+			public boolean isCellEditable(int rowIndex, int columnIndex)
 			{
-				Backend back = new Backend(null);
-				back.searchSwarm(searchTextField.getText());
+				return canEdit[columnIndex];
 			}
 		});
 	}
 
-	/**
-	 * This method adds the "searchResultTable" table to the search dialog
-	 * 
-	 * @author Kamran Alipoursimakani
-	 */
-
-	private void addSearchResultTable()
+	private void addNeighborsSearchResultTable()
 	{
-		searchResultTable = new JTable();
-		resultTableScrolPane = new JScrollPane(searchResultTable);
-		resultTableScrolPane.setBounds(6, 90, 588, 202);
-		frame.getContentPane().add(resultTableScrolPane);
+		searchNeighborsResultTable = new JTable();
+		searchNeighborsResultTable.setRowHeight(30);
+		searchNeighborsResultTable.setGridColor(Color.LIGHT_GRAY);
+		searchNeighborsResultTable.setBackground(new Color(212, 239, 253));
+		searchNeighborsResultTable.setGridColor(new Color(192, 192, 192));
+		searchNeighborsResultTable.setRowHeight(40);
+		createNeighborsDataModel();
+
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		searchNeighborsResultTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		searchNeighborsResultTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		searchNeighborsResultTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+		searchNeighborsResultTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		searchNeighborsResultTable.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 	}
 
-	/**
-	 * This method adds the "downloadButton" button to the search dialog
-	 * 
-	 * @author Kamran Alipoursimakani
-	 */
-
-	private void addDownloadButton()
+	public void createNeighborsDataModel()
 	{
-		downloadButton = new JButton("Download");
-		downloadButton.setBounds(481, 310, 107, 30);
-		frame.getContentPane().add(downloadButton);
+		searchNeighborsResultTable.setModel(new DefaultTableModel(new Object[][] {}, new String[]
+		{ "ID", "Name", "Size", "Client Address" })
 
-	}
-}
-
-/**
- * This class creates a TextField with grayed out hint text when not selected
- * 
- * @author Kamran Alipoursimakani
- *
- */
-
-class HintTextField extends JTextField implements FocusListener
-{
-
-	private static final long	serialVersionUID	= 1L;
-	private final String		hint;
-	private boolean				showingHint;
-
-	public HintTextField(final String hint)
-	{
-		super(hint);
-		this.hint = hint;
-		this.showingHint = true;
-		super.addFocusListener(this);
-	}
-
-	@Override
-	public void focusGained(FocusEvent e)
-	{
-		if (this.getText().isEmpty())
 		{
-			super.setText("");
-			showingHint = false;
-			super.setForeground(new Color(0, 0, 0));
+			private static final long	serialVersionUID	= 1L;
+
+			@SuppressWarnings("rawtypes")
+			Class[]						types				= new Class[]
+			{ String.class, String.class, Integer.class, Integer.class };
+			boolean[]					canEdit				= new boolean[]
+			{ false, false, false, false };
+
+			@SuppressWarnings(
+			{ "unchecked", "rawtypes" })
+			public Class getColumnClass(int columnIndex)
+			{
+				return types[columnIndex];
+			}
+
+			public boolean isCellEditable(int rowIndex, int columnIndex)
+			{
+				return canEdit[columnIndex];
+			}
+		});
+
+	}
+
+	private void addTabbedPanel()
+	{
+		panelSearch = new JTabbedPane(JTabbedPane.TOP);
+		panelSearch.setBounds(0, 0, 600, 358);
+		frame.getContentPane().add(panelSearch);
+	}
+
+	private void addServerPanel()
+	{
+		panelServers = new JPanel();
+		panelSearch.addTab("Servers", null, panelServers, null);
+		panelServers.setLayout(null);
+	}
+
+	private void addServerScrollPanel()
+	{
+		scrollPaneServers = new JScrollPane();
+		scrollPaneServers.setBounds(6, 6, 567, 259);
+		panelServers.add(scrollPaneServers);
+	}
+
+	private void addServerDownloadButton()
+	{
+		JButton btnDownloadServers = new JButton("Download");
+		btnDownloadServers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			backend.engageSwarm((String) searchServersResultTable.getValueAt(searchServersResultTable.getSelectedRow(), 0));
+			System.out.println(searchServersResultTable.getValueAt(searchServersResultTable.getSelectedRow(), 0));
+			}
+		});
+		btnDownloadServers.setBounds(456, 277, 117, 29);
+		panelServers.add(btnDownloadServers);
+	}
+
+	private void addServerRefreshButton()
+	{
+		JButton btnRefreshServers = new JButton("Refresh");
+		btnRefreshServers.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent e) {
+				
+				@SuppressWarnings("unused")
+				Backend back = new Backend(null);
+				//List<SwarmMetadataShort> swarms = back.getSwarms();
+				@SuppressWarnings("rawtypes")
+				List swarms=new ArrayList<>();
+				swarms.add(new SwarmMetadataShort("1", "Negin"));
+				swarms.add(new SwarmMetadataShort("2", "Kamran"));
+				swarms.add(new SwarmMetadataShort("3", "khar"));
+				swarms.add(new SwarmMetadataShort("4", "Negin"));
+				swarms.add(new SwarmMetadataShort("5", "Kamran"));
+				swarms.add(new SwarmMetadataShort("6", "khar"));
+				swarms.add(new SwarmMetadataShort("7", "Negin"));
+				swarms.add(new SwarmMetadataShort("8", "Kamran"));
+				swarms.add(new SwarmMetadataShort("9", "khar"));
+				swarms.add(new SwarmMetadataShort("10", "Negin"));
+				swarms.add(new SwarmMetadataShort("11", "Kamran"));
+				swarms.add(new SwarmMetadataShort("12", "khar"));
+				
+				createTableDataModel(swarms);
+				
+				scrollPaneServers.setViewportView(searchServersResultTable);
+			}
+		});
+		btnRefreshServers.setBounds(6, 277, 117, 29);
+		panelServers.add(btnRefreshServers);
+	}
+
+	private void addServerTextField()
+	{
+		txtServers = new JTextField();
+		txtServers.setToolTipText("Search on server is not available in this version!");
+		txtServers.setEnabled(false);
+		txtServers.setBounds(135, 277, 309, 26);
+		txtServers.setColumns(10);
+		panelServers.add(txtServers);
+	}
+
+	private void addNeighborsPanel()
+	{
+		panelNeighbors = new JPanel();
+		panelSearch.addTab("Neighbors", null, panelNeighbors, null);
+		panelNeighbors.setLayout(null);
+	}
+
+	private void addNeighborsScrollPanel()
+	{
+		scrollPaneNeighbors = new JScrollPane();
+		scrollPaneNeighbors.setBounds(6, 6, 567, 259);
+		panelNeighbors.add(scrollPaneNeighbors);
+	}
+
+	private void addNeighborsSearchButton()
+	{
+		JButton btnSearchNeighbors = new JButton("Search");
+		btnSearchNeighbors.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				backend.searchSwarm(txtNeighbors.getText());
+				
+				Client client = new Client();
+				client.searchResult("test", "test", "Test", 12);
+
+			}
+		});
+		btnSearchNeighbors.setBounds(6, 277, 117, 29);
+		panelNeighbors.add(btnSearchNeighbors);
+
+	}
+
+	private void addNeighborsDownloadButton()
+	{
+		JButton btnDownloadNeighbors = new JButton("Download");
+		btnDownloadNeighbors.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btnDownloadNeighbors.setBounds(456, 277, 117, 29);
+		panelNeighbors.add(btnDownloadNeighbors);
+	}
+
+	private void addNeighborsTextField()
+	{
+		txtNeighbors = new JTextField();
+		txtNeighbors.setToolTipText("What is it that you are looking for.!?");
+		txtNeighbors.setBounds(135, 277, 309, 26);
+		panelNeighbors.add(txtNeighbors);
+		txtNeighbors.setColumns(10);
+	}
+	
+	private void createTableDataModel(List<SwarmMetadataShort> swarms)
+	{
+
+		 DefaultTableModel model = (DefaultTableModel)searchServersResultTable.getModel();
+		 model.setRowCount(0);
+	
+		for (SwarmMetadataShort swarm : swarms)
+		{
+			 model.addRow(new Object[]{ swarm.getId(),swarm.getFilename()});
 
 		}
+
 	}
 
-	@Override
-	public void focusLost(FocusEvent e)
+	
+	public static void fillSearchTable(String clientAddress, String id, String filename, int blockCount)
 	{
-		if (this.getText().isEmpty())
-		{
-			super.setText(hint);
-			showingHint = true;
-			super.setForeground(new Color(210, 210, 210));
+        DefaultTableModel model = (DefaultTableModel) searchNeighborsResultTable.getModel();
+        model.setRowCount(0);
+        model.addRow(new Object[]{ id, filename, blockCount, clientAddress});
+		scrollPaneNeighbors.setViewportView(searchNeighborsResultTable);
+		
 
-		}
 	}
-
-	@Override
-	public String getText()
+	
+	public JTable getSearchResultTable()
 	{
-		return showingHint ? "" : super.getText();
+		return searchNeighborsResultTable;
 	}
+
+	
+
+
 }
+
+
+
+
+
