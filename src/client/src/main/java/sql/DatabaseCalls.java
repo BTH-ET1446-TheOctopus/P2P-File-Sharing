@@ -106,14 +106,14 @@ public class DatabaseCalls implements DatabaseAPI{
 		}	
 
 	} 
-	public void addPeerArray(){  //This method writes to 'peersarray' table
+	public void addPeerArray(String uniquefileid, String peers){  //This method writes to 'peersarray' table
 		sqlconnector sc = new sqlconnector();
 
 		Statement stmnt = sc.getStatement();
 		
 		try {
 			stmnt.executeUpdate("INSERT INTO peersarray (uniquefileid, peers) " + 
-					"VALUES ( '2sdfd5sdf6dsf5', '192.168.54.68')");
+					"VALUES ( '"+uniquefileid+"', '"+peers+"')");
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
