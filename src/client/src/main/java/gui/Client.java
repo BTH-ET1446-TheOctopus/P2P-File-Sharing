@@ -5,10 +5,13 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,35 +20,35 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JDialog;
 
 import backend.Backend;
+import backend.api.BackendObserver;
+import backend.api.datatypes.SwarmMetadataShort;
 
-public class Client
+public class Client implements BackendObserver
 {
-	private boolean					darkStatus;
-	private JFrame					frame;
-	private JPanel					iconBar;
-	private JPanel					statusBar;
-	private JPanel					settingBar;
-	private JButton					newTorrent;
-	private JButton					removeTorrent;
-	private JButton					pauseTorrent;
-	private JButton					resumeTorrent;
-	private JButton					speedChart;
-	private JButton					search;
-	private JButton					darkPeerbtn;
-	private JLabel					download;
-	private JLabel					upload;
-	private JScrollPane				scrollPane;
-	private JTable					table;
-	private String[]				columnHeaders	=
+	private boolean						darkStatus;
+	private JFrame						frame;
+	private JPanel						iconBar;
+	private JPanel						statusBar;
+	private JPanel						settingBar;
+	private JButton						newTorrent;
+	private JButton						removeTorrent;
+	private JButton						pauseTorrent;
+	private JButton						resumeTorrent;
+	private JButton						speedChart;
+	private JButton						search;
+	private JButton						darkPeerbtn;
+	private JLabel						download;
+	private JLabel						upload;
+	private JScrollPane					scrollPane;
+	private JTable						table;
+	private String[]					columnHeaders	=
 	{ "ID", "Name", "Progress", "Size", "Speed", "Peers", "Due", "Added" };
-	private String[][]				fileStatistics;
-	private DefaultTableModel		model;
-	private List<TableInitialize>	tableRows;
-	private Search					searchWindows;
-	private SpeedChart				speedChartWindow;
+	private String[][]					swarmData;
+	private List<SwarmMetadataShort>	tableRows;
+	private Search						searchWindows;
+	private SpeedChart					speedChartWindow;
 
 	/**
 	 * This method creates the Octopus P2P client GUI.
@@ -81,9 +84,9 @@ public class Client
 		createDownloadLable();
 		createUploadLable();
 		createDarkPeerButton();
-		addSampleDataToTable();
 		createScrollPanel();
 		createTable();
+
 
 	}
 
@@ -197,6 +200,14 @@ public class Client
 	private void createRemoveTorrentButton()
 	{
 		removeTorrent = new JButton();
+		removeTorrent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Backend be = new Backend(null);
+				be.removeSwarm((String) table.getValueAt(table.getSelectedRow(), 0));
+    	        DefaultTableModel model = (DefaultTableModel)table.getModel();
+				model.removeRow(table.getSelectedRow());
+			}
+		});
 		removeTorrent.setToolTipText("Remove Selected Transmition");
 		removeTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileRemove.png")));
 		removeTorrent.setBounds(34, 0, 34, 34);
@@ -216,6 +227,13 @@ public class Client
 	private void createPauseTorrentButton()
 	{
 		pauseTorrent = new JButton();
+		pauseTorrent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			newSwarm("1", "Negin", 1000);
+
+			}
+		});
 		pauseTorrent.setToolTipText("Pause Selected Transmition");
 		pauseTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/filePause.png")));
 		pauseTorrent.setBounds(102, 0, 34, 34);
@@ -235,6 +253,17 @@ public class Client
 	private void createResumeTorrentButton()
 	{
 		resumeTorrent = new JButton();
+		resumeTorrent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				List<String> l = new ArrayList<>();
+				l.add("129.22.12.11");
+				l.add("129.22.12.11");
+				l.add("129.22.12.11");
+				updateSwarm("1", 70.5, 2.2 , l, "Tomorrow");
+				
+			}
+		});
 		resumeTorrent.setToolTipText("Resume Selected Transmition");
 		resumeTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileResume.png")));
 		resumeTorrent.setBounds(136, 0, 34, 34);
@@ -337,7 +366,7 @@ public class Client
 	{
 		darkPeerbtn = new JButton();
 		darkPeerbtn.setBounds(0, 0, 34, 34);
-		
+
 		if (this.darkStatus == false)
 		{
 			setDarkPeerBtn(false);
@@ -374,24 +403,18 @@ public class Client
 	 *
 	 */
 
-	private void addSampleDataToTable()
-	{
-		tableRows = new ArrayList<>();
-		List<String> sampleRow1 = new ArrayList<>();
-		sampleRow1.add("1");
-		sampleRow1.add("Man on the moon.mp4");
-		sampleRow1.add("100%");
-		sampleRow1.add("999.9 MB");
-		sampleRow1.add("999.0 Mbps");
-		sampleRow1.add("999");
-		sampleRow1.add("99h:59m");
-		sampleRow1.add("23,Sep,16 / 22:28:30");
-		TableInitialize object = new TableInitialize();
-		object.setRowTable(sampleRow1);
-		tableRows.add(object);
-
-		createTableDataModel(tableRows);
-	}
+	// private void addSampleDataToTable(String id, String filename)
+	// {
+	// tableRows = new ArrayList<>();
+	// List<String> row = new ArrayList<>();
+	// row.add("1");
+	// row.add("Man on the moon.mp4");
+	// SwarmMetadataShort swarm = new SwarmMetadataShort(id, filename);
+	// swarm. setRowTable(row);
+	// tableRows.add(swarm);
+	//
+	// createTableDataModel(tableRows);
+	// }
 
 	/**
 	 * This method changes the status of the "status" variable and also changes
@@ -443,11 +466,12 @@ public class Client
 
 	private void createTable()
 	{
-		table = new JTable(model);
+		table = new JTable();
 		table.setBackground(new Color(212, 239, 253));
 		table.setGridColor(new Color(192, 192, 192));
 		table.setToolTipText("Your Active Transmitions");
 		table.setRowHeight(40);
+		createDataModel();
 		scrollPane.setViewportView(table);
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -491,26 +515,83 @@ public class Client
 	 *
 	 */
 
-	private void createTableDataModel(List<TableInitialize> transfers)
+//	private void createTableDataModel(List<SwarmMetadataShort> swarms)
+//	{
+//
+//		swarmData = new String[swarms.size()][8];
+//
+//		int rowIndex = 0;
+//		for (SwarmMetadataShort swarm : swarms)
+//		{
+//
+////			List<String> row = swarm.getRowTable();
+//			for (int columnIndex = 0; columnIndex < columnHeaders.length; columnIndex++)
+//			{
+//				swarmData[rowIndex][columnIndex] = row.get(columnIndex);
+//			}
+//
+//			rowIndex++;
+//		}
+//		System.out.println(swarmData);
+//		model = new DefaultTableModel(swarmData, columnHeaders);
+//	}
+
+	@Override
+	public void newSwarm(String id, String filename, int blockCount)
 	{
-
-		fileStatistics = new String[transfers.size()][8];
-
-		int rowIndex = 0;
-		for (TableInitialize transfer : transfers)
-		{
-
-			List<String> row = transfer.getRowTable();
-			for (int columnIndex = 0; columnIndex < columnHeaders.length; columnIndex++)
-			{
-				fileStatistics[rowIndex][columnIndex] = row.get(columnIndex);
-			}
-
-			rowIndex++;
-		}
-System.out.println(fileStatistics);
-		model = new DefaultTableModel(fileStatistics, columnHeaders);
+		String size = (blockCount *1024)/1024 +" MB";
+        DefaultTableModel model = (DefaultTableModel)table.getModel();
+        String dateAdded = Calendar.getInstance().getTime().toString();
+        model.addRow(new Object[]{ id,  filename,  "0.0%",  size,  "0.0 KBs",  0,  "Unknown",  dateAdded});
+		
 	}
+
+//	@Override
+//	public void updateSwarmBlock(String id, int blockNumber, boolean correctChecksum)
+//	{
+//		
+//for (int i = 0; i < table.getRowCount(); i++)
+//{
+//	if (table.getValueAt(i, 0) == id){
+//		double size = (double) table.getValueAt(i, 3);
+//		int totalBlock = (int) (size / 1024);
+//		int currentPercent = (blockNumber * 100) /totalBlock;
+//		table.setValueAt(currentPercent, i, 2);
+//	}
+//	
+//}		
+//		
+//		model.setValueAt("Changed", model.getRowCount()-1, 1);
+//		Random rnd = new Random();
+//		System.out.println(rnd.nextInt(101));
+//		
+//		model.setValueAt((rnd.nextInt(100)+"%"), model.getRowCount()-1, 3);
+//		
+//
+//	}
+
+	@Override
+	public void updateSwarm(String id, double progress, double speed, List<String> peers, String timeToCompletion)
+	{
+		for (int i = 0; i < table.getRowCount(); i++)
+		{
+			if (table.getValueAt(i, 0) == id)
+			{
+				table.setValueAt(speed + " MB", i, 3);
+				table.setValueAt(progress+" %", i, 2);
+				table.setValueAt(timeToCompletion, i, 6);
+				table.setValueAt(peers.size(), i, 5);
+			}
+		}
+	}
+
+	@Override
+	public void searchResult(String clientAddress, String id, String filename, int blockCount)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
 
 	public JFrame getFrame()
 	{
@@ -540,6 +621,32 @@ System.out.println(fileStatistics);
 	public void setSpeedChartWindow(SpeedChart speedChartWindow)
 	{
 		this.speedChartWindow = speedChartWindow;
+	}
+
+	public void createDataModel()
+	{
+		table.setModel(new DefaultTableModel(new Object[][] {}, new String[]
+		{ "ID", "Name", "Progress", "Size", "Speed", "Peers", "TTC", "Added" })
+
+		{
+			private static final long	serialVersionUID	= 1L;
+			Class[]						types				= new Class[]
+			{ Integer.class, String.class, String.class, String.class, String.class, Integer.class, String.class,
+					String.class };
+			boolean[]					canEdit				= new boolean[]
+			{ false, false, false, false, false, false, false, false };
+
+			public Class getColumnClass(int columnIndex)
+			{
+				return types[columnIndex];
+			}
+
+			public boolean isCellEditable(int rowIndex, int columnIndex)
+			{
+				return canEdit[columnIndex];
+			}
+		});
+
 	}
 
 }

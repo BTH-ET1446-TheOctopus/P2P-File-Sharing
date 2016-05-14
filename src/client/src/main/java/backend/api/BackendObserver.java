@@ -18,19 +18,7 @@ public interface BackendObserver {
 	 * @param filename
 	 * @param blockCount
 	 */
-	public void newSwarm(String id, String filename, int blockCount, String dateAdded);
-
-	/**
-	 * Called when a block has been downloaded. Will not be called unless
-	 * {@link BackendController#getSwarm(String)} or
-	 * {@link BackendController#createSwarm(String)} was previously called.
-	 * 
-	 * @param id
-	 * @param blockNumber
-	 * @param correctChecksum
-	 *            Whether the block was correctly downloaded
-	 */
-	public void updateSwarmBlock(String id, int blockNumber, boolean correctChecksum);
+	public void newSwarm(String id, String filename, int blockCount);
 
 	/**
 	 * Called when a file is being downloaded. Will not be called unless
@@ -42,7 +30,7 @@ public interface BackendObserver {
 	 * @param peers
 	 * @param timeToCompletion
 	 */
-	public void updateSwarm(double progress, double speed, List<String> peers, String timeToCompletion);
+	public void updateSwarm(String id, double progress, double speed, List<String> peers, String timeToCompletion);
 
 	/**
 	 * Search result from another peer. Will not be called unless
@@ -56,5 +44,4 @@ public interface BackendObserver {
 	 */
 	public void searchResult(String clientAddress, String id, String filename, int blockCount);
 
-	void newSwarm(String id, String filename, int blockCount);
 }

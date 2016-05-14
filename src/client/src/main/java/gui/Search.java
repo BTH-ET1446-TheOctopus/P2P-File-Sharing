@@ -79,7 +79,7 @@ public class Search extends JDialog
 
 	private void addLocalSearchButton()
 	{
-		searchButton = new JButton("Search in Neighbors");
+		searchButton = new JButton("Search Neighbors");
 		searchButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -98,7 +98,7 @@ public class Search extends JDialog
 
 	private void addServerSearchButton()
 	{
-		searchButton = new JButton("Search on Server");
+		searchButton = new JButton("Show Swarms on Server");
 		searchButton.setBounds(6, 48, 180, 30);
 		frame.getContentPane().add(searchButton);
 
