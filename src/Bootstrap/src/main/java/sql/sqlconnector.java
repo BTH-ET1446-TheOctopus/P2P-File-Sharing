@@ -1,20 +1,15 @@
 package sql;
 
 import java.sql.*;
-//import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * @author Farhan
- */
 
 public class sqlconnector {
 	
 	private Connection  connection  = null;
 	private Statement   statement   = null;
 	private ResultSet   set         = null;
-//	private String tableName = null;
 
 	String host;
 	String port;
@@ -25,7 +20,7 @@ public class sqlconnector {
 	private static final Logger LOG = Logger.getLogger(sqlconnector.class.getName());
 
 	public sqlconnector(){
-		//this.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
+		this.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
 	}
 	
 	public void connector(String login, String password, String db, String host, String port) {
