@@ -1,5 +1,4 @@
--- Created by Farhan Ahmad
--- Last modification date: 2016-05-06 17:17:55.701
+-- Last modification date: 2016-05-06 16:18:34.567
 -- Server Database
 
 -- Create Server Database
@@ -7,25 +6,25 @@ CREATE database serverdb;
 USE serverdb;
 
 -- tables
--- Table: servers
-CREATE TABLE servers (
+-- Table: bootstrapserver
+CREATE TABLE bootstrapserver (
     ip varchar(15) NOT NULL,
     name char(20) NOT NULL,
     timestamp timestamp NOT NULL,
     clientcount int NOT NULL,
     servercount int NOT NULL,
-    CONSTRAINT Servers_pk PRIMARY KEY (ip)
+    CONSTRAINT bootstrapserver_pk PRIMARY KEY (ip)
 );
 
--- Table: servers
+-- Table: peerarray
 CREATE TABLE peersarray (
     uniquefileid varchar(100)  NOT NULL,    
     peers varchar(15) NOT NULL,
     CONSTRAINT peersarray_pk PRIMARY KEY (uniquefileid)
 );
 
--- Table: serverfile
-CREATE TABLE serverfile (
+-- Table: serverswarm
+CREATE TABLE serverswarm (
     filename char(40) NOT NULL,
     totalblocks int NOT NULL,
     peers varchar(15) NOT NULL,
@@ -33,7 +32,7 @@ CREATE TABLE serverfile (
     uniquefileid varchar(100) NOT NULL,
     filechecksum varchar(100) NOT NULL,
     metadatachecksum varchar(100) NOT NULL,		
-    CONSTRAINT serverfile_pk PRIMARY KEY (uniquefileid)
+    CONSTRAINT serverswarm_pk PRIMARY KEY (uniquefileid)
 );
 
 -- Table: serverpeers
