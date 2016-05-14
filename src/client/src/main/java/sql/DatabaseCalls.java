@@ -6,6 +6,8 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import sql.api.DatabaseAPI;
+
 public class DatabaseCalls implements DatabaseAPI{
 	private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName());
 	

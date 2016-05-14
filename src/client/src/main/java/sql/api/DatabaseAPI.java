@@ -1,4 +1,4 @@
-package sql;
+package sql.api;
 
 public interface DatabaseAPI {
 	public void getSwarm();
