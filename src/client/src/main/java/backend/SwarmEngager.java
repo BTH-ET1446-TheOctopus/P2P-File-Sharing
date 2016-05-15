@@ -49,10 +49,15 @@ public class SwarmEngager extends Thread {
 
 		// TODO Add metadata to database
 		// Mock the bootstrap data
-		Swarm swarm = new Swarm(4, "pom.xml", "Wololochecksum", swarmId, Arrays.asList("localhost"));
-
+		
+		Swarm swarm = bootstrapCalls.getSwarm(swarmId);
+		
+		swarmId = "abc123";
+		swarm.setBlockCount(6);
+		//Swarm swarm = new Swarm(4, "pom.xml", "Wololochecksum", swarmId, Arrays.asList("localhost"));
+		
 		String filename = "downloaded_" + swarm.getfilename();
-
+		
 		BlockBuffer blockBuffer = FileHandler.create(filename);
 		if (blockBuffer == null) {
 			LOG.log(Level.WARNING, "Unable to create file {0}", filename);
@@ -63,9 +68,14 @@ public class SwarmEngager extends Thread {
 				return;
 			}
 		}
-
+		
+		restObserver.newSwarm(swarmId, swarm.getfilename(), swarm.getblockCount());
+		
+		
 		// Get available chunks
 		for (String peer : swarm.getpeers()) {
+			
+			
 			LOG.log(Level.INFO, "Grabbing avaiable chunks for swarmId={0}, peer={1}", new Object[] { swarmId, peer });
 			Chunks chunks = clientCalls.getFileChunks("http://localhost:1337", swarmId);
 
@@ -81,11 +91,13 @@ public class SwarmEngager extends Thread {
 		int blockNumber = 0;
 		while (blockNumber < swarm.getblockCount()) {
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
+			
+			restObserver.updateSwarm(swarmId, (double)(blockNumber + 1) / (double)swarm.getblockCount(), 1.0, swarm.getpeers(), "1 hour");
+			
 			LOG.log(Level.INFO, "Grabbing block: swarmId={0} blockNumber={1}", new Object[] { swarmId, blockNumber });
 			Chunk chunk = clientCalls.getFileChunk("http://localhost:1337", swarmId, blockNumber);
 			

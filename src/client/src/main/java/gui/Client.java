@@ -50,6 +50,8 @@ public class Client implements BackendObserver
 	private Search						searchWindows;
 	private Mode						mode;
 	private SpeedChart					speedChartWindow;
+	
+	private Backend backend;
 
 	/**
 	 * This method creates the Octopus P2P client GUI.
@@ -88,7 +90,8 @@ public class Client implements BackendObserver
 		createScrollPanel();
 		createTable();
 
-
+		backend = Backend.getInstance();
+		backend.setObserver(this);
 	}
 
 	/**
@@ -554,8 +557,8 @@ public class Client implements BackendObserver
 		{
 			if (table.getValueAt(i, 0) == id)
 			{
-				table.setValueAt(speed + " MB", i, 3);
-				table.setValueAt(progress+" %", i, 2);
+				table.setValueAt(String.valueOf(speed) + " KB/s", i, 4);
+				table.setValueAt(String.valueOf(Math.round(progress * 100))+" %", i, 2);
 				table.setValueAt(timeToCompletion, i, 6);
 				table.setValueAt(peers.size(), i, 5);
 			}
