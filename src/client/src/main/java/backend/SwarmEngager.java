@@ -77,7 +77,7 @@ public class SwarmEngager extends Thread {
 			
 			
 			LOG.log(Level.INFO, "Grabbing avaiable chunks for swarmId={0}, peer={1}", new Object[] { swarmId, peer });
-			Chunks chunks = clientCalls.getFileChunks("http://localhost:1337", swarmId);
+			Chunks chunks = clientCalls.getFileChunks("http://169.254.8.2:1337", swarmId);
 
 			StringBuilder b = new StringBuilder();
 			for (int i : chunks.getchunks()) {
@@ -99,7 +99,7 @@ public class SwarmEngager extends Thread {
 			restObserver.updateSwarm(swarmId, (double)(blockNumber + 1) / (double)swarm.getblockCount(), 1.0, swarm.getpeers(), "1 hour");
 			
 			LOG.log(Level.INFO, "Grabbing block: swarmId={0} blockNumber={1}", new Object[] { swarmId, blockNumber });
-			Chunk chunk = clientCalls.getFileChunk("http://localhost:1337", swarmId, blockNumber);
+			Chunk chunk = clientCalls.getFileChunk("http://169.254.8.2:1337", swarmId, blockNumber);
 			
 			byte[] data = chunk.getData();
 			if (data == null) {
