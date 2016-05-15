@@ -11,7 +11,7 @@ public class insertsample {
 	public void insertbdb(){
 		sqlconnector sample= new sqlconnector("serverdb");
 		String writequery="";
-		//sample.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
+		sample.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
 	
 		//Write Sample Data to serverswarm table
 
@@ -61,7 +61,7 @@ public class insertsample {
 		sqlconnector sample= new sqlconnector("clientdb");
 
 		String writequery="";
-		//sample.connector("root", "sql", "clientdb", "127.0.0.1", "3306");
+		sample.connector("root", "sql", "clientdb", "127.0.0.1", "3306");
 
 		//Write Sample Data to clientswarm table
 
