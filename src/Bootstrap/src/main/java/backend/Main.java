@@ -24,6 +24,9 @@ public class Main {
 		 where the bootstrap is initiated, interrupted and terminated  */
 		sqlconnector test=new sqlconnector();
 		insertsample insample = new insertsample();
+		insample.insertbdb();
+		//insample.insertcdb();
+		
 		test.connector("root", "sql", "mysql", "127.0.0.1", "3306");
 		//Creates Server DB on Runtime
 		test.createserverdb();
