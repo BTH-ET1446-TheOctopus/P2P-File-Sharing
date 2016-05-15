@@ -263,7 +263,7 @@ public class sqlconnector {
 				String createtable = "CREATE TABLE clientpeers ( "
 							+ " id varchar(100) NOT NULL, "
 							+ " latestip varchar(15) NOT NULL, "
-							+ " blaklist binary(1) NOT NULL, "
+							+ " blacklist binary(1) NOT NULL, "
 							+ " timestamp timestamp NOT NULL, "
 							+ " files varchar(100) NOT NULL, "
 							+ " filecount int NOT NULL, "

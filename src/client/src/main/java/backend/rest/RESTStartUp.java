@@ -28,7 +28,7 @@ public class RESTStartUp implements Runnable {
 	private final ResourceConfig rc = new ResourceConfig().packages("backend.rest");
 	public void run() {
 		// function to test connection client -> bootstrap -> client
-		testBoostrapConnection();
+		//testBoostrapConnection();
 		
 		//testClientConnection();
 		

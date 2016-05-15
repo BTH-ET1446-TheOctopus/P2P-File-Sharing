@@ -80,11 +80,11 @@ public class insertsample {
 		
 		//Write Sample Data to clientpeers table
 		
-		writequery= "insert into clientpeers (id,latestIP,blaklist,timestamp,files,filecount)"
+		writequery= "insert into clientpeers (id,latestIP,blacklist,timestamp,files,filecount)"
 			+ "VALUES (1016,'192.12.58.40',0,default,'Kainaat',20156)";	
 		sample.Update(writequery);
 
-		writequery= "insert into clientpeers (id,latestIP,blaklist,timestamp,files,filecount)"
+		writequery= "insert into clientpeers (id,latestIP,blacklist,timestamp,files,filecount)"
 				+ "VALUES (1017,'192.12.58.42',0,default,'Anmool',156)";	
 		sample.Update(writequery);
 		

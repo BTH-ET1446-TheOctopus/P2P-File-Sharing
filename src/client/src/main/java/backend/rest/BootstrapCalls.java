@@ -137,7 +137,7 @@ public class BootstrapCalls implements calls{
 		Client client = ClientBuilder.newClient();
     	
 		SwarmsHelper respons = client.target(Settings.BOOTSTRAP_URL)
-    			.path("blacklist")
+    			.path("swarms")
     			.request(MediaType.APPLICATION_JSON)
     			.get(SwarmsHelper.class);
 		

@@ -264,6 +264,8 @@ public class Rest {
  	        System.out.println("Exception in query method:\n" + e.getMessage());
  	    }
  		test.closeconnect();
+ 		swarmHelp.setSwarms(swarms);
+ 		System.out.println(swarmHelp.toString());
 		return swarmHelp;
 	}
 	/**
