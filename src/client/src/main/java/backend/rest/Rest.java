@@ -120,7 +120,7 @@ public class Rest {
  		sqlconnector test = new sqlconnector("clientdb");
  		ResultSet result;
  		String fname="";
- 		String readquery="select distinct filename from clientfile where filename='id'";
+ 		String readquery="select distinct filename from clientswarm where filename='id'";
  		result = test.runquery(readquery);
 		//Retrieve by column name
  		try {

@@ -161,7 +161,7 @@ public class Rest {
  		ResultSet result;
  		String data="";
  		test.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
- 		readquery="select distinct ip from servers";
+ 		readquery="select distinct ip from bootstrapserver";
  		result = test.runquery(readquery);
 		Bootstraps bootstraps = new Bootstraps();
 		List<String> ip = new ArrayList<String>();
@@ -239,12 +239,12 @@ public class Rest {
 		caller.getRemoteAddr();
 		
  		String readquery="";
- 		sqlconnector test = new sqlconnector();
+ 		sqlconnector test = new sqlconnector("serverdb");
  		ResultSet result;
  		String filename="";
  		String uniquefileid="";
- 		test.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
- 		readquery="select * from serverfile";
+ 		//test.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
+ 		readquery="select * from serverswarm";
  		result = test.runquery(readquery);
 		SwarmsHelper swarmHelp = new SwarmsHelper();
 		Swarms swarm = new Swarms();
@@ -296,7 +296,7 @@ public class Rest {
  		String swarmid="'"+id+"'";
  		
  		test.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
- 		readquery="select * from serverfile where uniquefileid = "+ swarmid;
+ 		readquery="select * from serverswarm where uniquefileid = "+ swarmid;
  		result = test.runquery(readquery);
 
 		Swarm swarm = new Swarm();
