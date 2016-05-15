@@ -265,7 +265,7 @@ public class Rest {
  	    }
  		test.closeconnect();
  		swarmHelp.setSwarms(swarms);
- 		System.out.println(((Swarms)swarmHelp.getSwarms().get(1)).getfilename());
+ 		System.out.println(((Swarms)swarmHelp.getSwarms().get(0)).getfilename());
 		return swarmHelp;
 	}
 	/**
