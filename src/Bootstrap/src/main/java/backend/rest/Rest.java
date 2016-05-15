@@ -247,25 +247,25 @@ public class Rest {
  		readquery="select * from serverswarm";
  		result = test.runquery(readquery);
 		SwarmsHelper swarmHelp = new SwarmsHelper();
-		Swarms swarm = new Swarms();
+		//Swarms swarm = new Swarms();
 		List<Swarms> swarms = new ArrayList<Swarms>(); 
 		try {
  			System.out.println();
- 			while(result.next()){
- 		        //Retrieve by column name			
- 		        filename = result.getString("filename");
- 		        uniquefileid = result.getString("uniquefileid");
- 		        swarm.setfilename(filename);
- 				swarm.setid(uniquefileid);
- 				swarms.add(swarm);
- 		    }
+ 			while (result.next()) { 
+ 				Swarms swarm = new Swarms();
+ 			        System.out.println(result.getString("filename"));
+ 			        System.out.println(result.getString("uniquefileid"));
+ 			        swarm.setfilename(result.getString("filename"));
+ 	 				swarm.setid(result.getString("uniquefileid"));
+ 	 				swarms.add(swarm);
+ 			}
  	    }
  	    catch (Exception e) {
  	        System.out.println("Exception in query method:\n" + e.getMessage());
  	    }
  		test.closeconnect();
  		swarmHelp.setSwarms(swarms);
- 		System.out.println(swarmHelp.toString());
+ 		System.out.println(((Swarms)swarmHelp.getSwarms().get(1)).getfilename());
 		return swarmHelp;
 	}
 	/**
