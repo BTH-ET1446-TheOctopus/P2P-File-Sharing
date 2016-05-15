@@ -26,18 +26,17 @@ import java.awt.event.ActionEvent;
 public class Search extends JDialog
 {
 
-	private JDialog			frame;
-	private JTabbedPane		panelSearch;
-	private JPanel			panelServers;
-	private JPanel			panelNeighbors;
-	private JTextField		txtServers;
-	private JTextField		txtNeighbors;
-	private static JScrollPane		scrollPaneNeighbors;
-	private JScrollPane		scrollPaneServers;
-	private JTable			searchServersResultTable;
-	private static JTable	searchNeighborsResultTable;
-	Backend backend = Backend.getInstance();
-	
+	private JDialog				frame;
+	private JTabbedPane			panelSearch;
+	private JPanel				panelServers;
+	private JPanel				panelNeighbors;
+	private JTextField			txtServers;
+	private JTextField			txtNeighbors;
+	private static JScrollPane	scrollPaneNeighbors;
+	private JScrollPane			scrollPaneServers;
+	private JTable				searchServersResultTable;
+	private static JTable		searchNeighborsResultTable;
+	Backend						backend	= Backend.getInstance();
 
 	public Search(JFrame parent)
 	{
@@ -49,10 +48,9 @@ public class Search extends JDialog
 		createSearchJDialog(parent);
 
 		addTabbedPanel();
-		
+
 		addServerPanel();
 		addNeighborsPanel();
-
 
 		addServerScrollPanel();
 		addServerDownloadButton();
@@ -67,10 +65,10 @@ public class Search extends JDialog
 		addNeighborsSearchResultTable();
 
 	}
-	
+
 	private void createSearchJDialog(JFrame parent)
 	{
-		
+
 		frame = new JDialog(parent, "Search");
 		frame.setBounds(0, 0, 600, 380);
 		frame.getContentPane().setLayout(null);
@@ -79,8 +77,7 @@ public class Search extends JDialog
 		frame.setLocationRelativeTo(parent);
 		frame.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		frame.setVisible(true);
-		
-		
+
 	}
 
 	private void addServersSearchResultTable()
@@ -92,9 +89,8 @@ public class Search extends JDialog
 		searchServersResultTable.setGridColor(new Color(192, 192, 192));
 		searchServersResultTable.setRowHeight(40);
 
-		
 		createServersDataModel();
-		
+
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		searchServersResultTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
@@ -114,8 +110,10 @@ public class Search extends JDialog
 			private static final long	serialVersionUID	= 1L;
 
 			@SuppressWarnings("rawtypes")
-			Class[]	types = new Class[] { String.class, String.class, Integer.class, Integer.class };
-			boolean[] canEdit = new boolean[] { false, false, false, false };
+			Class[]						types				= new Class[]
+			{ String.class, String.class, Integer.class, Integer.class };
+			boolean[]					canEdit				= new boolean[]
+			{ false, false, false, false };
 
 			@SuppressWarnings(
 			{ "unchecked", "rawtypes" })
@@ -203,10 +201,13 @@ public class Search extends JDialog
 	private void addServerDownloadButton()
 	{
 		JButton btnDownloadServers = new JButton("Download");
-		btnDownloadServers.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			backend.engageSwarm((String) searchServersResultTable.getValueAt(searchServersResultTable.getSelectedRow(), 0));
-			System.out.println(searchServersResultTable.getValueAt(searchServersResultTable.getSelectedRow(), 0));
+		btnDownloadServers.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				backend.engageSwarm(
+						(String) searchServersResultTable.getValueAt(searchServersResultTable.getSelectedRow(), 0));
+				System.out.println(searchServersResultTable.getValueAt(searchServersResultTable.getSelectedRow(), 0));
 			}
 		});
 		btnDownloadServers.setBounds(456, 277, 117, 29);
@@ -216,30 +217,15 @@ public class Search extends JDialog
 	private void addServerRefreshButton()
 	{
 		JButton btnRefreshServers = new JButton("Refresh");
-		btnRefreshServers.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			public void actionPerformed(ActionEvent e) {
-				
-				@SuppressWarnings("unused")
-				Backend back = Backend.getInstance();
-				List<SwarmMetadataShort> swarms = back.getSwarms();
-//				@SuppressWarnings("rawtypes")
-//				List swarms=new ArrayList<>();
-//				swarms.add(new SwarmMetadataShort("1", "Negin"));
-//				swarms.add(new SwarmMetadataShort("2", "Kamran"));
-//				swarms.add(new SwarmMetadataShort("3", "khar"));
-//				swarms.add(new SwarmMetadataShort("4", "Negin"));
-//				swarms.add(new SwarmMetadataShort("5", "Kamran"));
-//				swarms.add(new SwarmMetadataShort("6", "khar"));
-//				swarms.add(new SwarmMetadataShort("7", "Negin"));
-//				swarms.add(new SwarmMetadataShort("8", "Kamran"));
-//				swarms.add(new SwarmMetadataShort("9", "khar"));
-//				swarms.add(new SwarmMetadataShort("10", "Negin"));
-//				swarms.add(new SwarmMetadataShort("11", "Kamran"));
-//				swarms.add(new SwarmMetadataShort("12", "khar"));
-				
+		btnRefreshServers.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+
+				List<SwarmMetadataShort> swarms = backend.getSwarms();
+
 				createTableDataModel(swarms);
-				
+
 				scrollPaneServers.setViewportView(searchServersResultTable);
 			}
 		});
@@ -274,10 +260,12 @@ public class Search extends JDialog
 	private void addNeighborsSearchButton()
 	{
 		JButton btnSearchNeighbors = new JButton("Search");
-		btnSearchNeighbors.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnSearchNeighbors.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
 				backend.searchSwarm(txtNeighbors.getText());
-				
+
 				Client client = new Client();
 				client.searchResult("test", "test", "Test", 12);
 
@@ -291,9 +279,11 @@ public class Search extends JDialog
 	private void addNeighborsDownloadButton()
 	{
 		JButton btnDownloadNeighbors = new JButton("Download");
-		btnDownloadNeighbors.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
+		btnDownloadNeighbors.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+
 			}
 		});
 		btnDownloadNeighbors.setBounds(456, 277, 117, 29);
@@ -308,43 +298,35 @@ public class Search extends JDialog
 		panelNeighbors.add(txtNeighbors);
 		txtNeighbors.setColumns(10);
 	}
-	
+
 	private void createTableDataModel(List<SwarmMetadataShort> swarms)
 	{
 
-		 DefaultTableModel model = (DefaultTableModel)searchServersResultTable.getModel();
-		 model.setRowCount(0);
-	
+		DefaultTableModel model = (DefaultTableModel) searchServersResultTable.getModel();
+		model.setRowCount(0);
+
 		for (SwarmMetadataShort swarm : swarms)
 		{
-			 model.addRow(new Object[]{ swarm.getId(),swarm.getFilename()});
+			model.addRow(new Object[]
+			{ swarm.getId(), swarm.getFilename() });
 
 		}
 
 	}
 
-	
 	public static void fillSearchTable(String clientAddress, String id, String filename, int blockCount)
 	{
-        DefaultTableModel model = (DefaultTableModel) searchNeighborsResultTable.getModel();
-        model.setRowCount(0);
-        model.addRow(new Object[]{ id, filename, blockCount, clientAddress});
+		DefaultTableModel model = (DefaultTableModel) searchNeighborsResultTable.getModel();
+		model.setRowCount(0);
+		model.addRow(new Object[]
+		{ id, filename, blockCount, clientAddress });
 		scrollPaneNeighbors.setViewportView(searchNeighborsResultTable);
-		
 
 	}
-	
+
 	public JTable getSearchResultTable()
 	{
 		return searchNeighborsResultTable;
 	}
 
-	
-
-
 }
-
-
-
-
-
