@@ -276,13 +276,21 @@ public class Rest {
 	 */
 	
 	@GET
-	@Path("/swarms/{id}/")
+	@Path("/swarms/{swarmID}/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Swarm getSwarm(@Context org.glassfish.grizzly.http.server.Request re, @PathParam("id") String id)
+	public Swarm getSwarm(@Context org.glassfish.grizzly.http.server.Request re, @PathParam("swarmID") String swarmID, @QueryParam("clientID") String clientID)
 	{
+		 
+		
 		//check if blacklisted
 		String callerIP = re.getRemoteAddr();
 		
+		//Check if clientID already on the swarm 
+		//if()
+		//{
+			//if not add it to swarm 
+			//Suggest that you add it after the reading from the db
+		//}
 		
  		String readquery="";
  		sqlconnector test = new sqlconnector();
@@ -293,14 +301,14 @@ public class Rest {
  		String filechecksum="";
  		String metadatachecksum="";
  		String filepeers="";
- 		String swarmid="'"+id+"'";
+ 		String swarmid="'"+swarmID+"'";
  		
  		test.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
  		readquery="select * from serverfile where uniquefileid = "+ swarmid;
  		result = test.runquery(readquery);
 
 		Swarm swarm = new Swarm();
-		LOG.log(Level.INFO, id);
+		LOG.log(Level.INFO, swarmID);
 
  		List<String> peers = new ArrayList<String>();
  		try {
@@ -360,8 +368,9 @@ public class Rest {
 	@POST
     @Path("/swarms/")
     @Produces(MediaType.APPLICATION_JSON)
-    public String addPlainText(@Context org.glassfish.grizzly.http.server.Request re, @QueryParam("blockCount") int blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum) 
+    public String addSwarmDB(@Context org.glassfish.grizzly.http.server.Request re, @QueryParam("blockCount") int blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum, @QueryParam("clientID") String clientID) 
 	{
+		
 		
 		if(blockCount <= 0)
 		{
