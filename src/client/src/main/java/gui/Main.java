@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import backend.rest.RESTStartUp;
+import sql.insertsample;
 import sql.sqlconnector;
 
 public class Main
@@ -17,6 +18,9 @@ public class Main
 		sqlconnector test = new sqlconnector("mysql");
 		//Creates Client DB on Runtime
 		test.createclientdb();
+		insertsample insample = new insertsample();
+		//insample.insertbdb();
+		insample.insertcdb();
 		
 		final Thread restServerThread = new Thread(new RESTStartUp());
 		restServerThread.start();
