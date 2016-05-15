@@ -3,7 +3,7 @@ package sql;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import backend.Settings;
 
 public class sqlconnector {
 	
@@ -20,7 +20,13 @@ public class sqlconnector {
 	private static final Logger LOG = Logger.getLogger(sqlconnector.class.getName());
 
 	public sqlconnector(){
-		this.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
+		this.connector(Settings.MYSQL_USERNAME, Settings.MYSQL_PASSWORD, Settings.MYSQL_DATABASE, Settings.MYSQL_HOST, Settings.MYSQL_PORT);
+	}
+	
+	//Overloaded Constructor to Open Connection with Specified DB
+	public sqlconnector(String dbname){
+
+		this.connector(Settings.MYSQL_USERNAME, Settings.MYSQL_PASSWORD, dbname, Settings.MYSQL_HOST, Settings.MYSQL_PORT);
 	}
 	
 	public void connector(String login, String password, String db, String host, String port) {

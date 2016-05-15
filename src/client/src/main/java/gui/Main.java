@@ -14,7 +14,7 @@ public class Main
 	{
 		Logger.getLogger("com.sun.jersey").setLevel(Level.WARNING);
 		
-		sqlconnector test=new sqlconnector("mysql");
+		sqlconnector test = new sqlconnector("mysql");
 		//Creates Client DB on Runtime
 		test.createclientdb();
 		
