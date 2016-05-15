@@ -13,6 +13,8 @@ import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
 
 import backend.Backend;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class Mode extends JDialog
 {
@@ -46,7 +48,6 @@ public class Mode extends JDialog
 
 		frame = new JDialog(parent, "Select Swarm's Mode");
 		frame.setBounds(0, 0, 350, 235);
-		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		frame.setMinimumSize(null);
 		frame.setLocationRelativeTo(parent);
@@ -56,34 +57,19 @@ public class Mode extends JDialog
 		pnlMode = new JPanel();
 		pnlMode.setBorder(
 				new TitledBorder(null, "Choose File Mode", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		pnlMode.setBounds(6, 6, 338, 201);
-		pnlMode.setLayout(null);
-		frame.getContentPane().add(pnlMode);
 
 		lblName = new JLabel(file);
-		lblName.setBounds(73, 31, 259, 33);
-		pnlMode.add(lblName);
 
 		Name = new JLabel("Name:");
-		Name.setBounds(16, 31, 55, 33);
-		pnlMode.add(Name);
 
 		Size = new JLabel("Size:");
-		Size.setBounds(16, 76, 55, 33);
-		pnlMode.add(Size);
 
 		lblSize = new JLabel(size + " Bytes");
-		lblSize.setBounds(73, 76, 259, 33);
-		pnlMode.add(lblSize);
 
 		rdbtnPrivate = new JRadioButton("Private");
-		rdbtnPrivate.setBounds(43, 121, 80, 23);
-		pnlMode.add(rdbtnPrivate);
 
 		rdbtnPublic = new JRadioButton("Public");
-		rdbtnPublic.setBounds(227, 121, 80, 23);
 		rdbtnPublic.setSelected(true);
-		pnlMode.add(rdbtnPublic);
 
 		ButtonGroup btnGroup = new ButtonGroup();
 		btnGroup.add(rdbtnPrivate);
@@ -99,8 +85,6 @@ public class Mode extends JDialog
 				frame.setVisible(false);
 			}
 		});
-		btnCreateSwarm.setBounds(215, 166, 117, 29);
-		pnlMode.add(btnCreateSwarm);
 
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener()
@@ -110,8 +94,67 @@ public class Mode extends JDialog
 				frame.setVisible(false);
 			}
 		});
-		btnCancel.setBounds(6, 166, 117, 29);
-		pnlMode.add(btnCancel);
+		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(6)
+					.addComponent(pnlMode, GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
+					.addGap(6))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(6)
+					.addComponent(pnlMode, GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+					.addGap(6))
+		);
+		GroupLayout gl_pnlMode = new GroupLayout(pnlMode);
+		gl_pnlMode.setHorizontalGroup(
+			gl_pnlMode.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnlMode.createSequentialGroup()
+					.addGap(10)
+					.addComponent(Name, GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+					.addGap(2)
+					.addComponent(lblName, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
+				.addGroup(gl_pnlMode.createSequentialGroup()
+					.addGap(10)
+					.addComponent(Size, GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+					.addGap(2)
+					.addComponent(lblSize, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
+				.addGroup(gl_pnlMode.createSequentialGroup()
+					.addGap(37)
+					.addComponent(rdbtnPrivate, GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+					.addGap(104)
+					.addComponent(rdbtnPublic, GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+					.addGap(25))
+				.addGroup(gl_pnlMode.createSequentialGroup()
+					.addComponent(btnCancel, GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+					.addGap(92)
+					.addComponent(btnCreateSwarm, GroupLayout.PREFERRED_SIZE, 117, Short.MAX_VALUE))
+		);
+		gl_pnlMode.setVerticalGroup(
+			gl_pnlMode.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnlMode.createSequentialGroup()
+					.addGap(13)
+					.addGroup(gl_pnlMode.createParallelGroup(Alignment.LEADING)
+						.addComponent(Name, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblName, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
+					.addGap(12)
+					.addGroup(gl_pnlMode.createParallelGroup(Alignment.LEADING)
+						.addComponent(Size, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSize, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
+					.addGap(12)
+					.addGroup(gl_pnlMode.createParallelGroup(Alignment.LEADING)
+						.addComponent(rdbtnPrivate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(rdbtnPublic))
+					.addGap(22)
+					.addGroup(gl_pnlMode.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnCancel)
+						.addComponent(btnCreateSwarm, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+		);
+		pnlMode.setLayout(gl_pnlMode);
+		frame.getContentPane().setLayout(groupLayout);
 
 	}
 }
