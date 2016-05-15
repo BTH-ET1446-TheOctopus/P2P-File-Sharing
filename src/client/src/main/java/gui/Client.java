@@ -48,6 +48,7 @@ public class Client implements BackendObserver
 	private String[][]					swarmData;
 	private List<SwarmMetadataShort>	tableRows;
 	private Search						searchWindows;
+	private Mode						mode;
 	private SpeedChart					speedChartWindow;
 
 	/**
@@ -183,8 +184,13 @@ public class Client implements BackendObserver
 			{
 				JFileChooser file = new JFileChooser();
 				file.showOpenDialog(frame);
-				Backend be = new Backend(null);
-				be.createSwarm(file.getSelectedFile().toString());
+				String name = file.getSelectedFile().getName().toString();
+				String address = file.getSelectedFile().getPath();
+				long s = file.getSelectedFile().length();
+				String size = Long.toString(s);
+				mode = new Mode(frame,name,size,address);
+//				Backend be = new Backend(null);
+//				be.createSwarm(file.getSelectedFile().toString());
 			}
 		});
 	}
@@ -568,26 +574,7 @@ public class Client implements BackendObserver
 		return frame;
 	}
 
-//	public void setFrame(JFrame frame)
-//	{
-//		this.frame = frame;
-//	}
-//
-//	public Search getSearchWindows()
-//	{
-//		return searchWindows;
-//	}
-//
-//	public void setSearchWindows(Search searchWindows)
-//	{
-//		this.searchWindows = searchWindows;
-//	}
-//
-//	public SpeedChart getSpeedChartWindow()
-//	{
-//		return speedChartWindow;
-//	}
-//
+
 	public void setSpeedChartWindow(SpeedChart speedChartWindow)
 	{
 		this.speedChartWindow = speedChartWindow;
