@@ -4,7 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import backend.rest.RESTStartUp;
 import sql.sqlconnector;
-//import sql.insertsample;
+import sql.insertsample;
 /*
  
  * starts the rest server in a new thread and adds a shutdown hook 
@@ -23,7 +23,7 @@ public class Main {
 		/*The below command line is calling a method/class "RESTStartUp"
 		 where the bootstrap is initiated, interrupted and terminated  */
 		sqlconnector test=new sqlconnector();
-		//insertsample insample = new insertsample();
+		insertsample insample = new insertsample();
 		test.connector("root", "sql", "mysql", "127.0.0.1", "3306");
 		//Creates Server DB on Runtime
 		test.createserverdb();
