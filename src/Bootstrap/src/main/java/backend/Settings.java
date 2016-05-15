@@ -7,6 +7,12 @@ public final class Settings {
 	public static String ntpServer = "ptbtime1.ptb.de";
 	public static int daytimeport = 13;
 	
+	public static final String MYSQL_HOST = "127.0.0.1";
+	public static final String MYSQL_PORT = "3306";
+	public static final String MYSQL_USERNAME = "root";
+	public static final String MYSQL_PASSWORD = "sql";
+	public static final String MYSQL_DATABASE = "clientdb";
+	
 	/**
 	 * Function to compare incoming IP whit the ones that
 	 * are in database to see if it is blacklisted

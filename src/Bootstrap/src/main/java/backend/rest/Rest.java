@@ -63,9 +63,10 @@ public class Rest {
 	@GET
 	@Path("/hello/")
 	@Produces(MediaType.APPLICATION_JSON)
-	//public String getHello(@Context HttpServletRequest req, @QueryParam("id") String id)
-	public String getHello(@QueryParam("id") String id)
+	public String getHello(@Context org.glassfish.grizzly.http.server.Request caller, @QueryParam("id") String id)
 	{
+		
+		caller.getRemoteAddr();
 		UUID uuid = UUID.randomUUID();
 		
 		//After uuid checking generate timestamp from NTP server
@@ -107,8 +108,11 @@ public class Rest {
 	@GET
 	@Path("/peers/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Peers getPeers()
+	public Peers getPeers(@Context org.glassfish.grizzly.http.server.Request caller)
 	{
+		//check if ip is blacklisted
+		caller.getRemoteAddr();
+		
 		String readquery="";
  		sqlconnector test = new sqlconnector();
  		ResultSet result;
@@ -147,8 +151,11 @@ public class Rest {
 	@GET
 	@Path("/bootstraps/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Bootstraps getBootstraps()
+	public Bootstraps getBootstraps(@Context org.glassfish.grizzly.http.server.Request caller)
 	{
+		//check if ip is blacklisted
+		caller.getRemoteAddr();
+		
 		String readquery="";
  		sqlconnector test = new sqlconnector();
  		ResultSet result;
@@ -182,8 +189,11 @@ public class Rest {
 	@GET
 	@Path("/blacklist/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Blacklist getBlacklist()
+	public Blacklist getBlacklist(@Context org.glassfish.grizzly.http.server.Request caller)
 	{
+		//check if ip is blacklisted
+		caller.getRemoteAddr();
+				
 		String readquery="";
  		sqlconnector test = new sqlconnector();
  		ResultSet result;
@@ -223,8 +233,11 @@ public class Rest {
 	@GET
 	@Path("/swarms/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public SwarmsHelper getSwarms()
+	public SwarmsHelper getSwarms(@Context org.glassfish.grizzly.http.server.Request caller)
 	{
+		//check if ip is blacklisted
+		caller.getRemoteAddr();
+		
  		String readquery="";
  		sqlconnector test = new sqlconnector();
  		ResultSet result;
@@ -267,8 +280,8 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Swarm getSwarm(@Context org.glassfish.grizzly.http.server.Request re, @PathParam("id") String id)
 	{
-		//IP 
-		//String callerIP = re.getRemoteAddr();
+		//check if blacklisted
+		String callerIP = re.getRemoteAddr();
 		
 		
  		String readquery="";
@@ -349,6 +362,7 @@ public class Rest {
     @Produces(MediaType.APPLICATION_JSON)
     public String addPlainText(@Context org.glassfish.grizzly.http.server.Request re, @QueryParam("blockCount") int blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum) 
 	{
+		
 		if(blockCount <= 0)
 		{
 			return "Can't have zero blocks";
@@ -372,8 +386,11 @@ public class Rest {
 	@GET
 	@Path("/sync/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Sync sync()
+	public Sync sync(@Context org.glassfish.grizzly.http.server.Request caller)
 	{
+		//check if blacklisted
+		String callerIP = caller.getRemoteAddr();
+		
 		Sync sync = new Sync();
 		
 		// Create fake peer data
