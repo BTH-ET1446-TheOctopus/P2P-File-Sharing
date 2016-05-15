@@ -93,7 +93,7 @@ public class RESTStartUp implements Runnable {
 	}
 
 	private void testClientConnection() {
-		Backend backend = new Backend(new BackendObserver() {
+		/*Backend backend = new Backend(new BackendObserver() {
 
 			@Override
 			public void newSwarm(String id, String filename, int blockCount) {
@@ -117,6 +117,6 @@ public class RESTStartUp implements Runnable {
 
 		});
 		
-		backend.engageSwarm("abc123");
+		backend.engageSwarm("abc123");*/
 	}
 }
