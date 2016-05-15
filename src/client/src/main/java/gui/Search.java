@@ -36,7 +36,7 @@ public class Search extends JDialog
 	private JScrollPane		scrollPaneServers;
 	private JTable			searchServersResultTable;
 	private static JTable	searchNeighborsResultTable;
-	Backend backend = new Backend(null);
+	Backend backend = Backend.getInstance();
 	
 
 	public Search(JFrame parent)
@@ -221,7 +221,7 @@ public class Search extends JDialog
 			public void actionPerformed(ActionEvent e) {
 				
 				@SuppressWarnings("unused")
-				Backend back = new Backend(null);
+				Backend back = Backend.getInstance();
 				List<SwarmMetadataShort> swarms = back.getSwarms();
 //				@SuppressWarnings("rawtypes")
 //				List swarms=new ArrayList<>();

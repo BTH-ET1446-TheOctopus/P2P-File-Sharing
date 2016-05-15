@@ -208,7 +208,7 @@ public class Client implements BackendObserver
 		removeTorrent = new JButton();
 		removeTorrent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Backend be = new Backend(null);
+				Backend be = Backend.getInstance();
 				be.removeSwarm((String) table.getValueAt(table.getSelectedRow(), 0));
     	        DefaultTableModel model = (DefaultTableModel)table.getModel();
 				model.removeRow(table.getSelectedRow());

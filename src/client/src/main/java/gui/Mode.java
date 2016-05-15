@@ -27,7 +27,7 @@ public class Mode extends JDialog
 	private JButton			btnCreateSwarm;
 	private JButton			btnCancel;
 	private JPanel			pnlMode;
-	Backend					backend	= new Backend(null);
+	Backend					backend	= Backend.getInstance();
 
 	public Mode(JFrame parent, String file, String size, String address)
 	{
