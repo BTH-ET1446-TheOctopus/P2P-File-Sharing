@@ -22,7 +22,9 @@ public class Main {
 	public static void main(String[] args) {
 		/*The below command line is calling a method/class "RESTStartUp"
 		 where the bootstrap is initiated, interrupted and terminated  */
-		//sqlconnector test=new sqlconnector();
+		sqlconnector test=new sqlconnector("mysql");
+		//Creates Server DB on Runtime
+		test.createserverdb();
 		insertsample insample = new insertsample();
 		insample.insertbdb();
 		insample.insertcdb();
