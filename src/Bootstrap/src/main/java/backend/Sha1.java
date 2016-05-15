@@ -3,8 +3,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * @param args
- * @throws NoSuchAlgorithmException 
+ * Author 
+ *  Gayatri Chadalapaka
  */
 
 public class Sha1 {
