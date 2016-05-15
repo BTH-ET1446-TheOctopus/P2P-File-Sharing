@@ -1,17 +1,16 @@
 
 package sql;
 
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
+//import java.sql.SQLException;
+//import java.sql.Statement;
+//import java.util.logging.Level;
 
 
 public class insertsample {
 	
-	public void insertbdb(){
+	public void insertIntoServer(){
 		sqlconnector sample= new sqlconnector("serverdb");
 		String writequery="";
-		sample.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
 	
 		//Write Sample Data to serverswarm table
 
@@ -46,25 +45,21 @@ public class insertsample {
 		//Write Sample Data to serverpeers table
 		
 		writequery="insert into serverpeers (id,latestIP,blacklist,timestamp)"
- 				+ "VALUES ('1016,'192.12.58.40',0,'2016-05-10 00:14:07')";	
+ 				+ "VALUES (1016,'192.12.58.40',0,'2016-05-10 00:14:07')";	
 		sample.Update(writequery);
 				
 		writequery="insert into serverpeers (id,latestIP,blacklist,timestamp)"
- 				+ "VALUES ('1017,'192.12.58.45',1,'2016-05-14 12:19:13')";	
+ 				+ "VALUES (1017,'192.12.58.45',1,'2016-05-14 12:19:13')";	
 		sample.Update(writequery);
 		
 		sample.closeconnect();
 	}
 
-	public void insertcdb(){
-		//sqlconnector sample= new sqlconnector();
+	public void insertIntoClient(){
 		sqlconnector sample= new sqlconnector("clientdb");
-
 		String writequery="";
-		sample.connector("root", "sql", "clientdb", "127.0.0.1", "3306");
 
 		//Write Sample Data to clientswarm table
-
 		writequery= "INSERT INTO clientswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " 
 				+ "VALUES ('Pirates Carrabian', 10000, '192.168.2.2', 1, 'sdfsdggh22255', 'hgjsk1345', 'hsjsj8282')";
 		sample.Update(writequery);
