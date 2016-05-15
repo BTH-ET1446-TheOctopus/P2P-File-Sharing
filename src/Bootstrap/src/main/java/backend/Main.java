@@ -20,12 +20,13 @@ public class Main {
 	private static final Logger LOG = Logger.getLogger(Main.class.getName());
 	
 	public static void main(String[] args) {
+		
 		/*The below command line is calling a method/class "RESTStartUp"
 		 where the bootstrap is initiated, interrupted and terminated  */
-		//sqlconnector test=new sqlconnector();
+		
 		insertsample insample = new insertsample();
-		insample.insertbdb();
-		insample.insertcdb();
+		insample.insertIntoServer();
+		insample.insertIntoClient();
 		
 		//test.connector("root", "sql", "mysql", "127.0.0.1", "3306");
 		//Creates Server DB on Runtime
@@ -41,8 +42,8 @@ public class Main {
 			@Override
 			public void run() {
 				restServerThread.interrupt();
-//This command line is allowing the user to join the peer network again 
-//if the connection is interrupted
+//              This command line is allowing the user to join the peer network again 
+//              if the connection is interrupted
 				try {
 					restServerThread.join();//This command line is defining the user to join the peer network
 				} catch (InterruptedException e) {
