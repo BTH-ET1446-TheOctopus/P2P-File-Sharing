@@ -22,8 +22,6 @@ public class sqlconnector {
 
 	public sqlconnector(){
 
-		this.connector(Settings.MYSQL_DATABASE);
-
 	}
 
 	//Overloaded Constructor to Open Connection with Specified DB
@@ -84,19 +82,11 @@ public class sqlconnector {
 	public void createclientdb(){
 		//Create Client DB
 		try {
-			//String createdb = "create database if not exists clientdb";
-			//this.Update(createdb);		
-			//String usedb = "USE clientdb";
-			//this.runquery(usedb);
 			this.connector("clientdb");
 		}
 		catch (Exception e) {
 			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 		}
-		
-		//Close Connection and Connect to Client DB
-		//this.closeconnect();
-		//this.connector("clientdb");
 		//Create Table01 peersarray
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
