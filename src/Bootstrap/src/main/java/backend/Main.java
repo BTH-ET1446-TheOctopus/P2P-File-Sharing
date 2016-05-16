@@ -23,24 +23,15 @@ public class Main {
 		
 		/*The below command line is calling a method/class "RESTStartUp"
 		 where the bootstrap is initiated, interrupted and terminated  */
-
+		
+		//Creates Server DB on Runtime
 		sqlconnector test=new sqlconnector("mysql");
 		//Creates Server DB on Runtime
 		test.createserverdb();
-		test.closeconnect();
-		
-
-		
+		//Insert Sample Data in Server DB
 		insertsample insample = new insertsample();
 		insample.insertIntoServer();
-		insample.insertIntoClient();
-		
-		//test.connector("root", "sql", "mysql", "127.0.0.1", "3306");
-		//Creates Server DB on Runtime
-		//test.createserverdb();
-		//Insert Sample Data in Server DB
-		//insample.insertbdb();
-		
+		test.closeconnect();
 
 		final Thread restServerThread = new Thread(new RESTStartUp());
 		restServerThread.start();
