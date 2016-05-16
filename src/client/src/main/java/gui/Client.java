@@ -650,4 +650,10 @@ public class Client implements BackendObserver
 
 	}
 
+	@Override
+	public void SpeedChartUpdate(double up, double down) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
