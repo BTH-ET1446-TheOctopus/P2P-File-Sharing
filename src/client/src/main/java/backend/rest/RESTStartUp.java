@@ -24,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RESTStartUp implements Runnable {
-	private static final Logger LOG = Logger.getLogger(RESTStartUp.class.getName());
+	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final ResourceConfig rc = new ResourceConfig().packages("backend.rest");
 	public void run() {
 		// function to test connection client -> bootstrap -> client

@@ -15,7 +15,7 @@ import backend.rest.BootstrapCalls;
 import backend.rest.ClientCalls;
 
 public class Backend implements BackendController {
-	private static final Logger LOG = Logger.getLogger(Backend.class.getName());
+	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private HashMap<String, SwarmEngager> activeSwarms;
 

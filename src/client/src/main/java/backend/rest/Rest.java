@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 @Path("/rest")
 public class Rest {
 
-	private static final Logger LOG = Logger.getLogger(Rest.class.getName());
+	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@GET
 	@Path("/test/")
@@ -127,7 +127,7 @@ public class Rest {
  			fname = result.getString("filename");
  	    }
  	    catch (Exception e) {
- 	        System.out.println("Exception in query method:\n" + e.getMessage());
+ 	        LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
  	    }
 			         
  		test.closeconnect();

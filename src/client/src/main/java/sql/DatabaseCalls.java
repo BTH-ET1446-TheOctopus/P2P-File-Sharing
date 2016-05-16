@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import backend.Logging;
 import backend.api.datatypes.SwarmMetadata;
 import sql.api.DatabaseAPI;
 
 public class DatabaseCalls implements DatabaseAPI{
-	private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName());
+	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	//create an object from sqlconnector, to be able to connect to the database
 	sqlconnector sc = new sqlconnector();

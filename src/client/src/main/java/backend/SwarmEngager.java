@@ -19,7 +19,7 @@ import backend.rest.ClientCalls;
  *
  */
 public class SwarmEngager extends Thread {
-	private static final Logger LOG = Logger.getLogger(SwarmEngager.class.getName());
+	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private String swarmId;
 

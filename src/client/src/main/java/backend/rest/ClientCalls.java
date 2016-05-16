@@ -18,7 +18,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 public class ClientCalls {
     
-	private static final Logger LOG = Logger.getLogger(ClientCalls.class.getName());
+	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	/**
 	 * If no bootstrap server is available the client can request peers 
 	 * from remote clients.

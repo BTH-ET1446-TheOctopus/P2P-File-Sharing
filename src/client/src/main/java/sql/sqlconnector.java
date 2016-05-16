@@ -18,7 +18,7 @@ public class sqlconnector {
 	String password;
 	String url;
 	
-	private static final Logger LOG = Logger.getLogger(sqlconnector.class.getName());
+	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	public sqlconnector(){
 

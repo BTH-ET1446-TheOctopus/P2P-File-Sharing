@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 
 public class BootstrapCalls implements calls{
     static final String REST_URI = "http://localhost:9999/rest/rest/";
-    private static final Logger LOG = Logger.getLogger(BootstrapCalls.class.getName());
+    private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     public Address getTest(){	
     	Client client = ClientBuilder.newClient();
