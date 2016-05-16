@@ -1,18 +1,29 @@
 package gui;
 
 import java.awt.EventQueue;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import backend.Logging;
 import backend.rest.RESTStartUp;
 import sql.insertsample;
 import sql.sqlconnector;
 
 public class Main
 {
+	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	public static void main(String[] args)
 	{
+		
+		try {
+			 Logging.newlog();
+		    }
+		catch (IOException e) {
+		    	LOG.log(Level.INFO, e.getMessage(), e);
+		      throw new RuntimeException("Error when creating log file");
+		    }
 		Logger.getLogger("com.sun.jersey").setLevel(Level.WARNING);
 		
 		sqlconnector test = new sqlconnector("mysql");
@@ -40,7 +51,7 @@ public class Main
 					//test.createclientdb();
 				} catch (InterruptedException e)
 				{
-					e.printStackTrace();
+					LOG.log(Level.INFO, e.getMessage(), e);
 				}
 			}
 		});
@@ -55,7 +66,7 @@ public class Main
 					window.getFrame().setVisible(true);
 				} catch (Exception e)
 				{
-					e.printStackTrace();
+					LOG.log(Level.INFO, e.getMessage(), e);
 				}
 			}
 		});
