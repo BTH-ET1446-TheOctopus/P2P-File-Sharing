@@ -9,5 +9,7 @@
 
 /src/Bootstrap/target/
 /src/client/target/
+/src/client/mysql
+/src/client/clientdb
 
 tmp/
