@@ -22,6 +22,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class Search extends JDialog
 {
@@ -37,6 +39,10 @@ public class Search extends JDialog
 	private JTable				searchServersResultTable;
 	private static JTable		searchNeighborsResultTable;
 	Backend						backend	= Backend.getInstance();
+	private JButton btnRefreshServers;
+	private JButton btnDownloadServers;
+	private JButton btnSearchNeighbors;
+	private JButton btnDownloadNeighbors;
 
 	public Search(JFrame parent)
 	{
@@ -71,7 +77,6 @@ public class Search extends JDialog
 
 		frame = new JDialog(parent, "Search");
 		frame.setBounds(0, 0, 600, 380);
-		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		frame.setMinimumSize(null);
 		frame.setLocationRelativeTo(parent);
@@ -180,27 +185,32 @@ public class Search extends JDialog
 	private void addTabbedPanel()
 	{
 		panelSearch = new JTabbedPane(JTabbedPane.TOP);
-		panelSearch.setBounds(0, 0, 600, 358);
-		frame.getContentPane().add(panelSearch);
+		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(panelSearch, GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(panelSearch, GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+		);
+		frame.getContentPane().setLayout(groupLayout);
 	}
 
 	private void addServerPanel()
 	{
 		panelServers = new JPanel();
 		panelSearch.addTab("Servers", null, panelServers, null);
-		panelServers.setLayout(null);
 	}
 
 	private void addServerScrollPanel()
 	{
 		scrollPaneServers = new JScrollPane();
-		scrollPaneServers.setBounds(6, 6, 567, 259);
-		panelServers.add(scrollPaneServers);
 	}
 
 	private void addServerDownloadButton()
 	{
-		JButton btnDownloadServers = new JButton("Download");
+		btnDownloadServers = new JButton("Download");
 		btnDownloadServers.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -210,13 +220,11 @@ public class Search extends JDialog
 				System.out.println(searchServersResultTable.getValueAt(searchServersResultTable.getSelectedRow(), 0));
 			}
 		});
-		btnDownloadServers.setBounds(456, 277, 117, 29);
-		panelServers.add(btnDownloadServers);
 	}
 
 	private void addServerRefreshButton()
 	{
-		JButton btnRefreshServers = new JButton("Refresh");
+		btnRefreshServers = new JButton("Refresh");
 		btnRefreshServers.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -229,8 +237,6 @@ public class Search extends JDialog
 				scrollPaneServers.setViewportView(searchServersResultTable);
 			}
 		});
-		btnRefreshServers.setBounds(6, 277, 117, 29);
-		panelServers.add(btnRefreshServers);
 	}
 
 	private void addServerTextField()
@@ -238,28 +244,51 @@ public class Search extends JDialog
 		txtServers = new JTextField();
 		txtServers.setToolTipText("Search on server is not available in this version!");
 		txtServers.setEnabled(false);
-		txtServers.setBounds(135, 277, 309, 26);
 		txtServers.setColumns(10);
-		panelServers.add(txtServers);
+		GroupLayout gl_panelServers = new GroupLayout(panelServers);
+		gl_panelServers.setHorizontalGroup(
+			gl_panelServers.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelServers.createSequentialGroup()
+					.addGap(6)
+					.addGroup(gl_panelServers.createParallelGroup(Alignment.LEADING)
+						.addComponent(scrollPaneServers, GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
+						.addGroup(gl_panelServers.createSequentialGroup()
+							.addComponent(btnRefreshServers, GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+							.addGap(12)
+							.addComponent(txtServers, GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+							.addGap(12)
+							.addComponent(btnDownloadServers, GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)))
+					.addGap(6))
+		);
+		gl_panelServers.setVerticalGroup(
+			gl_panelServers.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelServers.createSequentialGroup()
+					.addGap(6)
+					.addComponent(scrollPaneServers, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+					.addGap(12)
+					.addGroup(gl_panelServers.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnRefreshServers)
+						.addComponent(txtServers, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnDownloadServers, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGap(6))
+		);
+		panelServers.setLayout(gl_panelServers);
 	}
 
 	private void addNeighborsPanel()
 	{
 		panelNeighbors = new JPanel();
 		panelSearch.addTab("Neighbors", null, panelNeighbors, null);
-		panelNeighbors.setLayout(null);
 	}
 
 	private void addNeighborsScrollPanel()
 	{
 		scrollPaneNeighbors = new JScrollPane();
-		scrollPaneNeighbors.setBounds(6, 6, 567, 259);
-		panelNeighbors.add(scrollPaneNeighbors);
 	}
 
 	private void addNeighborsSearchButton()
 	{
-		JButton btnSearchNeighbors = new JButton("Search");
+		btnSearchNeighbors = new JButton("Search");
 		btnSearchNeighbors.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -271,14 +300,12 @@ public class Search extends JDialog
 
 			}
 		});
-		btnSearchNeighbors.setBounds(6, 277, 117, 29);
-		panelNeighbors.add(btnSearchNeighbors);
 
 	}
 
 	private void addNeighborsDownloadButton()
 	{
-		JButton btnDownloadNeighbors = new JButton("Download");
+		btnDownloadNeighbors = new JButton("Download");
 		btnDownloadNeighbors.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -286,17 +313,41 @@ public class Search extends JDialog
 
 			}
 		});
-		btnDownloadNeighbors.setBounds(456, 277, 117, 29);
-		panelNeighbors.add(btnDownloadNeighbors);
 	}
 
 	private void addNeighborsTextField()
 	{
 		txtNeighbors = new JTextField();
 		txtNeighbors.setToolTipText("What is it that you are looking for.!?");
-		txtNeighbors.setBounds(135, 277, 309, 26);
-		panelNeighbors.add(txtNeighbors);
 		txtNeighbors.setColumns(10);
+		GroupLayout gl_panelNeighbors = new GroupLayout(panelNeighbors);
+		gl_panelNeighbors.setHorizontalGroup(
+			gl_panelNeighbors.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelNeighbors.createSequentialGroup()
+					.addGap(6)
+					.addGroup(gl_panelNeighbors.createParallelGroup(Alignment.LEADING)
+						.addComponent(scrollPaneNeighbors, GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
+						.addGroup(gl_panelNeighbors.createSequentialGroup()
+							.addComponent(btnSearchNeighbors, GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+							.addGap(12)
+							.addComponent(txtNeighbors, GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+							.addGap(12)
+							.addComponent(btnDownloadNeighbors, GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)))
+					.addGap(6))
+		);
+		gl_panelNeighbors.setVerticalGroup(
+			gl_panelNeighbors.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelNeighbors.createSequentialGroup()
+					.addGap(6)
+					.addComponent(scrollPaneNeighbors, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+					.addGap(12)
+					.addGroup(gl_panelNeighbors.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnSearchNeighbors, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(txtNeighbors, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnDownloadNeighbors))
+					.addGap(6))
+		);
+		panelNeighbors.setLayout(gl_panelNeighbors);
 	}
 
 	private void createTableDataModel(List<SwarmMetadataShort> swarms)

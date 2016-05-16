@@ -46,9 +46,11 @@ public class sqlconnector {
 
 		catch (SQLException ex) {
 			// handle any errors
-			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
-			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
-			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
+			LOG.log(Level.SEVERE, ex.toString(), ex);
+			
+			LOG.log(Level.SEVERE,"SQLException: " + ex.getMessage());
+			LOG.log(Level.SEVERE,"SQLState: " + ex.getSQLState());
+			LOG.log(Level.SEVERE,"VendorError: " + ex.getErrorCode());
 		}
 	}
 
@@ -95,7 +97,7 @@ public class sqlconnector {
 		
 		//Close Connection and Connect to Client DB
 		this.closeconnect();
-		this.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
+		this.connector(Settings.MYSQL_USERNAME, Settings.MYSQL_PASSWORD, "serverdb", Settings.MYSQL_HOST, Settings.MYSQL_PORT);
 		
 		//Create Table01 bootstrapserver
 		try {
@@ -202,7 +204,7 @@ public class sqlconnector {
 		
 		//Close Connection and Connect to Client DB
 		this.closeconnect();
-		this.connector("root", "sql", "clientdb", "127.0.0.1", "3306");
+		this.connector(Settings.MYSQL_USERNAME, Settings.MYSQL_PASSWORD, "serverdb", Settings.MYSQL_HOST, Settings.MYSQL_PORT);
 		//Create Table01 peersarray
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
