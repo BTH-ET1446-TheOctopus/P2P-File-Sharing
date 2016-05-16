@@ -58,40 +58,4 @@ public class insertsample {
 		
 		sample.closeconnect();
 	}
-
-	public void insertIntoClient(){
-		sqlconnector sample= new sqlconnector("clientdb");
-		String writequery="";
-
-		//Write Sample Data to clientswarm table
-		writequery= "INSERT INTO clientswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " 
-				+ "VALUES ('Pirates Carrabian', 10000, '192.168.2.2', 1, 'sdfsdggh22255', 'hgjsk1345', 'hsjsj8282')";
-		sample.Update(writequery);
-		
-		writequery= "INSERT INTO clientswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " 
-				+ "VALUES ('Pirates', 10000, '192.168.2.2', 1, 'sdfsdggh22256', 'hsjsjs123', 'ghdjjd18834')";
-		sample.Update(writequery);
-
-		//Write Sample Data to peersarray table
-		
-		writequery="insert into peersarray (uniquefileid,peers) " 
-						+ " VALUES ('ADF-456','192.168.5.30')";
-		sample.Update(writequery);
-
-		writequery="insert into peersarray (uniquefileid,peers) " 
-						+ " VALUES ('MJJ-944','192.168.45.2')";
-		sample.Update(writequery);
-		
-		//Write Sample Data to clientpeers table
-		
-		writequery= "insert into clientpeers (id,latestIP,blacklist,timestamp,files,filecount)"
-			+ "VALUES (1016,'192.12.58.40',0,default,'Kainaat',20156)";	
-		sample.Update(writequery);
-
-		writequery= "insert into clientpeers (id,latestIP,blacklist,timestamp,files,filecount)"
-				+ "VALUES (1017,'192.12.58.42',0,default,'Anmool',156)";	
-		sample.Update(writequery);
-		
-		sample.closeconnect();
-	}
 }
