@@ -38,7 +38,7 @@ public class sqlconnector {
 		this.password = password;
 		this.host = host;
 		this.port = port;
-		url = "jdbc:mysql://"+host+":"+port+"/"+db+"?autoReconnect=true&useSSL=false";
+		url = "jdbc:sqlite:"+db;
 		connect();
 	}
 
