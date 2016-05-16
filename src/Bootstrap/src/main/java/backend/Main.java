@@ -26,8 +26,9 @@ public class Main {
 
 		sqlconnector test=new sqlconnector("mysql");
 		//Creates Server DB on Runtime
-		test.closeconnect();
 		test.createserverdb();
+		test.closeconnect();
+		
 
 		
 		insertsample insample = new insertsample();
