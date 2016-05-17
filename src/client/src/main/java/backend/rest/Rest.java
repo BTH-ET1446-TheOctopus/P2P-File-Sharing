@@ -12,7 +12,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import backend.BlockBuffer;
@@ -116,7 +115,7 @@ public class Rest {
 		LOG.log(Level.INFO, "Received request to download file id {0}, block {1}", new Object[] { id, chunk });
 
 		// Database code:
-		//  - Get the filename from 'id'
+		// Get the filename from 'id'
  		sqlconnector test = new sqlconnector("clientdb");
  		ResultSet result;
  		String fname="";
@@ -131,7 +130,7 @@ public class Rest {
  	    }
 			         
  		test.closeconnect();
-		//  - Check if the block number 'chunk' is downloaded
+		// Check if the block number 'chunk' is downloaded
  		
 		Chunk chunko = new Chunk();
 		chunko.setSequenceNumber(chunk);
