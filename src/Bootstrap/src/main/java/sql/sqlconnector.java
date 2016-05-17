@@ -84,7 +84,7 @@ public class sqlconnector {
 	//Function to Create Server DB
 	//Check if it already exists, then do nothing
 	public void createserverdb(){
-		//Create Serverdb
+		
 		try {
 			String createdb = "create database if not exists serverdb";
 			this.Update(createdb);		
@@ -104,7 +104,7 @@ public class sqlconnector {
 			DatabaseMetaData dbm = connection.getMetaData();
 			ResultSet tables = dbm.getTables(null, null, "bootstrapserver", null);
 			if (tables.next()) {
-				// Table exists Don't Create Table
+				// Table exists, Don't Create Table
 			}
 			else {
 				//Table Doesn't Exist, Create Table
@@ -126,10 +126,9 @@ public class sqlconnector {
 			DatabaseMetaData dbm = connection.getMetaData();
 			ResultSet tables = dbm.getTables(null, null, "peersarray", null);
 			if (tables.next()) {
-				// Table exists Don't Create Table
+				// Table exists, Don't Create Table
 			}
 			else {
-				//Table Doesn't Exist, Create Table
 				//Table Doesn't Exist, Create Table
 				String createtable = "CREATE TABLE peersarray ( " +
 						" uniquefileid varchar(100) NOT NULL, " +    
@@ -146,7 +145,7 @@ public class sqlconnector {
 			DatabaseMetaData dbm = connection.getMetaData();
 			ResultSet tables = dbm.getTables(null, null, "serverswarm", null);
 			if (tables.next()) {
-				// Table exists Don't Create Table
+				// Table exists, Don't Create Table
 			}
 			else {
 				//Table Doesn't Exist, Create Table
@@ -170,7 +169,7 @@ public class sqlconnector {
 			DatabaseMetaData dbm = connection.getMetaData();
 			ResultSet tables = dbm.getTables(null, null, "serverpeers", null);
 			if (tables.next()) {
-				// Table exists Don't Create Table
+				// Table exists, Don't Create Table
 			}
 			else {
 				//Table Doesn't Exist, Create Table
