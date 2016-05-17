@@ -15,7 +15,6 @@ import backend.api.calls;
 import backend.json.Address;
 import backend.json.Blacklist;
 import backend.json.Bootstraps;
-import backend.json.Chunk;
 import backend.json.Peers;
 import backend.json.Swarm;
 import backend.json.SwarmsHelper;
@@ -36,17 +35,7 @@ public class BootstrapCalls implements calls{
     			.get(Address.class);
     	
     	
-    	/*
-		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
-		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
-		Client client = Client.create(defaultClientConfig);
-		WebResource webResource = client
-				   .resource(Settings.BOOTSTRAP_URL + "test");
-		
-		Address respons = webResource
-				.accept("Content-Type", "application/json")
-                .get(Address.class);
-		*/
+    	
 		LOG.log(Level.INFO,respons.toString());
 		return respons;
 	}
@@ -60,18 +49,6 @@ public class BootstrapCalls implements calls{
     			.request(MediaType.APPLICATION_JSON)
     			.get(Peers.class);
 		
-		/*
-		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
-		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
-		Client client = Client.create(defaultClientConfig);
-		WebResource webResource = client
-				   .resource(Settings.BOOTSTRAP_URL + "peers");
-		
-		Peers respons = webResource
-				.accept("Content-Type", "application/json")
-                .get(Peers.class);
-                
-        */
 		LOG.log(Level.INFO,respons.toString());
 
 		return respons;
@@ -87,19 +64,7 @@ public class BootstrapCalls implements calls{
     			.get(Bootstraps.class);
 		
 		
-		/*
 		
-		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
-		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
-		Client client = Client.create(defaultClientConfig);
-		WebResource webResource = client
-				   .resource(Settings.BOOTSTRAP_URL + "bootstraps");
-		
-		Bootstraps respons = webResource
-				.accept("Content-Type", "application/json")
-                .get(Bootstraps.class);
-
-		*/
 		
 		LOG.log(Level.INFO,respons.toString());
 		return respons;
@@ -116,17 +81,7 @@ public class BootstrapCalls implements calls{
     			.get(Blacklist.class);
 		
 		
-		/*
-		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
-		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
-		Client client = Client.create(defaultClientConfig);
-		WebResource webResource = client
-				   .resource(Settings.BOOTSTRAP_URL + "blacklist");
 		
-		Blacklist respons = webResource
-				.accept("Content-Type", "application/json")
-                .get(Blacklist.class);
-		*/
 		
 		LOG.log(Level.INFO,respons.toString());
 		return respons;
@@ -141,18 +96,7 @@ public class BootstrapCalls implements calls{
     			.request(MediaType.APPLICATION_JSON)
     			.get(SwarmsHelper.class);
 		
-		/*
-		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
-		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
-		Client client = Client.create(defaultClientConfig);
-		WebResource webResource = client
-				   .resource(Settings.BOOTSTRAP_URL + "swarms");
 		
-		SwarmsHelper respons = webResource
-				.accept("Content-Type", "application/json")
-                .get(SwarmsHelper.class);
-		
-		*/
 		
 		LOG.log(Level.INFO,respons.toString());
 		return respons;
@@ -168,20 +112,11 @@ public class BootstrapCalls implements calls{
     			.path("swarms/" + id)
     			.request(MediaType.APPLICATION_JSON)
     			.get(Swarm.class);
-		/*
-		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
-		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
-		Client client = Client.create(defaultClientConfig);
-		WebResource webResource = client
-				   .resource(Settings.BOOTSTRAP_URL + "swarms/" + id);
 		
-		Swarm respons = webResource
-				.accept("Content-Type", "application/json")
-                .get(Swarm.class);
-                
-        */
 		LOG.log(Level.INFO,respons.toString());
 		return respons;
 	}
 
 }
+
+
