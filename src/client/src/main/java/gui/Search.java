@@ -222,21 +222,21 @@ public class Search extends JDialog
 				
 				@SuppressWarnings("unused")
 				Backend back = new Backend(null);
-				//List<SwarmMetadataShort> swarms = back.getSwarms();
-				@SuppressWarnings("rawtypes")
-				List swarms=new ArrayList<>();
-				swarms.add(new SwarmMetadataShort("1", "Negin"));
-				swarms.add(new SwarmMetadataShort("2", "Kamran"));
-				swarms.add(new SwarmMetadataShort("3", "khar"));
-				swarms.add(new SwarmMetadataShort("4", "Negin"));
-				swarms.add(new SwarmMetadataShort("5", "Kamran"));
-				swarms.add(new SwarmMetadataShort("6", "khar"));
-				swarms.add(new SwarmMetadataShort("7", "Negin"));
-				swarms.add(new SwarmMetadataShort("8", "Kamran"));
-				swarms.add(new SwarmMetadataShort("9", "khar"));
-				swarms.add(new SwarmMetadataShort("10", "Negin"));
-				swarms.add(new SwarmMetadataShort("11", "Kamran"));
-				swarms.add(new SwarmMetadataShort("12", "khar"));
+				List<SwarmMetadataShort> swarms = back.getSwarms();
+//				@SuppressWarnings("rawtypes")
+//				List swarms=new ArrayList<>();
+//				swarms.add(new SwarmMetadataShort("1", "Negin"));
+//				swarms.add(new SwarmMetadataShort("2", "Kamran"));
+//				swarms.add(new SwarmMetadataShort("3", "khar"));
+//				swarms.add(new SwarmMetadataShort("4", "Negin"));
+//				swarms.add(new SwarmMetadataShort("5", "Kamran"));
+//				swarms.add(new SwarmMetadataShort("6", "khar"));
+//				swarms.add(new SwarmMetadataShort("7", "Negin"));
+//				swarms.add(new SwarmMetadataShort("8", "Kamran"));
+//				swarms.add(new SwarmMetadataShort("9", "khar"));
+//				swarms.add(new SwarmMetadataShort("10", "Negin"));
+//				swarms.add(new SwarmMetadataShort("11", "Kamran"));
+//				swarms.add(new SwarmMetadataShort("12", "khar"));
 				
 				createTableDataModel(swarms);
 				
