@@ -35,6 +35,9 @@ public class Main {
 
 		final Thread restServerThread = new Thread(new RESTStartUp());
 		restServerThread.start();
+		
+		Thread bootstrapSynchronizerThread = new Thread(new BootstrapSynchronizer());
+		bootstrapSynchronizerThread.start();
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
