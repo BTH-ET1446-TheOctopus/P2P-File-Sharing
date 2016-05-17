@@ -24,11 +24,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RESTStartUp implements Runnable {
-	private static final Logger LOG = Logger.getLogger(RESTStartUp.class.getName());
+	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final ResourceConfig rc = new ResourceConfig().packages("backend.rest");
 	public void run() {
 		// function to test connection client -> bootstrap -> client
-		testBoostrapConnection();
+		//testBoostrapConnection();
 		
 		//testClientConnection();
 		
@@ -93,7 +93,7 @@ public class RESTStartUp implements Runnable {
 	}
 
 	private void testClientConnection() {
-		Backend backend = new Backend(new BackendObserver() {
+		/*Backend backend = new Backend(new BackendObserver() {
 
 			@Override
 			public void newSwarm(String id, String filename, int blockCount) {
@@ -117,6 +117,6 @@ public class RESTStartUp implements Runnable {
 
 		});
 		
-		backend.engageSwarm("abc123");
+		backend.engageSwarm("abc123");*/
 	}
 }

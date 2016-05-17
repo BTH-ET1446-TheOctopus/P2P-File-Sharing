@@ -5,7 +5,6 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 //import com.sun.jersey.api.client.WebResource;
 //import com.sun.jersey.api.client.config.DefaultClientConfig;
 
-import backend.json.Address;
 import backend.json.Chunk;
 import backend.json.Chunks;
 import backend.json.Peers;
@@ -18,7 +17,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 public class ClientCalls {
     
-	private static final Logger LOG = Logger.getLogger(ClientCalls.class.getName());
+	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	/**
 	 * If no bootstrap server is available the client can request peers 
 	 * from remote clients.
@@ -34,17 +33,6 @@ public class ClientCalls {
     			.path("/rest/peers")
     			.request(MediaType.APPLICATION_JSON)
     			.get(Peers.class);
-    	/*
-    	DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
-		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
-		Client client = Client.create(defaultClientConfig);
-		WebResource webResource = client
-				   .resource(clientIP + "/rest/peers");
-
-		Peers respons = webResource
-				.accept("Content-Type", "application/json")
-                .get(Peers.class);
-		*/
 		LOG.log(Level.INFO,respons.toString());
 		return respons;
     }
@@ -66,17 +54,6 @@ public class ClientCalls {
     			.request(MediaType.APPLICATION_JSON)
     			.get(Chunks.class);
     	
-		/*
-		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
-		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
-		Client client = Client.create(defaultClientConfig);
-		WebResource webResource = client
-				   .resource(clientIP + "/rest/file/" + fileID);
-		
-		Chunks respons = webResource
-				.accept("Content-Type", "application/json")
-                .get(Chunks.class);
-		*/
 		LOG.log(Level.INFO,respons.toString());
 		return respons;
 	}
@@ -86,9 +63,9 @@ public class ClientCalls {
 	 * to a file binary on client side in order to build the file. The file is complete
 	 * when all chunks has been recived from remote client. 
 	 * 
-	 * @param clientIP		The IP address of the remote client + port nr
-	 * @param fileID		The UUID for the file
-	 * @param chunk			The requested chunk for the remote client
+	 * clientIP		The IP address of the remote client + port nr
+	 * fileID		The UUID for the file
+	 * chunk			The requested chunk for the remote client
 	 * @return				Specific chunk, header and data
 	 */
 	public Chunk getFileChunk(String clientIP, String fileID, int chunk)
@@ -100,17 +77,6 @@ public class ClientCalls {
     			.request(MediaType.APPLICATION_JSON)
     			.get(Chunk.class);
 		
-		/*
-		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
-		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
-		Client client = Client.create(defaultClientConfig);
-		WebResource webResource = client
-				   .resource(clientIP + "/rest/file/" + fileID + "/" + chunk);
-		
-		Chunk respons = webResource
-				.accept("Content-Type", "application/json")
-                .get(Chunk.class);
-		*/
 		LOG.log(Level.INFO,respons.toString());
 		return respons;
 	}

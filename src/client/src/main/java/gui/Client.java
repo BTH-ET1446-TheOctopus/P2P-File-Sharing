@@ -24,6 +24,8 @@ import javax.swing.table.DefaultTableModel;
 import backend.Backend;
 import backend.api.BackendObserver;
 import backend.api.datatypes.SwarmMetadataShort;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class Client implements BackendObserver
 {
@@ -50,6 +52,8 @@ public class Client implements BackendObserver
 	private Search						searchWindows;
 	private Mode						mode;
 	private SpeedChart					speedChartWindow;
+	
+	private Backend backend;
 
 	/**
 	 * This method creates the Octopus P2P client GUI.
@@ -88,7 +92,8 @@ public class Client implements BackendObserver
 		createScrollPanel();
 		createTable();
 
-
+		backend = Backend.getInstance();
+		backend.setObserver(this);
 	}
 
 	/**
@@ -105,7 +110,6 @@ public class Client implements BackendObserver
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
-		frame.getContentPane().setLayout(null);
 //		frame.setVisible(true);
 		frame.setDefaultLookAndFeelDecorated(true);
 	}
@@ -122,9 +126,6 @@ public class Client implements BackendObserver
 	{
 		iconBar = new JPanel();
 		iconBar.setBackground(new Color(245, 245, 245));
-		iconBar.setBounds(0, 0, 680, 34);
-		iconBar.setLayout(null);
-		frame.getContentPane().add(iconBar);
 	}
 
 	/**
@@ -139,9 +140,6 @@ public class Client implements BackendObserver
 	{
 		statusBar = new JPanel();
 		statusBar.setBackground(new Color(255, 255, 255));
-		statusBar.setBounds(0, 34, 680, 20);
-		statusBar.setLayout(null);
-		frame.getContentPane().add(statusBar);
 	}
 
 	/**
@@ -156,9 +154,6 @@ public class Client implements BackendObserver
 	{
 		settingBar = new JPanel();
 		settingBar.setBackground(new Color(245, 245, 245));
-		settingBar.setBounds(0, 344, 680, 34);
-		settingBar.setLayout(null);
-		frame.getContentPane().add(settingBar);
 		JDialog.setDefaultLookAndFeelDecorated(true);
 	}
 
@@ -175,8 +170,6 @@ public class Client implements BackendObserver
 		newTorrent = new JButton();
 		newTorrent.setToolTipText("Create New Torrent");
 		newTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileNew.png")));
-		newTorrent.setBounds(0, 0, 34, 34);
-		iconBar.add(newTorrent);
 
 		newTorrent.addActionListener(new ActionListener()
 		{
@@ -208,7 +201,7 @@ public class Client implements BackendObserver
 		removeTorrent = new JButton();
 		removeTorrent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Backend be = new Backend(null);
+				Backend be = Backend.getInstance();
 				be.removeSwarm((String) table.getValueAt(table.getSelectedRow(), 0));
     	        DefaultTableModel model = (DefaultTableModel)table.getModel();
 				model.removeRow(table.getSelectedRow());
@@ -216,8 +209,6 @@ public class Client implements BackendObserver
 		});
 		removeTorrent.setToolTipText("Remove Selected Transmition");
 		removeTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileRemove.png")));
-		removeTorrent.setBounds(34, 0, 34, 34);
-		iconBar.add(removeTorrent);
 	}
 
 	/**
@@ -242,8 +233,6 @@ public class Client implements BackendObserver
 		});
 		pauseTorrent.setToolTipText("Pause Selected Transmition");
 		pauseTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/filePause.png")));
-		pauseTorrent.setBounds(102, 0, 34, 34);
-		iconBar.add(pauseTorrent);
 	}
 
 	/**
@@ -272,8 +261,6 @@ public class Client implements BackendObserver
 		});
 		resumeTorrent.setToolTipText("Resume Selected Transmition");
 		resumeTorrent.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileResume.png")));
-		resumeTorrent.setBounds(136, 0, 34, 34);
-		iconBar.add(resumeTorrent);
 	}
 
 	/**
@@ -289,8 +276,6 @@ public class Client implements BackendObserver
 		speedChart = new JButton();
 		speedChart.setToolTipText("Speed Chart For Selected Transmition");
 		speedChart.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileInfo.png")));
-		speedChart.setBounds(612, 0, 34, 34);
-		iconBar.add(speedChart);
 
 		speedChart.addActionListener(new ActionListener()
 		{
@@ -315,8 +300,30 @@ public class Client implements BackendObserver
 		search = new JButton();
 		search.setToolTipText("Search");
 		search.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileSearch.png")));
-		search.setBounds(646, 0, 34, 34);
-		iconBar.add(search);
+		GroupLayout gl_iconBar = new GroupLayout(iconBar);
+		gl_iconBar.setHorizontalGroup(
+			gl_iconBar.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_iconBar.createSequentialGroup()
+					.addGap(10)
+					.addComponent(newTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+					.addComponent(removeTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+					.addGap(24)
+					.addComponent(pauseTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+					.addComponent(resumeTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+					.addGap(432)
+					.addComponent(speedChart, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+					.addComponent(search, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_iconBar.setVerticalGroup(
+			gl_iconBar.createParallelGroup(Alignment.LEADING)
+				.addComponent(newTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+				.addComponent(removeTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+				.addComponent(pauseTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+				.addComponent(resumeTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+				.addComponent(speedChart, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+				.addComponent(search, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+		);
+		iconBar.setLayout(gl_iconBar);
 		search.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -339,8 +346,6 @@ public class Client implements BackendObserver
 		download = new JLabel();
 		download.setText("999.9 MB");
 		download.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/download.png")));
-		download.setBounds(595, 0, 85, 20);
-		statusBar.add(download);
 	}
 
 	/**
@@ -356,8 +361,20 @@ public class Client implements BackendObserver
 		upload = new JLabel();
 		upload.setText("999.9 MB");
 		upload.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/upload.png")));
-		upload.setBounds(510, 0, 85, 20);
-		statusBar.add(upload);
+		GroupLayout gl_statusBar = new GroupLayout(statusBar);
+		gl_statusBar.setHorizontalGroup(
+			gl_statusBar.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_statusBar.createSequentialGroup()
+					.addGap(500)
+					.addComponent(upload, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+					.addComponent(download, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_statusBar.setVerticalGroup(
+			gl_statusBar.createParallelGroup(Alignment.LEADING)
+				.addComponent(upload, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+				.addComponent(download, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+		);
+		statusBar.setLayout(gl_statusBar);
 	}
 
 	/**
@@ -371,7 +388,6 @@ public class Client implements BackendObserver
 	private void createDarkPeerButton()
 	{
 		darkPeerbtn = new JButton();
-		darkPeerbtn.setBounds(0, 0, 34, 34);
 
 		if (this.darkStatus == false)
 		{
@@ -382,7 +398,20 @@ public class Client implements BackendObserver
 			setDarkPeerBtn(true);
 
 		}
-		settingBar.add(darkPeerbtn);
+		GroupLayout gl_settingBar = new GroupLayout(settingBar);
+		gl_settingBar.setHorizontalGroup(
+			gl_settingBar.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_settingBar.createSequentialGroup()
+					.addGap(10)
+					.addComponent(darkPeerbtn, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_settingBar.setVerticalGroup(
+			gl_settingBar.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_settingBar.createSequentialGroup()
+					.addGap(3)
+					.addComponent(darkPeerbtn, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
+		);
+		settingBar.setLayout(gl_settingBar);
 
 		darkPeerbtn.addActionListener(new ActionListener()
 		{
@@ -458,8 +487,23 @@ public class Client implements BackendObserver
 	private void createScrollPanel()
 	{
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 54, 680, 291);
-		frame.getContentPane().add(scrollPane);
+		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(iconBar, GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)
+				.addComponent(statusBar, GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)
+				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)
+				.addComponent(settingBar, GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(iconBar, GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+					.addComponent(statusBar, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+					.addComponent(settingBar, GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE))
+		);
+		frame.getContentPane().setLayout(groupLayout);
 	}
 
 	/**
@@ -554,8 +598,8 @@ public class Client implements BackendObserver
 		{
 			if (table.getValueAt(i, 0) == id)
 			{
-				table.setValueAt(speed + " MB", i, 3);
-				table.setValueAt(progress+" %", i, 2);
+				table.setValueAt(String.valueOf(speed) + " KB/s", i, 4);
+				table.setValueAt(String.valueOf(Math.round(progress * 100))+" %", i, 2);
 				table.setValueAt(timeToCompletion, i, 6);
 				table.setValueAt(peers.size(), i, 5);
 			}
@@ -605,5 +649,11 @@ public class Client implements BackendObserver
 		});
 
 	}
+
+ 	@Override
+ 	public void SpeedChartUpdate(double up, double down) {
+ 		// TODO Auto-generated method stub
+ 		
+ 	}
 
 }

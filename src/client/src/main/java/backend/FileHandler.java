@@ -18,7 +18,7 @@ import backend.BlockBuffer.Mode;
  *
  */
 public final class FileHandler {
-	private static final Logger LOG = Logger.getLogger(FileHandler.class.getName());
+	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private static HashMap<String, BlockBuffer> files = new HashMap<String, BlockBuffer>();
 

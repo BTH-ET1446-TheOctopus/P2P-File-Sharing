@@ -46,9 +46,11 @@ public class sqlconnector {
 
 		catch (SQLException ex) {
 			// handle any errors
-			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
-			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
-			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
+			LOG.log(Level.SEVERE, ex.toString(), ex);
+			
+			LOG.log(Level.SEVERE,"SQLException: " + ex.getMessage());
+			LOG.log(Level.SEVERE,"SQLState: " + ex.getSQLState());
+			LOG.log(Level.SEVERE,"VendorError: " + ex.getErrorCode());
 		}
 	}
 
@@ -82,7 +84,7 @@ public class sqlconnector {
 	//Function to Create Server DB
 	//Check if it already exists, then do nothing
 	public void createserverdb(){
-		//Create Serverdb
+		
 		try {
 			String createdb = "create database if not exists serverdb";
 			this.Update(createdb);		
@@ -95,14 +97,14 @@ public class sqlconnector {
 		
 		//Close Connection and Connect to Client DB
 		this.closeconnect();
-		this.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
+		this.connector(Settings.MYSQL_USERNAME, Settings.MYSQL_PASSWORD, "serverdb", Settings.MYSQL_HOST, Settings.MYSQL_PORT);
 		
 		//Create Table01 bootstrapserver
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
 			ResultSet tables = dbm.getTables(null, null, "bootstrapserver", null);
 			if (tables.next()) {
-				// Table exists Don't Create Table
+				// Table exists, Don't Create Table
 			}
 			else {
 				//Table Doesn't Exist, Create Table
@@ -124,10 +126,9 @@ public class sqlconnector {
 			DatabaseMetaData dbm = connection.getMetaData();
 			ResultSet tables = dbm.getTables(null, null, "peersarray", null);
 			if (tables.next()) {
-				// Table exists Don't Create Table
+				// Table exists, Don't Create Table
 			}
 			else {
-				//Table Doesn't Exist, Create Table
 				//Table Doesn't Exist, Create Table
 				String createtable = "CREATE TABLE peersarray ( " +
 						" uniquefileid varchar(100) NOT NULL, " +    
@@ -144,7 +145,7 @@ public class sqlconnector {
 			DatabaseMetaData dbm = connection.getMetaData();
 			ResultSet tables = dbm.getTables(null, null, "serverswarm", null);
 			if (tables.next()) {
-				// Table exists Don't Create Table
+				// Table exists, Don't Create Table
 			}
 			else {
 				//Table Doesn't Exist, Create Table
@@ -168,7 +169,7 @@ public class sqlconnector {
 			DatabaseMetaData dbm = connection.getMetaData();
 			ResultSet tables = dbm.getTables(null, null, "serverpeers", null);
 			if (tables.next()) {
-				// Table exists Don't Create Table
+				// Table exists, Don't Create Table
 			}
 			else {
 				//Table Doesn't Exist, Create Table
@@ -185,93 +186,6 @@ public class sqlconnector {
 			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 		}
 	}
-
-	//Function to Create Client DB
-	//Check if it already exists, then do nothing
-	public void createclientdb(){
-		//Create Client DB
-		try {
-			String createdb = "create database if not exists clientdb";
-			this.Update(createdb);		
-			String usedb = "USE clientdb";
-			this.runquery(usedb);
-		}
-		catch (Exception e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
-		}
-		
-		//Close Connection and Connect to Client DB
-		this.closeconnect();
-		this.connector("root", "sql", "clientdb", "127.0.0.1", "3306");
-		//Create Table01 peersarray
-		try {
-			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "clientdb.peersarray", null);
-			if (tables.next()) {
-				// Table exists Don't Create Table
-			}
-			else {
-				//Table Doesn't Exist, Create Table
-				String createtable = "CREATE TABLE peersarray ( "
-							+ " id int NOT NULL AUTO_INCREMENT, "		
-							+ " uniquefileid varchar(100) NOT NULL, "    
-							+ " peers varchar(15) NOT NULL, "
-							+ " CONSTRAINT peersarray_pk PRIMARY KEY (id))";
-				this.Update(createtable);
-			}
-		}
-		catch (Exception e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
-		}
-		//Create Table02 clientswarm
-		try {
-			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "clientswarm", null);
-			if (tables.next()) {
-				// Table exists Don't Create Table
-			}
-			else {
-				//Table Doesn't Exist, Create Table
-				String createtable = "CREATE TABLE clientswarm ("
-							+ " filename char(40) NOT NULL, "
-							+ " totalblocks int NOT NULL, "
-							+ " peers varchar(15) NOT NULL, "
-							+ " peercount int NOT NULL, "
-							+ " uniquefileid varchar(100) NOT NULL, "
-							+ " filechecksum varchar(100) NOT NULL, "
-							+ " metadatachecksum varchar(100) NOT NULL, "		
-							+ " CONSTRAINT clientswarm_pk PRIMARY KEY (uniquefileid))";
-				this.Update(createtable);
-			}
-		}
-		catch (Exception e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
-		}
-		//Create Table03 clientpeers
-		try {
-			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "clientpeers", null);
-			if (tables.next()) {
-				// Table exists Don't Create Table
-			}
-			else {
-				//Table Doesn't Exist, Create Table
-				String createtable = "CREATE TABLE clientpeers ( "
-							+ " id varchar(100) NOT NULL, "
-							+ " latestip varchar(15) NOT NULL, "
-							+ " blaklist binary(1) NOT NULL, "
-							+ " timestamp timestamp NOT NULL, "
-							+ " files varchar(100) NOT NULL, "
-							+ " filecount int NOT NULL, "
-							+ " CONSTRAINT clientpeers_pk PRIMARY KEY (id))";
-				this.Update(createtable);
-			}
-		}
-		catch (Exception e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
-		}
-	}
-
 
 	public void closeconnect(){
 		//Close all connection to MySQL

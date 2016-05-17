@@ -12,7 +12,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import backend.BlockBuffer;
@@ -29,7 +28,7 @@ import java.util.logging.Logger;
 @Path("/rest")
 public class Rest {
 
-	private static final Logger LOG = Logger.getLogger(Rest.class.getName());
+	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@GET
 	@Path("/test/")
@@ -116,7 +115,7 @@ public class Rest {
 		LOG.log(Level.INFO, "Received request to download file id {0}, block {1}", new Object[] { id, chunk });
 
 		// Database code:
-		//  - Get the filename from 'id'
+		// Get the filename from 'id'
  		sqlconnector test = new sqlconnector("clientdb");
  		ResultSet result;
  		String fname="";
@@ -127,11 +126,11 @@ public class Rest {
  			fname = result.getString("filename");
  	    }
  	    catch (Exception e) {
- 	        System.out.println("Exception in query method:\n" + e.getMessage());
+ 	        LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
  	    }
 			         
  		test.closeconnect();
-		//  - Check if the block number 'chunk' is downloaded
+		// Check if the block number 'chunk' is downloaded
  		
 		Chunk chunko = new Chunk();
 		chunko.setSequenceNumber(chunk);

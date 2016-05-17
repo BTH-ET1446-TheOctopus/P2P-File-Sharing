@@ -18,27 +18,21 @@ public class sqlconnector {
 	String password;
 	String url;
 	
-	private static final Logger LOG = Logger.getLogger(sqlconnector.class.getName());
+	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	public sqlconnector(){
-
-		this.connector(Settings.MYSQL_USERNAME, Settings.MYSQL_PASSWORD, Settings.MYSQL_DATABASE, Settings.MYSQL_HOST, Settings.MYSQL_PORT);
 
 	}
 
 	//Overloaded Constructor to Open Connection with Specified DB
 	public sqlconnector(String dbname){
 
-		this.connector(Settings.MYSQL_USERNAME, Settings.MYSQL_PASSWORD, dbname, Settings.MYSQL_HOST, Settings.MYSQL_PORT);
+		this.connector(dbname);
 	}
 
 	
-	public void connector(String login, String password, String db, String host, String port) {
-		this.login = login;
-		this.password = password;
-		this.host = host;
-		this.port = port;
-		url = "jdbc:mysql://"+host+":"+port+"/"+db+"?autoReconnect=true&useSSL=false";
+	public void connector(String db) {
+		url = "jdbc:sqlite:"+db;
 		connect();
 	}
 
@@ -83,130 +77,16 @@ public class sqlconnector {
 		return true;
 	}
 
-	//Function to Create Server DB
-	//Check if it already exists, then do nothing
-	public void createserverdb(){
-		//Create Serverdb
-		try {
-			String createdb = "create database if not exists serverdb";
-			this.Update(createdb);		
-			String usedb = "USE serverdb";
-			this.runquery(usedb);
-		}
-		catch (Exception e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
-		}
-		
-		//Close Connection and Connect to Client DB
-		this.closeconnect();
-		this.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
-		
-		//Create Table01 bootstrapserver
-		try {
-			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "bootstrapserver", null);
-			if (tables.next()) {
-				// Table exists Don't Create Table
-			}
-			else {
-				//Table Doesn't Exist, Create Table
-				String createtable = " CREATE TABLE bootstrapserver ( " +
-						" ip varchar(15) NOT NULL, " +
-						" name char(20) NOT NULL, " +
-						" timestamp timestamp NOT NULL, " +
-						" clientcount int NOT NULL, " +
-						" servercount int NOT NULL, " +
-						" CONSTRAINT bootstrapserver_pk PRIMARY KEY (ip))";
-				this.Update(createtable);
-			}
-		}
-		catch (Exception e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
-		}
-		//Create Table02 peersarray
-		try {
-			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "peersarray", null);
-			if (tables.next()) {
-				// Table exists Don't Create Table
-			}
-			else {
-				//Table Doesn't Exist, Create Table
-				//Table Doesn't Exist, Create Table
-				String createtable = "CREATE TABLE peersarray ( " +
-						" uniquefileid varchar(100) NOT NULL, " +    
-						" peers varchar(15) NOT NULL, " +
-						" CONSTRAINT peersarray_pk PRIMARY KEY (uniquefileid))";
-				this.Update(createtable);
-			}
-		}
-		catch (Exception e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
-		}
-		//Create Table03 serverswarm
-		try {
-			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "serverswarm", null);
-			if (tables.next()) {
-				// Table exists Don't Create Table
-			}
-			else {
-				//Table Doesn't Exist, Create Table
-				String createtable = "CREATE TABLE serverswarm ( " +
-						" filename char(40) NOT NULL, " +
-						" totalblocks int NOT NULL, " +
-						" peers varchar(100) NOT NULL, " +
-						" peercount int NOT NULL, " +
-						" uniquefileid varchar(100) NOT NULL, " +
-						" filechecksum varchar(100) NOT NULL, " +
-						" metadatachecksum varchar(100) NOT NULL, " +		
-						" CONSTRAINT serverswarm_pk PRIMARY KEY (uniquefileid))";
-				this.Update(createtable);
-			}
-		}
-		catch (Exception e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
-		}
-		//Create Table04 serverpeers
-		try {
-			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "serverpeers", null);
-			if (tables.next()) {
-				// Table exists Don't Create Table
-			}
-			else {
-				//Table Doesn't Exist, Create Table
-				String createtable = "CREATE TABLE serverpeers ( " +
-						" id varchar(100) NOT NULL, " +
-						" latestIP varchar(15) NOT NULL, " +
-						" blacklist binary(1) NOT NULL, " +
-						" timestamp timestamp NOT NULL, " +
-						" CONSTRAINT serverpeers_pk PRIMARY KEY (id))";
-				this.Update(createtable);
-			}
-		}
-		catch (Exception e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
-		}
-	}
-
 	//Function to Create Client DB
 	//Check if it already exists, then do nothing
 	public void createclientdb(){
 		//Create Client DB
 		try {
-			String createdb = "create database if not exists clientdb";
-			this.Update(createdb);		
-			String usedb = "USE clientdb";
-			this.runquery(usedb);
+			this.connector("clientdb");
 		}
 		catch (Exception e) {
 			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 		}
-		
-		//Close Connection and Connect to Client DB
-		this.closeconnect();
-		this.connector("root", "sql", "clientdb", "127.0.0.1", "3306");
 		//Create Table01 peersarray
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
@@ -217,7 +97,7 @@ public class sqlconnector {
 			else {
 				//Table Doesn't Exist, Create Table
 				String createtable = "CREATE TABLE peersarray ( "
-							+ " id int NOT NULL AUTO_INCREMENT, "		
+							+ " id int NOT NULL, "		
 							+ " uniquefileid varchar(100) NOT NULL, "    
 							+ " peers varchar(15) NOT NULL, "
 							+ " CONSTRAINT peersarray_pk PRIMARY KEY (id))";
@@ -263,7 +143,7 @@ public class sqlconnector {
 				String createtable = "CREATE TABLE clientpeers ( "
 							+ " id varchar(100) NOT NULL, "
 							+ " latestip varchar(15) NOT NULL, "
-							+ " blaklist binary(1) NOT NULL, "
+							+ " blacklist binary(1) NOT NULL, "
 							+ " timestamp timestamp NOT NULL, "
 							+ " files varchar(100) NOT NULL, "
 							+ " filecount int NOT NULL, "

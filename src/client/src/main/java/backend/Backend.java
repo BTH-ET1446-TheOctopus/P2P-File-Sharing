@@ -15,7 +15,7 @@ import backend.rest.BootstrapCalls;
 import backend.rest.ClientCalls;
 
 public class Backend implements BackendController {
-	private static final Logger LOG = Logger.getLogger(Backend.class.getName());
+	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private HashMap<String, SwarmEngager> activeSwarms;
 
@@ -26,11 +26,25 @@ public class Backend implements BackendController {
 
 	private BootstrapHelloThread bootstrapHelloThread;
 	private BootstrapDataThread bootstrapDataThread;
-
-	public Backend(BackendObserver restObserver) {
+	
+	private static Backend instance;
+	
+	public static Backend getInstance() {
+		if (instance == null) {
+			instance = new Backend();
+		}
+		
+		return instance;
+	}
+	
+	public void setObserver(BackendObserver restObserver) {
+		this.restObserver = restObserver;
+	}
+	
+	public Backend() {
 		activeSwarms = new HashMap<String, SwarmEngager>();
 
-		this.restObserver = restObserver;
+		restObserver = null;
 
 		clientCalls = new ClientCalls();
 		bootstrapCalls = new BootstrapCalls();

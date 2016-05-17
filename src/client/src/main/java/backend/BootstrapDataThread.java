@@ -14,7 +14,7 @@ import backend.rest.BootstrapCalls;
  *
  */
 public class BootstrapDataThread extends Thread {
-	private static final Logger LOG = Logger.getLogger(BootstrapDataThread.class.getName());
+	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private BootstrapCalls bootstrapCalls;
 
