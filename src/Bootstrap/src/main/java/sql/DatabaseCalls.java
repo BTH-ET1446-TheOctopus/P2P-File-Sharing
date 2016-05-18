@@ -40,7 +40,7 @@ public class DatabaseCalls implements DatabaseAPI {
 	}
 
 	public void addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid){   //This method writes to 'serverfile' table
-		sqlconnector sc = new sqlconnector();
+		sqlconnector sc = new sqlconnector("serverdb");
 		Statement stmnt = sc.getStatement();
 
 		try {
@@ -55,7 +55,7 @@ public class DatabaseCalls implements DatabaseAPI {
 	}
 
 	public void addPeers(String id, String latestIP, boolean blacklist, String timestamp ){  //This method writes to 'serverpeers' table
-		sqlconnector sc = new sqlconnector();
+		sqlconnector sc = new sqlconnector("serverdb");
 		Statement stmnt = sc.getStatement();
 
 		try {
@@ -69,7 +69,7 @@ public class DatabaseCalls implements DatabaseAPI {
 	}
 
 	public void addPeerArray(String uniquefileid, String peers){  //This method writes to 'peersarray' table
-		sqlconnector sc = new sqlconnector();
+		sqlconnector sc = new sqlconnector("serverdb");
 
 		Statement stmnt = sc.getStatement();
 
