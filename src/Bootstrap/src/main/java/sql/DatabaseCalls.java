@@ -290,7 +290,7 @@ public class DatabaseCalls implements DatabaseAPI {
 		String metadatachecksum="";
 		String filepeers="";
 		String swarmid="'"+swarmID+"'";
-		readquery="select * from serverswarm where uniquefileid = "+ swarmid;
+		readquery="select * from serverswarm where uniquefileid ='"+swarmid+"';";  //"+ swarmid;
 		result = sc.runquery(readquery);
 
 		LOG.log(Level.INFO, swarmID);
@@ -314,7 +314,7 @@ public class DatabaseCalls implements DatabaseAPI {
 		catch (Exception e) {
 			System.out.println("Exception in query method:\n" + e.getMessage());
 		}
-		readquery="select distinct peers from peersarray where uniquefileid =" + swarmid;
+		readquery="select distinct peers from peersarray where uniquefileid ='"+swarmid+"';"; //" + swarmid;
 		result = sc.runquery(readquery);
 		try {
 			System.out.println();
