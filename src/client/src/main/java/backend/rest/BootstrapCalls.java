@@ -15,6 +15,7 @@ import backend.api.calls;
 import backend.json.Address;
 import backend.json.Blacklist;
 import backend.json.Bootstraps;
+import backend.json.ID;
 import backend.json.Peers;
 import backend.json.Swarm;
 import backend.json.SwarmsHelper;
@@ -26,6 +27,17 @@ public class BootstrapCalls implements calls{
     static final String REST_URI = "http://localhost:9999/rest/rest/";
     private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+	public ID getHello(){
+		Client client = ClientBuilder.newClient();
+     	
+ 		ID respons = client.target(Settings.BOOTSTRAP_URL)
+     			.path("hello")
+     			.request(MediaType.APPLICATION_JSON)
+     			.get(ID.class);
+ 		
+ 		LOG.log(Level.INFO,respons.toString());
+ 		return respons;
+	}
     public Address getTest(){	
     	Client client = ClientBuilder.newClient();
     	

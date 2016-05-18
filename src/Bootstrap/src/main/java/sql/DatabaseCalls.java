@@ -48,7 +48,7 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 		}
 	}
 	
-	public void addPeers(String id, String latestIP, int blacklist){  //This method writes to 'serverpeers' table
+	public void addPeers(String id, String latestIP, int blacklist, String timestamp){  //This method writes to 'serverpeers' table
 		sqlconnector sc = new sqlconnector();
 		Statement stmnt = sc.getStatement();
 		

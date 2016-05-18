@@ -35,17 +35,19 @@ public class Main {
 
 		final Thread restServerThread = new Thread(new RESTStartUp());
 		restServerThread.start();
+		
+		Thread bootstrapSynchronizerThread = new Thread(new BootstrapSynchronizer());
+		bootstrapSynchronizerThread.start();
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
-				restServerThread.interrupt();
-//              This command line is allowing the user to join the peer network again 
-//              if the connection is interrupted
+				restServerThread.interrupt(); // Stop the REST server thread
+
 				try {
-					restServerThread.join();//This command line is defining the user to join the peer network
+					restServerThread.join(); // Wait until the thread is stopped
 				} catch (InterruptedException e) {
-					LOG.log(Level.INFO, e.getMessage(), e);//Jakson is disconnected from peer network
+					LOG.log(Level.INFO, e.getMessage(), e);
 				}
 			}
 		});
