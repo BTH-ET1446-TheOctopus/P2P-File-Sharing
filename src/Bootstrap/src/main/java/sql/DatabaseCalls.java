@@ -11,6 +11,7 @@ import javax.ws.rs.core.Context;
 import com.mysql.jdbc.PreparedStatement;
 import backend.Settings;
 import backend.json.Blacklist;
+import backend.json.Bootstraps;
 import backend.json.Peers;
 import backend.json.PeersInfo;
 import backend.json.SwarmsInfo;
@@ -291,7 +292,32 @@ public class DatabaseCalls implements DatabaseAPI {
 		return peers;
 	}
 	
-	
+	public Bootstraps getBootstraps(){
+		Bootstraps bootstraps = new Bootstraps();
+		String readquery="";
+ 		sqlconnector test = new sqlconnector();
+ 		ResultSet result;
+ 		String data="";
+ 		test.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
+ 		readquery="select distinct ip from bootstrapserver";
+ 		result = test.runquery(readquery);
+ 		
+		List<String> ip = new ArrayList<String>();
+ 		try {
+ 			System.out.println();
+ 			while(result.next()){
+ 		         //Retrieve by column name			
+ 		         data = result.getString("ip");	         
+ 		         ip.add(data);
+ 		      }
+ 	    }
+ 	    catch (Exception e) {
+ 	        System.out.println("Exception in query method:\n" + e.getMessage());
+ 	    }
+ 		test.closeconnect();
+		bootstraps.setbootstraps(ip);
+		return bootstraps;
+	}
 	
 	
 	

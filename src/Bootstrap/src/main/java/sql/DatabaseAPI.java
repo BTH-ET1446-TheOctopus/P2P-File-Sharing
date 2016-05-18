@@ -1,11 +1,13 @@
 package sql;
 
-import backend.json.Blacklist;
-import backend.json.Sync;
 import sql.DatabaseCalls.getIPoStatus;
 import backend.json.SwarmsHelper;
 import backend.json.Swarm;
 import backend.json.Peers;
+import backend.json.Blacklist;
+import backend.json.Bootstraps;
+import backend.json.Sync;
+
 
 public interface DatabaseAPI {
 
@@ -32,7 +34,7 @@ public interface DatabaseAPI {
 	
 	public SwarmsHelper getSwarms();
 	public Swarm getSwarm(String swarmID);
-	//public Bootstraps getBootstraps();
+	public Bootstraps getBootstraps();
 	
 	//public void addSwarmDB(String uuidClient, int totalBlocks), String filename, String fileChecksum, String metadataChecksum, String clientID)
 	

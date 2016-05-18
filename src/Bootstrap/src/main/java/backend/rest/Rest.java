@@ -133,29 +133,7 @@ public class Rest {
 		}
 		else
 		{
-			String readquery="";
-	 		sqlconnector test = new sqlconnector();
-	 		ResultSet result;
-	 		String data="";
-	 		test.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
-	 		readquery="select distinct ip from bootstrapserver";
-	 		result = test.runquery(readquery);
-	 		
-			List<String> ip = new ArrayList<String>();
-	 		try {
-	 			System.out.println();
-	 			while(result.next()){
-	 		         //Retrieve by column name			
-	 		         data = result.getString("ip");	         
-	 		         ip.add(data);
-	 		      }
-	 	    }
-	 	    catch (Exception e) {
-	 	        System.out.println("Exception in query method:\n" + e.getMessage());
-	 	    }
-	 		test.closeconnect();
-			bootstraps.setbootstraps(ip);
-			
+			bootstraps=database.getBootstraps();
 			return bootstraps;
 		}
 	}
