@@ -12,25 +12,28 @@ import javax.ws.rs.core.Context;
 
 import backend.Settings;
 import backend.json.Blacklist;
+import backend.json.PeersInfo;
+import backend.json.SwarmsInfo;
+import backend.json.Sync;
 
 public class DatabaseCalls implements DatabaseAPI {
-	
-private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName());
-	
+
+	private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName());
+
 	//create an object from sqlconnector, to eb able to connect to the database
 	sqlconnector sc = new sqlconnector("serverdb");
 
 	ResultSet rs = null;
-	
+
 	public void addBootstrapServer(String ip, String name, int clientcount, int servercount){  //This method writes to 'servers' table
 		sqlconnector sc = new sqlconnector("serverdb");
 		Statement stmnt = sc.getStatement();
-		
+
 		try {
 			stmnt.executeUpdate("INSERT INTO bootstrapserver (ip, name, timestamp, clientcount, servercount) " + 
 					"VALUES ('"+ip+"', '"+name+"', default,"+clientcount+", "+servercount+")");
 			//"VALUES ('192.168.54.68', 'Backup01', default,2, 1)");
-			
+
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
@@ -42,7 +45,7 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 	public void addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid){   //This method writes to 'serverfile' table
 		sqlconnector sc = new sqlconnector();
 		Statement stmnt = sc.getStatement();
-				
+
 		try {
 			stmnt.executeUpdate("INSERT INTO serverswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
 					"VALUES ('"+filename+"', "+totalblocks+", '"+peers+"', "+peercount+", "+uniquefileid+",'filechecksum', 'metadatachecksum')");
@@ -54,11 +57,11 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 			sc.closeconnect();
 		}
 	}
-	
+
 	public void addPeers(String id, String latestIP, int blacklist, String timestamp ){  //This method writes to 'serverpeers' table
 		sqlconnector sc = new sqlconnector();
 		Statement stmnt = sc.getStatement();
-		
+
 		try {
 			stmnt.executeUpdate("INSERT INTO serverpeers (id, latestIP, blacklist, timestamp) " + 
 					"VALUES ("+id+", '"+latestIP+"', "+blacklist+", "+timestamp+")");
@@ -68,12 +71,12 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 			sc.closeconnect();
 		}
 	}
-	
+
 	public void addPeerArray(String uniquefileid, String peers){  //This method writes to 'peersarray' table
 		sqlconnector sc = new sqlconnector();
 
 		Statement stmnt = sc.getStatement();
-		
+
 		try {
 			stmnt.executeUpdate("INSERT INTO peersarray (uniquefileid, peers) " + 
 					"VALUES ( '"+uniquefileid+"', '"+peers+"')");
@@ -85,7 +88,7 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 		}
 	}
 
-	
+
 	public void getBootstrapServer() {  //This method reads from 'bootstrapserver' table
 		rs = sc.runquery("SELECT * FROM bootstrapserver");
 
@@ -115,7 +118,7 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 		}	
 
 	}
-	
+
 	public void getSwarm() {  //This method reads from 'serverswarm' table
 		rs = sc.runquery("SELECT * FROM serverswarm where peercount='1'");
 
@@ -149,27 +152,27 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 			sc.closeconnect();
 		}	
 	}
-	
+
 	public final class getIPoStatus {
-	    private final String IP;
-	    private final String BLACKLISTED;
+		private final String IP;
+		private final String BLACKLISTED;
 
-	    public getIPoStatus(String ip, String blacklisted) {
-	        this.IP = ip;
-	        this.BLACKLISTED = blacklisted;
-	    }
+		public getIPoStatus(String ip, String blacklisted) {
+			this.IP = ip;
+			this.BLACKLISTED = blacklisted;
+		}
 
-	    public String getIP() {
-	        return IP;
-	    }
+		public String getIP() {
+			return IP;
+		}
 
-	    public String getBlackListed() {
-	        return BLACKLISTED;
-	    }
+		public String getBlackListed() {
+			return BLACKLISTED;
+		}
 	}
-	
+
 	public getIPoStatus getPeers(){   //This method reads from 'serverpeers' table
-		
+
 		String latestIP = null;
 		String blackList = null;
 		rs = sc.runquery("SELECT * FROM serverpeers");
@@ -198,10 +201,10 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 		}
 
 		return new getIPoStatus(latestIP, blackList);
-		
+
 	} 
-	 
-	
+
+
 	public void getPeerArray() {  //This method reads from 'peersarray' table
 		rs = sc.runquery("SELECT * FROM peersarray");
 
@@ -225,30 +228,85 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 		}	
 
 	}
-	
+
 	public Blacklist getBlacklist()	{
+
 		Blacklist blacklist = new Blacklist();
-	
-			String readquery="";
-	 		ResultSet result;
-	 		String data="";
-	 		readquery="select distinct latestip from serverpeers where blacklist='1';";
-	 		result = sc.runquery(readquery);
-			List<String> ip = new ArrayList<String>();
-			try {
-	 			System.out.println();
-	 			while(result.next()){
-	 		         //Retrieve by column name			
-	 		         data = result.getString("latestip");	         
-	 		         ip.add(data);
-	 		      }
-	 	    }
-	 	    catch (Exception e) {
-	 	        System.out.println("Exception in query method:\n" + e.getMessage());
-	 	    }
-			blacklist.setblacklist(ip);
-			
-			return blacklist;
+
+		String readquery="";
+		ResultSet result;
+		String data="";
+		readquery="select distinct latestip from serverpeers where blacklist='1';";
+		result = sc.runquery(readquery);
+		List<String> ip = new ArrayList<String>();
+		try {
+			System.out.println();
+			while(result.next()){
+				//Retrieve by column name			
+				data = result.getString("latestip");	         
+				ip.add(data);
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Exception in query method:\n" + e.getMessage());
+		}
+		blacklist.setblacklist(ip);
+
+		return blacklist;
 	}
-	
+
+	public Sync getSync()
+	{
+		Sync sync = new Sync();
+
+		// Create fake peer data
+		PeersInfo peer = new PeersInfo();
+		peer.setId("278f6d83-a707-4aee-8471-affc03c662a9");
+		peer.setIp("129.160.10.2");
+		peer.setLastSeen("07 MAY 2016 14:21:42 UTC");
+
+		List<PeersInfo> peers = new ArrayList<PeersInfo>();
+		peers.add(peer);
+
+		//Create bootstrap data
+		List<String> bootstraps = new ArrayList<String>();
+		bootstraps.add("1.2.3.4");
+		bootstraps.add("1.2.3.6");
+
+		//Create blacklist data
+		List<String> blacklist = new ArrayList<String>();
+		blacklist.add("1.2.3.4");
+		blacklist.add("1.2.3.6");
+
+
+
+		//SwarmsInfo 
+		List<SwarmsInfo> swarmInfoList = new ArrayList<SwarmsInfo>();
+
+		SwarmsInfo swarmInfo = new SwarmsInfo();
+		swarmInfo.setBlockCount(4);
+		swarmInfo.setFileChecksum("XXXD");
+		swarmInfo.setfilename("Movie.mp3");
+		swarmInfo.setid("278f6d83-a707-4aee-8471-affc03c662a9");
+		swarmInfo.setMetadataChecksum("XYYYX");
+
+
+		List<String> swarmPeers = new ArrayList<String>();
+
+		swarmPeers.add("1.2.3.4");
+		swarmPeers.add("1.2.3.5");
+
+		swarmInfo.setPeers(swarmPeers);
+
+		swarmInfoList.add(swarmInfo);
+
+		//add data to sync class
+		sync.setPeers(peers);
+		sync.setBootstraps(bootstraps);
+		sync.setBlacklist(blacklist);
+		sync.setSwarmsInfo(swarmInfoList);
+
+		return sync;
+	}
+
 }

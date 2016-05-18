@@ -1,6 +1,7 @@
 package sql;
 
 import backend.json.Blacklist;
+import backend.json.Sync;
 import sql.DatabaseCalls.getIPoStatus;
 
 public interface DatabaseAPI {
@@ -17,10 +18,9 @@ public interface DatabaseAPI {
 	public void getPeerArray();
 	
 	public getIPoStatus getPeers();
-	
 	public Blacklist getBlacklist();
+	public Sync getSync();
 	
-	//public Sync getSync();
 	//public Swarmshelper getSwarms();
 	//public Swarm getSwarm(String swarmID)
 	//public Bootstraps getBootstraps();
