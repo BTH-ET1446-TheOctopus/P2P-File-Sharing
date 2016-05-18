@@ -143,14 +143,35 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 		}	
 	}
 	
-	public void getPeers(){   //This method reads from 'serverpeers' table
+	public final class getIPoStatus {
+	    private final String IP;
+	    private final String BLACKLISTED;
+
+	    public getIPoStatus(String ip, String blacklisted) {
+	        this.IP = ip;
+	        this.BLACKLISTED = blacklisted;
+	    }
+
+	    public String getIP() {
+	        return IP;
+	    }
+
+	    public String getBlackListed() {
+	        return BLACKLISTED;
+	    }
+	}
+	
+	public getIPoStatus getPeers(){   //This method reads from 'serverpeers' table
+		
+		String latestIP = null;
+		String blackList = null;
 		rs = sc.runquery("SELECT * FROM serverpeers");
 
 		try {
 			while (rs.next()) {
 				String id = rs.getString("id");
-				String latestIP = rs.getString("latestIP");
-				String blackList = rs.getString("blacklist");
+				latestIP = rs.getString("latestIP");
+				blackList = rs.getString("blacklist");
 				String timestamp = rs.getString("timestamp");
 
 				LOG.log(Level.INFO, "\nID: " + id.toString() + 
@@ -168,8 +189,11 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 		} finally  {
 			sc.closeconnect();
 		}
+
+		return new getIPoStatus(latestIP, blackList);
 		
 	} 
+	 
 	
 	public void getPeerArray() {  //This method reads from 'peersarray' table
 		rs = sc.runquery("SELECT * FROM peersarray");
@@ -194,6 +218,4 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 		}	
 
 	}
-
-
 }
