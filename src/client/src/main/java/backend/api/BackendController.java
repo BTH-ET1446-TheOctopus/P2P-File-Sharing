@@ -104,4 +104,21 @@ public interface BackendController {
 	 */
 	public void setDark(boolean dark);
 
+	/**
+	 * Tell the backend to send speed up/down statistics using the
+	 * {@link BackendObserver#speedChartUpdate(double, double)}.
+	 * 
+	 * @param id
+	 *            The swarm identifier
+	 */
+	public void subscribeSpeedChart(String id);
+
+	/**
+	 * Tell the backend to stop sending up/down statistics.
+	 * 
+	 * @param id
+	 *            The swarm identifier
+	 */
+	public void unsubscribeSpeedChart(String id);
+
 }

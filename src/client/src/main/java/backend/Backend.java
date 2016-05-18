@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import backend.api.BackendController;
 import backend.api.BackendObserver;
+import backend.api.SpeedChartObserver;
 import backend.api.datatypes.SwarmMetadataShort;
 import backend.json.Swarm;
 import backend.json.Swarms;
@@ -20,6 +21,7 @@ public class Backend implements BackendController {
 	private HashMap<String, SwarmEngager> activeSwarms;
 
 	private BackendObserver restObserver;
+	private SpeedChartObserver speedChartObserver;
 
 	private ClientCalls clientCalls;
 	private BootstrapCalls bootstrapCalls;
@@ -39,6 +41,10 @@ public class Backend implements BackendController {
 	
 	public void setObserver(BackendObserver restObserver) {
 		this.restObserver = restObserver;
+	}
+	
+	public void setSpeedChartObserver(SpeedChartObserver speedChartObserver) {
+		this.speedChartObserver = speedChartObserver;
 	}
 	
 	public Backend() {
@@ -134,6 +140,18 @@ public class Backend implements BackendController {
 	@Override
 	public void removeSwarm(String id) {
 		disengageSwarm(id);
+	}
+
+	@Override
+	public void subscribeSpeedChart(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void unsubscribeSpeedChart(String id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

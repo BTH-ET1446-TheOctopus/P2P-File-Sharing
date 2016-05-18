@@ -43,10 +43,4 @@ public interface BackendObserver {
 	 * @param blockCount
 	 */
 	public void searchResult(String clientAddress, String id, String filename, int blockCount);
-
-	
- 	public void SpeedChartUpdate(double up,double down);	
- 	/**
- 	 * Called when a file is being selected to see the speed for that specific file. 
- 	 */
 }

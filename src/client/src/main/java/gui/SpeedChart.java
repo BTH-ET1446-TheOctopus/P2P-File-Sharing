@@ -16,7 +16,9 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-public class SpeedChart extends JDialog
+import backend.api.SpeedChartObserver;
+
+public class SpeedChart extends JDialog implements SpeedChartObserver
 {
 
 	private static final long	serialVersionUID	= 1L;
@@ -158,6 +160,12 @@ public class SpeedChart extends JDialog
 
 		return new XYSeriesCollection(uploadSeries);
 
+	}
+
+	@Override
+	public void updateSpeedChart(double up, double down) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
