@@ -11,6 +11,7 @@ import javax.ws.rs.core.Context;
 import com.mysql.jdbc.PreparedStatement;
 import backend.Settings;
 import backend.json.Blacklist;
+import backend.json.Peers;
 import backend.json.PeersInfo;
 import backend.json.SwarmsInfo;
 import backend.json.Sync;
@@ -259,6 +260,41 @@ public class DatabaseCalls implements DatabaseAPI {
 
 	}
 
+	public Peers getpeers(){
+		Peers peers = new Peers();
+		String readquery="";
+ 		sqlconnector test = new sqlconnector("serverdb");
+ 		ResultSet result;
+ 		String data="";
+ 		int counter=0;
+ 		readquery="select distinct peers from peersarray";
+ 		result = test.runquery(readquery);
+		List<String> ip = new ArrayList<String>();
+		
+		try {
+ 			System.out.println();
+ 			while(result.next()){
+ 		         //Retrieve by column name			
+ 		         data = result.getString("peers");	         
+ 		         if (counter<3){
+ 		        	 ip.add(data);
+ 		         }
+ 		         counter++;
+ 		      }
+ 	    }
+ 	    catch (Exception e) {
+ 	        System.out.println("Exception in query method:\n" + e.getMessage());
+ 	    }
+ 		test.closeconnect();
+		peers.setpeers(ip);
+		
+		return peers;
+	}
+	
+	
+	
+	
+	
 	public Blacklist getBlacklist()	{
 
 		Blacklist blacklist = new Blacklist();

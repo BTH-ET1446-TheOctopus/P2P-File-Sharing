@@ -109,32 +109,8 @@ public class Rest {
 		}
 		else
 		{
-			String readquery="";
-	 		sqlconnector test = new sqlconnector();
-	 		ResultSet result;
-	 		String data="";
-	 		int counter=0;
-	 		test.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
-	 		readquery="select distinct peers from peersarray";
-	 		result = test.runquery(readquery);
-			List<String> ip = new ArrayList<String>();
-			
-			try {
-	 			System.out.println();
-	 			while(result.next()){
-	 		         //Retrieve by column name			
-	 		         data = result.getString("peers");	         
-	 		         if (counter<3){
-	 		        	 ip.add(data);
-	 		         }
-	 		         counter++;
-	 		      }
-	 	    }
-	 	    catch (Exception e) {
-	 	        System.out.println("Exception in query method:\n" + e.getMessage());
-	 	    }
-	 		test.closeconnect();
-			peers.setpeers(ip);
+			//List<String> ip = new ArrayList<String>();
+			peers=database.getpeers();
 			return peers;
 		}
 	}

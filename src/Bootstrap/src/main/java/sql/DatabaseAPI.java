@@ -5,6 +5,7 @@ import backend.json.Sync;
 import sql.DatabaseCalls.getIPoStatus;
 import backend.json.SwarmsHelper;
 import backend.json.Swarm;
+import backend.json.Peers;
 
 public interface DatabaseAPI {
 
@@ -18,6 +19,8 @@ public interface DatabaseAPI {
 	public void getBootstrapServer();
 	public void getSwarm();
 	public void getPeerArray();
+	
+	public Peers getpeers();
 	
 	public boolean isPeerIDExisting(String id);
 	public boolean updatePeer(String ip, String id, String timestamp);
