@@ -90,7 +90,7 @@ public class sqlconnector {
 		//Create Table01 peersarray
 		try {
 			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "clientdb.peersarray", null);
+			ResultSet tables = dbm.getTables(null, null, "peersarray", null);
 			if (tables.next()) {
 				// Table exists Don't Create Table
 			}

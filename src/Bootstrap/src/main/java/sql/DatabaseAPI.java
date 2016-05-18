@@ -4,7 +4,7 @@ public interface DatabaseAPI {
 
 	public void addBootstrapServer(String ip, String name, int clientcount, int servercount);
 	public void addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid);
-	public void addPeers(String id, String latestIP, int blacklist, String timestamp);
+	public void addPeers(String id, String latestIP, int blacklist);
 	public void addPeerArray(String uniquefileid, String peers);
 	
 	//How can they be void when its a get? 
