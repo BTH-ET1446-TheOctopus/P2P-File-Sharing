@@ -25,11 +25,6 @@ import backend.json.Sync;
 import backend.json.TestAddress;
 import sql.sqlconnector;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.sql.*;
 import java.util.UUID;
 
@@ -65,6 +60,7 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getHello(@Context org.glassfish.grizzly.http.server.Request caller, @QueryParam("id") String id)
 	{
+
 		String returnValue = null;
 		if(Settings.blackListedIp(caller))
 		{
@@ -73,40 +69,18 @@ public class Rest {
 		}
 		else
 		{
+			//check if it has uuid 
+			//if it has check the ip if not same update ip
+			
 			caller.getRemoteAddr();
 			UUID uuid = UUID.randomUUID();
 			
 			//After uuid checking generate timestamp from NTP server
-			Socket so = null;
-			try {
-				so = new Socket(Settings.ntpServer, Settings.daytimeport);
-			} catch (UnknownHostException e) {
-				LOG.log(Level.WARNING, e.getMessage(), e);
-			} catch (IOException e) {
-				LOG.log(Level.SEVERE, e.getMessage(), e);
-			}
-
-			BufferedReader br = null;
-			try {
-				br = new BufferedReader(new InputStreamReader (so.getInputStream()));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				LOG.log(Level.SEVERE, e.getMessage(), e);
-			}
-			
-			String timestamp = null;
-			try {
-				timestamp = br.readLine();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				LOG.log(Level.SEVERE, e.getMessage(), e);
-			}
-			
-			System.out.println(timestamp);
-			LOG.log(Level.INFO, timestamp);
+	        String timestamp = Settings.getNTP();
 			
 			return uuid.toString();
 		}
+
 	}
 	/**
 	 * Used by the client to retrive data about the peers that the server is knowing of
