@@ -48,13 +48,13 @@ public class insertsample {
 		
 		//Write Sample Data to serverpeers table
 		
-		writequery="insert into serverpeers (id,latestIP,blacklist,timestamp)"
- 				+ "VALUES (1016,'192.12.58.40',0,'2016-05-10 00:14:07')";	
-		sample.Update(writequery);
-				
-		writequery="insert into serverpeers (id,latestIP,blacklist,timestamp)"
- 				+ "VALUES (1017,'192.12.58.45',1,'2016-05-14 12:19:13')";	
-		sample.Update(writequery);
+//		writequery="insert into serverpeers (id,latestIP,blacklist,timestamp)"
+// 				+ "VALUES (1016,'192.12.58.40',0,'2016-05-10 00:14:07')";	
+//		sample.Update(writequery);
+//				
+//		writequery="insert into serverpeers (id,latestIP,blacklist,timestamp)"
+// 				+ "VALUES (1017,'192.12.58.45',1,'2016-05-14 12:19:13')";	
+//		sample.Update(writequery);
 		
 		sample.closeconnect();
 	}
