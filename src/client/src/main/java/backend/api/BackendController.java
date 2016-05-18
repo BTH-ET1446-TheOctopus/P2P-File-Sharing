@@ -111,7 +111,7 @@ public interface BackendController {
 	 * @param id
 	 *            The swarm identifier
 	 */
-	public void subscribeSpeedChart(String id);
+	public void subscribeSpeedChart(String id, SpeedChartObserver callback);
 
 	/**
 	 * Tell the backend to stop sending up/down statistics.

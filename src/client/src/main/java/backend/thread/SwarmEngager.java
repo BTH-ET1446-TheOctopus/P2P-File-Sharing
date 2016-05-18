@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import backend.api.BackendObserver;
+import backend.api.SpeedChartObserver;
 import backend.file.BlockBuffer;
 import backend.file.FileHandler;
 import backend.json.Chunk;
@@ -24,6 +25,7 @@ public class SwarmEngager extends Thread {
 	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private String swarmId;
+	private SpeedCalculatorThread speedCalculatorThread;
 
 	private BackendObserver restObserver;
 	private BootstrapCalls bootstrapCalls;
@@ -32,11 +34,20 @@ public class SwarmEngager extends Thread {
 	public SwarmEngager(String swarmId, BackendObserver restObserver, BootstrapCalls bootstrapCalls,
 			ClientCalls clientCalls) {
 		this.swarmId = swarmId;
+		
 		this.restObserver = restObserver;
 		this.bootstrapCalls = bootstrapCalls;
 		this.clientCalls = clientCalls;
 	}
 
+	public void subscribeSpeedCallback(SpeedCalculatorThread speedCalculatorThread) {
+		this.speedCalculatorThread = speedCalculatorThread;
+	}
+	
+	public void unsubscribeSpeedCallback() {
+		speedCalculatorThread = null;
+	}
+	
 	public void run() {
 
 		// TODO Try to grab metadata from database?
@@ -51,8 +62,9 @@ public class SwarmEngager extends Thread {
 						swarm.getmetadataChecksum() });
 
 		swarmId = "abc123"; // For now just mock the data
-		swarm.setBlockCount(6);
+		swarm.setBlockCount(874);
 		swarm.setpeers(Arrays.asList("localhost"));
+		swarm.setFilename("octopus.jpg");
 
 		String filename = "downloaded_" + swarm.getfilename();
 
@@ -88,7 +100,7 @@ public class SwarmEngager extends Thread {
 		int blockNumber = 0;
 		while (blockNumber < swarm.getblockCount()) {
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(250);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -106,7 +118,7 @@ public class SwarmEngager extends Thread {
 
 			String peerIP = swarm.getpeers().get(0);
 
-			LOG.log(Level.INFO, "Grabbing block: swarmId={0} blockNumber={1}", new Object[] { swarmId, blockNumber });
+			LOG.log(Level.FINE, "Grabbing block: swarmId={0} blockNumber={1}", new Object[] { swarmId, blockNumber });
 			Chunk chunk = clientCalls.getFileChunk("http://" + peerIP + ":1337", swarmId, blockNumber);
 
 			byte[] data = chunk.getData();
@@ -118,8 +130,12 @@ public class SwarmEngager extends Thread {
 
 			restObserver.updateSwarm(swarmId, (double) (blockNumber + 1) / (double) swarm.getblockCount(), 1.0,
 					swarm.getpeers(), "1 hour");
+			
+			if (speedCalculatorThread != null) {
+				speedCalculatorThread.reportDownload(chunk.getSize());
+			}
 
-			LOG.log(Level.INFO,
+			LOG.log(Level.FINE,
 					"Got block: swarmId={0} blockNumber(request)={1}, blockNumber(response)={2}, checksum={3}, size={4}, data={5}",
 					new Object[] { swarmId, blockNumber, chunk.getSequenceNumber(), chunk.getChecksum(),
 							chunk.getSize(), new String(data) });
@@ -138,5 +154,4 @@ public class SwarmEngager extends Thread {
 				new Object[] { swarmId, swarm.getfilename() });
 
 	}
-
 }

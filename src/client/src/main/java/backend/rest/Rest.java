@@ -136,7 +136,7 @@ public class Rest {
 		chunko.setSequenceNumber(chunk);
 
 		if (id.equals("abc123")) {
-			String filename = "pom.xml";
+			String filename = "octopus.jpg";
 
 			BlockBuffer blockBuffer = FileHandler.read(filename);
 			if (blockBuffer == null) {

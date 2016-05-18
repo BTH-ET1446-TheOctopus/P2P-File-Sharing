@@ -16,6 +16,7 @@ import backend.rest.BootstrapCalls;
 import backend.rest.ClientCalls;
 import backend.thread.BootstrapDataThread;
 import backend.thread.BootstrapHelloThread;
+import backend.thread.SpeedCalculatorThread;
 import backend.thread.SwarmEngager;
 
 public class Backend implements BackendController {
@@ -24,13 +25,13 @@ public class Backend implements BackendController {
 	private HashMap<String, SwarmEngager> activeSwarms;
 
 	private BackendObserver restObserver;
-	private SpeedChartObserver speedChartObserver;
-
+	
 	private ClientCalls clientCalls;
 	private BootstrapCalls bootstrapCalls;
 
 	private BootstrapHelloThread bootstrapHelloThread;
 	private BootstrapDataThread bootstrapDataThread;
+	private SpeedCalculatorThread speedCalculatorThread;
 	
 	private static Backend instance;
 	
@@ -46,15 +47,11 @@ public class Backend implements BackendController {
 		this.restObserver = restObserver;
 	}
 	
-	public void setSpeedChartObserver(SpeedChartObserver speedChartObserver) {
-		this.speedChartObserver = speedChartObserver;
-	}
-	
-	public Backend() {
+	private Backend() {
 		activeSwarms = new HashMap<String, SwarmEngager>();
 
 		restObserver = null;
-		speedChartObserver = null;
+		speedCalculatorThread = null;
 
 		clientCalls = new ClientCalls();
 		bootstrapCalls = new BootstrapCalls();
@@ -147,15 +144,27 @@ public class Backend implements BackendController {
 	}
 
 	@Override
-	public void subscribeSpeedChart(String id) {
-		// TODO Auto-generated method stub
+	public void subscribeSpeedChart(String id, SpeedChartObserver callback) {
+		if (speedCalculatorThread != null) {
+			throw new RuntimeException("Cannot subscribe for multiple speed charts");
+		}
 		
+		speedCalculatorThread = new SpeedCalculatorThread(callback);
+		
+		activeSwarms.get(id).subscribeSpeedCallback(speedCalculatorThread);
+		
+		speedCalculatorThread.start();
 	}
 
 	@Override
 	public void unsubscribeSpeedChart(String id) {
-		// TODO Auto-generated method stub
+		speedCalculatorThread.interrupt();
 		
+		try {
+			speedCalculatorThread.join();
+		} catch (InterruptedException e) {
+			LOG.log(Level.WARNING, "Interrupted while waiting for SpeedCalculatorThread");
+		}
 	}
 
 }

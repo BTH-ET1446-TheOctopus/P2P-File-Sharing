@@ -281,7 +281,17 @@ public class Client implements BackendObserver
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				setSpeedChartWindow(new SpeedChart(table.getValueAt(table.getSelectedRow(), 1).toString(), frame));
+				SpeedChart speedChartWindow = new SpeedChart(table.getValueAt(table.getSelectedRow(), 1).toString(), frame);
+				
+				Backend.getInstance().subscribeSpeedChart("abc123", speedChartWindow); // TODO Get real swarm ID
+				
+				setSpeedChartWindow(speedChartWindow);
+				
+				speedChartWindow.addWindowListener(new java.awt.event.WindowAdapter() {
+		            public void windowClosed(java.awt.event.WindowEvent evt){
+		            	Backend.getInstance().unsubscribeSpeedChart("abc123"); // TODO Get real swarm ID
+		            }
+				});
 			}
 
 		});
