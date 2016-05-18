@@ -34,9 +34,9 @@ public class DatabaseCalls implements DatabaseAPI {
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
-		finally {  //close all connection to database
-			sc.closeconnect();
-		}
+//		finally {  //close all connection to database
+//			sc.closeconnect();
+//		}
 	}
 
 	public void addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid){   //This method writes to 'serverfile' table
@@ -49,9 +49,9 @@ public class DatabaseCalls implements DatabaseAPI {
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
-		finally {  //close all connection to database
-			sc.closeconnect();
-		}
+//		finally {  //close all connection to database
+//			sc.closeconnect();
+//		}
 	}
 
 	public void addPeers(String id, String latestIP, boolean blacklist, String timestamp ){  //This method writes to 'serverpeers' table
@@ -63,9 +63,10 @@ public class DatabaseCalls implements DatabaseAPI {
 					"VALUES ('"+id+"', '"+latestIP+"', "+blacklist+", '"+timestamp+"')");
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
-		} finally {  //close all connection to database
-			sc.closeconnect();
 		}
+//		finally {  //close all connection to database
+//			sc.closeconnect();
+//		}
 	}
 
 	public void addPeerArray(String uniquefileid, String peers){  //This method writes to 'peersarray' table
@@ -79,9 +80,9 @@ public class DatabaseCalls implements DatabaseAPI {
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
-		finally {  //close all connection to database
-			sc.closeconnect();
-		}
+//		finally {  //close all connection to database
+//			sc.closeconnect();
+//		}
 	}
 
 	public boolean isPeerIDExisting(String id){
@@ -96,9 +97,10 @@ public class DatabaseCalls implements DatabaseAPI {
 			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
 			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
-		} finally  {
-			sc.closeconnect();
 		}
+//		finally  {
+//			sc.closeconnect();
+//		}
 		return false;
 	}
 
@@ -108,7 +110,7 @@ public class DatabaseCalls implements DatabaseAPI {
 		String updatequery = "update serverpeers set latestip= + '"+ip+ "',"
 				+ " timestamp='"+ timestamp + "' where id='"+ id + "'";
 		updateflag=sc.Update(updatequery);
-		sc.closeconnect();
+//		sc.closeconnect();
 		return updateflag;
 	}
 
@@ -138,16 +140,16 @@ public class DatabaseCalls implements DatabaseAPI {
 
 		try {
 			while (rs.next()) {
-				String id = rs.getString("id");
+//				String id = rs.getString("id");
 				latestIP = rs.getString("latestIP");
 				blackList = rs.getString("blacklist");
-				String timestamp = rs.getString("timestamp");
+//				String timestamp = rs.getString("timestamp");
 
-				LOG.log(Level.INFO, "\nID: " + id.toString() + 
-						"\nLastestIP: " + latestIP.toString() + 
-						"\nBlacklist: " + blackList.toString() +
-						"\nTimestamp: " + timestamp.toString()
-						);
+//				LOG.log(Level.INFO, "\nID: " + id.toString() + 
+//						"\nLastestIP: " + latestIP.toString() + 
+//						"\nBlacklist: " + blackList.toString() +
+//						"\nTimestamp: " + timestamp.toString()
+//						);
 
 			}
 		} catch (SQLException ex){
@@ -155,9 +157,10 @@ public class DatabaseCalls implements DatabaseAPI {
 			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
 			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
-		} finally  {
-			sc.closeconnect();
 		}
+//		finally  {
+//			sc.closeconnect();
+//		}
 
 		return new getIPoStatus(latestIP, blackList);
 
@@ -166,12 +169,12 @@ public class DatabaseCalls implements DatabaseAPI {
 	public Peers getpeers(){
 		Peers peers = new Peers();
 		String readquery="";
-		sqlconnector test = new sqlconnector("serverdb");
+		sqlconnector SC = new sqlconnector("serverdb");
 		ResultSet result;
 		String data="";
 		int counter=0;
 		readquery="select distinct peers from peersarray";
-		result = test.runquery(readquery);
+		result = SC.runquery(readquery);
 		List<String> ip = new ArrayList<String>();
 
 		try {
@@ -188,7 +191,7 @@ public class DatabaseCalls implements DatabaseAPI {
 		catch (Exception e) {
 			System.out.println("Exception in query method:\n" + e.getMessage());
 		}
-		test.closeconnect();
+//		test.closeconnect();
 		peers.setpeers(ip);
 
 		return peers;
@@ -197,11 +200,11 @@ public class DatabaseCalls implements DatabaseAPI {
 	public Bootstraps getBootstraps(){
 		Bootstraps bootstraps = new Bootstraps();
 		String readquery="";
-		sqlconnector test = new sqlconnector("severdb");
+		sqlconnector sc = new sqlconnector("severdb");
 		ResultSet result;
 		String data="";
 		readquery="select distinct ip from bootstrapserver";
-		result = test.runquery(readquery);
+		result = sc.runquery(readquery);
 
 		List<String> ip = new ArrayList<String>();
 		try {
@@ -215,12 +218,10 @@ public class DatabaseCalls implements DatabaseAPI {
 		catch (Exception e) {
 			System.out.println("Exception in query method:\n" + e.getMessage());
 		}
-		test.closeconnect();
+//		test.closeconnect();
 		bootstraps.setbootstraps(ip);
 		return bootstraps;
 	}
-
-
 
 	public Blacklist getBlacklist()	{
 		sqlconnector sc = new sqlconnector("serverdb");
@@ -251,10 +252,10 @@ public class DatabaseCalls implements DatabaseAPI {
 	public SwarmsHelper getSwarms(){
 		SwarmsHelper swarmHelp = new SwarmsHelper();
 		String readquery="";
-		sqlconnector test = new sqlconnector("serverdb");
+		sqlconnector sc = new sqlconnector("serverdb");
 		ResultSet result;
 		readquery="select * from serverswarm";
-		result = test.runquery(readquery);
+		result = sc.runquery(readquery);
 		//Swarms swarm = new Swarms();
 		List<Swarms> swarms = new ArrayList<Swarms>();
 
@@ -272,7 +273,7 @@ public class DatabaseCalls implements DatabaseAPI {
 		catch (Exception e) {
 			System.out.println("Exception in query method:\n" + e.getMessage());
 		}
-		test.closeconnect();
+//		sc.closeconnect();
 		swarmHelp.setSwarms(swarms);		
 		return swarmHelp;
 	}
@@ -280,7 +281,7 @@ public class DatabaseCalls implements DatabaseAPI {
 	public Swarm getSwarm(String swarmID){
 		Swarm swarm = new Swarm();
 		String readquery="";
-		sqlconnector test = new sqlconnector("serverdb");
+		sqlconnector sc = new sqlconnector("serverdb");
 		ResultSet result;
 		int blockcount=0;
 		String filename="";
@@ -290,7 +291,7 @@ public class DatabaseCalls implements DatabaseAPI {
 		String filepeers="";
 		String swarmid="'"+swarmID+"'";
 		readquery="select * from serverswarm where uniquefileid = "+ swarmid;
-		result = test.runquery(readquery);
+		result = sc.runquery(readquery);
 
 		LOG.log(Level.INFO, swarmID);
 
@@ -314,7 +315,7 @@ public class DatabaseCalls implements DatabaseAPI {
 			System.out.println("Exception in query method:\n" + e.getMessage());
 		}
 		readquery="select distinct peers from peersarray where uniquefileid =" + swarmid;
-		result = test.runquery(readquery);
+		result = sc.runquery(readquery);
 		try {
 			System.out.println();
 			while(result.next()){
@@ -326,7 +327,7 @@ public class DatabaseCalls implements DatabaseAPI {
 		catch (Exception e) {
 			System.out.println("Exception in query method:\n" + e.getMessage());
 		}
-		test.closeconnect();	
+//		sc.closeconnect();	
 		swarm.setPeers(peers);
 		return swarm;
 	}
