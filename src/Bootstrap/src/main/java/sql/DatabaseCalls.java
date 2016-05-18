@@ -306,7 +306,13 @@ public class DatabaseCalls implements DatabaseAPI {
 
 		return sync;
 	}
-
+	
+	/**
+	 * Function to compare incoming IP whit the ones that
+	 * are in database to see if it is blacklisted
+	 * @param request is the incoming rest request from remote client
+	 * @return true if ip was blacklisted in db
+	 */
 	public boolean isBlacklisted(String ip) {
 		
 		boolean status = false;

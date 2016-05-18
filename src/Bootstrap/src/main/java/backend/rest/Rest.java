@@ -24,6 +24,8 @@ import backend.json.SwarmsHelper;
 import backend.json.SwarmsInfo;
 import backend.json.Sync;
 import backend.json.TestAddress;
+import sql.DatabaseAPI;
+import sql.DatabaseCalls;
 import sql.sqlconnector;
 
 import java.sql.*;
@@ -35,6 +37,7 @@ import java.util.logging.Logger;
 @Path("/rest")
 public class Rest {
 	private static final Logger LOG = Logger.getLogger(Rest.class.getName());
+	private DatabaseAPI database;
 	
 	@GET
 	@Path("/test/")
@@ -63,23 +66,23 @@ public class Rest {
 	{
 
 		ID respons = new ID();
-		if(Settings.blackListedIp(caller))
+		
+		
+		if(database.isBlacklisted(caller.getRemoteAddr()))
 		{
 			respons = null;
 			return respons;
 		}
 		else
 		{
+			database = new DatabaseCalls();
+			UUID uuid = UUID.randomUUID();
+			//After uuid checking generte timestamp from NTP server
+	        
+			database.addPeers(uuid.toString(), caller.getRemoteAddr(), 0, Settings.getNTP());
+			
 			//Search for uuid in database
 			//if no uuid add new to ip and send back uuid
-		
-			caller.getRemoteAddr();
-			UUID uuid = UUID.randomUUID();
-			
-			//After uuid checking generate timestamp from NTP server
-	        String timestamp = Settings.getNTP();
-			
-	        respons.setid(uuid.toString());
 			return respons;
 		}
 
@@ -94,7 +97,7 @@ public class Rest {
 	public Peers getPeers(@Context org.glassfish.grizzly.http.server.Request caller)
 	{
 		Peers peers = new Peers();
-		if(Settings.blackListedIp(caller))
+		if(database.isBlacklisted(caller.getRemoteAddr()))
 		{
 			peers = null;
 			return peers;
@@ -142,7 +145,7 @@ public class Rest {
 	public Bootstraps getBootstraps(@Context org.glassfish.grizzly.http.server.Request caller)
 	{
 		Bootstraps bootstraps = new Bootstraps();
-		if(Settings.blackListedIp(caller))
+		if(database.isBlacklisted(caller.getRemoteAddr()))
 		{
 			bootstraps = null;
 			return bootstraps;
@@ -186,7 +189,7 @@ public class Rest {
 	public Blacklist getBlacklist(@Context org.glassfish.grizzly.http.server.Request caller)
 	{
 		Blacklist blacklist = new Blacklist();
-		if(Settings.blackListedIp(caller))
+		if(database.isBlacklisted(caller.getRemoteAddr()))
 		{
 			blacklist = null;
 			return blacklist;
@@ -230,7 +233,7 @@ public class Rest {
 	public SwarmsHelper getSwarms(@Context org.glassfish.grizzly.http.server.Request caller)
 	{
 		SwarmsHelper swarmHelp = new SwarmsHelper();
-		if(Settings.blackListedIp(caller))
+		if(database.isBlacklisted(caller.getRemoteAddr()))
 		{
 			swarmHelp = null;
 			return swarmHelp;
@@ -284,7 +287,7 @@ public class Rest {
 	public Swarm getSwarm(@Context org.glassfish.grizzly.http.server.Request caller, @PathParam("swarmID") String swarmID, @QueryParam("clientID") String clientID)
 	{
 		Swarm swarm = new Swarm();
-		if(Settings.blackListedIp(caller))
+		if(database.isBlacklisted(caller.getRemoteAddr()))
 		{
 			swarm = null;
 			return swarm;
@@ -377,7 +380,7 @@ public class Rest {
     @Produces(MediaType.APPLICATION_JSON)
     public String addSwarmDB(@Context org.glassfish.grizzly.http.server.Request caller, @QueryParam("blockCount") int blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum, @QueryParam("clientID") String clientID) 
 	{
-		if(Settings.blackListedIp(caller))
+		if(database.isBlacklisted(caller.getRemoteAddr()))
 		{
 			String respons = null;
 			return respons;
@@ -408,7 +411,7 @@ public class Rest {
 	public Sync sync(@Context org.glassfish.grizzly.http.server.Request caller)
 	{
 		Sync sync = new Sync();
-		if(Settings.blackListedIp(caller))
+		if(database.isBlacklisted(caller.getRemoteAddr()))
 		{
 			sync = null;
 			return sync;

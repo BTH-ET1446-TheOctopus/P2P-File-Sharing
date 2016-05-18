@@ -28,25 +28,7 @@ public final class Settings {
 	public static final String MYSQL_PASSWORD = "sql";
 	public static final String MYSQL_DATABASE = "serverdb";
 	
-	private static final Logger LOG = Logger.getLogger(backend.Settings.class.getName());
-	/**
-	 * Function to compare incoming IP whit the ones that
-	 * are in database to see if it is blacklisted
-	 * @param request is the incoming rest request from remote client
-	 * @return true if ip was blacklisted in db
-	 */
-	public static boolean blackListedIp(@Context org.glassfish.grizzly.http.server.Request request)
-	{
-		
-		
-		//se if ip is in db and if it is return true, if the ip 
-		//is not in db return false
-		//remove comment after fixing this
-		
-		System.out.println("Settings: " + request.getRemoteAddr());
-		return false;
-	}
-	
+	private static final Logger LOG = Logger.getLogger(backend.Settings.class.getName());	
 	/**
 	 * Function to get the time from NTP-server and formatting it.
 	 * @return timestamp
