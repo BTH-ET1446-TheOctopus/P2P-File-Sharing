@@ -157,7 +157,7 @@ public class Backend implements BackendController {
 	}
 
 	@Override
-	public void unsubscribeSpeedChart(String id) {
+	public void unsubscribeSpeedChart() {
 		speedCalculatorThread.interrupt();
 		
 		try {

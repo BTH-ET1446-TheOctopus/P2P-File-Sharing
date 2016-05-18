@@ -119,6 +119,6 @@ public interface BackendController {
 	 * @param id
 	 *            The swarm identifier
 	 */
-	public void unsubscribeSpeedChart(String id);
+	public void unsubscribeSpeedChart();
 
 }

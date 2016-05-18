@@ -289,7 +289,7 @@ public class Client implements BackendObserver
 				
 				speedChartWindow.addWindowListener(new java.awt.event.WindowAdapter() {
 		            public void windowClosed(java.awt.event.WindowEvent evt){
-		            	Backend.getInstance().unsubscribeSpeedChart("abc123"); // TODO Get real swarm ID
+		            	Backend.getInstance().unsubscribeSpeedChart();
 		            }
 				});
 			}
