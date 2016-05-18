@@ -20,7 +20,7 @@ public class DatabaseCalls implements DatabaseAPI {
 
 	private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName());
 
-	//create an object from sqlconnector, to eb able to connect to the database
+	//create an object from sqlconnector, to be able to connect to the database
 	sqlconnector sc = new sqlconnector("serverdb");
 
 	ResultSet rs = null;
@@ -87,7 +87,35 @@ public class DatabaseCalls implements DatabaseAPI {
 			sc.closeconnect();
 		}
 	}
-
+	
+	public boolean isPeerIDExisting(String id){
+		sqlconnector sc = new sqlconnector("serverdb");
+		String query = "select distinct id from serverpeers where id =" + "'"+ id + "'";	
+		rs=sc.runquery(query);
+		try {
+			if(rs.next())
+				return true;			
+		} catch (SQLException ex){
+			// handle any errors
+			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
+			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
+			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
+		} finally  {
+			sc.closeconnect();
+		}
+		return false;
+	}
+	
+	public boolean updatePeer(String ip, String id, String timestamp){
+		sqlconnector sc = new sqlconnector("serverdb");
+		boolean updateflag=false;
+		String updatequery = "update serverpeers set ip="+ "'"+ ip + "'" + "," 
+				+ "set timestamp=" + "'"+ timestamp + "'" + "where id= " + "'"+ id + "'";
+		updateflag=sc.Update(updatequery);
+		sc.closeconnect();
+		return updateflag;
+	}
+	
 
 	public void getBootstrapServer() {  //This method reads from 'bootstrapserver' table
 		rs = sc.runquery("SELECT * FROM bootstrapserver");

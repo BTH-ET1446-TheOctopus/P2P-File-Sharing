@@ -17,6 +17,9 @@ public interface DatabaseAPI {
 	public void getSwarm();
 	public void getPeerArray();
 	
+	public boolean isPeerIDExisting(String id);
+	public boolean updatePeer(String ip, String id, String timestamp);
+	
 	public getIPoStatus getPeers();
 	public Blacklist getBlacklist();
 	public Sync getSync();
