@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import backend.json.ID;
 import backend.rest.BootstrapCalls;
 
-
 /**
  * This thread is responsible for saying hello to the bootstrap server.
  * 
@@ -17,7 +16,9 @@ public class BootstrapHelloThread extends Thread {
 	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private BootstrapCalls bootstrapCalls;
-	
+
+	private String clientId;
+
 	public BootstrapHelloThread(BootstrapCalls bootstrapCalls) {
 		this.bootstrapCalls = bootstrapCalls;
 	}
@@ -25,10 +26,18 @@ public class BootstrapHelloThread extends Thread {
 	public void run() {
 		try {
 			while (true) {
+				ID id = bootstrapCalls.getHello(clientId);
 
-				ID id = bootstrapCalls.getHello();
-				LOG.log(Level.INFO,"Sending Hello to bootstrap: " + id.getid());
-				Thread.sleep(Settings.BOOTSTRAP_HELLO_INTERVAL * 1000);
+				if (id.getid().equals(clientId)) {
+					LOG.log(Level.INFO, "Sent /hello to bootstrap id={0}", id.getid());
+				} else {
+					LOG.log(Level.INFO, "Sent /hello to bootstrap (new identifier) id={0}->{1}",
+							new Object[] { clientId, id.getid() });
+					
+					clientId = id.getid();
+				}
+				Thread.sleep(10 * 1000);
+				//Thread.sleep(Settings.BOOTSTRAP_HELLO_INTERVAL * 1000);
 			}
 		} catch (InterruptedException e) {
 			LOG.log(Level.FINE, "Thread interrupted");
