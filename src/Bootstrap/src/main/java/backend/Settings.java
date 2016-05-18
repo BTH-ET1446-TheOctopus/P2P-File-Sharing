@@ -61,7 +61,7 @@ public final class Settings {
 			LOG.log(Level.SEVERE, e.getMessage(), e);
 		}
 		SimpleDateFormat parser = new SimpleDateFormat("d MMMM yyyy HH:mm:ss z", Locale.US);
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-L-d HH:mm:ss z", Locale.US);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-L-d HH:mm:ss", Locale.US);
 		try {
 			Date dt = parser.parse(timestamp);
 			timestamp = formatter.format(dt);
