@@ -3,6 +3,8 @@ package sql;
 import backend.json.Blacklist;
 import backend.json.Sync;
 import sql.DatabaseCalls.getIPoStatus;
+import backend.json.SwarmsHelper;
+import backend.json.Swarm;
 
 public interface DatabaseAPI {
 
@@ -25,8 +27,8 @@ public interface DatabaseAPI {
 	public Sync getSync();
 	public boolean isBlacklisted(String ip);
 	
-	//public Swarmshelper getSwarms();
-	//public Swarm getSwarm(String swarmID)
+	public SwarmsHelper getSwarms();
+	public Swarm getSwarm(String swarmID);
 	//public Bootstraps getBootstraps();
 	
 	//public void addSwarmDB(String uuidClient, int totalBlocks), String filename, String fileChecksum, String metadataChecksum, String clientID)

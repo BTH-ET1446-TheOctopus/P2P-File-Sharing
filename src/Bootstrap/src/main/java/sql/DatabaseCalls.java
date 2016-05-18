@@ -7,16 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.ws.rs.core.Context;
-
 import com.mysql.jdbc.PreparedStatement;
-
 import backend.Settings;
 import backend.json.Blacklist;
 import backend.json.PeersInfo;
 import backend.json.SwarmsInfo;
 import backend.json.Sync;
+import backend.json.Swarm;
+import backend.json.Swarms;
+import backend.json.SwarmsHelper;
 
 public class DatabaseCalls implements DatabaseAPI {
 
@@ -111,9 +111,6 @@ public class DatabaseCalls implements DatabaseAPI {
 	public boolean updatePeer(String ip, String id, String timestamp){
 		sqlconnector sc = new sqlconnector("serverdb");
 		boolean updateflag=false;
-		//String updatequery = "update serverpeers set ip=?,timestamp=?"
-		//		+ "where id=?";
-		//PreparedStatement st = c.PreparedStatement(updatequery);		
 		String updatequery = "update serverpeers set latestip= + '"+ip+ "',"
 				+ " timestamp='"+ timestamp + "' where id='"+ id + "'";
 		updateflag=sc.Update(updatequery);
@@ -288,6 +285,89 @@ public class DatabaseCalls implements DatabaseAPI {
 		return blacklist;
 	}
 
+	public SwarmsHelper getSwarms(){
+		SwarmsHelper swarmHelp = new SwarmsHelper();
+ 		String readquery="";
+ 		sqlconnector test = new sqlconnector("serverdb");
+ 		ResultSet result;
+ 		readquery="select * from serverswarm";
+ 		result = test.runquery(readquery);
+		//Swarms swarm = new Swarms();
+ 		List<Swarms> swarms = new ArrayList<Swarms>();
+		 
+		try {
+ 			System.out.println();
+ 			while (result.next()) { 
+ 					Swarms swarm = new Swarms();
+ 			        System.out.println(result.getString("filename"));
+ 			        System.out.println(result.getString("uniquefileid"));
+ 			        swarm.setfilename(result.getString("filename"));
+ 	 				swarm.setid(result.getString("uniquefileid"));
+ 	 				swarms.add(swarm);
+ 			}
+ 	    }
+ 	    catch (Exception e) {
+ 	        System.out.println("Exception in query method:\n" + e.getMessage());
+ 	    }
+ 		test.closeconnect();
+ 		swarmHelp.setSwarms(swarms);		
+		return swarmHelp;
+	}
+	
+	public Swarm getSwarm(String swarmID){
+		Swarm swarm = new Swarm();
+		String readquery="";
+ 		sqlconnector test = new sqlconnector("serverdb");
+ 		ResultSet result;
+ 		int blockcount=0;
+ 		String filename="";
+	
+ 		String filechecksum="";
+ 		String metadatachecksum="";
+ 		String filepeers="";
+ 		String swarmid="'"+swarmID+"'";
+ 		readquery="select * from serverswarm where uniquefileid = "+ swarmid;
+ 		result = test.runquery(readquery);
+
+		LOG.log(Level.INFO, swarmID);
+
+ 		List<String> peers = new ArrayList<String>();
+ 		try {
+ 			System.out.println();
+ 			while(result.next()){
+ 		        //Retrieve by column name			
+ 		        filename = result.getString("filename");	         
+ 		        blockcount= result.getInt("totalblocks");
+ 		     	filechecksum=result.getString("filechecksum");
+ 		     	metadatachecksum=result.getString("metadatachecksum");
+	
+ 	         	swarm.setBlockCount(blockcount);
+ 				swarm.setFilename(filename);
+ 				swarm.setFileChecksum(filechecksum);
+ 				swarm.setMetadataChecksum(metadatachecksum);
+ 		    }
+ 	    }
+ 	    catch (Exception e) {
+ 	        System.out.println("Exception in query method:\n" + e.getMessage());
+ 	    }
+ 		readquery="select distinct peers from peersarray where uniquefileid =" + swarmid;
+ 		result = test.runquery(readquery);
+ 		try {
+ 			System.out.println();
+ 			while(result.next()){
+ 		        //Retrieve by column name			
+ 		        filepeers = result.getString("peers");	         
+ 		        peers.add(filepeers);
+ 		    }
+ 	    }
+ 	    catch (Exception e) {
+ 	        System.out.println("Exception in query method:\n" + e.getMessage());
+ 	    }
+ 		test.closeconnect();	
+ 		swarm.setPeers(peers);
+ 		return swarm;
+	}
+	
 	public Sync getSync()
 	{
 		Sync sync = new Sync();
