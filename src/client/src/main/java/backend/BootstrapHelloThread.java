@@ -25,10 +25,9 @@ public class BootstrapHelloThread extends Thread {
 	public void run() {
 		try {
 			while (true) {
-				LOG.log(Level.INFO, "(no implemented) Sending hello to bootstrap");
-				// TODO bootstrapCalls.getHello(id);
+
 				ID id = bootstrapCalls.getHello();
-				LOG.log(Level.INFO, id.getid());
+				LOG.log(Level.INFO,"Sending Hello to bootstrap: " + id.getid());
 				Thread.sleep(Settings.BOOTSTRAP_HELLO_INTERVAL * 1000);
 			}
 		} catch (InterruptedException e) {
