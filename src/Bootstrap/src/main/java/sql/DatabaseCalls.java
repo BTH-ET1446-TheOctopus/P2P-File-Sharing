@@ -24,8 +24,6 @@ public class DatabaseCalls implements DatabaseAPI {
 
 	private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName());
 
-	//create an object from sqlconnector, to be able to connect to the database
-	sqlconnector sc = new sqlconnector("serverdb");
 
 	ResultSet rs = null;
 
@@ -36,8 +34,6 @@ public class DatabaseCalls implements DatabaseAPI {
 		try {
 			stmnt.executeUpdate("INSERT INTO bootstrapserver (ip, name, timestamp, clientcount, servercount) " + 
 					"VALUES ('"+ip+"', '"+name+"', default,"+clientcount+", "+servercount+")");
-			//"VALUES ('192.168.54.68', 'Backup01', default,2, 1)");
-
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
@@ -53,7 +49,6 @@ public class DatabaseCalls implements DatabaseAPI {
 		try {
 			stmnt.executeUpdate("INSERT INTO serverswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
 					"VALUES ('"+filename+"', "+totalblocks+", '"+peers+"', "+peercount+", "+uniquefileid+",'filechecksum', 'metadatachecksum')");
-			//"VALUES ('Pirates Carrabian', 10000, '192.168.2.2', 1, 2255, 'filechecksum', 'metadatachecksum' )");
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
@@ -122,6 +117,7 @@ public class DatabaseCalls implements DatabaseAPI {
 	
 
 	public void getBootstrapServer() {  //This method reads from 'bootstrapserver' table
+		sqlconnector sc = new sqlconnector("serverdb");
 		rs = sc.runquery("SELECT * FROM bootstrapserver");
 
 		try {
@@ -152,6 +148,7 @@ public class DatabaseCalls implements DatabaseAPI {
 	}
 
 	public void getSwarm() {  //This method reads from 'serverswarm' table
+		sqlconnector sc = new sqlconnector("serverdb");
 		rs = sc.runquery("SELECT * FROM serverswarm where peercount='1'");
 
 		try {
@@ -204,7 +201,7 @@ public class DatabaseCalls implements DatabaseAPI {
 	}
 
 	public getIPoStatus getPeers(){   //This method reads from 'serverpeers' table
-
+		sqlconnector sc = new sqlconnector("serverdb");
 		String latestIP = null;
 		String blackList = null;
 		rs = sc.runquery("SELECT * FROM serverpeers");
@@ -238,6 +235,7 @@ public class DatabaseCalls implements DatabaseAPI {
 
 
 	public void getPeerArray() {  //This method reads from 'peersarray' table
+		sqlconnector sc = new sqlconnector("serverdb");
 		rs = sc.runquery("SELECT * FROM peersarray");
 
 		try {
@@ -295,10 +293,9 @@ public class DatabaseCalls implements DatabaseAPI {
 	public Bootstraps getBootstraps(){
 		Bootstraps bootstraps = new Bootstraps();
 		String readquery="";
- 		sqlconnector test = new sqlconnector();
+ 		sqlconnector test = new sqlconnector("severdb");
  		ResultSet result;
  		String data="";
- 		test.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
  		readquery="select distinct ip from bootstrapserver";
  		result = test.runquery(readquery);
  		
@@ -322,7 +319,7 @@ public class DatabaseCalls implements DatabaseAPI {
 	
 	
 	public Blacklist getBlacklist()	{
-
+		sqlconnector sc = new sqlconnector("serverdb");
 		Blacklist blacklist = new Blacklist();
 
 		String readquery="";
@@ -489,7 +486,7 @@ public class DatabaseCalls implements DatabaseAPI {
 	 * @return true if ip was blacklisted in db
 	 */
 	public boolean isBlacklisted(String ip) {
-		
+		sqlconnector sc = new sqlconnector("serverdb");
 		boolean status = false;
 		String readquery="";
 		ResultSet result;
@@ -517,5 +514,4 @@ public class DatabaseCalls implements DatabaseAPI {
 		}
 		return status;
 	}
-
 }
