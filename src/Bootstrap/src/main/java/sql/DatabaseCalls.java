@@ -278,8 +278,6 @@ public class DatabaseCalls implements DatabaseAPI {
 		blacklist.add("1.2.3.4");
 		blacklist.add("1.2.3.6");
 
-
-
 		//SwarmsInfo 
 		List<SwarmsInfo> swarmInfoList = new ArrayList<SwarmsInfo>();
 
@@ -307,6 +305,36 @@ public class DatabaseCalls implements DatabaseAPI {
 		sync.setSwarmsInfo(swarmInfoList);
 
 		return sync;
+	}
+
+	public boolean isBlacklisted(String ip) {
+		
+		boolean status = false;
+		String readquery="";
+		ResultSet result;
+		String data="";
+		readquery="select distinct blacklist from serverpeers where ip='"+ip+"';";
+		result = sc.runquery(readquery);
+		
+		try {
+			System.out.println();
+			while(result.next()){
+				//Retrieve by column name			
+				data = result.getString("blacklist");	         
+			}
+			
+			if (data.equals(1)) {
+				status = true;
+			} else {
+				status = false;
+			}	
+		} catch (SQLException ex){
+			// handle any errors
+			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
+			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
+			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
+		}
+		return status;
 	}
 
 }

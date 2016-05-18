@@ -20,6 +20,7 @@ public interface DatabaseAPI {
 	public getIPoStatus getPeers();
 	public Blacklist getBlacklist();
 	public Sync getSync();
+	public boolean isBlacklisted(String ip);
 	
 	//public Swarmshelper getSwarms();
 	//public Swarm getSwarm(String swarmID)
