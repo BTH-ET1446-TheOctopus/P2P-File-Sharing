@@ -74,6 +74,7 @@ public class ClientCalls {
     	
 		Chunk respons = client.target(clientIP)
     			.path("/rest/file/" + fileID + "/" + chunk)
+    			.queryParam("filename", "Robin hood")
     			.request(MediaType.APPLICATION_JSON)
     			.get(Chunk.class);
 		

@@ -37,7 +37,7 @@ import java.util.logging.Logger;
 @Path("/rest")
 public class Rest {
 	private static final Logger LOG = Logger.getLogger(Rest.class.getName());
-	private DatabaseAPI database;
+	private DatabaseAPI database = new DatabaseCalls();
 	
 	@GET
 	@Path("/test/")
@@ -64,10 +64,8 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ID getHello(@Context org.glassfish.grizzly.http.server.Request caller, @QueryParam("id") String id)
 	{
-
 		ID respons = new ID();
-		
-		
+		/*
 		if(database.isBlacklisted(caller.getRemoteAddr()))
 		{
 			respons = null;
@@ -75,16 +73,23 @@ public class Rest {
 		}
 		else
 		{
-			database = new DatabaseCalls();
-			UUID uuid = UUID.randomUUID();
-			//After uuid checking generte timestamp from NTP server
-	        
-			database.addPeers(uuid.toString(), caller.getRemoteAddr(), 0, Settings.getNTP());
-			
-			//Search for uuid in database
-			//if no uuid add new to ip and send back uuid
+		*/
+			System.out.println(id);
+			if(database.isPeerIDExisting(id))
+			{
+				respons.setid(id);
+				database.updatePeer(caller.getRemoteAddr(), respons.getid(), Settings.getNTP());
+				LOG.log(Level.INFO, "Peer update validy time and ip: " + id);
+				
+			}else
+			{
+				UUID uuid = UUID.randomUUID();
+				respons.setid(uuid.toString());
+				database.addPeers(respons.getid(), caller.getRemoteAddr(), false, Settings.getNTP());
+				LOG.log(Level.INFO, "New peer connected id: " + respons.toString());
+			}
 			return respons;
-		}
+		//}
 
 	}
 	/**
@@ -287,6 +292,11 @@ public class Rest {
 	public Swarm getSwarm(@Context org.glassfish.grizzly.http.server.Request caller, @PathParam("swarmID") String swarmID, @QueryParam("clientID") String clientID)
 	{
 		Swarm swarm = new Swarm();
+		swarm = null;
+		return swarm;
+		
+		/*
+		Swarm swarm = new Swarm();
 		if(database.isBlacklisted(caller.getRemoteAddr()))
 		{
 			swarm = null;
@@ -295,66 +305,83 @@ public class Rest {
 		else
 		{	
 			
-		//Check if clientID already on the swarm 
-		//if()
-		//{
-			//if not add it to swarm 
-			//Suggest that you add it after the reading from the db
-		//}
-		
- 		String readquery="";
- 		sqlconnector test = new sqlconnector();
- 		ResultSet result;
- 		int blockcount=0;
- 		String filename="";
-	
- 		String filechecksum="";
- 		String metadatachecksum="";
- 		String filepeers="";
- 		String swarmid="'"+swarmID+"'";
- 		
- 		test.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
- 		readquery="select * from serverswarm where uniquefileid = "+ swarmid;
- 		result = test.runquery(readquery);
+			if(database.isSwarmIDExisting(swarmID))
+			{
+				if(database.isClientOnSwarm(swarmID, clientID) == false)
+				{
+					if(database.updateSwarm(swarmID, clientID))
+					{
+						// Success on update swarm
+						String readquery="";
+				 		sqlconnector test = new sqlconnector();
+				 		ResultSet result;
+				 		int blockcount=0;
+				 		String filename="";
+					
+				 		String filechecksum="";
+				 		String metadatachecksum="";
+				 		String filepeers="";
+				 		String swarmid="'"+swarmID+"'";
+				 		
+				 		test.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
+				 		readquery="select * from serverswarm where uniquefileid = "+ swarmid;
+				 		result = test.runquery(readquery);
 
-		LOG.log(Level.INFO, swarmID);
+						LOG.log(Level.INFO, swarmID);
 
- 		List<String> peers = new ArrayList<String>();
- 		try {
- 			System.out.println();
- 			while(result.next()){
- 		        //Retrieve by column name			
- 		        filename = result.getString("filename");	         
- 		        blockcount= result.getInt("totalblocks");
- 		     	filechecksum=result.getString("filechecksum");
- 		     	metadatachecksum=result.getString("metadatachecksum");
-	
- 	         	swarm.setBlockCount(blockcount);
- 				swarm.setFilename(filename);
- 				swarm.setFileChecksum(filechecksum);
- 				swarm.setMetadataChecksum(metadatachecksum);
- 		    }
- 	    }
- 	    catch (Exception e) {
- 	        System.out.println("Exception in query method:\n" + e.getMessage());
- 	    }
- 		readquery="select distinct peers from peersarray where uniquefileid =" + swarmid;
- 		result = test.runquery(readquery);
- 		try {
- 			System.out.println();
- 			while(result.next()){
- 		        //Retrieve by column name			
- 		        filepeers = result.getString("peers");	         
- 		        peers.add(filepeers);
- 		    }
- 	    }
- 	    catch (Exception e) {
- 	        System.out.println("Exception in query method:\n" + e.getMessage());
- 	    }
- 		test.closeconnect();	
- 		swarm.setPeers(peers);
-		return swarm;
+				 		List<String> peers = new ArrayList<String>();
+				 		try {
+				 			System.out.println();
+				 			while(result.next()){
+				 		        //Retrieve by column name			
+				 		        filename = result.getString("filename");	         
+				 		        blockcount= result.getInt("totalblocks");
+				 		     	filechecksum=result.getString("filechecksum");
+				 		     	metadatachecksum=result.getString("metadatachecksum");
+					
+				 	         	swarm.setBlockCount(blockcount);
+				 				swarm.setFilename(filename);
+				 				swarm.setFileChecksum(filechecksum);
+				 				swarm.setMetadataChecksum(metadatachecksum);
+				 		    }
+				 	    }
+				 	    catch (Exception e) {
+				 	        System.out.println("Exception in query method:\n" + e.getMessage());
+				 	    }
+				 		readquery="select distinct peers from peersarray where uniquefileid =" + swarmid;
+				 		result = test.runquery(readquery);
+				 		try {
+				 			System.out.println();
+				 			while(result.next()){
+				 		        //Retrieve by column name			
+				 		        filepeers = result.getString("peers");	         
+				 		        peers.add(filepeers);
+				 		    }
+				 	    }
+				 	    catch (Exception e) {
+				 	        System.out.println("Exception in query method:\n" + e.getMessage());
+				 	    }
+				 		test.closeconnect();	
+				 		swarm.setPeers(peers);
+						return swarm;
+						
+					}
+					else
+					{
+						LOG.log(Level.WARNING, "Could not update swarm " + swarmID + " whit: " + clientID);
+					}
+				}
+				else
+				{	
+					//Client already is on swarm
+					LOG.log(Level.INFO, "Client " + clientID + " already on swarm: " + swarmID);
+				}
+			} 
+			//Return null if
+			swarm = null;
+			return swarm;
 		}
+		*/
 	}
 	
 	

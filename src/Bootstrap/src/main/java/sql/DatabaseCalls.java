@@ -352,7 +352,7 @@ public class DatabaseCalls implements DatabaseAPI {
 		String readquery="";
 		ResultSet result;
 		String data="";
-		readquery="select distinct blacklist from serverpeers where ip='"+ip+"';";
+		readquery="select distinct blacklist from serverpeers where latestip='"+ip+"';";
 		result = sc.runquery(readquery);
 		
 		try {
