@@ -70,34 +70,7 @@ public class Rest {
 		UUID uuid = UUID.randomUUID();
 		
 		//After uuid checking generate timestamp from NTP server
-		Socket so = null;
-		try {
-			so = new Socket(Settings.ntpServer, Settings.daytimeport);
-		} catch (UnknownHostException e) {
-			LOG.log(Level.WARNING, e.getMessage(), e);
-		} catch (IOException e) {
-			LOG.log(Level.SEVERE, e.getMessage(), e);
-		}
-
-		
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new InputStreamReader (so.getInputStream()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			LOG.log(Level.SEVERE, e.getMessage(), e);
-		}
-		
-		String timestamp = null;
-		try {
-			timestamp = br.readLine();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			LOG.log(Level.SEVERE, e.getMessage(), e);
-		}
-		
-		System.out.println(timestamp);
-		LOG.log(Level.INFO, timestamp);
+        String timestamp = Settings.getNTP();
 		
 		return uuid.toString();
 	}
