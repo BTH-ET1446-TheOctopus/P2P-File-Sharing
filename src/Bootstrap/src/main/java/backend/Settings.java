@@ -1,5 +1,7 @@
 package backend;
 
+import javax.ws.rs.core.Context;
+
 import org.glassfish.grizzly.http.server.Request;
 
 public final class Settings {
@@ -21,7 +23,7 @@ public final class Settings {
 	 * @param request is the incoming rest request from remote client
 	 * @return true if ip was blacklisted in db
 	 */
-	public static boolean blackListedIp(Request request)
+	public static boolean blackListedIp(@Context org.glassfish.grizzly.http.server.Request request)
 	{
 		
 		
@@ -29,8 +31,8 @@ public final class Settings {
 		//is not in db return false
 		//remove comment after fixing this
 		
-		System.out.println(request.getRemoteAddr());
-		return true;
+		System.out.println("Settings: " + request.getRemoteAddr());
+		return false;
 	}
 	
 	
