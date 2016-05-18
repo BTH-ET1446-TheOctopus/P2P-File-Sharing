@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ws.rs.core.Context;
-import com.mysql.jdbc.PreparedStatement;
-import backend.Settings;
 import backend.json.Blacklist;
 import backend.json.Bootstraps;
 import backend.json.Peers;
@@ -86,7 +83,7 @@ public class DatabaseCalls implements DatabaseAPI {
 			sc.closeconnect();
 		}
 	}
-	
+
 	public boolean isPeerIDExisting(String id){
 		sqlconnector sc = new sqlconnector("serverdb");
 		String query = "select distinct id from serverpeers where id =" + "'"+ id + "'";	
@@ -104,7 +101,7 @@ public class DatabaseCalls implements DatabaseAPI {
 		}
 		return false;
 	}
-	
+
 	public boolean updatePeer(String ip, String id, String timestamp){
 		sqlconnector sc = new sqlconnector("serverdb");
 		boolean updateflag=false;
@@ -113,73 +110,6 @@ public class DatabaseCalls implements DatabaseAPI {
 		updateflag=sc.Update(updatequery);
 		sc.closeconnect();
 		return updateflag;
-	}
-	
-
-	public void getBootstrapServer() {  //This method reads from 'bootstrapserver' table
-		sqlconnector sc = new sqlconnector("serverdb");
-		rs = sc.runquery("SELECT * FROM bootstrapserver");
-
-		try {
-			while(rs.next()){
-				//Retrieve by column name
-				String ip=rs.getString("ip");
-				String name=rs.getString("name");
-				String timestamp=rs.getString("timestamp");
-				String clientcount = rs.getString("clientcount");
-				String servercount = rs.getString("servercount");
-
-				//Display values
-				LOG.log(Level.INFO, "\nip: " + ip.toString() + 
-						"\nname: " + name.toString() + 
-						"\ntimestamp: " + timestamp.toString() +
-						"\nclientcount: " + clientcount.toString() +
-						"\nservercount: " + servercount.toString());
-			}
-		} catch (SQLException ex){
-			// handle any errors
-			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
-			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
-			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
-		} finally  {
-			sc.closeconnect();
-		}	
-
-	}
-
-	public void getSwarm() {  //This method reads from 'serverswarm' table
-		sqlconnector sc = new sqlconnector("serverdb");
-		rs = sc.runquery("SELECT * FROM serverswarm where peercount='1'");
-
-		try {
-			while(rs.next()){
-				//Retrieve by column name
-				String filename=rs.getString("filename");
-				String totalblocks=rs.getString("totalblocks");
-				String peers = rs.getString("peers");
-				String peercount = rs.getString("peercount");
-				String uniquefileid = rs.getString("uniquefileid");
-				String filechecksum = rs.getString("filechecksum");
-				String metadatachecksum = rs.getString("metadatachecksum");
-
-				//Display values
-				LOG.log(Level.INFO, "\nfilename: " + filename.toString() + 
-						"\ntotalblocks: " + totalblocks.toString() + 
-						"\npeers: " + peers.toString() +
-						"\npeercount: " + peercount.toString() +
-						"\nuniquefileid: " + uniquefileid.toString() +
-						"\nfilechecksum: " + filechecksum.toString() +
-						"\nmetadatachecksum: " + metadatachecksum.toString()
-						);
-			}
-		} catch (SQLException ex){
-			// handle any errors
-			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
-			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
-			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
-		} finally  {
-			sc.closeconnect();
-		}	
 	}
 
 	public final class getIPoStatus {
@@ -233,91 +163,65 @@ public class DatabaseCalls implements DatabaseAPI {
 
 	} 
 
-
-	public void getPeerArray() {  //This method reads from 'peersarray' table
-		sqlconnector sc = new sqlconnector("serverdb");
-		rs = sc.runquery("SELECT * FROM peersarray");
-
-		try {
-			while(rs.next()){
-				//Retrieve by column name
-				String uniquefileid=rs.getString("uniquefileid");
-				String peers=rs.getString("peers");
-
-				//Display values
-				LOG.log(Level.INFO, "\nuniquefileid: " + uniquefileid.toString() + 
-						"\npeers: " + peers.toString());
-			}
-		} catch (SQLException ex){
-			// handle any errors
-			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
-			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
-			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
-		} finally  {
-			sc.closeconnect();
-		}	
-
-	}
-
 	public Peers getpeers(){
 		Peers peers = new Peers();
 		String readquery="";
- 		sqlconnector test = new sqlconnector("serverdb");
- 		ResultSet result;
- 		String data="";
- 		int counter=0;
- 		readquery="select distinct peers from peersarray";
- 		result = test.runquery(readquery);
+		sqlconnector test = new sqlconnector("serverdb");
+		ResultSet result;
+		String data="";
+		int counter=0;
+		readquery="select distinct peers from peersarray";
+		result = test.runquery(readquery);
 		List<String> ip = new ArrayList<String>();
-		
+
 		try {
- 			System.out.println();
- 			while(result.next()){
- 		         //Retrieve by column name			
- 		         data = result.getString("peers");	         
- 		         if (counter<3){
- 		        	 ip.add(data);
- 		         }
- 		         counter++;
- 		      }
- 	    }
- 	    catch (Exception e) {
- 	        System.out.println("Exception in query method:\n" + e.getMessage());
- 	    }
- 		test.closeconnect();
+			System.out.println();
+			while(result.next()){
+				//Retrieve by column name			
+				data = result.getString("peers");	         
+				if (counter<3){
+					ip.add(data);
+				}
+				counter++;
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Exception in query method:\n" + e.getMessage());
+		}
+		test.closeconnect();
 		peers.setpeers(ip);
-		
+
 		return peers;
 	}
-	
+
 	public Bootstraps getBootstraps(){
 		Bootstraps bootstraps = new Bootstraps();
 		String readquery="";
- 		sqlconnector test = new sqlconnector("severdb");
- 		ResultSet result;
- 		String data="";
- 		readquery="select distinct ip from bootstrapserver";
- 		result = test.runquery(readquery);
- 		
+		sqlconnector test = new sqlconnector("severdb");
+		ResultSet result;
+		String data="";
+		readquery="select distinct ip from bootstrapserver";
+		result = test.runquery(readquery);
+
 		List<String> ip = new ArrayList<String>();
- 		try {
- 			System.out.println();
- 			while(result.next()){
- 		         //Retrieve by column name			
- 		         data = result.getString("ip");	         
- 		         ip.add(data);
- 		      }
- 	    }
- 	    catch (Exception e) {
- 	        System.out.println("Exception in query method:\n" + e.getMessage());
- 	    }
- 		test.closeconnect();
+		try {
+			System.out.println();
+			while(result.next()){
+				//Retrieve by column name			
+				data = result.getString("ip");	         
+				ip.add(data);
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Exception in query method:\n" + e.getMessage());
+		}
+		test.closeconnect();
 		bootstraps.setbootstraps(ip);
 		return bootstraps;
 	}
-	
-	
-	
+
+
+
 	public Blacklist getBlacklist()	{
 		sqlconnector sc = new sqlconnector("serverdb");
 		Blacklist blacklist = new Blacklist();
@@ -346,87 +250,87 @@ public class DatabaseCalls implements DatabaseAPI {
 
 	public SwarmsHelper getSwarms(){
 		SwarmsHelper swarmHelp = new SwarmsHelper();
- 		String readquery="";
- 		sqlconnector test = new sqlconnector("serverdb");
- 		ResultSet result;
- 		readquery="select * from serverswarm";
- 		result = test.runquery(readquery);
+		String readquery="";
+		sqlconnector test = new sqlconnector("serverdb");
+		ResultSet result;
+		readquery="select * from serverswarm";
+		result = test.runquery(readquery);
 		//Swarms swarm = new Swarms();
- 		List<Swarms> swarms = new ArrayList<Swarms>();
-		 
+		List<Swarms> swarms = new ArrayList<Swarms>();
+
 		try {
- 			System.out.println();
- 			while (result.next()) { 
- 					Swarms swarm = new Swarms();
- 			        System.out.println(result.getString("filename"));
- 			        System.out.println(result.getString("uniquefileid"));
- 			        swarm.setfilename(result.getString("filename"));
- 	 				swarm.setid(result.getString("uniquefileid"));
- 	 				swarms.add(swarm);
- 			}
- 	    }
- 	    catch (Exception e) {
- 	        System.out.println("Exception in query method:\n" + e.getMessage());
- 	    }
- 		test.closeconnect();
- 		swarmHelp.setSwarms(swarms);		
+			System.out.println();
+			while (result.next()) { 
+				Swarms swarm = new Swarms();
+				System.out.println(result.getString("filename"));
+				System.out.println(result.getString("uniquefileid"));
+				swarm.setfilename(result.getString("filename"));
+				swarm.setid(result.getString("uniquefileid"));
+				swarms.add(swarm);
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Exception in query method:\n" + e.getMessage());
+		}
+		test.closeconnect();
+		swarmHelp.setSwarms(swarms);		
 		return swarmHelp;
 	}
-	
+
 	public Swarm getSwarm(String swarmID){
 		Swarm swarm = new Swarm();
 		String readquery="";
- 		sqlconnector test = new sqlconnector("serverdb");
- 		ResultSet result;
- 		int blockcount=0;
- 		String filename="";
-	
- 		String filechecksum="";
- 		String metadatachecksum="";
- 		String filepeers="";
- 		String swarmid="'"+swarmID+"'";
- 		readquery="select * from serverswarm where uniquefileid = "+ swarmid;
- 		result = test.runquery(readquery);
+		sqlconnector test = new sqlconnector("serverdb");
+		ResultSet result;
+		int blockcount=0;
+		String filename="";
+
+		String filechecksum="";
+		String metadatachecksum="";
+		String filepeers="";
+		String swarmid="'"+swarmID+"'";
+		readquery="select * from serverswarm where uniquefileid = "+ swarmid;
+		result = test.runquery(readquery);
 
 		LOG.log(Level.INFO, swarmID);
 
- 		List<String> peers = new ArrayList<String>();
- 		try {
- 			System.out.println();
- 			while(result.next()){
- 		        //Retrieve by column name			
- 		        filename = result.getString("filename");	         
- 		        blockcount= result.getInt("totalblocks");
- 		     	filechecksum=result.getString("filechecksum");
- 		     	metadatachecksum=result.getString("metadatachecksum");
-	
- 	         	swarm.setBlockCount(blockcount);
- 				swarm.setFilename(filename);
- 				swarm.setFileChecksum(filechecksum);
- 				swarm.setMetadataChecksum(metadatachecksum);
- 		    }
- 	    }
- 	    catch (Exception e) {
- 	        System.out.println("Exception in query method:\n" + e.getMessage());
- 	    }
- 		readquery="select distinct peers from peersarray where uniquefileid =" + swarmid;
- 		result = test.runquery(readquery);
- 		try {
- 			System.out.println();
- 			while(result.next()){
- 		        //Retrieve by column name			
- 		        filepeers = result.getString("peers");	         
- 		        peers.add(filepeers);
- 		    }
- 	    }
- 	    catch (Exception e) {
- 	        System.out.println("Exception in query method:\n" + e.getMessage());
- 	    }
- 		test.closeconnect();	
- 		swarm.setPeers(peers);
- 		return swarm;
+		List<String> peers = new ArrayList<String>();
+		try {
+			System.out.println();
+			while(result.next()){
+				//Retrieve by column name			
+				filename = result.getString("filename");	         
+				blockcount= result.getInt("totalblocks");
+				filechecksum=result.getString("filechecksum");
+				metadatachecksum=result.getString("metadatachecksum");
+
+				swarm.setBlockCount(blockcount);
+				swarm.setFilename(filename);
+				swarm.setFileChecksum(filechecksum);
+				swarm.setMetadataChecksum(metadatachecksum);
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Exception in query method:\n" + e.getMessage());
+		}
+		readquery="select distinct peers from peersarray where uniquefileid =" + swarmid;
+		result = test.runquery(readquery);
+		try {
+			System.out.println();
+			while(result.next()){
+				//Retrieve by column name			
+				filepeers = result.getString("peers");	         
+				peers.add(filepeers);
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Exception in query method:\n" + e.getMessage());
+		}
+		test.closeconnect();	
+		swarm.setPeers(peers);
+		return swarm;
 	}
-	
+
 	public Sync getSync()
 	{
 		Sync sync = new Sync();
@@ -478,7 +382,7 @@ public class DatabaseCalls implements DatabaseAPI {
 
 		return sync;
 	}
-	
+
 	/**
 	 * Function to compare incoming IP whit the ones that
 	 * are in database to see if it is blacklisted
@@ -493,14 +397,14 @@ public class DatabaseCalls implements DatabaseAPI {
 		String data="";
 		readquery="select distinct blacklist from serverpeers where latestip='"+ip+"';";
 		result = sc.runquery(readquery);
-		
+
 		try {
 			System.out.println();
 			while(result.next()){
 				//Retrieve by column name			
 				data = result.getString("blacklist");	         
 			}
-			
+
 			if (data.equals(1)) {
 				status = true;
 			} else {
