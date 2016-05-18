@@ -245,34 +245,9 @@ public class Rest {
 		}
 		else
 		{	
-		
-		
-	 		String readquery="";
-	 		sqlconnector test = new sqlconnector("serverdb");
-	 		ResultSet result;
-	 		//String filename="";
-	 		//String uniquefileid="";
-	 		//test.connector("root", "sql", "serverdb", "127.0.0.1", "3306");
-	 		readquery="select * from serverswarm";
-	 		result = test.runquery(readquery);
 			//Swarms swarm = new Swarms();
-			List<Swarms> swarms = new ArrayList<Swarms>(); 
-			try {
-	 			System.out.println();
-	 			while (result.next()) { 
-	 				Swarms swarm = new Swarms();
-	 			        System.out.println(result.getString("filename"));
-	 			        System.out.println(result.getString("uniquefileid"));
-	 			        swarm.setfilename(result.getString("filename"));
-	 	 				swarm.setid(result.getString("uniquefileid"));
-	 	 				swarms.add(swarm);
-	 			}
-	 	    }
-	 	    catch (Exception e) {
-	 	        System.out.println("Exception in query method:\n" + e.getMessage());
-	 	    }
-	 		test.closeconnect();
-	 		swarmHelp.setSwarms(swarms);
+			//List<Swarms> swarms = new ArrayList<Swarms>(); 
+			swarmHelp=database.getSwarms();
 	 		System.out.println(((Swarms)swarmHelp.getSwarms().get(0)).getfilename());
 			return swarmHelp;
 		}
