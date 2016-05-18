@@ -14,6 +14,9 @@ import backend.json.Swarm;
 import backend.json.Swarms;
 import backend.rest.BootstrapCalls;
 import backend.rest.ClientCalls;
+import backend.thread.BootstrapDataThread;
+import backend.thread.BootstrapHelloThread;
+import backend.thread.SwarmEngager;
 
 public class Backend implements BackendController {
 	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -51,6 +54,7 @@ public class Backend implements BackendController {
 		activeSwarms = new HashMap<String, SwarmEngager>();
 
 		restObserver = null;
+		speedChartObserver = null;
 
 		clientCalls = new ClientCalls();
 		bootstrapCalls = new BootstrapCalls();

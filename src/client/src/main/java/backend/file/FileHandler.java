@@ -1,4 +1,4 @@
-package backend;
+package backend.file;
 
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import backend.BlockBuffer.Mode;
+import backend.file.BlockBuffer.Mode;
 
 /**
  * This class keeps track of open files.

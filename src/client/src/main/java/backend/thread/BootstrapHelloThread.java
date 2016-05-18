@@ -1,4 +1,4 @@
-package backend;
+package backend.thread;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

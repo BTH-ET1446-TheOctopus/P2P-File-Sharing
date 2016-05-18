@@ -1,4 +1,4 @@
-package backend;
+package backend.thread;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -6,6 +6,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import backend.api.BackendObserver;
+import backend.file.BlockBuffer;
+import backend.file.FileHandler;
 import backend.json.Chunk;
 import backend.json.Chunks;
 import backend.json.Swarm;

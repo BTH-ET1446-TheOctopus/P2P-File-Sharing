@@ -11,6 +11,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import backend.file.BlockBuffer;
+
 public class TestBlockBuffer {
 
 	@Before

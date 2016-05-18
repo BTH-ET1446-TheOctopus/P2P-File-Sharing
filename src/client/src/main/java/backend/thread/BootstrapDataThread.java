@@ -1,9 +1,10 @@
-package backend;
+package backend.thread;
 
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import backend.Settings;
 import backend.json.Swarms;
 import backend.rest.BootstrapCalls;
 

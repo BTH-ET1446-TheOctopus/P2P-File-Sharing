@@ -14,8 +14,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import backend.BlockBuffer;
-import backend.FileHandler;
+import backend.file.BlockBuffer;
+import backend.file.FileHandler;
 import backend.json.Address;
 import backend.json.Chunk;
 import backend.json.Chunks;
