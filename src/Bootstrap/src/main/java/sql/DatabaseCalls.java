@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 
 import javax.ws.rs.core.Context;
 
+import com.mysql.jdbc.PreparedStatement;
+
 import backend.Settings;
 import backend.json.Blacklist;
 import backend.json.PeersInfo;
@@ -109,8 +111,11 @@ public class DatabaseCalls implements DatabaseAPI {
 	public boolean updatePeer(String ip, String id, String timestamp){
 		sqlconnector sc = new sqlconnector("serverdb");
 		boolean updateflag=false;
-		String updatequery = "update serverpeers set ip="+ "'"+ ip + "'" + "," 
-				+ "set timestamp=" + "'"+ timestamp + "'" + "where id= " + "'"+ id + "'";
+		//String updatequery = "update serverpeers set ip=?,timestamp=?"
+		//		+ "where id=?";
+		//PreparedStatement st = c.PreparedStatement(updatequery);		
+		String updatequery = "update serverpeers set latestip= + '"+ip+ "',"
+				+ " timestamp='"+ timestamp + "' where id='"+ id + "'";
 		updateflag=sc.Update(updatequery);
 		sc.closeconnect();
 		return updateflag;
