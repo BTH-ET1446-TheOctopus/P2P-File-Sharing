@@ -3,20 +3,27 @@ package sql;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.ws.rs.core.Context;
+
+import backend.Settings;
+import backend.json.Blacklist;
 
 public class DatabaseCalls implements DatabaseAPI {
 	
 private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName());
 	
 	//create an object from sqlconnector, to eb able to connect to the database
-	sqlconnector sc = new sqlconnector();
+	sqlconnector sc = new sqlconnector("serverdb");
 
 	ResultSet rs = null;
 	
 	public void addBootstrapServer(String ip, String name, int clientcount, int servercount){  //This method writes to 'servers' table
-		sqlconnector sc = new sqlconnector();
+		sqlconnector sc = new sqlconnector("serverdb");
 		Statement stmnt = sc.getStatement();
 		
 		try {
@@ -218,4 +225,30 @@ private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName()
 		}	
 
 	}
+	
+	public Blacklist getBlacklist()	{
+		Blacklist blacklist = new Blacklist();
+	
+			String readquery="";
+	 		ResultSet result;
+	 		String data="";
+	 		readquery="select distinct latestip from serverpeers where blacklist='1';";
+	 		result = sc.runquery(readquery);
+			List<String> ip = new ArrayList<String>();
+			try {
+	 			System.out.println();
+	 			while(result.next()){
+	 		         //Retrieve by column name			
+	 		         data = result.getString("latestip");	         
+	 		         ip.add(data);
+	 		      }
+	 	    }
+	 	    catch (Exception e) {
+	 	        System.out.println("Exception in query method:\n" + e.getMessage());
+	 	    }
+			blacklist.setblacklist(ip);
+			
+			return blacklist;
+	}
+	
 }
