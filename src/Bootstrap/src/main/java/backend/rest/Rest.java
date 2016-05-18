@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import backend.Settings;
 import backend.json.Blacklist;
 import backend.json.Bootstraps;
+import backend.json.ID;
 import backend.json.Peers;
 import backend.json.PeersInfo;
 import backend.json.Swarm;
@@ -58,27 +59,28 @@ public class Rest {
 	@GET
 	@Path("/hello/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getHello(@Context org.glassfish.grizzly.http.server.Request caller, @QueryParam("id") String id)
+	public ID getHello(@Context org.glassfish.grizzly.http.server.Request caller, @QueryParam("id") String id)
 	{
 
-		String returnValue = null;
+		ID respons = new ID();
 		if(Settings.blackListedIp(caller))
 		{
-			
-			return returnValue;
+			respons = null;
+			return respons;
 		}
 		else
 		{
-			//check if it has uuid 
-			//if it has check the ip if not same update ip
-			
+			//Search for uuid in database
+			//if no uuid add new to ip and send back uuid
+		
 			caller.getRemoteAddr();
 			UUID uuid = UUID.randomUUID();
 			
 			//After uuid checking generate timestamp from NTP server
 	        String timestamp = Settings.getNTP();
 			
-			return uuid.toString();
+	        respons.setid(uuid.toString());
+			return respons;
 		}
 
 	}
