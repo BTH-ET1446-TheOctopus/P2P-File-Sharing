@@ -10,6 +10,9 @@ public class SwarmMetadata {
 	String metadataChecksum;
 	List<String> peers;
 
+	public SwarmMetadata() {
+	}
+	
 	public SwarmMetadata(String id, String filename, String blockCount, String fileChecksum, String metadataChecksum,
 			List<String> peers) {
 		this.id = id;

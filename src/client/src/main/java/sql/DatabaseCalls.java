@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import backend.Logging;
 import backend.api.datatypes.SwarmMetadata;
+import backend.json.Swarm;
 import sql.DatabaseAPI;
 
 public class DatabaseCalls implements DatabaseAPI{
@@ -65,7 +66,15 @@ public class DatabaseCalls implements DatabaseAPI{
 	
 	public SwarmMetadata getSwarmByName(String filename){
 		
-		//sqlconnector sc = new sqlconnector("clientdb");
+		SwarmMetadata swarmmetadata = new SwarmMetadata();
+		String readquery="";
+		ResultSet result;
+		int blockcount=0;
+		String filechecksum="";
+		String metadatachecksum="";
+		String filepeers="";
+		result = sc.runquery(readquery);
+		
 		String query = "select * from clientswarm where filename = '" + filename +"'";	
 		rs=sc.runquery(query);
 		try {
@@ -179,8 +188,10 @@ public class DatabaseCalls implements DatabaseAPI{
 		}
 	}
 	
+	//Close DB Connection
 	public void closedbconnect(){
 		sc.closeconnect();
+		sc=null;
 	}
 	
 	public void addPeers(String swarmId, String ip){  //This method writes to 'clientpeers' table
