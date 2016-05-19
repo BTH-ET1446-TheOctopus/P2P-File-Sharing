@@ -1,10 +1,5 @@
 package backend.rest;
 
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-//import com.sun.jersey.api.client.Client;
-//import com.sun.jersey.api.client.WebResource;
-//import com.sun.jersey.api.client.config.DefaultClientConfig;
-
 import backend.json.Chunk;
 import backend.json.Chunks;
 import backend.json.Peers;
@@ -85,7 +80,6 @@ public class ClientCalls {
     			.request(MediaType.APPLICATION_JSON)
     			.get(Chunk.class);
 		
-		LOG.log(Level.INFO,respons.toString());
 		return respons;
 	}
 	public Response search(String clientIP,String filename, String ip, int hoplimit)

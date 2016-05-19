@@ -128,4 +128,26 @@ public final class FileHandler {
 
 		files.clear();
 	}
+
+	public static void setReadOnly(String filename) {
+		BlockBuffer file = files.get(filename);
+
+		if (file == null) {
+			throw new RuntimeException("Unable to set file " + filename + " as read only, file is not open");
+		}
+
+		try {
+			file.close();
+		} catch (IOException e) {
+			LOG.log(Level.SEVERE, e.toString(), e);
+		}
+
+		try {
+			files.put(filename, new BlockBuffer(filename, Mode.READ));
+		} catch (NoSuchFileException e) {
+			LOG.log(Level.SEVERE, e.toString(), e);
+		} catch (IOException e) {
+			LOG.log(Level.SEVERE, e.toString(), e);
+		}
+	}
 }
