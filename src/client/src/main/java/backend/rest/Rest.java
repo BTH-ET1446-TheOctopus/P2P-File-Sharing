@@ -1,10 +1,13 @@
 package backend.rest;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,10 +23,8 @@ import backend.json.Address;
 import backend.json.Chunk;
 import backend.json.Chunks;
 import backend.json.Peers;
+import sql.DatabaseCalls;
 import sql.sqlconnector;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Path("/rest")
 public class Rest {
@@ -80,7 +81,27 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String searchFile(@PathParam("filename") String filename, @QueryParam("ip") String ip,
 			@QueryParam("hopLimit") Integer hopLimit) {
-
+		
+		DatabaseCalls databaseCalls = new DatabaseCalls();	
+		ClientCalls clientCalls = new ClientCalls();
+		boolean exist = false;
+		//Check if the filename is in the database
+			exist = databaseCalls.getSwarmByName(filename);
+		//if the file exist, get fileinformation and send
+		if(exist == true)	{
+			//databaseCalls.getswarmInfoBYName(filename);
+			//clientCalls.searchResult(String clientIP, String id, Integer blockCount, String filename, String fileChecksum, String metadataChecksum);
+			}
+		//If the file doesnt exist, send search request to nearby Peers
+		else {
+			List<String> peers = new ArrayList<String>();	
+			peers = databaseCalls.getPeers();
+			hopLimit = hopLimit-1;
+			for(int i=0; i<peers.size() && (peers.get(i)!=ip);i++)	{
+			clientCalls.search(peers.get(1),filename, ip, hopLimit);
+			}							
+		}
+		
 		return filename;
 	}
 
@@ -89,7 +110,6 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void searchResult(@QueryParam("id") String id, @QueryParam("blockCount") Integer blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum)
 	{
-		
 
 	}
 

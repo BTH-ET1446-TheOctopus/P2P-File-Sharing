@@ -12,9 +12,16 @@ import backend.json.Peers;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+
+import backend.Settings;;
+
 public class ClientCalls {
     
 	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -81,4 +88,37 @@ public class ClientCalls {
 		LOG.log(Level.INFO,respons.toString());
 		return respons;
 	}
-}
+	public Response search(String clientIP,String filename, String ip, int hoplimit)
+	{		
+		
+		Client client = ClientBuilder.newClient();
+		         Response respons = client.target(clientIP)
+				.path("/rest/search")
+				.queryParam("filename", filename)			
+				.queryParam("ip", ip)							
+				.queryParam("hoplimit", hoplimit)
+				.request(MediaType.APPLICATION_JSON)
+				.get();
+				
+		return respons;
+	}
+	public Response searchResult(String clientIP, String id, Integer blockCount, String filename, String fileChecksum, String metadataChecksum)
+	
+	{
+		Client client = ClientBuilder.newClient();
+		Response respons = client.target(clientIP)
+				.path("/rest/searchresult")
+				.queryParam("id", id)				
+				.queryParam("blockCount", blockCount)
+				.queryParam("filename", filename)
+				.queryParam("fileChecksum", fileChecksum)
+				.queryParam("metadataChecksum", metadataChecksum)
+				.request(MediaType.APPLICATION_JSON)
+				.get();
+		
+		return respons;
+	}
+
+	
+
+}	
