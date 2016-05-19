@@ -115,9 +115,6 @@ public interface BackendController {
 
 	/**
 	 * Tell the backend to stop sending up/down statistics.
-	 * 
-	 * @param id
-	 *            The swarm identifier
 	 */
 	public void unsubscribeSpeedChart();
 
