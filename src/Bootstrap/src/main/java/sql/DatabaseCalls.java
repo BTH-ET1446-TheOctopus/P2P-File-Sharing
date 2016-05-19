@@ -418,25 +418,30 @@ public class DatabaseCalls implements DatabaseAPI {
 		return sync;
 	}
 
-	public boolean getSwarmByName(String filename){
-		
-		sqlconnector sc = new sqlconnector("serverdb");
-		String query = "select distinct filename from serverswarm where filename =" + "'"+ filename + "'";	
-		rs=sc.runquery(query);
-		try {
-			if(rs.next())
-				return true;			
-		} catch (SQLException ex){
-			// handle any errors
-			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
-			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
-			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
-		}
-//		finally  {
-//			sc.closeconnect();
-//		}
-		return false;
+	public boolean isSwarmExisting(String swarmID){
+		return true;
 	}
+	
+	
+//	public boolean getSwarmByName(String filename){
+//		
+//		sqlconnector sc = new sqlconnector("serverdb");
+//		String query = "select distinct filename from serverswarm where filename = '" + filename +"'";	
+//		rs=sc.runquery(query);
+//		try {
+//			if(rs.next())
+//				return true;			
+//		} catch (SQLException ex){
+//			// handle any errors
+//			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
+//			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
+//			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
+//		}
+////		finally  {
+////			sc.closeconnect();
+////		}
+//		return false;
+//	}
 	
 	/**
 	 * Function to compare incoming IP whit the ones that
@@ -446,32 +451,25 @@ public class DatabaseCalls implements DatabaseAPI {
 	 */
 	public boolean isBlacklisted(String ip) {
 		sqlconnector sc = new sqlconnector("serverdb");
-		boolean status = false;
 		String readquery="";
 		ResultSet result;
 		String data="";
-		readquery="select distinct blacklist from serverpeers where latestip='"+ip+"';";
+		readquery="select distinct latestip from serverpeers where blacklist='1'";
 		result = sc.runquery(readquery);
 
 		try {
-			System.out.println();
-			while(result.next()){
-				//Retrieve by column name			
-				data = result.getString("blacklist");	         
+			while (result.next())
+			{
+			if(ip.equals(result.getString("latestip")))			
+				return true;	         
 			}
-
-			if (data.equals(1)) {
-				status = true;
-			} else {
-				status = false;
-			}	
 		} catch (SQLException ex){
 			// handle any errors
 			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
 			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
 		}
-		return status;
+		return false;
 	}
 	
 	

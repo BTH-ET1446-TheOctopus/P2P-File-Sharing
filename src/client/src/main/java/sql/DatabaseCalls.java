@@ -63,6 +63,26 @@ public class DatabaseCalls implements DatabaseAPI{
 		return new SwarmMetadata(uniquefileid, filename, totalblocks, filechecksum, metadatachecksum, getPeers());
 	}
 	
+	public boolean getSwarmByName(String filename){
+		
+		sqlconnector sc = new sqlconnector("clientdb");
+		String query = "select distinct filename from clientswarm where filename = '" + filename +"'";	
+		rs=sc.runquery(query);
+		try {
+			if(rs.next())
+				return true;			
+		} catch (SQLException ex){
+			// handle any errors
+			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
+			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
+			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
+		}
+//		finally  {
+//			sc.closeconnect();
+//		}
+		return false;
+	}
+	
 	public List<String> getPeers(){   //This method reads from 'clientpeers' table
 		
 		List<String> result = new ArrayList<String>();
