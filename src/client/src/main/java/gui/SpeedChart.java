@@ -163,9 +163,9 @@ public class SpeedChart extends JDialog implements SpeedChartObserver
 	}
 
 	@Override
-	public void updateSpeedChart(double up, double down) {
+	public void updateSpeedChart(double down) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
