@@ -31,6 +31,7 @@ public interface DatabaseAPI {
 	public SwarmsHelper getSwarms();
 	public Swarm getSwarm(String swarmID);
 	public Bootstraps getBootstraps();
+	public boolean getSwarmByName(String filename);
 	
 	//public void addSwarmDB(String uuidClient, int totalBlocks), String filename, String fileChecksum, String metadataChecksum, String clientID)
 	
