@@ -25,10 +25,9 @@ public class addPeerArrayTest {
 		String uniquefileid = null;
 		String peers = null;
 		
-		
 		DatabaseCalls dbc = new DatabaseCalls();
-		dbc.addPeerArray("545","278f6d83-a707-4aee-8471-8ffc03c662a9", "192.168.45.98");
-		rs = sc.runquery("SELECT * FROM peersarray");
+		dbc.addPeerArray("278f6d83-a707-4aee-8471-8ffc03c662a9", "192.168.45.98");
+		rs = sc.runquery("SELECT * FROM peersarray where peers='192.168.45.98'");
 		
 		try {
 			while(rs.next()){

@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,10 +22,8 @@ import backend.json.Address;
 import backend.json.Chunk;
 import backend.json.Chunks;
 import backend.json.Peers;
+import backend.thread.ClientSearchThread;
 import sql.sqlconnector;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Path("/rest")
 public class Rest {
@@ -80,7 +80,9 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String searchFile(@PathParam("filename") String filename, @QueryParam("ip") String ip,
 			@QueryParam("hopLimit") Integer hopLimit) {
-
+		
+		(new ClientSearchThread(filename, ip, hopLimit)).start();
+		
 		return filename;
 	}
 
@@ -89,7 +91,6 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void searchResult(@QueryParam("id") String id, @QueryParam("blockCount") Integer blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum)
 	{
-		
 
 	}
 

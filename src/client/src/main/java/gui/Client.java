@@ -289,7 +289,7 @@ public class Client implements BackendObserver
 				
 				speedChartWindow.addWindowListener(new java.awt.event.WindowAdapter() {
 		            public void windowClosed(java.awt.event.WindowEvent evt){
-		            	Backend.getInstance().unsubscribeSpeedChart();
+		            	Backend.getInstance().unsubscribeSpeedChart("abc123");
 		            }
 				});
 			}
@@ -570,7 +570,7 @@ public class Client implements BackendObserver
 	@Override
 	public void newSwarm(String id, String filename, int blockCount)
 	{
-		String size = (blockCount *1024)/1024 +" MB";
+		String size = (blockCount *1024)/1024 +" KB";
         DefaultTableModel model = (DefaultTableModel)table.getModel();
         String dateAdded = Calendar.getInstance().getTime().toString();
         model.addRow(new Object[]{ id,  filename,  "0.0%",  size,  "0.0 KBs",  0,  "Unknown",  dateAdded});
@@ -608,7 +608,7 @@ public class Client implements BackendObserver
 		{
 			if (table.getValueAt(i, 0) == id)
 			{
-				table.setValueAt(String.valueOf(speed) + " KB/s", i, 4);
+				table.setValueAt(String.valueOf((double) Math.round(speed * 100) / 100 ) + " KB/s", i, 4);
 				table.setValueAt(String.valueOf(Math.round(progress * 100))+" %", i, 2);
 				table.setValueAt(timeToCompletion, i, 6);
 				table.setValueAt(peers.size(), i, 5);

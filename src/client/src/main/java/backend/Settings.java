@@ -8,6 +8,7 @@ public final class Settings {
 
 	public static final int BOOTSTRAP_HELLO_INTERVAL = 2 * 60; // seconds
 	public static final int BOOTSTRAP_DATA_RETRIVAL_INTERVAL = 5 * 60; // seconds
+	public static final int GUI_UPDATE_INTERVAL = 1000; // milliseconds
 
 	public static final String MYSQL_DATABASE = "clientdb";
 }

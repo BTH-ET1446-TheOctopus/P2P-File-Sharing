@@ -9,13 +9,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import backend.Logging;
 import backend.api.datatypes.SwarmMetadata;
-import sql.api.DatabaseAPI;
+import sql.DatabaseAPI;
 
 public class DatabaseCalls implements DatabaseAPI{
 	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	//create an object from sqlconnector, to be able to connect to the database
-	sqlconnector sc = new sqlconnector();
+	private static sqlconnector sc = new sqlconnector("clientdb");
 	ResultSet rs = null;
 	
 	public SwarmMetadata getSwarm() {  //This method reads from 'clientswarm' table
@@ -61,6 +61,28 @@ public class DatabaseCalls implements DatabaseAPI{
 			sc.closeconnect();
 		}
 		return new SwarmMetadata(uniquefileid, filename, totalblocks, filechecksum, metadatachecksum, getPeers());
+	}
+	
+	public SwarmMetadata getSwarmByName(String filename){
+		
+		//sqlconnector sc = new sqlconnector("clientdb");
+		String query = "select * from clientswarm where filename = '" + filename +"'";	
+		rs=sc.runquery(query);
+		try {
+			while(rs.next())
+			{
+				
+			}
+		} catch (SQLException ex){
+			// handle any errors
+			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
+			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
+			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
+		}
+//		finally  {
+//			sc.closeconnect();
+//		}
+		return null;
 	}
 	
 	public List<String> getPeers(){   //This method reads from 'clientpeers' table
@@ -126,7 +148,7 @@ public class DatabaseCalls implements DatabaseAPI{
 	
 	// WRITES TO TABLES IN 'CLIENTDB'
 	public void addPeerArray(String uniquefileid, String peers){  //This method writes to 'peersarray' table
-		sqlconnector sc = new sqlconnector();
+		//sqlconnector sc = new sqlconnector();
 
 		Statement stmnt = sc.getStatement();
 		
@@ -142,7 +164,7 @@ public class DatabaseCalls implements DatabaseAPI{
 	}
 
 	public void addSwarm(String id, String filename, String fileChecksum, String metadataChecksum, int blockCount){   //This method writes to 'clientfile' table
-		sqlconnector sc = new sqlconnector();
+		//sqlconnector sc = new sqlconnector();
 		Statement stmnt = sc.getStatement();
 				
 		try {
@@ -153,13 +175,16 @@ public class DatabaseCalls implements DatabaseAPI{
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
 		finally {  //close all connection to database
-			sc.closeconnect();
+			//sc.closeconnect();
 		}
 	}
 	
+	public void closedbconnect(){
+		sc.closeconnect();
+	}
+	
 	public void addPeers(String swarmId, String ip){  //This method writes to 'clientpeers' table
-		sqlconnector sc = new sqlconnector();
-
+		//sqlconnector sc = new sqlconnector();
 		Statement stmnt = sc.getStatement();
 		
 		try {

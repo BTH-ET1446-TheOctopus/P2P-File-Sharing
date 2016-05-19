@@ -10,11 +10,10 @@ public interface SpeedChartObserver {
 
 	/**
 	 * Called repeatedly after a successful call to
-	 * {@link BackendController#subscribeSpeedChart(String)}
+	 * {@link BackendController#subscribeSpeedChart(String, SpeedChartObserver)}
 	 * 
-	 * @param up
-	 * @param down
+	 * @param down The download speed since last call
 	 */
-	public void updateSpeedChart(double up, double down);
+	public void updateSpeedChart(double down);
 
 }

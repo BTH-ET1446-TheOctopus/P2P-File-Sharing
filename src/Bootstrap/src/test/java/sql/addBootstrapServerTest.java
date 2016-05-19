@@ -32,7 +32,7 @@ public class addBootstrapServerTest {
 		dbc.addBootstrapServer("192.168.2.5", "Backup01", 2, 1);
 		
 		//get info from the table
-		rs = sc.runquery("SELECT * FROM bootstrapserver");
+		rs = sc.runquery("SELECT * FROM bootstrapserver where ip='192.168.2.5'");
 		
 		try {
 			while(rs.next()){

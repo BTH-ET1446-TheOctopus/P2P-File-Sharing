@@ -1,4 +1,4 @@
-package sql.api;
+package sql;
 
 import java.util.List;
 import backend.api.datatypes.SwarmMetadata;
@@ -9,10 +9,12 @@ public interface DatabaseAPI {
 	public void addPeers(String swarmId, String ip); //What is the difference from the one bellow? 
 	//public void addPeerArray(String uniquefileid, String peers); //What is the difference from the one above
 	
-	public boolean getSwarmByName(String filename);
+	public SwarmMetadata getSwarmByName(String filename);
 	//public SwarmMetadata getSwarm(String id);
 	public List<String> getPeers();
 	public void getPeerArray();
+	
+	public void closedbconnect();
 	//public List<String> getBlacklist();
 	//public List<String> getBootstraps();
 	//public List<Integer> getChunks(String fileID);

@@ -2,9 +2,11 @@ package backend.thread;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import backend.Settings;
 import backend.api.BackendObserver;
 import backend.api.SpeedChartObserver;
 import backend.file.BlockBuffer;
@@ -25,7 +27,7 @@ public class SwarmEngager extends Thread {
 	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private String swarmId;
-	private SpeedCalculatorThread speedCalculatorThread;
+	private SpeedChartObserver speedChartObserver;
 
 	private BackendObserver restObserver;
 	private BootstrapCalls bootstrapCalls;
@@ -34,32 +36,32 @@ public class SwarmEngager extends Thread {
 	public SwarmEngager(String swarmId, BackendObserver restObserver, BootstrapCalls bootstrapCalls,
 			ClientCalls clientCalls) {
 		this.swarmId = swarmId;
-		
+
 		this.restObserver = restObserver;
 		this.bootstrapCalls = bootstrapCalls;
 		this.clientCalls = clientCalls;
 	}
 
-	public void subscribeSpeedCallback(SpeedCalculatorThread speedCalculatorThread) {
-		this.speedCalculatorThread = speedCalculatorThread;
+	public void subscribeSpeedCallback(SpeedChartObserver speedChartObserver) {
+		this.speedChartObserver = speedChartObserver;
 	}
-	
+
 	public void unsubscribeSpeedCallback() {
-		speedCalculatorThread = null;
+		speedChartObserver = null;
 	}
-	
+
 	public void run() {
-
-		// TODO Try to grab metadata from database?
-
-		// TODO Add metadata to database
-		// Mock the bootstrap data
-
-		Swarm swarm = bootstrapCalls.getSwarm(swarmId);
+		// Swarm swarm = bootstrapCalls.getSwarm(swarmId);
+		Swarm swarm = new Swarm();
 		LOG.log(Level.INFO,
 				"Swarm metadata: swarmId={0}, filename={1}, blockCount={2}, fileChecksum={3}, metadataChecksum={3}",
 				new Object[] { swarmId, swarm.getfilename(), swarm.getblockCount(), swarm.getfileChecksum(),
 						swarm.getmetadataChecksum() });
+
+		// 3. swarm.getmetadataChecksum() == shaChecksum(id, filename, size,
+		// fileChecksum);
+
+		// TODO Add metadata to database
 
 		swarmId = "abc123"; // For now just mock the data
 		swarm.setBlockCount(874);
@@ -97,14 +99,12 @@ public class SwarmEngager extends Thread {
 			break;
 		}
 
+		long timestampBegin = System.currentTimeMillis();
+		long downloadedBytes = 0;
+		long nextUpdate = System.currentTimeMillis();
+
 		int blockNumber = 0;
 		while (blockNumber < swarm.getblockCount()) {
-			try {
-				Thread.sleep(250);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
 			if (swarm.getpeers().isEmpty()) {
 				LOG.log(Level.INFO, "No peers for swarm {0}", swarmId);
 				try {
@@ -128,11 +128,24 @@ public class SwarmEngager extends Thread {
 				continue;
 			}
 
-			restObserver.updateSwarm(swarmId, (double) (blockNumber + 1) / (double) swarm.getblockCount(), 1.0,
-					swarm.getpeers(), "1 hour");
-			
-			if (speedCalculatorThread != null) {
-				speedCalculatorThread.reportDownload(chunk.getSize());
+			downloadedBytes += chunk.getSize();
+
+			if (System.currentTimeMillis() >= nextUpdate) {
+				nextUpdate = System.currentTimeMillis() + Settings.GUI_UPDATE_INTERVAL;
+				
+				// Calculate download speed (bytes / second)
+				double downloadSpeed = (double) downloadedBytes
+						/ ((System.currentTimeMillis() - timestampBegin) / 1000);
+
+				// Calculate ETC (seconds)
+				long etcSeconds = (long) ((double) 1024 * (swarm.getblockCount() - blockNumber - 1) / downloadSpeed);
+				
+				if (speedChartObserver != null) {
+					speedChartObserver.updateSpeedChart(downloadSpeed / 1024);
+				}
+				
+				restObserver.updateSwarm(swarmId, (double) (blockNumber + 1) / (double) swarm.getblockCount(),
+						downloadSpeed / 1024, swarm.getpeers(), toReadableString(etcSeconds));
 			}
 
 			LOG.log(Level.FINE,
@@ -153,5 +166,35 @@ public class SwarmEngager extends Thread {
 		LOG.log(Level.INFO, "Finished downloading file swarmId={0}, filename={1}",
 				new Object[] { swarmId, swarm.getfilename() });
 
+		FileHandler.setReadOnly(filename);
+
+		restObserver.updateSwarm(swarmId, 1, 0, swarm.getpeers(), "");
 	}
+
+	private static String toReadableString(long seconds) {
+		StringBuilder s = new StringBuilder();
+
+		long days = TimeUnit.SECONDS.toDays(seconds);
+		seconds -= TimeUnit.DAYS.toSeconds(days);
+		if (days > 0) {
+			s.append(days).append("d ");
+		}
+
+		long hours = TimeUnit.SECONDS.toHours(seconds);
+		seconds -= TimeUnit.HOURS.toSeconds(hours);
+		if (hours > 0) {
+			s.append(hours).append("h ");
+		}
+
+		long minutes = TimeUnit.SECONDS.toMinutes(seconds);
+		seconds -= TimeUnit.MINUTES.toSeconds(minutes);
+		if (minutes > 0) {
+			s.append(minutes).append("m ");
+		}
+
+		s.append(seconds).append("s");
+
+		return s.toString();
+	}
+
 }

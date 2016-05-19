@@ -16,7 +16,6 @@ import backend.rest.BootstrapCalls;
 import backend.rest.ClientCalls;
 import backend.thread.BootstrapDataThread;
 import backend.thread.BootstrapHelloThread;
-import backend.thread.SpeedCalculatorThread;
 import backend.thread.SwarmEngager;
 
 public class Backend implements BackendController {
@@ -25,13 +24,13 @@ public class Backend implements BackendController {
 	private HashMap<String, SwarmEngager> activeSwarms;
 
 	private BackendObserver restObserver;
+	private SpeedChartObserver speedChartObserver;
 	
 	private ClientCalls clientCalls;
 	private BootstrapCalls bootstrapCalls;
 
 	private BootstrapHelloThread bootstrapHelloThread;
 	private BootstrapDataThread bootstrapDataThread;
-	private SpeedCalculatorThread speedCalculatorThread;
 	
 	private static Backend instance;
 	
@@ -51,7 +50,7 @@ public class Backend implements BackendController {
 		activeSwarms = new HashMap<String, SwarmEngager>();
 
 		restObserver = null;
-		speedCalculatorThread = null;
+		speedChartObserver = null;
 
 		clientCalls = new ClientCalls();
 		bootstrapCalls = new BootstrapCalls();
@@ -145,26 +144,16 @@ public class Backend implements BackendController {
 
 	@Override
 	public void subscribeSpeedChart(String id, SpeedChartObserver callback) {
-		if (speedCalculatorThread != null) {
+		if (speedChartObserver != null) {
 			throw new RuntimeException("Cannot subscribe for multiple speed charts");
 		}
 		
-		speedCalculatorThread = new SpeedCalculatorThread(callback);
-		
-		activeSwarms.get(id).subscribeSpeedCallback(speedCalculatorThread);
-		
-		speedCalculatorThread.start();
+		activeSwarms.get(id).subscribeSpeedCallback(callback);
 	}
 
 	@Override
-	public void unsubscribeSpeedChart() {
-		speedCalculatorThread.interrupt();
-		
-		try {
-			speedCalculatorThread.join();
-		} catch (InterruptedException e) {
-			LOG.log(Level.WARNING, "Interrupted while waiting for SpeedCalculatorThread");
-		}
+	public void unsubscribeSpeedChart(String id) {
+		activeSwarms.get(id).unsubscribeSpeedCallback();
 	}
 
 }
