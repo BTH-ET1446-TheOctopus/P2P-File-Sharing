@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import backend.Logging;
 import backend.api.datatypes.SwarmMetadata;
+import backend.json.Swarm;
 import sql.DatabaseAPI;
 
 public class DatabaseCalls implements DatabaseAPI{
@@ -63,18 +64,25 @@ public class DatabaseCalls implements DatabaseAPI{
 		return new SwarmMetadata(uniquefileid, filename, totalblocks, filechecksum, metadatachecksum, getPeers());
 	}
 	
-	public boolean getSwarmByName(String filename){
+	public SwarmMetadata getSwarmByName(String filename){
 		
-		String query="";
-		ResultSet rs;
-		//sqlconnector sc = new sqlconnector("clientdb");
-		query = "select * from clientswarm";	
+
+		SwarmMetadata swarmmetadata = new SwarmMetadata();
+		String readquery="";
+		ResultSet result;
+		int blockcount=0;
+		String filechecksum="";
+		String metadatachecksum="";
+		String filepeers="";
+		result = sc.runquery(readquery);
+		
+		String query = "select * from clientswarm where filename = '" + filename +"'";		
 		rs=sc.runquery(query);
 		try {
 			while (rs.next())
 			{
-			if(filename.equals(rs.getString("filename")))			
-				return true;	         
+			if(filename.equals(rs.getString("filename"))){			
+			}
 			}
 		} catch (SQLException ex){
 			// handle any errors
@@ -82,7 +90,7 @@ public class DatabaseCalls implements DatabaseAPI{
 			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
 		}
-		return false;
+		return null;
 	}
 	
 	public List<String> getPeers(){   //This method reads from 'clientpeers' table
@@ -179,8 +187,10 @@ public class DatabaseCalls implements DatabaseAPI{
 		}
 	}
 	
+	//Close DB Connection
 	public void closedbconnect(){
 		sc.closeconnect();
+		sc=null;
 	}
 	
 	public void addPeers(String swarmId, String ip){  //This method writes to 'clientpeers' table
