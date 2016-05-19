@@ -384,25 +384,30 @@ public class DatabaseCalls implements DatabaseAPI {
 		return sync;
 	}
 
-	public boolean getSwarmByName(String filename){
-		
-		sqlconnector sc = new sqlconnector("serverdb");
-		String query = "select distinct filename from serverswarm where filename =" + "'"+ filename + "'";	
-		rs=sc.runquery(query);
-		try {
-			if(rs.next())
-				return true;			
-		} catch (SQLException ex){
-			// handle any errors
-			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
-			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
-			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
-		}
-//		finally  {
-//			sc.closeconnect();
-//		}
-		return false;
+	public boolean isSwarmExisting(String swarmID){
+		return true;
 	}
+	
+	
+//	public boolean getSwarmByName(String filename){
+//		
+//		sqlconnector sc = new sqlconnector("serverdb");
+//		String query = "select distinct filename from serverswarm where filename = '" + filename +"'";	
+//		rs=sc.runquery(query);
+//		try {
+//			if(rs.next())
+//				return true;			
+//		} catch (SQLException ex){
+//			// handle any errors
+//			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
+//			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
+//			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
+//		}
+////		finally  {
+////			sc.closeconnect();
+////		}
+//		return false;
+//	}
 	
 	/**
 	 * Function to compare incoming IP whit the ones that
