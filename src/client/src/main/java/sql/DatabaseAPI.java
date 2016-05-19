@@ -9,7 +9,7 @@ public interface DatabaseAPI {
 	public void addPeers(String swarmId, String ip); //What is the difference from the one bellow? 
 	//public void addPeerArray(String uniquefileid, String peers); //What is the difference from the one above
 	
-	public SwarmMetadata getSwarmByName(String filename);
+	public boolean getSwarmByName(String filename);
 	//public SwarmMetadata getSwarm(String id);
 	public List<String> getPeers();
 	public void getPeerArray();
