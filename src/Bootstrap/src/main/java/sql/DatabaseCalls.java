@@ -53,6 +53,7 @@ public class DatabaseCalls implements DatabaseAPI {
 //			sc.closeconnect();
 //		}
 	}
+	
 
 	public void addPeers(String id, String latestIP, boolean blacklist, String timestamp ){  //This method writes to 'serverpeers' table
 		sqlconnector sc = new sqlconnector("serverdb");
@@ -68,6 +69,39 @@ public class DatabaseCalls implements DatabaseAPI {
 //			sc.closeconnect();
 //		}
 	}
+	
+	public boolean addPeer(String id, String latestIP, boolean blacklist, String timestamp){
+		sqlconnector sc = new sqlconnector("serverdb");
+		Statement stmnt = sc.getStatement();
+		boolean updateFlag = false;
+		
+		if(isPeerIDExisting(id)) {
+			// update peer
+			updateFlag = updatePeer(latestIP, id, timestamp);
+		} else {
+			// Adding new peer if peer don't exist
+			try {
+				stmnt.executeUpdate("INSERT INTO serverpeers (id, latestIP, blacklist, timestamp) " + 
+						"VALUES ('"+id+"', '"+latestIP+"', "+blacklist+", '"+timestamp+"')");
+			} catch (SQLException e) {
+				LOG.log(Level.INFO, e.getMessage(), e);
+			}
+		}
+		return updateFlag;
+	}
+	
+	
+	private boolean updatePeer(String ip, String id, String timestamp, boolean blacklist){
+		sqlconnector sc = new sqlconnector("serverdb");
+		boolean updateflag=false;
+		String updatequery = "update serverpeers set latestip= + '"+ip+ "',"
+				+ " timestamp='"+ timestamp + " blacklist='"+ blacklist + "' where id='"+ id + "'";
+		updateflag=sc.Update(updatequery);
+//		sc.closeconnect();
+		return updateflag;
+	}
+	
+	
 
 	public void addPeerArray(String uniquefileid, String peers){  //This method writes to 'peersarray' table
 		sqlconnector sc = new sqlconnector("serverdb");
@@ -437,5 +471,6 @@ public class DatabaseCalls implements DatabaseAPI {
 		}
 		return false;
 	}
+	
 	
 }

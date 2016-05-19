@@ -24,6 +24,8 @@ public interface DatabaseAPI {
 	//public boolean isClientOnSwarm(String swarmID, String clientID);
 	//public boolean updateSwarm(String swarmID, String clientID);
 	
+	public boolean addPeer(String id, String latestIP, boolean blacklist, String timestamp);
+	
 	public getIPoStatus getPeers();
 	public Blacklist getBlacklist();
 	public Sync getSync();

@@ -289,7 +289,7 @@ public class Client implements BackendObserver
 				
 				speedChartWindow.addWindowListener(new java.awt.event.WindowAdapter() {
 		            public void windowClosed(java.awt.event.WindowEvent evt){
-		            	Backend.getInstance().unsubscribeSpeedChart();
+		            	Backend.getInstance().unsubscribeSpeedChart("abc123");
 		            }
 				});
 			}

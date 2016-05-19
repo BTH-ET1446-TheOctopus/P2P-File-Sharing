@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import backend.Settings;
 import backend.api.BackendObserver;
+import backend.api.SpeedChartObserver;
 import backend.file.BlockBuffer;
 import backend.file.FileHandler;
 import backend.json.Chunk;
@@ -26,7 +27,7 @@ public class SwarmEngager extends Thread {
 	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private String swarmId;
-	private SpeedCalculatorThread speedCalculatorThread;
+	private SpeedChartObserver speedChartObserver;
 
 	private BackendObserver restObserver;
 	private BootstrapCalls bootstrapCalls;
@@ -41,12 +42,12 @@ public class SwarmEngager extends Thread {
 		this.clientCalls = clientCalls;
 	}
 
-	public void subscribeSpeedCallback(SpeedCalculatorThread speedCalculatorThread) {
-		this.speedCalculatorThread = speedCalculatorThread;
+	public void subscribeSpeedCallback(SpeedChartObserver speedChartObserver) {
+		this.speedChartObserver = speedChartObserver;
 	}
 
 	public void unsubscribeSpeedCallback() {
-		speedCalculatorThread = null;
+		speedChartObserver = null;
 	}
 
 	public void run() {
@@ -127,10 +128,6 @@ public class SwarmEngager extends Thread {
 				continue;
 			}
 
-			if (speedCalculatorThread != null) {
-				speedCalculatorThread.reportDownload(chunk.getSize());
-			}
-
 			downloadedBytes += chunk.getSize();
 
 			if (System.currentTimeMillis() >= nextUpdate) {
@@ -142,7 +139,11 @@ public class SwarmEngager extends Thread {
 
 				// Calculate ETC (seconds)
 				long etcSeconds = (long) ((double) 1024 * (swarm.getblockCount() - blockNumber - 1) / downloadSpeed);
-
+				
+				if (speedChartObserver != null) {
+					speedChartObserver.updateSpeedChart(downloadSpeed / 1024);
+				}
+				
 				restObserver.updateSwarm(swarmId, (double) (blockNumber + 1) / (double) swarm.getblockCount(),
 						downloadSpeed / 1024, swarm.getpeers(), toReadableString(etcSeconds));
 			}
@@ -166,7 +167,7 @@ public class SwarmEngager extends Thread {
 				new Object[] { swarmId, swarm.getfilename() });
 
 		FileHandler.setReadOnly(filename);
-		
+
 		restObserver.updateSwarm(swarmId, 1, 0, swarm.getpeers(), "");
 	}
 
