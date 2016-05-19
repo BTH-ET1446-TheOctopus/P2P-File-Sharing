@@ -36,7 +36,9 @@ public class addBootstrapServerTest {
 		
 		try {
 			while(rs.next()){
+				
 				//Retrieve by column name
+				
 				ip = rs.getString("ip");
 				name=rs.getString("name");
 				clientcount = rs.getString("clientcount");
@@ -49,15 +51,9 @@ public class addBootstrapServerTest {
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
 		} finally  {
 			sc.closeconnect();
-		}
+		}//loop used to eliminate error that makes the test compare wrong columns 
 		
-		/* Test to see if the same sample data written into the table?
-		 * After each test run, try to insert a different "primary key"
-		 * or you can just 'truncate' your table in command line to delete previous data	
-		 * NOTE: Truncate your data just for the test, in real application running,
-		 * You do not truncate any table, unless you know what you're doing!
-		 */
-		assertNotNull(ip);
+	    assertNotNull(ip);
 		assertEquals("192.168.2.5", ip);
 		
 		assertNotNull(name);
