@@ -20,6 +20,10 @@ public interface DatabaseAPI {
 	public boolean updatePeer(String ip, String id, String timestamp);
 	public boolean isBlacklisted(String ip);
 	
+	//public boolean isSwarmExisting(String swarmID);
+	//public boolean isClientOnSwarm(String swarmID, String clientID);
+	//public boolean updateSwarm(String swarmID, String clientID);
+	
 	public getIPoStatus getPeers();
 	public Blacklist getBlacklist();
 	public Sync getSync();
