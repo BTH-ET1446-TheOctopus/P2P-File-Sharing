@@ -66,23 +66,30 @@ public class DatabaseCalls implements DatabaseAPI{
 	
 	public SwarmMetadata getSwarmByName(String filename){
 		
-
-		SwarmMetadata swarmmetadata = new SwarmMetadata();
 		String readquery="";
 		ResultSet result;
-		int blockcount=0;
+		String file;
+		int totalblocks=0;
+		int peercount=0;
+		String uniquefileid="";
 		String filechecksum="";
 		String metadatachecksum="";
-		String filepeers="";
+		String peers="";
+		List<String> peersarray = new ArrayList<String>();
 		result = sc.runquery(readquery);
-		
 		String query = "select * from clientswarm where filename = '" + filename +"'";		
 		rs=sc.runquery(query);
 		try {
 			while (rs.next())
 			{
-			if(filename.equals(rs.getString("filename"))){			
-			}
+				file=rs.getString("filename");
+				totalblocks=rs.getInt("totalblocks");
+				peercount=rs.getInt("peercount");
+				uniquefileid=rs.getString("uniquefileid");
+				filechecksum=rs.getString("filechecksum");
+				metadatachecksum=rs.getString("metadatachecksum");
+				//if(filename.equals(file)){
+			//}
 			}
 		} catch (SQLException ex){
 			// handle any errors
@@ -90,7 +97,26 @@ public class DatabaseCalls implements DatabaseAPI{
 			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
 		}
-		return null;
+		
+		rs = sc.runquery("SELECT uniquefile FROM peersarray where filename=");
+		try {
+			while (rs.next()) {
+				peers = rs.getString("peers");
+				peersarray.add(peers);
+				
+				LOG.log(Level.INFO, "\nIP: " + peers);
+			}
+			
+		} catch (SQLException ex){
+			// handle any errors
+			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
+			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
+			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
+			return null;
+		}
+		SwarmMetadata swarmmetadata = new SwarmMetadata(uniquefileid, filename, totalblocks, filechecksum, 
+				metadatachecksum, peersarray);
+		return swarmmetadata;
 	}
 	
 	public List<String> getPeers(){   //This method reads from 'clientpeers' table
