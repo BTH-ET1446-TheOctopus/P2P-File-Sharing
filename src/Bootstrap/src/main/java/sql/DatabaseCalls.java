@@ -25,34 +25,38 @@ public class DatabaseCalls implements DatabaseAPI {
 
 	ResultSet rs = null;
 
-	public void addBootstrapServer(String ip, String name, int clientcount, int servercount){  //This method writes to 'servers' table
+	public boolean addBootstrapServer(String ip, String name, int clientcount, int servercount){  //This method writes to 'servers' table
 		//sqlconnector sc = new sqlconnector("serverdb");
 		Statement stmnt = sc.getStatement();
 
 		try {
 			stmnt.executeUpdate("INSERT INTO bootstrapserver (ip, name, timestamp, clientcount, servercount) " + 
 					"VALUES ('"+ip+"', '"+name+"', default,"+clientcount+", "+servercount+")");
+			return true;
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
 //		finally {  //close all connection to database
 //			sc.closeconnect();
 //		}
+		return false;
 	}
 
-	public void addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid){   //This method writes to 'serverfile' table
+	public boolean addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid){   //This method writes to 'serverfile' table
 		//sqlconnector sc = new sqlconnector("serverdb");
 		Statement stmnt = sc.getStatement();
 
 		try {
 			stmnt.executeUpdate("INSERT INTO serverswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
 					"VALUES ('"+filename+"', "+totalblocks+", '"+peers+"', "+peercount+", "+uniquefileid+",'filechecksum', 'metadatachecksum')");
+			return true;
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
 //		finally {  //close all connection to database
 //			sc.closeconnect();
 //		}
+		return false;
 	}
 	
 
@@ -476,7 +480,7 @@ public class DatabaseCalls implements DatabaseAPI {
 		//sqlconnector sc = new sqlconnector("serverdb");
 		String readquery="";
 		ResultSet result;
-		String data="";
+		//String data="";
 		readquery="select distinct latestip from serverpeers where blacklist='1'";
 		result = sc.runquery(readquery);
 
@@ -565,3 +569,6 @@ public class DatabaseCalls implements DatabaseAPI {
 	}	
 	
 }
+
+
+
