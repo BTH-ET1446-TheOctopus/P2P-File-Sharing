@@ -512,10 +512,22 @@ public class DatabaseCalls implements DatabaseAPI {
 	}
 
 	
-	public void removePeers(String ClientUUID) {
+	public boolean removePeers(String ClientUUID) {
+		String readquery="";
+		boolean result;
+		readquery="delete from serverpeers where peers='"+ClientUUID+"'";
 
-		//To be implemented to remove inactive peers
-
+		try {
+//		result = sc.runquery(readquery);
+		result = sc.Update(readquery);
+//		LOG.log(Level.INFO, ClientUUID + " : removed from server (inactive for 3 minutes)");
+		return true;
+		
+		}
+		catch (Exception e) {
+			System.out.println("Exception in query method:\n" + e.getMessage());
+		}
+		return false;
 	}
 
 	@Override
