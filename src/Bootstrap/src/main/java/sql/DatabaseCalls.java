@@ -3,6 +3,7 @@ package sql;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -530,30 +531,34 @@ public class DatabaseCalls implements DatabaseAPI {
 		return false;
 	}
 
-	public Peers getInactivePeers(String timeout) {
+	public Peers getInactivePeers(int timeout) {
 		
 		Peers inactivePeers = new Peers();
 		String readquery="";
+		int diff;
 		ResultSet result;
-		String data="";
-		readquery="select distinct peers from serverpeers";
+		String time="";
+		readquery="select distinct latestIP from serverpeers";
 		result = sc.runquery(readquery);
 		List<String> ip = new ArrayList<String>();
 
 		try {
 			while(result.next()){
-				//Retrieve by column name			
-				data = result.getString("peers");	         
+				//Retrieve by column name
+				String peer = result.getString("latestIP");
+				time = result.getString("timestamp");
+				diff = Integer.parseInt("SELECT TIMESTAMPDIFF(SECOND,'"+time+"',now())");
 				
-//		The condition should apply here (being 3 minutes inactive
+				if (diff > timeout){  //see if the difference is at least 3 minutes
+					ip.add(peer);
+				}
 				
 			}
 		}
 		catch (Exception e) {
 			System.out.println("Exception in query method:\n" + e.getMessage());
 		}
-		
-		inactivePeers.setpeers(ip);
+		inactivePeers.setpeers(ip) ;
 
 		return inactivePeers;
 
