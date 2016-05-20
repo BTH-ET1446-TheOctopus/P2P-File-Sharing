@@ -31,8 +31,6 @@ public class insertsample {
 				+ "VALUES ('pom.xml', 6, 'localhost', 1, 'abc123', 'hgjsk1345', 'hsjsj8282')";
 		sample.Update(writequery);
 	
-		sample.Update(writequery);
-		
 		//Write Sample Data to peersarray table
 		writequery="insert into peersarray (uniquefileid,peers) " 
 				+ " VALUES ('abc123','192.168.1.200')";

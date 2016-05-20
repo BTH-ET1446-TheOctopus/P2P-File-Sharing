@@ -97,7 +97,7 @@ public class sqlconnector {
 			else {
 				//Table Doesn't Exist, Create Table
 				String createtable = "CREATE TABLE peersarray ( "
-							+ " id int NOT NULL, "		
+							+ " id int , "		
 							+ " uniquefileid varchar(100) NOT NULL, "    
 							+ " peers varchar(15) NOT NULL, "
 							+ " CONSTRAINT peersarray_pk PRIMARY KEY (id))";
