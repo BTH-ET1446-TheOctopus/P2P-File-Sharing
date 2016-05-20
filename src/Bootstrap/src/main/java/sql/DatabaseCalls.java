@@ -70,6 +70,46 @@ public class DatabaseCalls implements DatabaseAPI {
 //		}
 	}
 	
+	public boolean isClientOnSwarm(String swarmID, String clientID){
+		String readquery="";
+		ResultSet result;
+		String data="";
+		readquery="select distinct clientid from peersarray where swarmID='" + swarmID + "'";
+		result = sc.runquery(readquery);
+
+		try {
+			while(result.next()){
+				//Retrieve by column name			
+				data = result.getString("clientid");
+				if (data==clientID)
+					return true;
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Exception in query method:\n" + e.getMessage());
+		}
+		
+		return false;
+	}
+	
+	
+	public boolean updateSwarm(String swarmID, String clientID){
+		String readquery="";
+		//readquery="insert into peersarray where swarmID='" + swarmID + "'";
+		readquery = "update peersarray set clientid= '" + clientID+ "'"
+					+ "' where swarmid='"+ swarmID + "'";
+		
+		try {
+			sc.Update(readquery);
+			return true;
+			}
+		catch (Exception e) {
+			System.out.println("Exception in query method:\n" + e.getMessage());
+		}
+		return false;
+	}
+	
+	
 	public boolean addPeer(String id, String latestIP, boolean blacklist, String timestamp){
 		//sqlconnector sc = new sqlconnector("serverdb");
 		Statement stmnt = sc.getStatement();

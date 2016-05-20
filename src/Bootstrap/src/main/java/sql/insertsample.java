@@ -38,12 +38,12 @@ public class insertsample {
 		
 		//Write Sample Data to peersarray table
 		
-		writequery="insert into peersarray (uniquefileid,peers) " 
-				+ " VALUES ('MSN-458','192.168.1.200')";
+		writequery="insert into peersarray (uniquefileid,peers,clientid) " 
+				+ " VALUES ('MSN-458','192.168.1.200','abc5644')";
 		sample.Update(writequery);
 
-		writequery="insert into peersarray (uniquefileid,peers) " 
-				+ " VALUES ('QWR-588','192.168.15.69')";
+		writequery="insert into peersarray (uniquefileid,peers,clientid) " 
+				+ " VALUES ('QWR-588','192.168.15.69','abc6789')";
 		sample.Update(writequery);
 		
 		//Write Sample Data to serverpeers table

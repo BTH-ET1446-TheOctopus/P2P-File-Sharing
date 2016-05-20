@@ -21,8 +21,8 @@ public interface DatabaseAPI {
 	public boolean isBlacklisted(String ip);
 	
 	public boolean isSwarmExisting(String swarmID);
-	//public boolean isClientOnSwarm(String swarmID, String clientID);
-	//public boolean updateSwarm(String swarmID, String clientID);
+	public boolean isClientOnSwarm(String swarmID, String clientID);
+	public boolean updateSwarm(String swarmID, String clientID);
 	
 	public boolean addPeer(String id, String latestIP, boolean blacklist, String timestamp);
 	public void closedbconnect();

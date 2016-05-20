@@ -15,7 +15,9 @@ public class addPeerArrayTest {
 	private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName());
 	
 	@Test
-	public void SuccessfuladdPeerArrayTest() { 
+	public void SuccessfuladdPeerArrayTest() 
+	{ 
+		//test to see if peers are added to the server database
 		
 		sqlconnector sc = new sqlconnector();
 		ResultSet rs = null;

@@ -130,6 +130,31 @@ public class DatabaseCalls implements DatabaseAPI{
 		return result;
 	}
 	
+	public List<String> getconnPeers(){
+		List<String> result = new ArrayList<String>();
+		rs = sc.runquery("SELECT * FROM peersarray");
+		
+		try {
+			while (rs.next()) {
+				String peers = rs.getString("peers");
+				result.add(peers);
+				
+				LOG.log(Level.INFO, "\nIP: " + peers);
+
+			}
+			
+		} catch (SQLException ex){
+			// handle any errors
+			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
+			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
+			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
+			return null;
+		} finally  {
+			sc.closeconnect();
+		}
+		return result;
+	}
+	
 	public void getPeerArray() {  //This method reads from 'peersarray' table
 		rs = sc.runquery("SELECT * FROM peersarray");
 

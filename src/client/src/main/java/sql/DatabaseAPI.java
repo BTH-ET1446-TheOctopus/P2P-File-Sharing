@@ -12,6 +12,7 @@ public interface DatabaseAPI {
 	public SwarmMetadata getSwarmByName(String filename);
 	//public SwarmMetadata getSwarm(String id);
 	public List<String> getPeers();
+	public List<String> getconnPeers();
 	public void getPeerArray();
 	
 	public void closedbconnect();
