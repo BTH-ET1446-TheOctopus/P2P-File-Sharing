@@ -133,6 +133,7 @@ public class sqlconnector {
 				String createtable = "CREATE TABLE peersarray ( " +
 						" uniquefileid varchar(100) NOT NULL, " +    
 						" peers varchar(15) NOT NULL, " +
+						" clientid varchar(100) NOT NULL, " +
 						" CONSTRAINT peersarray_pk PRIMARY KEY (uniquefileid))";
 				this.Update(createtable);
 			}
