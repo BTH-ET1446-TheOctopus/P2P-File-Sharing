@@ -5,7 +5,7 @@ import java.util.List;
 public class SwarmMetadata {
 	String id;
 	String filename;
-	String blockCount;
+	int blockCount;
 	String fileChecksum;
 	String metadataChecksum;
 	List<String> peers;
@@ -13,7 +13,7 @@ public class SwarmMetadata {
 	public SwarmMetadata() {
 	}
 	
-	public SwarmMetadata(String id, String filename, String blockCount, String fileChecksum, String metadataChecksum,
+	public SwarmMetadata(String id, String filename, int blockCount, String fileChecksum, String metadataChecksum,
 			List<String> peers) {
 		this.id = id;
 		this.filename = filename;
@@ -31,7 +31,7 @@ public class SwarmMetadata {
 		return filename;
 	}
 
-	public String getBlockCount() {
+	public int getBlockCount() {
 		return blockCount;
 	}
 

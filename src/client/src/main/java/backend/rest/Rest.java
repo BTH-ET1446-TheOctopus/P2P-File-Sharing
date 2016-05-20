@@ -16,6 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import backend.Backend;
 import backend.file.BlockBuffer;
 import backend.file.FileHandler;
 import backend.json.Address;
@@ -91,7 +92,7 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void searchResult(@QueryParam("id") String id, @QueryParam("blockCount") Integer blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum)
 	{
-
+		Backend.getInstance().searchResult(id, blockCount, filename, fileChecksum, metadataChecksum, "127.0.0.1");
 	}
 
 	@GET

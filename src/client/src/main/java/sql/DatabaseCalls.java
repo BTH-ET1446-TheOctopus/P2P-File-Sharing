@@ -61,7 +61,7 @@ public class DatabaseCalls implements DatabaseAPI{
 		} finally  {
 			sc.closeconnect();
 		}
-		return new SwarmMetadata(uniquefileid, filename, totalblocks, filechecksum, metadatachecksum, getPeers());
+		return new SwarmMetadata(uniquefileid, filename, Integer.parseInt(totalblocks), filechecksum, metadatachecksum, getPeers());
 	}
 	
 	public SwarmMetadata getSwarmByName(String filename){
