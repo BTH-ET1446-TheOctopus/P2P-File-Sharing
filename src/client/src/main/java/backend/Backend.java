@@ -1,6 +1,7 @@
 package backend;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -9,6 +10,7 @@ import java.util.logging.Logger;
 import backend.api.BackendController;
 import backend.api.BackendObserver;
 import backend.api.SpeedChartObserver;
+import backend.api.datatypes.SwarmMetadata;
 import backend.api.datatypes.SwarmMetadataShort;
 import backend.json.Swarm;
 import backend.json.Swarms;
@@ -25,27 +27,29 @@ public class Backend implements BackendController {
 
 	private BackendObserver restObserver;
 	private SpeedChartObserver speedChartObserver;
-	
+
 	private ClientCalls clientCalls;
 	private BootstrapCalls bootstrapCalls;
 
 	private BootstrapHelloThread bootstrapHelloThread;
 	private BootstrapDataThread bootstrapDataThread;
-	
+
+	private List<SwarmMetadata> searchResults;
+
 	private static Backend instance;
-	
+
 	public static Backend getInstance() {
 		if (instance == null) {
 			instance = new Backend();
 		}
-		
+
 		return instance;
 	}
-	
+
 	public void setObserver(BackendObserver restObserver) {
 		this.restObserver = restObserver;
 	}
-	
+
 	private Backend() {
 		activeSwarms = new HashMap<String, SwarmEngager>();
 
@@ -57,6 +61,8 @@ public class Backend implements BackendController {
 
 		bootstrapHelloThread = new BootstrapHelloThread(bootstrapCalls);
 		bootstrapDataThread = new BootstrapDataThread(bootstrapCalls);
+
+		searchResults = new ArrayList<SwarmMetadata>();
 
 		bootstrapHelloThread.start();
 		bootstrapDataThread.start();
@@ -93,11 +99,11 @@ public class Backend implements BackendController {
 	public List<SwarmMetadataShort> getSwarms() {
 		List<Swarms> json_swarms = bootstrapDataThread.getSwarms();
 		List<SwarmMetadataShort> swarms = new ArrayList<SwarmMetadataShort>();
-		
+
 		for (Swarms json_swarm : json_swarms) {
 			swarms.add(new SwarmMetadataShort(json_swarm.getid(), json_swarm.getfilename()));
 		}
-		
+
 		return swarms;
 	}
 
@@ -147,13 +153,21 @@ public class Backend implements BackendController {
 		if (speedChartObserver != null) {
 			throw new RuntimeException("Cannot subscribe for multiple speed charts");
 		}
-		
+
 		activeSwarms.get(id).subscribeSpeedCallback(callback);
 	}
 
 	@Override
 	public void unsubscribeSpeedChart(String id) {
 		activeSwarms.get(id).unsubscribeSpeedCallback();
+	}
+
+	public void searchResult(String id, Integer blockCount, String filename, String fileChecksum,
+			String metadataChecksum, String ipAddress) {
+		searchResults.add(
+				new SwarmMetadata(id, filename, blockCount, fileChecksum, metadataChecksum, Arrays.asList(ipAddress)));
+
+		restObserver.searchResult(ipAddress, id, filename, blockCount);
 	}
 
 }
