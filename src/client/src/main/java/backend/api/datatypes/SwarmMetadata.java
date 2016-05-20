@@ -3,16 +3,16 @@ package backend.api.datatypes;
 import java.util.List;
 
 public class SwarmMetadata {
-	String id;
-	String filename;
-	int blockCount;
-	String fileChecksum;
-	String metadataChecksum;
-	List<String> peers;
+	private String id;
+	private String filename;
+	private int blockCount;
+	private String fileChecksum;
+	private String metadataChecksum;
+	private List<String> peers;
+	private boolean dark;
 
-	public SwarmMetadata() {
-	}
-	
+	public SwarmMetadata() {}
+
 	public SwarmMetadata(String id, String filename, int blockCount, String fileChecksum, String metadataChecksum,
 			List<String> peers) {
 		this.id = id;
@@ -21,6 +21,23 @@ public class SwarmMetadata {
 		this.fileChecksum = fileChecksum;
 		this.metadataChecksum = metadataChecksum;
 		this.peers = peers;
+		this.dark = false;
+	}
+
+	public SwarmMetadata(String id, String filename, int blockCount, String fileChecksum, String metadataChecksum,
+			List<String> peers, boolean dark) {
+		this.id = id;
+		this.filename = filename;
+		this.blockCount = blockCount;
+		this.fileChecksum = fileChecksum;
+		this.metadataChecksum = metadataChecksum;
+		this.peers = peers;
+		this.dark = dark;
+	}
+
+	public SwarmMetadata(boolean dark) {
+		super();
+		this.dark = dark;
 	}
 
 	public String getId() {
@@ -45,5 +62,9 @@ public class SwarmMetadata {
 
 	public List<String> getPeers() {
 		return peers;
+	}
+
+	public boolean isDark() {
+		return dark;
 	}
 }
