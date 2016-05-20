@@ -30,8 +30,10 @@ public class Main {
 		// Insert Sample in Client DB
 		insertsample insample = new insertsample();
 		insample.insertcdb();
-
-		final Thread restServerThread = new Thread(new RESTStartUp());
+		
+		String bindAddress = (args.length > 0) ? args[0] : null;
+		
+		final Thread restServerThread = new Thread(new RESTStartUp(bindAddress));
 		restServerThread.start();
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
