@@ -7,12 +7,16 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.junit.Before;
+
+import backend.json.Swarm;
 import sql.DatabaseCalls;
 
 public class TestDatabaseCalls {
 	DatabaseAPI database = new DatabaseCalls();
 	
 	private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName());
+	
 	
 	@org.junit.Test
 	public void SuccessfuladdBootstrapServerTest() { //Test write to 'servers' table in serverdb
@@ -72,14 +76,123 @@ public class TestDatabaseCalls {
 		}
 	
 	@org.junit.Test
-	public void testBlacklistedIP()
+	public void isPeerIDExisting()
+	{
+		//Prepare
+		String id = "deca4450-1dd0-11e6-b6ba-3e1d05defe78";
+		String fakeID = "00";
+		database.addPeer(id, "192.160.7.5", true, "2016-05-19 16:59:40");
+		
+		//Test
+		assertEquals(true, database.isPeerIDExisting(id));
+		assertEquals(false, database.isPeerIDExisting(fakeID));
+	}
+	
+	@org.junit.Test
+	public void blacklistedIP()
 	{
 		database.addPeer("deca4450-1dd0-11e6-b6ba-3e1d05defe78", "192.160.7.5", true, "2016-05-19 16:59:40");
 		database.addPeer("fdf27a64-1dd0-11e6-b6ba-3e1d05defe78", "192.161.7.6", false, "2016-05-19 17:00:00");
 		database.addPeer("06806786-1dd1-11e6-b6ba-3e1d05defe78", "192.160.7.7", true, "2016-05-19 18:18:18");
 		
+		//Test
 		assertEquals(true,database.isBlacklisted("192.160.7.5"));
 		assertEquals(false,database.isBlacklisted("192.161.7.6"));
-		assertEquals(true,database.isBlacklisted("192.161.7.7"));	
+		assertEquals(true,database.isBlacklisted("192.160.7.7"));	
 	}
+	
+	@org.junit.Test
+	public void addSwarmDB()
+	{
+		//Prepare
+		String uuidClient1 = "fdf27a64-1dd0-11e6-b6ba-3e1d05defe78";
+		String uuidClient2 = "deca4450-1dd0-11e6-b6ba-3e1d05defe78";
+		String uuidClient3 = "06806786-1dd1-11e6-b6ba-3e1d05defe78";
+		
+		String swarmID1 = "06806786-1dd1-11e6-b6ba-3e1d05defe78";
+		String swarmID2 = "deca4450-1dd0-11e6-b6ba-3e1d05defe78";
+		String swarmID3 = "fdf27a64-1dd0-11e6-b6ba-3e1d05defe78";
+		
+		String fileChecksum1 ="";
+		String fileChecksum2 ="";
+		String fileChecksum3 ="";
+		
+		String metadataChecksum1 = "";
+		String metadataChecksum2 = "";
+		String metadataChecksum3 = "";
+		
+		
+		
+		
+		//Test
+		database.addSwarmDB(uuidClient1, 10, "Frozen", fileChecksum1, metadataChecksum1, swarmID1);
+		database.addSwarmDB(uuidClient2, 5, "Pirates", fileChecksum2, metadataChecksum2, swarmID2);
+		database.addSwarmDB(uuidClient3, 7, "Pretty", fileChecksum3, metadataChecksum3, swarmID3);
+	}
+		
+	@org.junit.Test
+	public void getSwarm()
+	{
+		//Prepare
+		String uuidClient1 = "fdf27a64-1dd0-11e6-b6ba-3e1d05defe78";
+		String swarmID1 = "06806786-1dd1-11e6-b6ba-3e1d05defe78";
+		String filename = "Frozen";
+		String fileChecksum1 ="";
+		int blockCount = 10;
+		String metadataChecksum1 = "";
+		
+		//Execute
+		database.addSwarmDB(uuidClient1, blockCount, filename, fileChecksum1, metadataChecksum1, swarmID1);
+		Swarm swarm = database.getSwarm(swarmID1);
+		
+		//Test
+		assertEquals(filename, swarm.getFilename());
+		assertEquals(blockCount, swarm.getBlockCount());
+	}
+	
+	@org.junit.Test
+	public void isSwarmExisting()
+	{
+		//prepare
+		String uuidClient1 = "fdf27a64-1dd0-11e6-b6ba-3e1d05defe78";
+		String swarmID1 = "06806786-1dd1-11e6-b6ba-3e1d05defe78";
+		String filename = "Frozen";
+		String fileChecksum1 ="";
+		int blockCount = 10;
+		String metadataChecksum1 = "";
+		
+		//Execute
+		database.addSwarmDB(uuidClient1, blockCount, filename, fileChecksum1, metadataChecksum1, swarmID1);
+		
+		//Test
+		assertEquals(true, database.isSwarmExisting(swarmID1));
+		assertEquals(false, database.isSwarmExisting(filename));
+	}
+	
+	
+	@org.junit.Test
+	public void addPeer()
+	{
+		database.addPeer("deca4450-1dd0-11e6-b6ba-3e1d05defe78", "192.160.7.5", true, "2016-05-19 16:59:40");
+		database.addPeer("fdf27a64-1dd0-11e6-b6ba-3e1d05defe78", "192.161.7.6", false, "2016-05-19 17:00:00");
+		database.addPeer("deca4450-1dd0-11e6-b6ba-3e1d05defe78", "192.160.7.5",false, "2016-05-19 16:59:40");
+
+		assertEquals(true, database.addPeer("deca4450-1dd0-11e6-b6ba-3e1d05defe78", "192.160.7.5", true, "2016-05-19 16:59:40"));
+		assertEquals(true, database.addPeer("fdf27a64-1dd0-11e6-b6ba-3e1d05defe78", "192.161.7.6", false, "2016-05-19 17:00:00"));
+		assertEquals(true, database.addPeer("deca4450-1dd0-11e6-b6ba-3e1d05defe78", "192.160.7.5",false, "2016-05-19 16:59:40"));
+	}
+	
+	@org.junit.Test
+	public void addBootstrapServer()
+	{
+		String ip = "192.180.0.1";
+		String name = "Berlin";
+		int clientcount = 10;
+		int servercount = 4;
+		
+		database.addBootstrapServer(ip, name, clientcount, servercount);
+		
+		assertEquals(true, database.addBootstrapServer(ip, name, clientcount, servercount));
+	}
+	
 }
