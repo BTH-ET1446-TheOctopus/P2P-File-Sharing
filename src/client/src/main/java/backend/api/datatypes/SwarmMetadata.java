@@ -25,19 +25,14 @@ public class SwarmMetadata {
 	}
 
 	public SwarmMetadata(String id, String filename, int blockCount, String fileChecksum, String metadataChecksum,
-			List<String> peers, boolean dark) {
+			List<String> peers, boolean isDark) {
 		this.id = id;
 		this.filename = filename;
 		this.blockCount = blockCount;
 		this.fileChecksum = fileChecksum;
 		this.metadataChecksum = metadataChecksum;
 		this.peers = peers;
-		this.dark = dark;
-	}
-
-	public SwarmMetadata(boolean dark) {
-		super();
-		this.dark = dark;
+		this.dark = isDark;
 	}
 
 	public String getId() {
