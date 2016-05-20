@@ -12,8 +12,6 @@ import backend.file.BlockBuffer.Mode;
 /**
  * This class keeps track of open files.
  * 
- * TODO: Make thread safe
- * 
  * @author iiMaXii
  *
  */
@@ -32,7 +30,7 @@ public final class FileHandler {
 	 * @return The requested file, may be null if the file does not exist or if
 	 *         an IOException occurred
 	 */
-	public static BlockBuffer read(String filename) {
+	public static synchronized BlockBuffer read(String filename) {
 		BlockBuffer file = files.get(filename);
 
 		if (file == null) {
@@ -57,7 +55,7 @@ public final class FileHandler {
 	 * @return The requested file, may be null if the file does not exist or if
 	 *         an IOException occurred
 	 */
-	public static BlockBuffer write(String filename) {
+	public static synchronized BlockBuffer write(String filename) {
 		BlockBuffer file = files.get(filename);
 
 		if (file != null && file.getMode() == Mode.READ) {
@@ -95,7 +93,7 @@ public final class FileHandler {
 	 * @return The requested file, may be null if the file already exist or if
 	 *         an IOException occurred
 	 */
-	public static BlockBuffer create(String filename) {
+	public static synchronized BlockBuffer create(String filename) {
 		BlockBuffer file = files.get(filename);
 
 		if (file != null) {
@@ -117,7 +115,7 @@ public final class FileHandler {
 		return file;
 	}
 
-	public static void destroy() {
+	public static synchronized void destroy() {
 		for (BlockBuffer blockBuffer : files.values()) {
 			try {
 				blockBuffer.close();
@@ -129,7 +127,7 @@ public final class FileHandler {
 		files.clear();
 	}
 
-	public static void setReadOnly(String filename) {
+	public static synchronized void setReadOnly(String filename) {
 		BlockBuffer file = files.get(filename);
 
 		if (file == null) {

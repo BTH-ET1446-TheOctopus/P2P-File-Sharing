@@ -38,15 +38,15 @@ public class BlockBuffer {
 	 * <tr> <th>Option</th> <th>Description</th> </tr>
 	 * <tr>
 	 *   <td>{@link Mode#READ READ}</td>
-	 *   <td> Open the file for reading only. If the file does not exist NoSuchFileException will be thrown. </td>
+	 *   <td>Open the file for reading only. If the file does not exist NoSuchFileException will be thrown.</td>
 	 * </tr>
 	 * <tr>
 	 *   <td>{@link Mode#READ_WRITE READ_WRITE}</td>
-	 *   <td>Open the file for reading and writing. If the file does not exist NoSuchFileException will be thrown. </td>
+	 *   <td>Open the file for reading and writing. If the file does not exist NoSuchFileException will be thrown.</td>
 	 * </tr>
 	 * <tr>
 	 *   <td>{@link Mode#CREATE_READ_WRITE CREATE_READ_WRITE}</td>
-	 *   <td>Open the file for reading and writing. Will attempt to create the file, failing if the file already exists. </td>
+	 *   <td>Open the file for reading and writing. Will attempt to create the file, failing if the file already exists.</td>
 	 * </tr>
 	 * </table>
 	 * 
@@ -79,7 +79,6 @@ public class BlockBuffer {
 		}
 
 		fileChannel = FileChannel.open(filePath, openOptions);
-		// fileReader.blockCount = (int) (1 + fileReader.fileChannel.size() / BLOCK_SIZE);
 	}
 
 	/**
@@ -91,7 +90,7 @@ public class BlockBuffer {
 	 *         position is greater than or equal to the file's current size
 	 * @throws IOException
 	 */
-	public int getBlock(byte[] buffer, int blockNumber) throws IOException {
+	public synchronized int getBlock(byte[] buffer, int blockNumber) throws IOException {
 		if (buffer == null) {
 			throw new NullPointerException();
 		}
@@ -117,7 +116,7 @@ public class BlockBuffer {
 	 * @return If the buffer was successfully written
 	 * @throws IOException
 	 */
-	public boolean setBlock(byte[] buffer, int blockSize, int blockNumber) throws IOException {
+	public synchronized boolean setBlock(byte[] buffer, int blockSize, int blockNumber) throws IOException {
 		if (buffer == null) {
 			throw new NullPointerException();
 		}
@@ -140,11 +139,23 @@ public class BlockBuffer {
 	}
 
 	/**
+	 * Get the block count of the file. Calling this method for a file that is
+	 * open for writing might give unexpected results, since BlockBuffer is
+	 * unaware of the file size when creating the file
+	 * 
+	 * @return The file block count
+	 * @throws IOException
+	 */
+	public synchronized int getBlockCount() throws IOException {
+		return (int) (1 + fileChannel.size() / BLOCK_SIZE);
+	}
+
+	/**
 	 * Close the underlying file channel
 	 * 
 	 * @throws IOException
 	 */
-	public void close() throws IOException {
+	public synchronized void close() throws IOException {
 		fileChannel.close();
 	}
 }
