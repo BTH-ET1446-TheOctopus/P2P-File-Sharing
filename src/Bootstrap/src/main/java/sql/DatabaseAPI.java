@@ -11,10 +11,10 @@ import backend.json.Sync;
 
 public interface DatabaseAPI {
 
-	public void addBootstrapServer(String ip, String name, int clientcount, int servercount);
-	public void addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid);
+	public boolean addBootstrapServer(String ip, String name, int clientcount, int servercount);
+	public boolean addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid);
 	public void addPeers(String id, String latestIP, boolean blacklist, String timestamp);
-	public void addPeerArray(String uniquefileid, String peers);
+	//public void addPeerArray(String uniquefileid, String peers);
 	
 	public boolean isPeerIDExisting(String id);
 	public boolean updatePeer(String ip, String id, String timestamp);
@@ -38,7 +38,7 @@ public interface DatabaseAPI {
 	public Peers getInactivePeers(String timeout);
 	public void removePeers(String CientUUID); 
 	
-	//public boolean getSwarmByName(String filename);
+	public boolean getSwarmByName(String filename);
 	public boolean addSwarmDB(String uuidClient, int totalBlocks, String filename, String fileChecksum, String metadataChecksum, String SwarmID);
 	
 }

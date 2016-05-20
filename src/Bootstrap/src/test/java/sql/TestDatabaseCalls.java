@@ -84,8 +84,8 @@ public class TestDatabaseCalls {
 		database.addPeer(id, "192.160.7.5", true, "2016-05-19 16:59:40");
 		
 		//Test
-	//	assertEquals(database.isPeerIDExisting(string (id)));
-		//assertEquals(false, database.isPeerIDExisting(fakeID));
+		assertEquals(true, database.isPeerIDExisting(id));
+		assertEquals(false, database.isPeerIDExisting(fakeID));
 	}
 	
 	@org.junit.Test
@@ -96,9 +96,9 @@ public class TestDatabaseCalls {
 		database.addPeer("06806786-1dd1-11e6-b6ba-3e1d05defe78", "192.160.7.7", true, "2016-05-19 18:18:18");
 		
 		//Test
-		//assertEquals(true,database.isBlacklisted("192.160.7.5"));
-		//assertEquals(false,database.isBlacklisted("192.161.7.6"));
-		//assertEquals(true,database.isBlacklisted("192.160.7.7"));	
+		assertEquals(true,database.isBlacklisted("192.160.7.5"));
+		assertEquals(false,database.isBlacklisted("192.161.7.6"));
+		assertEquals(true,database.isBlacklisted("192.160.7.7"));	
 	}
 	
 	@org.junit.Test
@@ -147,7 +147,7 @@ public class TestDatabaseCalls {
 		
 		//Test
 		assertEquals(filename, swarm.getFilename());
-		//assertEquals(blockCount,swarm.getBlockCount());
+		assertEquals(blockCount,swarm.getBlockCount());
 	}
 	
 	@org.junit.Test
@@ -165,8 +165,8 @@ public class TestDatabaseCalls {
 		database.addSwarmDB(uuidClient1, blockCount, filename, fileChecksum1, metadataChecksum1, swarmID1);
 		
 		//Test
-		//assertEquals(true, database.isSwarmExisting(swarmID1));
-		//assertEquals(false, database.isSwarmExisting(filename));
+		assertEquals(true, database.isSwarmExisting(swarmID1));
+		assertEquals(false, database.isSwarmExisting(filename));
 	}
 	
 	
@@ -177,9 +177,9 @@ public class TestDatabaseCalls {
 		database.addPeer("fdf27a64-1dd0-11e6-b6ba-3e1d05defe78", "192.161.7.6", false, "2016-05-19 17:00:00");
 		database.addPeer("deca4450-1dd0-11e6-b6ba-3e1d05defe78", "192.160.7.5",false, "2016-05-19 16:59:40");
 
-		//assertEquals( database.addPeer("deca4450-1dd0-11e6-b6ba-3e1d05defe78", "192.160.7.5", "2016-05-19 16:59:40"));
-	//assertEquals(true, database.addPeer("fdf27a64-1dd0-11e6-b6ba-3e1d05defe78", "192.161.7.6", false, "2016-05-19 17:00:00"));
-	//assertEquals(true, database.addPeer("deca4450-1dd0-11e6-b6ba-3e1d05defe78", "192.160.7.5",false, "2016-05-19 16:59:40"));
+	assertEquals(true ,database.addPeer("deca4450-1dd0-11e6-b6ba-3e1d05defe78", "192.160.7.5", false, "2016-05-19 16:59:40"));
+	assertEquals(true, database.addPeer("fdf27a64-1dd0-11e6-b6ba-3e1d05defe78", "192.161.7.6", false, "2016-05-19 17:00:00"));
+	assertEquals(true, database.addPeer("deca4450-1dd0-11e6-b6ba-3e1d05defe78", "192.160.7.5",false, "2016-05-19 16:59:40"));
 	}
 	
 	@org.junit.Test
@@ -192,12 +192,7 @@ public class TestDatabaseCalls {
 		
 		database.addBootstrapServer(ip, name, clientcount, servercount);
 		
-	//	assertEquals(true,database.addBootstrapServer(ip, name, clientcount, servercount));
-	}
-
-	private void assertEquals(String filename, Object TestDatabaseCalls) {
-		// TODO Auto-generated method stub
-		
+		assertEquals(true, database.addBootstrapServer(ip, name, clientcount, servercount));
 	}
 	
 }
