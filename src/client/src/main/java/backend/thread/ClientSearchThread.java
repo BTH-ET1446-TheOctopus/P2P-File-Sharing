@@ -3,6 +3,7 @@ package backend.thread;
 import java.util.ArrayList;
 import java.util.List;
 
+import backend.api.datatypes.SwarmMetadata;
 import backend.rest.ClientCalls;
 import sql.DatabaseCalls;
 
@@ -20,11 +21,10 @@ public class ClientSearchThread extends Thread {
 	public void run() {
 		DatabaseCalls databaseCalls = new DatabaseCalls();	
 		ClientCalls clientCalls = new ClientCalls();
-		boolean exist = false;
 		//Check if the filename is in the database
-			exist = databaseCalls.getSwarmByName(filename);
+		 SwarmMetadata swarm = databaseCalls.getSwarmByName(filename);
 		//if the file exist, get fileinformation and send
-		if(exist == true)	{
+		if(swarm != null)	{
 			//databaseCalls.getswarmInfoBYName(filename);
 			//clientCalls.searchResult(String clientIP, String id, Integer blockCount, String filename, String fileChecksum, String metadataChecksum);
 			}
