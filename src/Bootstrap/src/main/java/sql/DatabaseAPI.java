@@ -34,6 +34,10 @@ public interface DatabaseAPI {
 	public SwarmsHelper getSwarms();
 	public Swarm getSwarm(String swarmID);
 	public Bootstraps getBootstraps();
+	
+	public Peers getInactivePeers(String timeout);
+	public void removePeers(String CientUUID); 
+	
 	//public boolean getSwarmByName(String filename);
 	public boolean addSwarmDB(String uuidClient, int totalBlocks, String filename, String fileChecksum, String metadataChecksum, String SwarmID);
 	

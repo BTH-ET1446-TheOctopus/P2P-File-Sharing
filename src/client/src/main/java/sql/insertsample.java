@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 
-
 public class insertsample {
 	public void insertcdb(){
 		sqlconnector sample= new sqlconnector();
@@ -26,7 +25,7 @@ public class insertsample {
 //				+ "VALUES ('Pirates', 10000, '192.168.2.2', 1, 'sdfsdggh22256', 'hsjsjs123', 'ghdjjd18834')";
 
 		
-		
+		//Write Sample Data in clientswarm
 		writequery= "INSERT INTO clientswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " 
 				+ "VALUES ('pom.xml', 6, 'localhost', 1, 'abc123', 'hgjsk1345', 'hsjsj8282')";
 		sample.Update(writequery);

@@ -1,73 +1,40 @@
 package backend.rest;
 
-import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.ws.rs.core.UriBuilder;
 
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
-//import com.sun.jersey.api.container.httpserver.HttpServerFactory;
-import com.sun.net.httpserver.HttpServer;
-
-import backend.Backend;
 import backend.Settings;
-import backend.api.BackendObserver;
 import backend.api.calls;
 import backend.json.Bootstraps;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class RESTStartUp implements Runnable {
 	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final ResourceConfig rc = new ResourceConfig().packages("backend.rest");
+
+	private String bindAddress;
+
+	public RESTStartUp(String bindAddress) {
+		this.bindAddress = bindAddress;
+	}
+
 	public void run() {
 		// function to test connection client -> bootstrap -> client
-		//testBoostrapConnection();
-		
-		//testClientConnection();
-		
-		/**
-		 *  Updating HTTP server 
-		 */
+		// testBoostrapConnection();
+
 		Logger.getLogger("com.sun.jersey").setLevel(Level.WARNING);
-		GrizzlyHttpServerFactory.createHttpServer(URI.create(Settings.CLIENT_URL), rc);
-		
-		
-		/**
-		 * Start the HTTP server that is used for the rest calls. The URL that
-		 * the Rest server will run on is determined in file settings.
-		 */
-		/*
-		HttpServer server = null;
-		try {
-			server = HttpServerFactory.create(Settings.CLIENT_URL);
-			server.start();
-			LOG.log(Level.INFO, "HTTP server was started");
-			while (true) {
-				Thread.sleep(1000);
-			}
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			LOG.log(Level.INFO, "HTTP server was stopped");
-			server.stop(0);
-			server = null;
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (server != null) {
-				System.out.println("HTTP server was stopped (force)");
-				LOG.log(Level.INFO, "HTTP server was stopped (force)");
-				server.stop(0);
-			}
+
+		if (bindAddress == null) {
+			bindAddress = Settings.DEFAULT_CLIENT_ADDRESS;
 		}
-		*/
+
+		String url = "http://" + bindAddress + ":" + Settings.CLIENT_PORT + "/";
+		GrizzlyHttpServerFactory.createHttpServer(URI.create(url), rc);
+
+		LOG.log(Level.INFO, "REST server started at {0}", url);
 	}
 
 	/**
@@ -90,33 +57,5 @@ public class RESTStartUp implements Runnable {
 		calls.getBlacklist();
 		calls.getSwarms();
 		calls.getSwarm("abc123");
-	}
-
-	private void testClientConnection() {
-		/*Backend backend = new Backend(new BackendObserver() {
-
-			@Override
-			public void newSwarm(String id, String filename, int blockCount) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void searchResult(String clientAddress, String id, String filename, int blockCount) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void updateSwarm(String id, double progress, double speed, List<String> peers,
-					String timeToCompletion)
-			{
-				// TODO Auto-generated method stub
-				
-			}
-
-		});
-		
-		backend.engageSwarm("abc123");*/
 	}
 }

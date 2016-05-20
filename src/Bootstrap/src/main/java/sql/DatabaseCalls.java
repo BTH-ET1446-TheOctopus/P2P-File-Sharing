@@ -509,6 +509,21 @@ public class DatabaseCalls implements DatabaseAPI {
 		}
 		
 		return false;
+	}
+
+	
+	public void removePeers(String ClientUUID) {
+
+		//To be implemented to remove inactive peers
+
+	}
+
+	@Override
+	public Peers getInactivePeers(String timeout) {
+		
+		//To be implemented for getting list of inactive peers
+		
+		return null;
 	}	
 	
 }
