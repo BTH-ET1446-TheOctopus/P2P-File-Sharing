@@ -5,7 +5,7 @@ import backend.api.datatypes.SwarmMetadata;
 
 public interface DatabaseAPI {
 
-	public void addSwarm(String id, String filename, String fileChecksum, String metadataChecksum, int blockCount);
+	public void addSwarm(String swarmid, String filename, String fileChecksum, String metadataChecksum, int blockCount, String clientID);
 	public void addPeers(String swarmId, String ip); //What is the difference from the one bellow? 
 	//public void addPeerArray(String uniquefileid, String peers); //What is the difference from the one above
 	

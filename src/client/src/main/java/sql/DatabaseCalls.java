@@ -171,13 +171,13 @@ public class DatabaseCalls implements DatabaseAPI{
 		}
 	}
 
-	public void addSwarm(String id, String filename, String fileChecksum, String metadataChecksum, int blockCount){   //This method writes to 'clientfile' table
+	public void addSwarm(String swarmid, String filename, String fileChecksum, String metadataChecksum, int blockCount, String clientID){   //This method writes to 'clientfile' table
 		//sqlconnector sc = new sqlconnector();
 		Statement stmnt = sc.getStatement();
 				
 		try {
 			stmnt.executeUpdate("INSERT INTO clientswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
-					"VALUES ('"+filename+"', "+blockCount+", '192.168.2.2', 1, '"+id+"', '"+fileChecksum+"', '"+metadataChecksum+"' )");
+					"VALUES ('"+filename+"', "+blockCount+", '192.168.2.2', 1, '"+swarmid+"', '"+fileChecksum+"', '"+metadataChecksum+"' )");
 					//"VALUES ('Pirates Carrabian', 10000, '192.168.2.2', 1, 'sdfsdggh22255', 'filechecksum', 'metadatachecksum' )");
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
