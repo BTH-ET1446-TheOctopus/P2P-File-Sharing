@@ -453,6 +453,22 @@ public class DatabaseCalls implements DatabaseAPI {
 		}
 		return false;
 	}
-	
+
+	@Override
+	public boolean addSwarmDB(String uuidClient, int totalBlocks, String filename, String fileChecksum,
+			String metadataChecksum, String SwarmID) {
+		
+		Statement stmnt = sc.getStatement();
+
+		try {
+			stmnt.executeUpdate("INSERT INTO serverswarm (filename, totalblocks, peers, uniquefileid, filechecksum, metadatachecksum) " + 
+					"VALUES ('"+filename+"', "+totalBlocks+", '"+uuidClient+"', "+SwarmID+",'"+fileChecksum+"', '"+metadataChecksum+"')");
+			return true;
+		} catch (SQLException e) {
+			LOG.log(Level.INFO, e.getMessage(), e);
+		}
+		
+		return false;
+	}	
 	
 }
