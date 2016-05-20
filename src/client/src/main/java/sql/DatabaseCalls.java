@@ -68,7 +68,7 @@ public class DatabaseCalls implements DatabaseAPI{
 		
 		String readquery="";
 		ResultSet result;
-		String file;
+		String file="";
 		int totalblocks=0;
 		int peercount=0;
 		String uniquefileid="";
@@ -76,9 +76,9 @@ public class DatabaseCalls implements DatabaseAPI{
 		String metadatachecksum="";
 		String peers="";
 		List<String> peersarray = new ArrayList<String>();
-		result = sc.runquery(readquery);
-		String query = "select * from clientswarm where filename = '" + filename +"'";		
-		rs=sc.runquery(query);
+		
+		readquery = "select * from clientswarm where filename = '" + filename +"'";		
+		rs=sc.runquery(readquery);
 		try {
 			while (rs.next())
 			{
@@ -98,7 +98,8 @@ public class DatabaseCalls implements DatabaseAPI{
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
 		}
 		
-		rs = sc.runquery("SELECT uniquefile FROM peersarray where filename=");
+		readquery="SELECT * FROM peersarray where uniquefileid= '" + uniquefileid +"'";
+		rs = sc.runquery(readquery);
 		try {
 			while (rs.next()) {
 				peers = rs.getString("peers");
@@ -116,10 +117,15 @@ public class DatabaseCalls implements DatabaseAPI{
 		}
 		SwarmMetadata swarmmetadata = new SwarmMetadata(uniquefileid, filename, totalblocks, filechecksum, 
 				metadatachecksum, peersarray);
+		//SwarmMetadata swarmmetadata = new SwarmMetadata();
 		return swarmmetadata;
 	}
 	
-	public List<String> getPeers(){   //This method reads from 'clientpeers' table
+	//This method reads from 'clientpeers' table
+	//
+	//
+	//
+	public List<String> getPeers(){   
 		
 		List<String> result = new ArrayList<String>();
 		rs = sc.runquery("SELECT * FROM clientpeers");

@@ -47,6 +47,12 @@ public class insertsample {
 				+ " VALUES ('abc123','192.168.1.202')";
 		//Writing Data to ServerDB
 		sample.Update(writequery);
+
+		//Write Sample Data to peersarray table
+		writequery="insert into peersarray (uniquefileid,peers) " 
+				+ " VALUES ('pom.xml','192.168.1.202')";
+		//Writing Data to ServerDB
+		sample.Update(writequery);
 		
 		sample.closeconnect();
 	}

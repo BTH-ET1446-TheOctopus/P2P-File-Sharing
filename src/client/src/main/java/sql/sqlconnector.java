@@ -100,7 +100,7 @@ public class sqlconnector {
 							+ " id int , "		
 							+ " uniquefileid varchar(100) NOT NULL, "    
 							+ " peers varchar(15) NOT NULL, "
-							+ " CONSTRAINT peersarray_pk PRIMARY KEY (id))";
+							+ " CONSTRAINT peersarray_pk PRIMARY KEY (uniquefileid))";
 				this.Update(createtable);
 			}
 		}
