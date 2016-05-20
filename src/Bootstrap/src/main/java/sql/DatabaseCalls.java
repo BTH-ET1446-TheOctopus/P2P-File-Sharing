@@ -530,12 +530,33 @@ public class DatabaseCalls implements DatabaseAPI {
 		return false;
 	}
 
-	@Override
 	public Peers getInactivePeers(String timeout) {
 		
-		//To be implemented for getting list of inactive peers
+		Peers inactivePeers = new Peers();
+		String readquery="";
+		ResultSet result;
+		String data="";
+		readquery="select distinct peers from serverpeers";
+		result = sc.runquery(readquery);
+		List<String> ip = new ArrayList<String>();
+
+		try {
+			while(result.next()){
+				//Retrieve by column name			
+				data = result.getString("peers");	         
+				
+//		The condition should apply here (being 3 minutes inactive
+				
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Exception in query method:\n" + e.getMessage());
+		}
 		
-		return null;
+		inactivePeers.setpeers(ip);
+
+		return inactivePeers;
+
 	}	
 	
 }
