@@ -14,27 +14,32 @@ import backend.json.Swarm;
 
 public class hmac {
 
-
-	
-
-
-		//public static void main(String[] args) throws NoSuchAlgorithmException;
-		public String hmac (byte [] abc){
+//
+//	
+//
+//
+//		public static void main(String[] args) throws NoSuchAlgorithmException{
+//			
+		
+		String abc;
+		//String hmac (byte [] abc) throws NoSuchAlgorithmException{
 		String s = new String(abc);
 		 // public static void main(String[] args) throws NoSuchAlgorithmException; {
-		        System.out.println(sha1("test string to sha1"));
-		    }
+		     //   System.out.println(hmac("test string to sha1"));
+				//return s;
+		    
 		     
-		    static String sha1(String input) throws NoSuchAlgorithmException {
+		String hmac(byte[] abc1) throws NoSuchAlgorithmException{//throws NoSuchAlgorithmException {
 		        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
-		        byte[] result = mDigest.digest(input.getBytes());
+		        String input = null;
+				byte[] result = mDigest.digest(input.getBytes());
 		        StringBuffer sb = new StringBuffer();
 		        for (int i = 0; i < result.length; i++) {
 		            sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
 		        }
+		    //}
 		         
-		        return sb.toString();
-		    
+		        
 		
 			// backend = Backend.getInstance;
 			
@@ -42,15 +47,12 @@ public class hmac {
 				//Formatter formatter = new Formatter();
 				 
 				 
-				  formatter.format("%02x", sb);
+				//  Formatter formatter;
+				//formatter.format("%02x", sb);
 				  
 				   // return formatter.toString();
+				return sb.toString();
+			    
 				}
 }
-
-
-			
-
-		
-
 
