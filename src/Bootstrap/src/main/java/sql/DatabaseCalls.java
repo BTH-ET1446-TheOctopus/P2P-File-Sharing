@@ -94,7 +94,19 @@ public class DatabaseCalls implements DatabaseAPI {
 	
 	
 	public boolean updateSwarm(String swarmID, String clientID){
-		return true;
+		String readquery="";
+		//readquery="insert into peersarray where swarmID='" + swarmID + "'";
+		readquery = "update peersarray set clientid= '" + clientID+ "'"
+					+ "' where swarmid='"+ swarmID + "'";
+		
+		try {
+			sc.Update(readquery);
+			return true;
+			}
+		catch (Exception e) {
+			System.out.println("Exception in query method:\n" + e.getMessage());
+		}
+		return false;
 	}
 	
 	
