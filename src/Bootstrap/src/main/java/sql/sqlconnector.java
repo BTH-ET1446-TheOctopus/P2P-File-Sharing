@@ -62,7 +62,7 @@ public class sqlconnector {
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(query);
 		} catch (Exception e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}
 		
 		return resultSet;
@@ -75,7 +75,7 @@ public class sqlconnector {
 			statement = connection.createStatement();
 			statement.executeUpdate(update);
 		} catch (SQLException e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 			return false;
 		}
 
@@ -93,7 +93,7 @@ public class sqlconnector {
 			this.runquery(usedb);
 		}
 		catch (Exception e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}
 		
 		//Close Connection and Connect to Client DB
@@ -120,7 +120,7 @@ public class sqlconnector {
 			}
 		}
 		catch (Exception e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}
 		//Create Table02 peersarray
 		try {
@@ -140,7 +140,7 @@ public class sqlconnector {
 			}
 		}
 		catch (Exception e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}
 		//Create Table03 serverswarm
 		try {
@@ -164,7 +164,7 @@ public class sqlconnector {
 			}
 		}
 		catch (Exception e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}
 		//Create Table04 serverpeers
 		try {
@@ -185,13 +185,13 @@ public class sqlconnector {
 			}
 		}
 		catch (Exception e) {
-			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}
 	}
 
 	public void closeconnect(){
 		//Close all connection to MySQL
-		try { if (connection != null) connection.close(); connection = null; } catch (SQLException e) { LOG.log(Level.INFO, e.getMessage(), e); }
+		try { if (connection != null) connection.close(); connection = null; } catch (SQLException e) { LOG.log(Level.WARNING, e.toString(), e); }
 
 	}
 
