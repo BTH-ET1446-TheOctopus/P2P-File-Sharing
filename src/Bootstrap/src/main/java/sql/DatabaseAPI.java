@@ -38,7 +38,7 @@ public interface DatabaseAPI {
 	public Peers getInactivePeers(int timeout);
 	public boolean removePeers(String CientUUID); 
 	
-	public boolean getSwarmByName(String filename);
+	//public boolean getSwarmByName(String filename);
 	public boolean addSwarmDB(String uuidClient, int totalBlocks, String filename, String fileChecksum, String metadataChecksum, String SwarmID);
 	
 }
