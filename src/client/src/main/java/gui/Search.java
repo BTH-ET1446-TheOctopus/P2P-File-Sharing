@@ -12,10 +12,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import backend.Backend;
+
+import backend.api.datatypes.SwarmMetadata;
 import backend.api.datatypes.SwarmMetadataShort;
 
 import java.awt.event.ActionListener;
@@ -293,16 +297,13 @@ public class Search extends JDialog
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				backend.searchSwarm(txtNeighbors.getText());
-
-				Client client = new Client();
-				client.searchResult("test", "test", "Test", 12);
+				//txtNeighbors.getText()
+				backend.searchSwarm(txtNeighbors.getText());				
 
 			}
-		});
 
-	}
-
+	});
+}
 	private void addNeighborsDownloadButton()
 	{
 		btnDownloadNeighbors = new JButton("Download");
@@ -310,7 +311,7 @@ public class Search extends JDialog
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-
+				UpdateSearchResult();
 			}
 		});
 	}
@@ -378,6 +379,20 @@ public class Search extends JDialog
 	public JTable getSearchResultTable()
 	{
 		return searchNeighborsResultTable;
+	}
+
+	public void UpdateSearchResult() {
+		List<SwarmMetadata> searchResults = new ArrayList<SwarmMetadata>();
+		Client client = new Client();
+		searchResults=backend.getsearchResult();
+		System.out.print(searchResults.size());
+		for(int i=0; searchResults.size()>i; i++) {
+		client.searchResult(searchResults.get(i).getPeers().get(i), searchResults.get(i).getId(), searchResults.get(i).getFilename(), searchResults.get(i).getBlockCount());
+		}	
+		
+		
+		
+		
 	}
 
 }

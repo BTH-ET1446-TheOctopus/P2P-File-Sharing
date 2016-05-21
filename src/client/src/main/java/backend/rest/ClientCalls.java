@@ -82,33 +82,39 @@ public class ClientCalls {
 		
 		return respons;
 	}
-	public Response search(String clientIP,String filename, String ip, int hoplimit)
-	{		
-		
+	public Response search(String clientIP,String filename, String ip, int hopLimit)
+	{			
+		System.out.print("clientIP: " +clientIP +" Filename: " +filename +" IP: "+ip + " HopLimit: " +hopLimit);	
 		Client client = ClientBuilder.newClient();
-		         Response respons = client.target(clientIP)
-				.path("/rest/search")
+		         Response respons = client.target("http://"+clientIP+"/")
+				.path("rest/search")
 				.queryParam("filename", filename)			
 				.queryParam("ip", ip)							
-				.queryParam("hoplimit", hoplimit)
+				.queryParam("hopLimit", hopLimit)
 				.request(MediaType.APPLICATION_JSON)
-				.get();
-				
+				.post(null);
+		        System.out.print(respons);
 		return respons;
+		
+		
 	}
 	public Response searchResult(String clientIP, String id, Integer blockCount, String filename, String fileChecksum, String metadataChecksum)
 	
 	{
+		System.out.print("\n");
+		System.out.print("In clientcalls.SearchResult: "+"clientIP: " +clientIP +" id: "+id+" Filename: " +filename);
 		Client client = ClientBuilder.newClient();
-		Response respons = client.target(clientIP)
-				.path("/rest/searchresult")
+		Response respons = client.target("http://"+clientIP+"/")
+				.path("rest/searchresult")
+				.queryParam("clientIP", clientIP)
 				.queryParam("id", id)				
 				.queryParam("blockCount", blockCount)
 				.queryParam("filename", filename)
 				.queryParam("fileChecksum", fileChecksum)
 				.queryParam("metadataChecksum", metadataChecksum)
 				.request(MediaType.APPLICATION_JSON)
-				.get();
+				.post(null);
+		System.out.print(respons);
 		
 		return respons;
 	}
