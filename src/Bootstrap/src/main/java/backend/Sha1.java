@@ -18,15 +18,14 @@ String Shafile(String filename) throws NoSuchAlgorithmException, IOException {
 	readfile rd = new readfile();
 	//String file = filename;
 	//byte[] fileArray;
-    return sha1(rd.filereader(filename));
+    return ShaString(rd.filereader(filename));
 }
-String ShaString(String str) {
-	return null;
+	String shaByte(byte[]b) throws NoSuchAlgorithmException {
+		String s = b.toString();
+		String abc=ShaString(s);
+		return abc;
 }
-String shaByte(byte[]b) {
-	return null;
-}
-static String sha1(String input) throws NoSuchAlgorithmException {
+static String ShaString(String input) throws NoSuchAlgorithmException {
 MessageDigest mDigest = MessageDigest.getInstance("SHA1");//  byte[] result = mDigest.digest(input.getBytes());
 byte[] result = mDigest.digest(input.getBytes());
  StringBuffer sb = new StringBuffer();
