@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class Settings {
-	public static final boolean ENABLE_HTTPS = false;
+	public static final boolean ENABLE_HTTPS = true;
 	
 	public static final String DEFAULT_BOOTSTRAP_ADDRESS = "localhost";
 	public static final String BOOTSTRAP_PORT = "9999";

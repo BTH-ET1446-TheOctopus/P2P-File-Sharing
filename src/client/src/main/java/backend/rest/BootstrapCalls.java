@@ -1,5 +1,6 @@
 package backend.rest;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -19,6 +20,7 @@ import backend.json.SwarmsHelper;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.logging.Level;
@@ -33,31 +35,23 @@ public class BootstrapCalls implements calls {
 	public BootstrapCalls() {
 		if (Settings.ENABLE_HTTPS) {
 			// Create a trust manager that does not validate certificate chains
-			SSLContext sslcontext = null;
+			TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
+			    public X509Certificate[] getAcceptedIssuers(){return null;}
+			    public void checkClientTrusted(X509Certificate[] certs, String authType){}
+			    public void checkServerTrusted(X509Certificate[] certs, String authType){}
+			}};
+
+			// Install the all-trusting trust manager
+			SSLContext sc = null;
 			try {
-				sslcontext = SSLContext.getInstance("TLS");
-
-				sslcontext.init(null, new TrustManager[] { new X509TrustManager() {
-					public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
-					}
-
-					public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
-					}
-
-					public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-						return new X509Certificate[0];
-					}
-
-				} }, new java.security.SecureRandom());
-			} catch (KeyManagementException e) {
-				LOG.log(Level.SEVERE, e.toString(), e);
-				System.exit(0);
-			} catch (NoSuchAlgorithmException e) {
-				LOG.log(Level.SEVERE, e.toString(), e);
-				System.exit(0);
+				sc = SSLContext.getInstance("TLS");
+			    sc.init(null, trustAllCerts, new SecureRandom());
+			    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+			} catch (Exception e) {
+			    ;
 			}
-
-			client = ClientBuilder.newBuilder().sslContext(sslcontext).hostnameVerifier((s1, s2) -> true).build();
+			
+			client = ClientBuilder.newBuilder().sslContext(sc).hostnameVerifier((s1, s2) -> true).build();
 		} else {
 			client = ClientBuilder.newClient();
 		}
@@ -126,23 +120,27 @@ public class BootstrapCalls implements calls {
 
 		// TODO, not working ATM
 
-		ID respons = client.target(bootstrapUrl)// + "?filename=" +
-												// filename +
-												// "&blockCount=" +
-												// blockCount +
-												// "&fileChecksum="
-												// + fileChecksum +
-												// "&metadataChecksum="
-												// +
-												// metadataChecksum)
-				.path("swarms/").queryParam("filename", '"' + filename + '"').queryParam("blockCount", blockCount)
+		ID respons = client.target(bootstrapUrl)
+			.path("swarms")
+			.queryParam("filename", filename)
+			.queryParam("blockCount", blockCount)				
+			.queryParam("fileChecksum", fileChecksum)
+			.queryParam("metadataChecksum", metadataChecksum)
+			.request(MediaType.APPLICATION_JSON)
+			.post(null, ID.class);
+		
+		/*ID respons = client.target(bootstrapUrl)
+				.path("swarms/")
+				.queryParam("filename", '"' + filename + '"')
+				.queryParam("blockCount", blockCount)
 				.queryParam("fileChecksum", '"' + fileChecksum + '"')
 				.queryParam("metadataChecksum", '"' + metadataChecksum + '"')
 				// .queryParam("filename", filename)
 				// .queryParam("blockCount", blockCount)
 				// .queryParam("fileChecksum", fileChecksum)
 				// .queryParam("metadataChecksum", metadataChecksum)
-				.request(MediaType.TEXT_PLAIN_TYPE).post(null, ID.class);
+				.request(MediaType.TEXT_PLAIN_TYPE)
+				.post(null, ID.class);*/
 
 		return respons;
 	}
