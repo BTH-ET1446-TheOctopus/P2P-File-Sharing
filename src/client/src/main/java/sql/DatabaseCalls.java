@@ -58,8 +58,6 @@ public class DatabaseCalls implements DatabaseAPI{
 			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
 			return null;
-		} finally  {
-			sc.closeconnect();
 		}
 		return new SwarmMetadata(uniquefileid, filename, Integer.parseInt(totalblocks), filechecksum, metadatachecksum, getPeers());
 	}
@@ -154,7 +152,6 @@ public class DatabaseCalls implements DatabaseAPI{
 						"\nTimestamp: " + timestamp +
 						"\nFiles: " + files +
 						"\nFilecount: " + filecount);
-
 			}
 			
 		} catch (SQLException ex){
@@ -163,8 +160,6 @@ public class DatabaseCalls implements DatabaseAPI{
 			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
 			return null;
-		} finally  {
-			sc.closeconnect();
 		}
 		return result;
 	}
@@ -210,33 +205,18 @@ public class DatabaseCalls implements DatabaseAPI{
 			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
 			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
-		} finally  {
-			sc.closeconnect();
-		}	
-
+		} 
 	} 
 	
 	// WRITES TO TABLES IN 'CLIENTDB'
 	public void addPeerArray(String uniquefileid, String peers){  //This method writes to 'peersarray' table
-		//sqlconnector sc = new sqlconnector();
 
-		Statement stmnt = sc.getStatement();
-		
-		try {
-			stmnt.executeUpdate("INSERT INTO peersarray (uniquefileid, peers) " + 
-					"VALUES ( '"+uniquefileid+"', '"+peers+"')");
-		} catch (SQLException e) {
-			LOG.log(Level.INFO, e.getMessage(), e);
-		}
-		finally {  //close all connection to database
-			sc.closeconnect();
-		}
+		sc.Update("INSERT INTO peersarray (uniquefileid, peers) " + 
+				"VALUES ( '"+uniquefileid+"', '"+peers+"')");
 	}
 	
 	public boolean isSwarmExisting(String swarmId) {
 		boolean flag = false;
-		
-		ResultSet values; 
 		
 		String query = "SELECT uniquefileid FROM clientswarm WHERE uniquefileid = " + "'" + swarmId + "'";
 		rs = sc.runquery(query);
@@ -262,14 +242,8 @@ public class DatabaseCalls implements DatabaseAPI{
 			String query = "INSERT INTO clientswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
 					"VALUES ('"+filename+"', "+blockCount+", '192.168.2.2', 1, '"+swarmid+"', '"+fileChecksum+"', '"+metadataChecksum+"' )";
 			flag = sc.Update(query);
-			//stmnt.executeUpdate("INSERT INTO clientswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
-				//	"VALUES ('"+filename+"', "+blockCount+", '192.168.2.2', 1, '"+swarmid+"', '"+fileChecksum+"', '"+metadataChecksum+"' )");
-					//"VALUES ('Pirates Carrabian', 10000, '192.168.2.2', 1, 'sdfsdggh22255', 'filechecksum', 'metadatachecksum' )");
 		//} catch (SQLException e) {
 		//	LOG.log(Level.INFO, e.getMessage(), e);
-		//}
-		//finally {  //close all connection to database
-			//sc.closeconnect();
 		//}
 		}
 		return flag;
@@ -283,9 +257,6 @@ public class DatabaseCalls implements DatabaseAPI{
 	
 	public boolean addPeers(String swarmId, String ip){  //This method writes to 'clientpeers' table
 		boolean flag = false;
-		//sqlconnector sc = new sqlconnector();
-		Statement stmnt = sc.getStatement();
-		
 		
 		if(isSwarmExisting(swarmId)){
 			if(!checkExistenceOfPeerInSwarmID(swarmId, ip)){
@@ -333,12 +304,10 @@ public class DatabaseCalls implements DatabaseAPI{
 		
 		if(isSwarmExisting(swarmID))
 		{
-			ResultSet values = null;
-			
 			String query = "DELETE FROM clientswarm WHERE uniquefileid = " + "'" + swarmID + "'";
-			values = sc.runquery(query);
+			rs = sc.runquery(query);
 			try {
-				if(values.getString("uniquefileid").equals(swarmID)){
+				if(rs.getString("uniquefileid").equals(swarmID)){
 					flag = true;
 				}
 			} catch (SQLException e) {
@@ -348,6 +317,7 @@ public class DatabaseCalls implements DatabaseAPI{
 		}
 		return flag;
 	}
+	
 	public String getSwarmName(String swarmID){
 		String filename = null;
 		
