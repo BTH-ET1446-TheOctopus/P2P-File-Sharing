@@ -341,6 +341,6 @@ public class DatabaseCalls implements DatabaseAPI{
 	@Override
 	public boolean checkChunkAvaible(String id, Integer chunkNr) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 }

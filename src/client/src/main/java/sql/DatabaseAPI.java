@@ -31,6 +31,7 @@ public interface DatabaseAPI {
 	//public void addChunks(String id, ArrayList<Integer> chunk);
 	
 	public boolean deleteSwarmID(String swarmID);
+	boolean checkChunkAvaible(String id, Integer chunkNr);
 	
 	
 	
