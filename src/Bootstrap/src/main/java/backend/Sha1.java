@@ -1,7 +1,11 @@
 package backend;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import backend.readfile;
 
 	/**
 	 * @param args
@@ -9,10 +13,14 @@ import java.security.NoSuchAlgorithmException;
 	 */
 
 public class Sha1 {
-String Sha1file(String filename) {
-	return null;
+	
+String Shafile(String filename) throws NoSuchAlgorithmException, IOException {
+	readfile rd = new readfile();
+	//String file = filename;
+	//byte[] fileArray;
+    return sha1(rd.filereader(filename));
 }
-String Sha1String(String str) {
+String ShaString(String str) {
 	return null;
 }
 String shaByte(byte[]b) {
