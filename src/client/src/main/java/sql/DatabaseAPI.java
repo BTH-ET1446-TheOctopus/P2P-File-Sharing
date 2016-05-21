@@ -17,12 +17,12 @@ public interface DatabaseAPI {
 	public List<String> getPeers();
 	public List<String> getconnPeers();
 	public void getPeerArray();
+	public String getSwarmName(String swarmID);
 	
 	public void closedbconnect();
 	//public List<String> getBlacklist();
 	//public List<String> getBootstraps();
 	//public List<Integer> getChunks(String fileID);
-	public boolean checkChunkAvaible(String id, Integer chunkNr);
 	//public boolean isBlacklisted(String ip);
 	
 	

@@ -91,7 +91,6 @@ public class DatabaseCalls implements DatabaseAPI{
 				metadatachecksum=rs.getString("metadatachecksum");
 				
 				if(filename.equals(file)){
-					System.out.println(file);
 					flag = true;
 					break;
 				}
@@ -246,7 +245,7 @@ public class DatabaseCalls implements DatabaseAPI{
 			if(rs.next()){
 				flag = true;
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
 		
@@ -349,11 +348,23 @@ public class DatabaseCalls implements DatabaseAPI{
 		}
 		return flag;
 	}
-
-	@Override
-	public boolean checkChunkAvaible(String id, Integer chunkNr) {
-		// TODO Auto-generated method stub
-		return false;
+	public String getSwarmName(String swarmID){
+		String filename = null;
+		
+		if(isSwarmExisting(swarmID)){
+			String query = "SELECT distinct filename FROM clientswarm WHERE uniquefileid= " + "'" + swarmID + "'";
+			rs = sc.runquery(query);
+			
+			try {
+				if(rs.next()){
+					filename = rs.getString("filename");
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		return filename;
 	}
-
 }

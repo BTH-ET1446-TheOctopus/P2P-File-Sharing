@@ -25,12 +25,13 @@ import backend.json.Chunk;
 import backend.json.Chunks;
 import backend.json.Peers;
 import backend.thread.ClientSearchThread;
+import sql.DatabaseAPI;
 import sql.DatabaseCalls;
 import sql.sqlconnector;
 
 @Path("/rest")
 public class Rest {
-
+	DatabaseAPI database = new DatabaseCalls();
 	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@GET
@@ -49,32 +50,9 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Peers getPeers() {
 		Peers peers = new Peers();
-		List<String> ip = new ArrayList<String>();
-		String readquery="";
- 		sqlconnector test = new sqlconnector("clientdb");
- 		ResultSet result;
- 		String data="";
- 		int counter=0;
- 		readquery="select distinct peers from peersarray";
- 		result = test.runquery(readquery);
+		List<String> peersdb = database.getPeers();
 		
-		try {
- 			System.out.println();
- 			while(result.next()){
- 		         //Retrieve by column name			
- 		         data = result.getString("peers");	         
- 		         if (counter<3){
- 		        	 ip.add(data);
- 		         }
- 		         counter++;
- 		      }
- 	    }
- 	    catch (Exception e) {
- 	        System.out.println("Exception in query method:\n" + e.getMessage());
- 	    }
- 		test.closeconnect();
- 		
- 		peers.setpeers(ip);
+ 		peers.setpeers(peersdb);
 		return peers;
 	}
 
@@ -126,6 +104,7 @@ public class Rest {
 	@Path("/file/{id}/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Chunks getFileChunks(@PathParam("id") String id) {
+		
 		Chunks chunks = new Chunks();
 		LOG.log(Level.INFO, id.toString());
 		if (id.equals("abc123")) {
@@ -139,10 +118,15 @@ public class Rest {
 	@GET
 	@Path("/file/{id}/{chunk}")
 	@Produces(MediaType.APPLICATION_JSON)
-
 	public Chunk getFile(@PathParam("id") String id, @PathParam("chunk") Integer chunk) {
 		LOG.log(Level.INFO, "Received request to download file id {0}, block {1}", new Object[] { id, chunk });
-
+		
+		
+		
+		String fileName = database.getSwarmName(id);
+		
+		
+		
 		// Database code:
 		// Get the filename from 'id'
  		sqlconnector test = new sqlconnector("clientdb");
