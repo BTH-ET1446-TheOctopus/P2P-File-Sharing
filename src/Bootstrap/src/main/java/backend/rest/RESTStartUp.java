@@ -1,11 +1,9 @@
 package backend.rest;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.ssl.SSLContextConfigurator;
 import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -23,51 +21,43 @@ public class RESTStartUp implements Runnable {
 		Logger.getLogger("com.sun.jersey").setLevel(Level.WARNING);
 		
 		final ResourceConfig rc = new ResourceConfig().packages("backend.rest");
-		GrizzlyHttpServerFactory.createHttpServer(URI.create(Settings.bootstrapURL), rc);
-//		 SSLContextConfigurator sslContext = new SSLContextConfigurator();
-//
-//	        // set up security context
-//	        sslContext.setKeyStoreFile("selfsigned.jks"); // contains server keypair
-//	        sslContext.setKeyStorePass("vyshu_09");
-//	        sslContext.setTrustStoreFile("truststore_client"); // contains server certificate
-//	        sslContext.setTrustStorePass("vyshu_09");
-//	        if (!sslContext.validateConfiguration(true)) {
-//	        	LOG.severe("context not valid");
-//	        	System.exit(0);
-//	        }
-//	       // ResourceConfig rc = new ResourceConfig();
-//	       // rc.registerClasses(SecurityFilter.class, AuthenticationExceptionMapper.class);
-//
-//	        final HttpServer grizzlyServer = GrizzlyHttpServerFactory.createHttpServer(
-//	                URI.create(Settings.bootstrapURL),
-//	                rc,
-//	                true,
-//	                new SSLEngineConfigurator(sslContext).setClientMode(false).setNeedClientAuth(false)
-//	        );
+		
+		final URI uri = URI.create(((Settings.ENABLE_HTTPS) ? "HTTPS://" : "HTTP://") + Settings.DEFAULT_BOOTSTRAP_ADDRESS
+				+ ":" + Settings.BOOTSTRAP_PORT + "/");
+		
+		if (Settings.ENABLE_HTTPS) {
+			SSLContextConfigurator sslContext = new SSLContextConfigurator();
+
+			// set up security context
+			sslContext.setKeyStoreFile("selfsigned.jks"); // contains server keypair
+			sslContext.setKeyStorePass("vyshu_09");
+			sslContext.setTrustStoreFile("truststore_client"); // contains server
+																// certificate
+			sslContext.setTrustStorePass("vyshu_09");
+
+			if (!sslContext.validateConfiguration(true)) {
+				LOG.severe("context not valid");
+				System.exit(0);
+			}
+			
+			GrizzlyHttpServerFactory.createHttpServer(uri, rc, true,
+					new SSLEngineConfigurator(sslContext).setClientMode(false).setNeedClientAuth(false));
+		} else {
+			GrizzlyHttpServerFactory.createHttpServer(uri, rc);
+		}
+
 
 		/*
-		HttpServer server = null;
-		try {
-			server = HttpServerFactory.create(Settings.bootstrapURL);
-			server.start();
-			LOG.log(Level.INFO, "Bootstrap server was started at {0}", server.getAddress().toString());
-			while (true) {
-				Thread.sleep(1000);
-			}
-		} catch (IllegalArgumentException e) {
-			LOG.log(Level.SEVERE, e.toString(), e);
-		} catch (InterruptedException e) {
-			server.stop(0);
-			server = null;
-			LOG.log(Level.INFO, "Bootstrap server was stopped");
-		} catch (IOException e) {
-			LOG.log(Level.SEVERE, e.toString(), e);
-		} finally {
-			if (server != null) {
-				server.stop(0);
-				LOG.log(Level.WARNING, "Bootstrap server was stopped by force");
-			}
-		}
-		*/
+		 * HttpServer server = null; try { server =
+		 * HttpServerFactory.create(Settings.bootstrapURL); server.start();
+		 * LOG.log(Level.INFO, "Bootstrap server was started at {0}",
+		 * server.getAddress().toString()); while (true) { Thread.sleep(1000); }
+		 * } catch (IllegalArgumentException e) { LOG.log(Level.SEVERE,
+		 * e.toString(), e); } catch (InterruptedException e) { server.stop(0);
+		 * server = null; LOG.log(Level.INFO, "Bootstrap server was stopped"); }
+		 * catch (IOException e) { LOG.log(Level.SEVERE, e.toString(), e); }
+		 * finally { if (server != null) { server.stop(0);
+		 * LOG.log(Level.WARNING, "Bootstrap server was stopped by force"); } }
+		 */
 	}
 }

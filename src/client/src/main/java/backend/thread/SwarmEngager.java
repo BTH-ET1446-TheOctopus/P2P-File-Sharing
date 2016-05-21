@@ -88,7 +88,7 @@ public class SwarmEngager extends Thread {
 		for (String peer : swarm.getpeers()) {
 
 			LOG.log(Level.INFO, "Grabbing avaiable chunks for swarmId={0}, peer={1}", new Object[] { swarmId, peer });
-			Chunks chunks = clientCalls.getFileChunks("http://" + peer + ":1337", swarmId);
+			Chunks chunks = clientCalls.getFileChunks(peer, swarmId);
 
 			StringBuilder b = new StringBuilder();
 			for (int i : chunks.getchunks()) {
@@ -119,7 +119,7 @@ public class SwarmEngager extends Thread {
 			String peerIP = swarm.getpeers().get(0);
 
 			LOG.log(Level.FINE, "Grabbing block: swarmId={0} blockNumber={1}", new Object[] { swarmId, blockNumber });
-			Chunk chunk = clientCalls.getFileChunk("http://" + peerIP + ":1337", swarmId, blockNumber);
+			Chunk chunk = clientCalls.getFileChunk(peerIP, swarmId, blockNumber);
 
 			byte[] data = chunk.getData();
 			if (data == null) {

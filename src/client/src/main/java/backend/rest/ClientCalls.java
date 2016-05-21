@@ -4,9 +4,16 @@ import backend.json.Chunk;
 import backend.json.Chunks;
 import backend.json.Peers;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.client.Client;
@@ -18,8 +25,43 @@ import javax.ws.rs.core.Response;
 import backend.Settings;;
 
 public class ClientCalls {
-    
 	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	
+	private Client client;
+	private String addressPrefix;
+	private String addressSuffix;
+	
+	
+	public ClientCalls() {
+		if (Settings.ENABLE_HTTPS) {
+			// Create a trust manager that does not validate certificate chains
+			SSLContext sslcontext = null;
+			try {
+				sslcontext = SSLContext.getInstance("TLS");
+		    
+				sslcontext.init(null, new TrustManager[]{new X509TrustManager() {
+				    public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
+				    public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
+				    public java.security.cert.X509Certificate[] getAcceptedIssuers() { return new X509Certificate[0]; }
+
+				}}, new java.security.SecureRandom());
+			} catch (KeyManagementException e) {
+				LOG.log(Level.SEVERE, e.toString(), e);
+				System.exit(0);
+			} catch (NoSuchAlgorithmException e) {
+				LOG.log(Level.SEVERE, e.toString(), e);
+				System.exit(0);
+			}
+			
+			client = ClientBuilder.newBuilder().sslContext(sslcontext).hostnameVerifier((s1, s2) -> true).build();
+		} else {
+			client = ClientBuilder.newClient();
+		}
+		
+		addressPrefix = ((Settings.ENABLE_HTTPS) ? "HTTPS://" : "HTTP://");
+		addressSuffix = ":" + Settings.BOOTSTRAP_PORT + "/rest";
+	}
+	
 	/**
 	 * If no bootstrap server is available the client can request peers 
 	 * from remote clients.
@@ -27,11 +69,8 @@ public class ClientCalls {
 	 * @param clientIP The ip address of the client and the port nr
 	 * @return The peers that the remote client has connected to
 	 */
-    public Peers getPeers(String clientIP)
-    {
-    	Client client = ClientBuilder.newClient();
-    	
-    	Peers respons = client.target(clientIP)
+    public Peers getPeers(String clientIP) {
+    	Peers respons = client.target(addressPrefix + clientIP + addressSuffix)
     			.path("/rest/peers")
     			.request(MediaType.APPLICATION_JSON)
     			.get(Peers.class);
@@ -47,11 +86,8 @@ public class ClientCalls {
      * @param fileID		The UUID for the file
      * @return				Existing chunks on connected client
      */
-	public Chunks getFileChunks(String clientIP, String fileID)
-	{
-		Client client = ClientBuilder.newClient();
-    	
-		Chunks respons = client.target(clientIP)
+	public Chunks getFileChunks(String clientIP, String fileID) {
+		Chunks respons = client.target(addressPrefix + clientIP + addressSuffix)
     			.path("/rest/file/" + fileID)
     			.request(MediaType.APPLICATION_JSON)
     			.get(Chunks.class);
@@ -70,11 +106,8 @@ public class ClientCalls {
 	 * chunk			The requested chunk for the remote client
 	 * @return				Specific chunk, header and data
 	 */
-	public Chunk getFileChunk(String clientIP, String fileID, int chunk)
-	{
-		Client client = ClientBuilder.newClient();
-    	
-		Chunk respons = client.target(clientIP)
+	public Chunk getFileChunk(String clientIP, String fileID, int chunk) {
+		Chunk respons = client.target(addressPrefix + clientIP + addressSuffix)
     			.path("/rest/file/" + fileID + "/" + chunk)
     			.queryParam("filename", "Robin hood")
     			.request(MediaType.APPLICATION_JSON)
@@ -82,11 +115,9 @@ public class ClientCalls {
 		
 		return respons;
 	}
-	public Response search(String clientIP,String filename, String ip, int hoplimit)
-	{		
-		
-		Client client = ClientBuilder.newClient();
-		         Response respons = client.target(clientIP)
+	
+	public Response search(String clientIP,String filename, String ip, int hoplimit) {		
+		Response respons = client.target(addressPrefix + clientIP + addressSuffix)
 				.path("/rest/search")
 				.queryParam("filename", filename)			
 				.queryParam("ip", ip)							
@@ -96,11 +127,8 @@ public class ClientCalls {
 				
 		return respons;
 	}
-	public Response searchResult(String clientIP, String id, Integer blockCount, String filename, String fileChecksum, String metadataChecksum)
-	
-	{
-		Client client = ClientBuilder.newClient();
-		Response respons = client.target(clientIP)
+	public Response searchResult(String clientIP, String id, Integer blockCount, String filename, String fileChecksum, String metadataChecksum) {
+		Response respons = client.target(addressPrefix + clientIP + addressSuffix)
 				.path("/rest/searchresult")
 				.queryParam("id", id)				
 				.queryParam("blockCount", blockCount)

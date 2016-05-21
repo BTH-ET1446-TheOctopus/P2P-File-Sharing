@@ -1,7 +1,5 @@
 package backend;
 
-
-import javax.ws.rs.core.Context;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,46 +12,49 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public final class Settings {
-	public static String bootstrapURL = "http://localhost:9999/";
-	public static String ntpServer = "ptbtime1.ptb.de";
-	public static int daytimeport = 13;
+	public static final boolean ENABLE_HTTPS = true;
 	
-	public static int BOOTSTRAP_SYNCHRONIZATION_INTERVAL = 60; // seconds
-	
-	public static final boolean USE_SQLITE = false;
+	public static final String DEFAULT_BOOTSTRAP_ADDRESS = "localhost";
+	public static final String BOOTSTRAP_PORT = "9999";
+
+	public static final String NTP_SERVER = "ptbtime1.ptb.de";
+	public static final int NTP_PORT = 13;
+
+	public static final int BOOTSTRAP_SYNCHRONIZATION_INTERVAL = 60 * 1000; // milliseconds
+
+	public static final boolean USE_SQLITE = true;
 	public static final String MYSQL_HOST = "127.0.0.1";
 	public static final String MYSQL_PORT = "3306";
 	public static final String MYSQL_USERNAME = "root";
 	public static final String MYSQL_PASSWORD = "sql";
 	public static final String MYSQL_DATABASE = "serverdb";
-	
-	private static final Logger LOG = Logger.getLogger(backend.Settings.class.getName());	
+
+	private static final Logger LOG = Logger.getLogger(backend.Settings.class.getName());
+
 	/**
 	 * Function to get the time from NTP-server and formatting it.
+	 * 
 	 * @return timestamp
 	 */
-	public static String getNTP()
-	{	
+	public static String getNTP() {
 		Socket so = null;
 		try {
-			so = new Socket(ntpServer, daytimeport);
+			so = new Socket(NTP_SERVER, NTP_PORT);
 		} catch (UnknownHostException e) {
 			LOG.log(Level.WARNING, e.getMessage(), e);
 		} catch (IOException e) {
 			LOG.log(Level.SEVERE, e.getMessage(), e);
 		}
-	
-		
+
 		BufferedReader br = null;
 		try {
-			br = new BufferedReader(new InputStreamReader (so.getInputStream()));
+			br = new BufferedReader(new InputStreamReader(so.getInputStream()));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			LOG.log(Level.SEVERE, e.getMessage(), e);
 		}
-		
+
 		String timestamp = null;
 		try {
 			timestamp = br.readLine();
@@ -73,6 +74,5 @@ public final class Settings {
 		LOG.log(Level.INFO, timestamp);
 		return timestamp;
 	}
-	
-	
+
 }

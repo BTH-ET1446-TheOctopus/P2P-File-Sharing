@@ -35,7 +35,7 @@ public class RESTStartUp implements Runnable {
 			bindAddress = Settings.DEFAULT_CLIENT_ADDRESS;
 		}
 
-		String url = "http://" + bindAddress + ":" + Settings.CLIENT_PORT + "/";
+		String url = "https://" + bindAddress + ":" + Settings.CLIENT_PORT + "/";
 		GrizzlyHttpServerFactory.createHttpServer(URI.create(url), rc);
 //		 SSLContextConfigurator sslContext = new SSLContextConfigurator();
 //
