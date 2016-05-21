@@ -36,9 +36,10 @@ public class GetPeerList extends JFrame
         List<String> peers = new ArrayList<String>();	
 		peers = databaseCalls.getconnPeers();
 		DefaultTableModel model = (DefaultTableModel) Peerstable.getModel();
+		String[] columnNames = {"Connecting peers"};
+		model.setColumnIdentifiers(columnNames);
 		if(peers.size()>0)
 		{
-		model.setRowCount(peers.size()-1);
 		model.setColumnCount(1);		
 		for (int i=0; i<peers.size(); i++)
 		{
@@ -50,7 +51,7 @@ public class GetPeerList extends JFrame
 		}
         this.add(new JScrollPane(Peerstable));
         this.setTitle("PeerList");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);       
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);       
         this.pack();
         this.setVisible(true);  
 		
