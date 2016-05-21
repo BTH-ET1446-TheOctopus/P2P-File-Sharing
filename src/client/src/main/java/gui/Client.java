@@ -26,6 +26,8 @@ import backend.api.BackendObserver;
 import backend.api.datatypes.SwarmMetadataShort;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 
 public class Client implements BackendObserver
 {
@@ -50,10 +52,12 @@ public class Client implements BackendObserver
 	private String[][]					swarmData;
 	private List<SwarmMetadataShort>	tableRows;
 	private Search						searchWindows;
+	private GetPeerList					peerlist;
 	private Mode						mode;
 	private SpeedChart					speedChartWindow;
-	
+//	private JButton						peerlist;
 	private Backend backend;
+	private JButton btnNewButton;
 
 	/**
 	 * This method creates the Octopus P2P client GUI.
@@ -297,6 +301,11 @@ public class Client implements BackendObserver
 		});
 	}
 
+	////////////////////////////
+	
+	
+	
+	/////////////////////////
 	/**
 	 * This method creates the "Search" button at the icon bar of the main frame
 	 * of the Octopus P2P client.
@@ -310,6 +319,15 @@ public class Client implements BackendObserver
 		search = new JButton();
 		search.setToolTipText("Search");
 		search.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileSearch.png")));
+		btnNewButton = new JButton("");
+		btnNewButton.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/peerlist2.png")));
+		//btnNewButton.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/peerlist.png")));
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				peerlist = new GetPeerList();
+
+			}
+		});
 		GroupLayout gl_iconBar = new GroupLayout(iconBar);
 		gl_iconBar.setHorizontalGroup(
 			gl_iconBar.createParallelGroup(Alignment.LEADING)
@@ -320,18 +338,24 @@ public class Client implements BackendObserver
 					.addGap(24)
 					.addComponent(pauseTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 					.addComponent(resumeTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addGap(432)
+					.addGap(388)
+					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(speedChart, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 					.addComponent(search, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
 		);
 		gl_iconBar.setVerticalGroup(
 			gl_iconBar.createParallelGroup(Alignment.LEADING)
-				.addComponent(newTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-				.addComponent(removeTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-				.addComponent(pauseTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-				.addComponent(resumeTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-				.addComponent(speedChart, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-				.addComponent(search, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+				.addGroup(gl_iconBar.createSequentialGroup()
+					.addGroup(gl_iconBar.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(btnNewButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(newTorrent, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+						.addComponent(removeTorrent, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+						.addComponent(pauseTorrent, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+						.addComponent(resumeTorrent, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+						.addComponent(speedChart, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+						.addComponent(search, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		iconBar.setLayout(gl_iconBar);
 		search.addActionListener(new ActionListener()
