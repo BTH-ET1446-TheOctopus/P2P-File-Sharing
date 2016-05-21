@@ -1,7 +1,6 @@
 package backend.thread;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,6 +8,7 @@ import java.util.logging.Logger;
 import backend.Settings;
 import backend.api.BackendObserver;
 import backend.api.SpeedChartObserver;
+import backend.api.datatypes.SwarmMetadata;
 import backend.file.BlockBuffer;
 import backend.file.FileHandler;
 import backend.json.Chunk;
@@ -27,15 +27,42 @@ public class SwarmEngager extends Thread {
 	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private String swarmId;
+	private SwarmMetadata swarmMetadata;
 	private SpeedChartObserver speedChartObserver;
 
 	private BackendObserver restObserver;
 	private BootstrapCalls bootstrapCalls;
 	private ClientCalls clientCalls;
 
+	/**
+	 * Engage a dark swarm
+	 * 
+	 * @param swarmMetadata
+	 * @param restObserver
+	 * @param bootstrapCalls
+	 * @param clientCalls
+	 */
+	public SwarmEngager(SwarmMetadata swarmMetadata, BackendObserver restObserver, ClientCalls clientCalls) {
+		this.swarmId = swarmMetadata.getId();
+		this.swarmMetadata = swarmMetadata;
+
+		this.restObserver = restObserver;
+		this.bootstrapCalls = null;
+		this.clientCalls = clientCalls;
+	}
+
+	/**
+	 * Engage a public swarm
+	 * 
+	 * @param swarmId
+	 * @param restObserver
+	 * @param bootstrapCalls
+	 * @param clientCalls
+	 */
 	public SwarmEngager(String swarmId, BackendObserver restObserver, BootstrapCalls bootstrapCalls,
 			ClientCalls clientCalls) {
 		this.swarmId = swarmId;
+		swarmMetadata = null;
 
 		this.restObserver = restObserver;
 		this.bootstrapCalls = bootstrapCalls;
@@ -51,24 +78,31 @@ public class SwarmEngager extends Thread {
 	}
 
 	public void run() {
-		// Swarm swarm = bootstrapCalls.getSwarm(swarmId);
-		Swarm swarm = new Swarm();
+		boolean darkSwarm = bootstrapCalls == null;
+		
+		if (!darkSwarm) {
+			Swarm swarm = bootstrapCalls.getSwarm(swarmId);
+			
+			swarmMetadata = new SwarmMetadata(swarmId, swarm.getfilename(), swarm.getblockCount(), swarm.getfileChecksum(), swarm.getmetadataChecksum(),
+					swarm.getpeers(), false);
+		}
+		
 		LOG.log(Level.INFO,
 				"Swarm metadata: swarmId={0}, filename={1}, blockCount={2}, fileChecksum={3}, metadataChecksum={3}",
-				new Object[] { swarmId, swarm.getfilename(), swarm.getblockCount(), swarm.getfileChecksum(),
-						swarm.getmetadataChecksum() });
+				new Object[] { swarmId, swarmMetadata.getFilename(), swarmMetadata.getBlockCount(), swarmMetadata.getFileChecksum(),
+						swarmMetadata.getMetadataChecksum() });
 
 		// 3. swarm.getmetadataChecksum() == shaChecksum(id, filename, size,
 		// fileChecksum);
 
 		// TODO Add metadata to database
 
-		swarmId = "abc123"; // For now just mock the data
-		swarm.setBlockCount(874);
-		swarm.setpeers(Arrays.asList("localhost"));
-		swarm.setFilename("octopus.jpg");
+		/*swarmId = "abc123"; // For now just mock the data
+		swarmMetadata.setBlockCount(874);
+		swarmMetadata.setpeers(Arrays.asList("localhost"));
+		swarmMetadata.setFilename("octopus.jpg");*/
 
-		String filename = "downloaded_" + swarm.getfilename();
+		String filename = "downloaded_" + swarmMetadata.getFilename();
 
 		BlockBuffer blockBuffer = FileHandler.create(filename);
 		if (blockBuffer == null) {
@@ -81,11 +115,11 @@ public class SwarmEngager extends Thread {
 			}
 		}
 
-		restObserver.newSwarm(swarmId, swarm.getfilename(), swarm.getblockCount());
-		restObserver.updateSwarm(swarmId, 0.0, 1.0, swarm.getpeers(), "N/A");
+		restObserver.newSwarm(swarmId, swarmMetadata.getFilename(), swarmMetadata.getBlockCount());
+		restObserver.updateSwarm(swarmId, 0.0, 1.0, swarmMetadata.getPeers(), "N/A");
 
 		// Get available chunks
-		for (String peer : swarm.getpeers()) {
+		for (String peer : swarmMetadata.getPeers()) {
 
 			LOG.log(Level.INFO, "Grabbing avaiable chunks for swarmId={0}, peer={1}", new Object[] { swarmId, peer });
 			Chunks chunks = clientCalls.getFileChunks(peer, swarmId);
@@ -104,8 +138,8 @@ public class SwarmEngager extends Thread {
 		long nextUpdate = System.currentTimeMillis();
 
 		int blockNumber = 0;
-		while (blockNumber < swarm.getblockCount()) {
-			if (swarm.getpeers().isEmpty()) {
+		while (blockNumber < swarmMetadata.getBlockCount()) {
+			if (swarmMetadata.getPeers().isEmpty()) {
 				LOG.log(Level.INFO, "No peers for swarm {0}", swarmId);
 				try {
 					Thread.sleep(20 * 1000);
@@ -116,7 +150,7 @@ public class SwarmEngager extends Thread {
 				continue;
 			}
 
-			String peerIP = swarm.getpeers().get(0);
+			String peerIP = swarmMetadata.getPeers().get(0);
 
 			LOG.log(Level.FINE, "Grabbing block: swarmId={0} blockNumber={1}", new Object[] { swarmId, blockNumber });
 			Chunk chunk = clientCalls.getFileChunk(peerIP, swarmId, blockNumber);
@@ -132,20 +166,20 @@ public class SwarmEngager extends Thread {
 
 			if (System.currentTimeMillis() >= nextUpdate) {
 				nextUpdate = System.currentTimeMillis() + Settings.GUI_UPDATE_INTERVAL;
-				
+
 				// Calculate download speed (bytes / second)
 				double downloadSpeed = (double) downloadedBytes
 						/ ((System.currentTimeMillis() - timestampBegin) / 1000);
 
 				// Calculate ETC (seconds)
-				long etcSeconds = (long) ((double) 1024 * (swarm.getblockCount() - blockNumber - 1) / downloadSpeed);
-				
+				long etcSeconds = (long) ((double) 1024 * (swarmMetadata.getBlockCount() - blockNumber - 1) / downloadSpeed);
+
 				if (speedChartObserver != null) {
 					speedChartObserver.updateSpeedChart(downloadSpeed / 1024);
 				}
-				
-				restObserver.updateSwarm(swarmId, (double) (blockNumber + 1) / (double) swarm.getblockCount(),
-						downloadSpeed / 1024, swarm.getpeers(), toReadableString(etcSeconds));
+
+				restObserver.updateSwarm(swarmId, (double) (blockNumber + 1) / (double) swarmMetadata.getBlockCount(),
+						downloadSpeed / 1024, swarmMetadata.getPeers(), toReadableString(etcSeconds));
 			}
 
 			LOG.log(Level.FINE,
@@ -164,11 +198,11 @@ public class SwarmEngager extends Thread {
 		}
 
 		LOG.log(Level.INFO, "Finished downloading file swarmId={0}, filename={1}",
-				new Object[] { swarmId, swarm.getfilename() });
+				new Object[] { swarmId, swarmMetadata.getFilename() });
 
 		FileHandler.setReadOnly(filename);
 
-		restObserver.updateSwarm(swarmId, 1, 0, swarm.getpeers(), "");
+		restObserver.updateSwarm(swarmId, 1, 0, swarmMetadata.getPeers(), "");
 	}
 
 	private static String toReadableString(long seconds) {
