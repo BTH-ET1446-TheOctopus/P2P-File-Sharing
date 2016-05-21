@@ -189,9 +189,7 @@ public class DatabaseCalls implements DatabaseAPI{
 			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
 			return null;
-		} finally  {
-			sc.closeconnect();
-		}
+		} 
 		return result;
 	}
 	
