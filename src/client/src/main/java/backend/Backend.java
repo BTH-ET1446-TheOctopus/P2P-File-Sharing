@@ -24,6 +24,7 @@ import backend.rest.BootstrapCalls;
 import backend.rest.ClientCalls;
 import backend.thread.BootstrapDataThread;
 import backend.thread.BootstrapHelloThread;
+import backend.thread.ClientSearchThread;
 import backend.thread.SwarmEngager;
 import sql.DatabaseAPI;
 import sql.DatabaseCalls;
@@ -44,6 +45,7 @@ public class Backend implements BackendController {
 
 	private BootstrapHelloThread bootstrapHelloThread;
 	private BootstrapDataThread bootstrapDataThread;
+	private ClientSearchThread clientSearchThread;
 
 	private List<SwarmMetadata> searchResults;
 
@@ -173,14 +175,8 @@ public class Backend implements BackendController {
 
 	@Override
 	public void searchSwarm(String filename) {
-		List<String> peers = new ArrayList<String>();	
-		peers = databaseCalls.getconnPeers();
-		System.out.print(peers.size());
-		int hopLimit = 2;
-		String ip ="127.0.0.1:1337"; //should not be automatic
-		for(int i=0; i<peers.size() && (peers.get(i)!=ip);i++)	{
-		clientCalls.search(peers.get(i),filename, ip, hopLimit);
-		}							
+		clientSearchThread = new ClientSearchThread(filename);
+		clientSearchThread.start();
 	}
 
 	@Override
