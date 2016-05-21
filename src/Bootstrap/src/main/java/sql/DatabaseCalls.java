@@ -25,7 +25,8 @@ public class DatabaseCalls implements DatabaseAPI {
 
 	ResultSet rs = null;
 
-	public boolean addBootstrapServer(String ip, String name, int clientcount, int servercount){  //This method writes to 'servers' table
+	//This method writes to 'bootstrapserver' table
+	public boolean addBootstrapServer(String ip, String name, int clientcount, int servercount){  
 		//sqlconnector sc = new sqlconnector("serverdb");
 		Statement stmnt = sc.getStatement();
 
@@ -42,7 +43,8 @@ public class DatabaseCalls implements DatabaseAPI {
 		return false;
 	}
 
-	public boolean addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid){   //This method writes to 'serverfile' table
+	 //This method writes to 'serverswarm' table
+	public boolean addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid){  
 		//sqlconnector sc = new sqlconnector("serverdb");
 		Statement stmnt = sc.getStatement();
 
@@ -60,7 +62,8 @@ public class DatabaseCalls implements DatabaseAPI {
 	}
 	
 
-	public void addPeers(String id, String latestIP, boolean blacklist, String timestamp ){  //This method writes to 'serverpeers' table
+	//This method writes to 'serverpeers' table
+	public void addPeers(String id, String latestIP, boolean blacklist, String timestamp ){  
 		//sqlconnector sc = new sqlconnector("serverdb");
 		Statement stmnt = sc.getStatement();
 
@@ -539,36 +542,40 @@ public class DatabaseCalls implements DatabaseAPI {
 		
 		Peers inactivePeers = new Peers();
 		String readquery="";
-		int diff;
+		long diff;
 		ResultSet result;
-		String time="";
-		readquery="select distinct latestIP from serverpeers";
+		Timestamp time;
+		Timestamp currentTime = new Timestamp((new java.util.Date()).getTime());
+		readquery="select * from serverpeers";
 		result = sc.runquery(readquery);
 		List<String> ip = new ArrayList<String>();
-
+		
 		try {
 			while(result.next()){
 				//Retrieve by column name
 				String peer = result.getString("latestIP");
-				time = result.getString("timestamp");
-				diff = Integer.parseInt("SELECT TIMESTAMPDIFF(SECOND,'"+time+"',now())");
+				time = result.getTimestamp("timestamp");
 				
-				if (diff > timeout){  //see if the difference is at least 3 minutes
-					ip.add(peer);
-				}
+				//Calculations to find timestamps older than 3 minutes 
+				long seconds1 = time.getTime();
+				long seconds2 = currentTime.getTime();
+				diff = seconds2 - seconds1;
+				long diffSeconds = diff / 1000;
+
+				if (diffSeconds > timeout){  //see if the difference is at least 3 minutes
+				ip.add(peer);
+			}
 				
 			}
 		}
 		catch (Exception e) {
 			System.out.println("Exception in query method:\n" + e.getMessage());
 		}
+		
 		inactivePeers.setpeers(ip) ;
-
+		
 		return inactivePeers;
 
 	}	
 	
 }
-
-
-
