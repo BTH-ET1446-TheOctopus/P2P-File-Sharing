@@ -14,6 +14,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.jfree.util.Log;
 
 import backend.Settings;;
 
@@ -83,28 +84,34 @@ public class ClientCalls {
 		return respons;
 	}
 	public Response search(String clientIP,String filename, String ip, int hopLimit)
-	{			
-		System.out.print("clientIP: " +clientIP +" Filename: " +filename +" IP: "+ip + " HopLimit: " +hopLimit);	
+	{		
+		Response respons=null;
+		LOG.log(Level.INFO,"clientIP: " +clientIP +" Filename: " +filename +" IP: "+ip + " HopLimit: " +hopLimit);
+		try{
 		Client client = ClientBuilder.newClient();
-		         Response respons = client.target("http://"+clientIP+"/")
+		         respons = client.target("http://"+clientIP+"/")
 				.path("rest/search")
 				.queryParam("filename", filename)			
 				.queryParam("ip", ip)							
 				.queryParam("hopLimit", hopLimit)
 				.request(MediaType.APPLICATION_JSON)
 				.post(null);
-		        System.out.print(respons);
+		        System.out.print(respons);		
+		}
+		catch (Exception e) {
+			LOG.log(Level.INFO,"Cannot connect to clientIP"+clientIP+ " Error:"+ e.getMessage());		
+		}
 		return respons;
-		
 		
 	}
 	public Response searchResult(String clientIP, String id, Integer blockCount, String filename, String fileChecksum, String metadataChecksum)
 	
 	{
-		System.out.print("\n");
-		System.out.print("In clientcalls.SearchResult: "+"clientIP: " +clientIP +" id: "+id+" Filename: " +filename);
+		Response respons = null;
+		LOG.log(Level.INFO, "In clientcalls.SearchResult: "+"clientIP: " +clientIP +" id: "+id+" Filename: " +filename);
+		try {
 		Client client = ClientBuilder.newClient();
-		Response respons = client.target("http://"+clientIP+"/")
+				respons = client.target("http://"+clientIP+"/")
 				.path("rest/searchresult")
 				.queryParam("clientIP", clientIP)
 				.queryParam("id", id)				
@@ -115,7 +122,10 @@ public class ClientCalls {
 				.request(MediaType.APPLICATION_JSON)
 				.post(null);
 		System.out.print(respons);
-		
+		} 
+		catch (Exception e)	{
+			LOG.log(Level.INFO,"Cannot connect to clientIP"+clientIP+ " Error:"+ e.getMessage());	
+		}
 		return respons;
 	}
 
