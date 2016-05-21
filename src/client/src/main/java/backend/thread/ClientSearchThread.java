@@ -9,33 +9,21 @@ import sql.DatabaseCalls;
 
 public class ClientSearchThread extends Thread {
 	String filename;
-	String ip;
-	int hopLimit;
 	
-	public ClientSearchThread(String filename, String ip, int hopLimit) {
+	public ClientSearchThread(String filename) {
 		this.filename = filename;
-		this.ip = ip;
-		this.hopLimit = hopLimit;
 	}
 	
 	public void run() {
 		DatabaseCalls databaseCalls = new DatabaseCalls();	
 		ClientCalls clientCalls = new ClientCalls();
-		//Check if the filename is in the database
-		 SwarmMetadata swarm = databaseCalls.getSwarmByName(filename);
-		//if the file exist, get fileinformation and send
-		if(swarm != null)	{
-			//databaseCalls.getswarmInfoBYName(filename);
-			//clientCalls.searchResult(String clientIP, String id, Integer blockCount, String filename, String fileChecksum, String metadataChecksum);
-			}
-		//If the file doesnt exist, send search request to nearby Peers
-		else {
-			List<String> peers = new ArrayList<String>();	
-			peers = databaseCalls.getPeers();
-			hopLimit = hopLimit-1;
-			for(int i=0; i<peers.size() && (peers.get(i)!=ip);i++)	{
-			clientCalls.search(peers.get(1),filename, ip, hopLimit);
-			}							
-		}
+		List<String> peers = new ArrayList<String>();	
+		peers = databaseCalls.getconnPeers();
+		System.out.print(peers.size());
+		int hopLimit = 2;
+		String ip ="127.0.0.1:1337"; //should be automatic
+		for(int i=0; i<peers.size() && (peers.get(i)!=ip);i++)	{
+		clientCalls.search(peers.get(i),filename, ip, hopLimit);
+		}	
 	}
 }
