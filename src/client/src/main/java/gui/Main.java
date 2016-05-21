@@ -19,7 +19,7 @@ public class Main {
 			Logging.newlog();
 		} catch (IOException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
-			throw new RuntimeException("Error when creating log file");
+			//throw new RuntimeException("Error when creating log file");
 		}
 		Logger.getLogger("com.sun.jersey").setLevel(Level.WARNING);
 

@@ -1,4 +1,3 @@
-
 package sql;
 
 import static org.junit.Assert.*;

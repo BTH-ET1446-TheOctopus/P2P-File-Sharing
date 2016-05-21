@@ -21,6 +21,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.jfree.util.Log;
 
 import backend.Settings;;
 
@@ -108,39 +109,56 @@ public class ClientCalls {
 	 */
 	public Chunk getFileChunk(String clientIP, String fileID, int chunk) {
 		Chunk respons = client.target(addressPrefix + clientIP + addressSuffix)
-    			.path("/rest/file/" + fileID + "/" + chunk)
+    			.path("file/" + fileID + "/" + chunk)
     			.queryParam("filename", "Robin hood")
     			.request(MediaType.APPLICATION_JSON)
     			.get(Chunk.class);
 		
 		return respons;
 	}
-	
-	public Response search(String clientIP,String filename, String ip, int hoplimit) {		
-		Response respons = client.target(addressPrefix + clientIP + addressSuffix)
-				.path("/rest/search")
+
+	public Response search(String clientIP,String filename, String ip, int hopLimit)
+	{		
+		Response respons=null;
+		LOG.log(Level.INFO,"clientIP: " +clientIP +" Filename: " +filename +" IP: "+ip + " HopLimit: " +hopLimit);
+		try{
+		Client client = ClientBuilder.newClient();
+		         respons = client.target(addressPrefix + clientIP + addressSuffix)
+				.path("search")
 				.queryParam("filename", filename)			
 				.queryParam("ip", ip)							
-				.queryParam("hoplimit", hoplimit)
+				.queryParam("hopLimit", hopLimit)
 				.request(MediaType.APPLICATION_JSON)
-				.get();
-				
+				.post(null);
+		        System.out.print(respons);		
+		}
+		catch (Exception e) {
+			LOG.log(Level.INFO,"Cannot connect to clientIP"+clientIP+ " Error:"+ e.getMessage());		
+		}
 		return respons;
+		
 	}
+
 	public Response searchResult(String clientIP, String id, Integer blockCount, String filename, String fileChecksum, String metadataChecksum) {
-		Response respons = client.target(addressPrefix + clientIP + addressSuffix)
-				.path("/rest/searchresult")
+		Response respons = null;
+		LOG.log(Level.INFO, "In clientcalls.SearchResult: "+"clientIP: " +clientIP +" id: "+id+" Filename: " +filename);
+		try {
+		Client client = ClientBuilder.newClient();
+				respons = client.target(addressPrefix+clientIP+addressSuffix)
+				.path("searchresult")
+				.queryParam("clientIP", clientIP)
 				.queryParam("id", id)				
 				.queryParam("blockCount", blockCount)
 				.queryParam("filename", filename)
 				.queryParam("fileChecksum", fileChecksum)
 				.queryParam("metadataChecksum", metadataChecksum)
 				.request(MediaType.APPLICATION_JSON)
-				.get();
-		
+				.post(null);
+		System.out.print(respons);
+		} 
+		catch (Exception e)	{
+			LOG.log(Level.INFO,"Cannot connect to clientIP"+clientIP+ " Error:"+ e.getMessage());	
+		}
 		return respons;
 	}
-
-	
-
 }	

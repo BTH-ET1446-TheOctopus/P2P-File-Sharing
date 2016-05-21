@@ -40,6 +40,7 @@ public class Backend implements BackendController {
 
 	private ClientCalls clientCalls;
 	private BootstrapCalls bootstrapCalls;
+	private DatabaseCalls databaseCalls;
 
 	private BootstrapHelloThread bootstrapHelloThread;
 	private BootstrapDataThread bootstrapDataThread;
@@ -70,6 +71,7 @@ public class Backend implements BackendController {
 
 		clientCalls = new ClientCalls();
 		bootstrapCalls = new BootstrapCalls();
+		databaseCalls = new DatabaseCalls();
 
 		bootstrapHelloThread = new BootstrapHelloThread(bootstrapCalls);
 		bootstrapDataThread = new BootstrapDataThread(bootstrapCalls);
@@ -169,7 +171,14 @@ public class Backend implements BackendController {
 
 	@Override
 	public void searchSwarm(String filename) {
-		// TODO Auto-generated method stub
+		List<String> peers = new ArrayList<String>();	
+		peers = databaseCalls.getconnPeers();
+		System.out.print(peers.size());
+		int hopLimit = 2;
+		String ip ="127.0.0.1:1337"; //should not be automatic
+		for(int i=0; i<peers.size() && (peers.get(i)!=ip);i++)	{
+		clientCalls.search(peers.get(i),filename, ip, hopLimit);
+		}							
 	}
 
 	@Override
@@ -204,10 +213,15 @@ public class Backend implements BackendController {
 
 	public void searchResult(String id, Integer blockCount, String filename, String fileChecksum,
 			String metadataChecksum, String ipAddress) {
+		System.out.print("Kommer vi hit?");
 		searchResults.add(
 				new SwarmMetadata(id, filename, blockCount, fileChecksum, metadataChecksum, Arrays.asList(ipAddress)));
-
+		System.out.print(Arrays.asList(ipAddress));
 		restObserver.searchResult(ipAddress, id, filename, blockCount);
+	}
+	public List<SwarmMetadata> getsearchResult()
+	{
+	return searchResults;
 	}
 
 }
