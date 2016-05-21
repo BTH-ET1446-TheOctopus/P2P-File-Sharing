@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.http.server.NetworkListener;
 import org.glassfish.grizzly.ssl.SSLContextConfigurator;
 import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -19,7 +20,7 @@ public class RESTStartUp implements Runnable {
 	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final ResourceConfig rc = new ResourceConfig().packages("backend.rest");
 
-	private String bindAddress;
+	private static String bindAddress;
 
 	public RESTStartUp(String bindAddress) {
 		this.bindAddress = bindAddress;
@@ -35,14 +36,13 @@ public class RESTStartUp implements Runnable {
 			bindAddress = Settings.DEFAULT_CLIENT_ADDRESS;
 		}
 
-		String url = "https://" + bindAddress + ":" + Settings.CLIENT_PORT + "/";
 		Logger.getLogger("com.sun.jersey").setLevel(Level.WARNING);
 		
 		final ResourceConfig rc = new ResourceConfig().packages("backend.rest");
 		
-		final URI uri = URI.create(((Settings.ENABLE_HTTPS) ? "HTTPS://" : "HTTP://") + Settings.DEFAULT_BOOTSTRAP_ADDRESS
-				+ ":" + Settings.CLIENT_PORT + "/");
+		final URI uri = URI.create(((Settings.ENABLE_HTTPS) ? "HTTPS://" : "HTTP://") + bindAddress + ":" + Settings.CLIENT_PORT + "/");
 		
+		HttpServer httpServer = null;
 		if (Settings.ENABLE_HTTPS) {
 			SSLContextConfigurator sslContext = new SSLContextConfigurator();
 
@@ -57,12 +57,13 @@ public class RESTStartUp implements Runnable {
 				System.exit(0);
 			}
 			
-			GrizzlyHttpServerFactory.createHttpServer(uri, rc, true,
+			httpServer = GrizzlyHttpServerFactory.createHttpServer(uri, rc, true,
 					new SSLEngineConfigurator(sslContext).setClientMode(false).setNeedClientAuth(false));
 		} else {
-			GrizzlyHttpServerFactory.createHttpServer(uri, rc);
+			httpServer = GrizzlyHttpServerFactory.createHttpServer(uri, rc);
 		}
-		LOG.log(Level.INFO, "REST server started at {0}", url);
+
+		LOG.log(Level.INFO, "REST server started at {0}", uri.toString());
 	}
 
 	/**
@@ -85,5 +86,9 @@ public class RESTStartUp implements Runnable {
 		calls.getBlacklist();
 		calls.getSwarms();
 		calls.getSwarm("abc123");
+	}
+	
+	public static String getLocalAddress() {
+		return bindAddress;
 	}
 }

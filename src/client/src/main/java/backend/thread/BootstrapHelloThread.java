@@ -18,7 +18,7 @@ public class BootstrapHelloThread extends Thread {
 
 	private BootstrapCalls bootstrapCalls;
 
-	private String clientId;
+	private static String clientId;
 
 	public BootstrapHelloThread(BootstrapCalls bootstrapCalls) {
 		this.bootstrapCalls = bootstrapCalls;
@@ -43,5 +43,9 @@ public class BootstrapHelloThread extends Thread {
 		} catch (InterruptedException e) {
 			LOG.log(Level.FINE, "Thread interrupted");
 		}
+	}
+	
+	public static String getClientId() {
+		return clientId;
 	}
 }

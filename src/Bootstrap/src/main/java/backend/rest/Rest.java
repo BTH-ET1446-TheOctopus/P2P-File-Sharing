@@ -232,7 +232,7 @@ public class Rest {
 						if(fileChecksum != null){
 							if(database.isPeerIDExisting(clientID)){
 								UUID uuid = UUID.randomUUID();
-								//database.addSwarmDB(clientID, blockCount, filename, fileChecksum, metadataChecksum, uuid.toString());
+								database.addSwarmDB(clientID, blockCount, filename, fileChecksum, metadataChecksum, uuid.toString());
 								respons = new ID(uuid.toString());
 							} else {
 								//Peer does not exist

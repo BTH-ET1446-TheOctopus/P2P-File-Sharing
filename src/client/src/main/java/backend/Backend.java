@@ -140,7 +140,7 @@ public class Backend implements BackendController {
 
 	@Override
 	public void createSwarm(String filename) {
-		boolean dark = true; // Add to parameters
+		boolean dark = false; // Add to parameters
 
 		String basename = (new File(filename)).getName();
 		
