@@ -157,7 +157,6 @@ public class Rest {
 			swarmHelp = null;
 		} else {
 			swarmHelp = database.getSwarms();
-			System.out.println(((Swarms) swarmHelp.getSwarms().get(0)).getfilename());
 		}
 		return swarmHelp;
 	}

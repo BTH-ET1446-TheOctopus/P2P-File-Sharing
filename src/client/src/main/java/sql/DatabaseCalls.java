@@ -337,4 +337,10 @@ public class DatabaseCalls implements DatabaseAPI{
 		}
 		return filename;
 	}
+
+	@Override
+	public boolean checkChunkAvaible(String id, Integer chunkNr) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

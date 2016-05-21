@@ -27,44 +27,21 @@ public class DatabaseCalls implements DatabaseAPI {
 
 	//This method writes to 'bootstrapserver' table
 	public boolean addBootstrapServer(String ip, String name, int clientcount, int servercount){  
-		Statement stmnt = sc.getStatement();
-
-		try {
-			stmnt.executeUpdate("INSERT INTO bootstrapserver (ip, name, timestamp, clientcount, servercount) " + 
+		return sc.Update("INSERT INTO bootstrapserver (ip, name, timestamp, clientcount, servercount) " + 
 					"VALUES ('"+ip+"', '"+name+"', default,"+clientcount+", "+servercount+")");
-			return true;
-		} catch (SQLException e) {
-			LOG.log(Level.INFO, e.getMessage(), e);
-		}
-		return false;
 	}
 
 	 //This method writes to 'serverswarm' table
 	public boolean addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid){  
-
-		Statement stmnt = sc.getStatement();
-
-		try {
-			stmnt.executeUpdate("INSERT INTO serverswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
+		return sc.Update("INSERT INTO serverswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
 					"VALUES ('"+filename+"', "+totalblocks+", '"+peers+"', "+peercount+", "+uniquefileid+",'filechecksum', 'metadatachecksum')");
-			return true;
-		} catch (SQLException e) {
-			LOG.log(Level.INFO, e.getMessage(), e);
-		}
-		return false;
 	}
 	
 
 	//This method writes to 'serverpeers' table
 	public void addPeers(String id, String latestIP, boolean blacklist, String timestamp ){  
-		Statement stmnt = sc.getStatement();
-
-		try {
-			stmnt.executeUpdate("INSERT INTO serverpeers (id, latestIP, blacklist, timestamp) " + 
+		sc.Update("INSERT INTO serverpeers (id, latestIP, blacklist, timestamp) " + 
 					"VALUES ('"+id+"', '"+latestIP+"', "+blacklist+", '"+timestamp+"')");
-		} catch (SQLException e) {
-			LOG.log(Level.INFO, e.getMessage(), e);
-		}
 	}
 	
 	public boolean isClientOnSwarm(String swarmID, String clientID){
@@ -458,18 +435,8 @@ public class DatabaseCalls implements DatabaseAPI {
 	@Override
 	public boolean addSwarmDB(String uuidClient, int totalBlocks, String filename, String fileChecksum,
 			String metadataChecksum, String SwarmID) {
-		
-		Statement stmnt = sc.getStatement();
-
-		try {
-			stmnt.executeUpdate("INSERT INTO serverswarm (filename, totalblocks, peers, uniquefileid, filechecksum, metadatachecksum) " + 
+		return sc.Update("INSERT INTO serverswarm (filename, totalblocks, peers, uniquefileid, filechecksum, metadatachecksum) " + 
 					"VALUES ('"+filename+"', "+totalBlocks+", '"+uuidClient+"', "+SwarmID+",'"+fileChecksum+"', '"+metadataChecksum+"')");
-			return true;
-		} catch (SQLException e) {
-			LOG.log(Level.INFO, e.getMessage(), e);
-		}
-		
-		return false;
 	}
 
 	

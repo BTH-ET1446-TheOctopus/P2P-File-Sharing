@@ -102,9 +102,11 @@ public class Backend implements BackendController {
 			LOG.log(Level.WARNING, "Cannot disengage swarm id={0}: has not been engaged", id);
 			return false;
 		}
-
+		
 		swarmEngager.interrupt();
 		activeSwarms.remove(id);
+		
+		databaseCalls.deleteSwarmID(id);
 
 		return true;
 	}
@@ -138,7 +140,7 @@ public class Backend implements BackendController {
 
 	@Override
 	public void createSwarm(String filename) {
-		boolean dark = false; // Add to parameters
+		boolean dark = true; // Add to parameters
 
 		String basename = (new File(filename)).getName();
 		

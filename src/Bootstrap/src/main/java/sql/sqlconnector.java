@@ -8,8 +8,6 @@ import backend.Settings;
 public class sqlconnector {
 	
 	private Connection  connection  = null;
-	private Statement   statement   = null;
-	private ResultSet   set         = null;
 
 	String host;
 	String port;
@@ -47,10 +45,7 @@ public class sqlconnector {
 	private void connect() {
 		try {
 			connection = DriverManager.getConnection(url, login, password);
-			statement = connection.createStatement();
-		}
-
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			// handle any errors
 			LOG.log(Level.SEVERE, ex.toString(), ex);
 			
@@ -61,25 +56,25 @@ public class sqlconnector {
 	}
 
 	public ResultSet runquery(String query){
-
+		Statement statement = null;
+		ResultSet resultSet = null;
 		try {
 			statement = connection.createStatement();
-			set = statement.executeQuery(query);
-		}
-		catch (Exception e) {
+			resultSet = statement.executeQuery(query);
+		} catch (Exception e) {
 			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 		}
-		return set;
+		
+		return resultSet;
 	}
 
 	public boolean Update (String update) {
+		Statement statement = null;
 
 		try {
 			statement = connection.createStatement();
 			statement.executeUpdate(update);
-
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
 			return false;
 		}
@@ -196,8 +191,6 @@ public class sqlconnector {
 
 	public void closeconnect(){
 		//Close all connection to MySQL
-		try { if (set != null) set.close(); set = null; } catch (SQLException e) { LOG.log(Level.INFO, e.getMessage(), e); }
-		try { if (statement != null) statement.close(); statement = null; } catch (SQLException e) { LOG.log(Level.INFO, e.getMessage(), e); }
 		try { if (connection != null) connection.close(); connection = null; } catch (SQLException e) { LOG.log(Level.INFO, e.getMessage(), e); }
 
 	}
@@ -208,22 +201,6 @@ public class sqlconnector {
 
 	public void setConnection(Connection connection) {
 		this.connection = connection;
-	}
-
-	public Statement getStatement() {
-		return statement;
-	}
-
-	public void setStatement(Statement statement) {
-		this.statement = statement;
-	}
-
-	public ResultSet getSet() {
-		return set;
-	}
-
-	public void setSet(ResultSet set) {
-		this.set = set;
 	}
 
 	public void Disconnect () {
