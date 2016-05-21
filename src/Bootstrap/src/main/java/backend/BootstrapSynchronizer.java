@@ -18,18 +18,18 @@ public class BootstrapSynchronizer implements Runnable {
 	public void run() {
 		try {
 			while (true) {
-				Thread.sleep(10 * 1000); // Wait for our own REST server to start. This line should be removed later
+				Thread.sleep(10 * 1000); // Wait for our own REST server to start. TODO This line should be removed later
 
 				long timestampStart = System.currentTimeMillis();
 
-				String url = "http://localhost:9999/rest/";
-				LOG.log(Level.INFO, "Synchronizing data with {0}", url);
-				Sync sync = bootstrapCalls.getSync(url);
+				String address = Settings.DEFAULT_BOOTSTRAP_ADDRESS;
+				LOG.log(Level.INFO, "Synchronizing data with {0}", address);
+				Sync sync = bootstrapCalls.getSync(address);
 
 				long elapsedTime = System.currentTimeMillis() - timestampStart;
 				long sleepTime = (elapsedTime > Settings.BOOTSTRAP_SYNCHRONIZATION_INTERVAL) ? 0
 						: (Settings.BOOTSTRAP_SYNCHRONIZATION_INTERVAL - elapsedTime);
-				Thread.sleep(sleepTime * 1000);
+				Thread.sleep(sleepTime);
 			}
 		} catch (InterruptedException e) {
 			LOG.log(Level.FINE, "Thread interrupted");

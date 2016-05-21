@@ -217,12 +217,12 @@ public class Rest {
 	@POST
 	@Path("/swarms/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String addSwarmDB(@Context org.glassfish.grizzly.http.server.Request caller,
+	public ID addSwarmDB(@Context org.glassfish.grizzly.http.server.Request caller,
 			@QueryParam("blockCount") int blockCount, @QueryParam("filename") String filename,
 			@QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum,
 			@QueryParam("clientID") String clientID) {
 		
-		String respons = null;
+		ID respons = null;
 		if (database.isBlacklisted(caller.getRemoteAddr())) {
 			return respons;
 		} else {
@@ -234,6 +234,7 @@ public class Rest {
 							if(database.isPeerIDExisting(clientID)){
 								UUID uuid = UUID.randomUUID();
 								//database.addSwarmDB(clientID, blockCount, filename, fileChecksum, metadataChecksum, uuid.toString());
+								respons = new ID(uuid.toString());
 							} else {
 								//Peer does not exist
 								LOG.log(Level.WARNING, "Non existing client tries to add file from: " + caller.getRemoteAddr());
@@ -256,7 +257,6 @@ public class Rest {
 				//block count is less than 0
 				LOG.log(Level.WARNING, "Client " + clientID + " IP: " + caller.getRemoteAddr() + "tries to uploade swarm whit zero blocks ");
 			}
-			respons = filename;
 		}
 		return respons;
 	}

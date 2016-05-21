@@ -1,8 +1,11 @@
 package backend;
 
 public final class Settings {
+	public static final boolean ENABLE_HTTPS = false;
 
-	public static final String BOOTSTRAP_URL = "http://localhost:9999/rest/";
+	public static final String DEFAULT_BOOTSTRAP_ADDRESS = "localhost";
+	public static final String BOOTSTRAP_PORT = "9999";
+
 	public static final String DEFAULT_CLIENT_ADDRESS = "0.0.0.0";
 	public static final String CLIENT_PORT = "1337";
 

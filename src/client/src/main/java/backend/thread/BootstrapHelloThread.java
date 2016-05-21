@@ -3,6 +3,7 @@ package backend.thread;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import backend.Settings;
 import backend.json.ID;
 import backend.rest.BootstrapCalls;
 
@@ -36,8 +37,8 @@ public class BootstrapHelloThread extends Thread {
 					
 					clientId = id.getid();
 				}
-				Thread.sleep(10 * 1000);
-				//Thread.sleep(Settings.BOOTSTRAP_HELLO_INTERVAL * 1000);
+				
+				Thread.sleep(Settings.BOOTSTRAP_HELLO_INTERVAL * 1000);
 			}
 		} catch (InterruptedException e) {
 			LOG.log(Level.FINE, "Thread interrupted");

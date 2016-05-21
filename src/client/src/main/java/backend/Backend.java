@@ -1,9 +1,12 @@
 package backend;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,6 +15,9 @@ import backend.api.BackendObserver;
 import backend.api.SpeedChartObserver;
 import backend.api.datatypes.SwarmMetadata;
 import backend.api.datatypes.SwarmMetadataShort;
+import backend.file.BlockBuffer;
+import backend.file.FileHandler;
+import backend.json.ID;
 import backend.json.Swarm;
 import backend.json.Swarms;
 import backend.rest.BootstrapCalls;
@@ -19,6 +25,7 @@ import backend.rest.ClientCalls;
 import backend.thread.BootstrapDataThread;
 import backend.thread.BootstrapHelloThread;
 import backend.thread.SwarmEngager;
+import sql.DatabaseAPI;
 import sql.DatabaseCalls;
 
 public class Backend implements BackendController {
@@ -28,6 +35,8 @@ public class Backend implements BackendController {
 
 	private BackendObserver restObserver;
 	private SpeedChartObserver speedChartObserver;
+
+	private DatabaseAPI databaseAPI;
 
 	private ClientCalls clientCalls;
 	private BootstrapCalls bootstrapCalls;
@@ -58,6 +67,8 @@ public class Backend implements BackendController {
 		restObserver = null;
 		speedChartObserver = null;
 
+		databaseAPI = new DatabaseCalls();
+
 		clientCalls = new ClientCalls();
 		bootstrapCalls = new BootstrapCalls();
 		databaseCalls = new DatabaseCalls();
@@ -76,7 +87,7 @@ public class Backend implements BackendController {
 			LOG.log(Level.WARNING, "Cannot engage swarm id={0}: has already been engaged", id);
 			return false;
 		}
-
+		
 		SwarmEngager swarmEngager = new SwarmEngager(id, restObserver, bootstrapCalls, clientCalls);
 		swarmEngager.start();
 
@@ -127,7 +138,35 @@ public class Backend implements BackendController {
 
 	@Override
 	public void createSwarm(String filename) {
-		// TODO Auto-generated method stub
+		boolean dark = false; // Add to parameters
+
+		String basename = (new File(filename)).getName();
+		
+		BlockBuffer blockBuffer = FileHandler.read(filename);
+		
+		String uuid;
+		int blockCount = -1;
+		try {
+			blockCount = blockBuffer.getBlockCount();
+		} catch (IOException e) {
+			LOG.log(Level.WARNING, e.toString(), e);
+			return;
+		}
+
+		String fileChecksum = "tobedone"; // TODO
+		String metadataChecksum = "todoododododooo"; // TODO
+
+		if (dark) {
+			uuid = UUID.randomUUID().toString();
+		} else {
+			ID uuid_json = bootstrapCalls.addSwarm(filename, blockCount, fileChecksum, metadataChecksum);
+			uuid = uuid_json.getid();
+		}
+
+		databaseAPI.addSwarm(uuid, basename, fileChecksum, metadataChecksum, blockCount, null);
+
+		restObserver.newSwarm(uuid, basename, blockCount);
+		restObserver.updateSwarm(uuid, 1.0, 0, Arrays.asList(""), "");
 	}
 
 	@Override
