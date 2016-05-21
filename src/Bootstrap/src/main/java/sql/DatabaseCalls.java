@@ -3,6 +3,7 @@ package sql;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,34 +25,38 @@ public class DatabaseCalls implements DatabaseAPI {
 
 	ResultSet rs = null;
 
-	public void addBootstrapServer(String ip, String name, int clientcount, int servercount){  //This method writes to 'servers' table
+	public boolean addBootstrapServer(String ip, String name, int clientcount, int servercount){  //This method writes to 'servers' table
 		//sqlconnector sc = new sqlconnector("serverdb");
 		Statement stmnt = sc.getStatement();
 
 		try {
 			stmnt.executeUpdate("INSERT INTO bootstrapserver (ip, name, timestamp, clientcount, servercount) " + 
 					"VALUES ('"+ip+"', '"+name+"', default,"+clientcount+", "+servercount+")");
+			return true;
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
 //		finally {  //close all connection to database
 //			sc.closeconnect();
 //		}
+		return false;
 	}
 
-	public void addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid){   //This method writes to 'serverfile' table
+	public boolean addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid){   //This method writes to 'serverfile' table
 		//sqlconnector sc = new sqlconnector("serverdb");
 		Statement stmnt = sc.getStatement();
 
 		try {
 			stmnt.executeUpdate("INSERT INTO serverswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
 					"VALUES ('"+filename+"', "+totalblocks+", '"+peers+"', "+peercount+", "+uniquefileid+",'filechecksum', 'metadatachecksum')");
+			return true;
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
 //		finally {  //close all connection to database
 //			sc.closeconnect();
 //		}
+		return false;
 	}
 	
 
@@ -475,7 +480,7 @@ public class DatabaseCalls implements DatabaseAPI {
 		//sqlconnector sc = new sqlconnector("serverdb");
 		String readquery="";
 		ResultSet result;
-		String data="";
+		//String data="";
 		readquery="select distinct latestip from serverpeers where blacklist='1'";
 		result = sc.runquery(readquery);
 
@@ -530,33 +535,40 @@ public class DatabaseCalls implements DatabaseAPI {
 		return false;
 	}
 
-	public Peers getInactivePeers(String timeout) {
+	public Peers getInactivePeers(int timeout) {
 		
 		Peers inactivePeers = new Peers();
 		String readquery="";
+		int diff;
 		ResultSet result;
-		String data="";
-		readquery="select distinct peers from serverpeers";
+		String time="";
+		readquery="select distinct latestIP from serverpeers";
 		result = sc.runquery(readquery);
 		List<String> ip = new ArrayList<String>();
 
 		try {
 			while(result.next()){
-				//Retrieve by column name			
-				data = result.getString("peers");	         
+				//Retrieve by column name
+				String peer = result.getString("latestIP");
+				time = result.getString("timestamp");
+				diff = Integer.parseInt("SELECT TIMESTAMPDIFF(SECOND,'"+time+"',now())");
 				
-//		The condition should apply here (being 3 minutes inactive
+				if (diff > timeout){  //see if the difference is at least 3 minutes
+					ip.add(peer);
+				}
 				
 			}
 		}
 		catch (Exception e) {
 			System.out.println("Exception in query method:\n" + e.getMessage());
 		}
-		
-		inactivePeers.setpeers(ip);
+		inactivePeers.setpeers(ip) ;
 
 		return inactivePeers;
 
 	}	
 	
 }
+
+
+

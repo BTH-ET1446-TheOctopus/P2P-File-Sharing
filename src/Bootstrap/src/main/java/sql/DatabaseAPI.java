@@ -35,7 +35,7 @@ public interface DatabaseAPI {
 	public Swarm getSwarm(String swarmID);
 	public Bootstraps getBootstraps();
 	
-	public Peers getInactivePeers(String timeout);
+	public Peers getInactivePeers(int timeout);
 	public boolean removePeers(String CientUUID); 
 	
 	public boolean getSwarmByName(String filename);

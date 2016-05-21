@@ -34,7 +34,13 @@ public class sqlconnector {
 		this.password = password;
 		this.host = host;
 		this.port = port;
-		url = "jdbc:mysql://"+host+":"+port+"/"+db+"?autoReconnect=true&useSSL=false";
+		
+		if (Settings.USE_SQLITE) {
+			url = "jdbc:sqlite:" + Settings.MYSQL_DATABASE;
+		} else {
+			url = "jdbc:mysql://"+host+":"+port+"/"+db+"?autoReconnect=true&useSSL=false";
+		}
+		
 		connect();
 	}
 

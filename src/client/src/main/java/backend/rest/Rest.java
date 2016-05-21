@@ -17,6 +17,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import backend.Backend;
+import backend.api.datatypes.SwarmMetadata;
 import backend.file.BlockBuffer;
 import backend.file.FileHandler;
 import backend.json.Address;
@@ -24,6 +25,7 @@ import backend.json.Chunk;
 import backend.json.Chunks;
 import backend.json.Peers;
 import backend.thread.ClientSearchThread;
+import sql.DatabaseCalls;
 import sql.sqlconnector;
 
 @Path("/rest")
@@ -79,20 +81,45 @@ public class Rest {
 	@POST
 	@Path("/search/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String searchFile(@PathParam("filename") String filename, @QueryParam("ip") String ip,
+	public String searchFile(@QueryParam("filename") String filename, @QueryParam("ip") String ip,
 			@QueryParam("hopLimit") Integer hopLimit) {
 		
-		(new ClientSearchThread(filename, ip, hopLimit)).start();
-		
+		System.out.print("Running search algorith");
+		System.out.print(filename + ip+hopLimit);
+		//(new ClientSearchThread(filename, ip, hopLimit)).start();
+		DatabaseCalls databaseCalls = new DatabaseCalls();	
+		ClientCalls clientCalls = new ClientCalls();
+		//Check if the filename is in the database
+		 SwarmMetadata swarm = databaseCalls.getSwarmByName(filename);		
+		 System.out.print("Swarm:"+swarm);
+		//if the file exist, get file information and send
+		if(swarm != null)	{		
+			System.out.print("/n"+"Swarm!=Null, about to do clientCall.searchResult");
+			clientCalls.searchResult(ip, swarm.getId(), swarm.getBlockCount(), filename, swarm.getFileChecksum(), swarm.getMetadataChecksum());
+			}
+		//If the file doesn't exist, send search request to nearby Peers
+		else {
+			System.out.print("Sending searches to nearby peers");
+			List<String> peers = new ArrayList<String>();	
+			peers = databaseCalls.getconnPeers();
+			hopLimit = hopLimit-1;
+			for(int i=0; i<peers.size() && (peers.get(i)!=ip);i++)	{
+			clientCalls.search(peers.get(i),filename, ip, hopLimit);
+			}							
+		}
+	
 		return filename;
 	}
 
 	@POST
 	@Path("/searchresult/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public void searchResult(@QueryParam("id") String id, @QueryParam("blockCount") Integer blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum)
+	public void searchResult(@QueryParam("clientIP") String clientIP, @QueryParam("id") String id, @QueryParam("blockCount") Integer blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum)
 	{
-		Backend.getInstance().searchResult(id, blockCount, filename, fileChecksum, metadataChecksum, "127.0.0.1");
+		System.out.print("In searchresults" + "id: "+id+"blockcount: "+blockCount +"filename: "+filename);
+		System.out.print("/n");
+		System.out.print("fileChecksum: "+fileChecksum+"metadataChecksum: "+metadataChecksum);
+		Backend.getInstance().searchResult(id, blockCount, filename, fileChecksum, metadataChecksum, clientIP);
 	}
 
 	@GET
