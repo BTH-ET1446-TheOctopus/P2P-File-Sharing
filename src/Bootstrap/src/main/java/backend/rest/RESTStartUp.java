@@ -23,27 +23,27 @@ public class RESTStartUp implements Runnable {
 		Logger.getLogger("com.sun.jersey").setLevel(Level.WARNING);
 		
 		final ResourceConfig rc = new ResourceConfig().packages("backend.rest");
-		//GrizzlyHttpServerFactory.createHttpServer(URI.create(Settings.bootstrapURL), rc);
-		 SSLContextConfigurator sslContext = new SSLContextConfigurator();
-
-	        // set up security context
-	        sslContext.setKeyStoreFile("selfsigned.jks"); // contains server keypair
-	        sslContext.setKeyStorePass("vyshu_09");
-	        sslContext.setTrustStoreFile("truststore_client"); // contains server certificate
-	        sslContext.setTrustStorePass("vyshu_09");
-	        if (!sslContext.validateConfiguration(true)) {
-	        	LOG.severe("context not valid");
-	        	System.exit(0);
-	        }
-	       // ResourceConfig rc = new ResourceConfig();
-	       // rc.registerClasses(SecurityFilter.class, AuthenticationExceptionMapper.class);
-
-	        final HttpServer grizzlyServer = GrizzlyHttpServerFactory.createHttpServer(
-	                URI.create(Settings.bootstrapURL),
-	                rc,
-	                true,
-	                new SSLEngineConfigurator(sslContext).setClientMode(false).setNeedClientAuth(false)
-	        );
+		GrizzlyHttpServerFactory.createHttpServer(URI.create(Settings.bootstrapURL), rc);
+//		 SSLContextConfigurator sslContext = new SSLContextConfigurator();
+//
+//	        // set up security context
+//	        sslContext.setKeyStoreFile("selfsigned.jks"); // contains server keypair
+//	        sslContext.setKeyStorePass("vyshu_09");
+//	        sslContext.setTrustStoreFile("truststore_client"); // contains server certificate
+//	        sslContext.setTrustStorePass("vyshu_09");
+//	        if (!sslContext.validateConfiguration(true)) {
+//	        	LOG.severe("context not valid");
+//	        	System.exit(0);
+//	        }
+//	       // ResourceConfig rc = new ResourceConfig();
+//	       // rc.registerClasses(SecurityFilter.class, AuthenticationExceptionMapper.class);
+//
+//	        final HttpServer grizzlyServer = GrizzlyHttpServerFactory.createHttpServer(
+//	                URI.create(Settings.bootstrapURL),
+//	                rc,
+//	                true,
+//	                new SSLEngineConfigurator(sslContext).setClientMode(false).setNeedClientAuth(false)
+//	        );
 
 		/*
 		HttpServer server = null;

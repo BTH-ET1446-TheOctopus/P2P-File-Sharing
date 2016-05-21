@@ -35,37 +35,37 @@ public class RESTStartUp implements Runnable {
 			bindAddress = Settings.DEFAULT_CLIENT_ADDRESS;
 		}
 
-		String url = "https://" + bindAddress + ":" + Settings.CLIENT_PORT + "/";
-		//GrizzlyHttpServerFactory.createHttpServer(URI.create(url), rc);
-		 SSLContextConfigurator sslContext = new SSLContextConfigurator();
-
-	        // set up security context
-	        sslContext.setKeyStoreFile("selfsigned.jks"); // contains server keypair
-	        sslContext.setKeyStorePass("vyshu_09");
-	        sslContext.setTrustStoreFile("truststore_server"); // contains client certificate
-	        sslContext.setTrustStorePass("vyshu_09");
-	        if (!sslContext.validateConfiguration(true)) {
-	        	LOG.severe("context not valid");
-	        	System.exit(0);
-	        }
-	       // ResourceConfig rc = new ResourceConfig();
-	       // rc.registerClasses(SecurityFilter.class, AuthenticationExceptionMapper.class);
-
-	        final HttpServer grizzlyServer = GrizzlyHttpServerFactory.createHttpServer(
-	                URI.create(url),
-	                rc,
-	                true,
-	                new SSLEngineConfigurator(sslContext).setClientMode(false).setNeedClientAuth(false)
-	        );
-
-	        // start Grizzly embedded server //
-	     //   LOG.info("Jersey app started. Try out " + BASE_URI + "\nHit CTRL + C to stop it...");
-	        try {
-				grizzlyServer.start();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		String url = "http://" + bindAddress + ":" + Settings.CLIENT_PORT + "/";
+		GrizzlyHttpServerFactory.createHttpServer(URI.create(url), rc);
+//		 SSLContextConfigurator sslContext = new SSLContextConfigurator();
+//
+//	        // set up security context
+//	        sslContext.setKeyStoreFile("selfsigned.jks"); // contains server keypair
+//	        sslContext.setKeyStorePass("vyshu_09");
+//	        sslContext.setTrustStoreFile("truststore_server"); // contains client certificate
+//	        sslContext.setTrustStorePass("vyshu_09");
+//	        if (!sslContext.validateConfiguration(true)) {
+//	        	LOG.severe("context not valid");
+//	        	System.exit(0);
+//	        }
+//	       // ResourceConfig rc = new ResourceConfig();
+//	       // rc.registerClasses(SecurityFilter.class, AuthenticationExceptionMapper.class);
+//
+//	        final HttpServer grizzlyServer = GrizzlyHttpServerFactory.createHttpServer(
+//	                URI.create(url),
+//	                rc,
+//	                true,
+//	                new SSLEngineConfigurator(sslContext).setClientMode(false).setNeedClientAuth(false)
+//	        );
+//
+//	        // start Grizzly embedded server //
+//	     //   LOG.info("Jersey app started. Try out " + BASE_URI + "\nHit CTRL + C to stop it...");
+//	        try {
+//				grizzlyServer.start();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		LOG.log(Level.INFO, "REST server started at {0}", url);
 	}
 
