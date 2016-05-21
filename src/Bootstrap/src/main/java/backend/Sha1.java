@@ -9,7 +9,15 @@ import java.security.NoSuchAlgorithmException;
 	 */
 
 public class Sha1 {
-
+String Sha1file(String filename) {
+	return null;
+}
+String Sha1String(String str) {
+	return null;
+}
+String shaByte(byte[]b) {
+	return null;
+}
 static String sha1(String input) throws NoSuchAlgorithmException {
 MessageDigest mDigest = MessageDigest.getInstance("SHA1");//  byte[] result = mDigest.digest(input.getBytes());
 byte[] result = mDigest.digest(input.getBytes());
