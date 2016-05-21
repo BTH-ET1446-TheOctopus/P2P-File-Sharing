@@ -122,8 +122,7 @@ public class ClientCalls {
 		Response respons=null;
 		LOG.log(Level.INFO,"clientIP: " +clientIP +" Filename: " +filename +" IP: "+ip + " HopLimit: " +hopLimit);
 		try{
-		Client client = ClientBuilder.newClient();
-		         respons = client.target(addressPrefix + clientIP + addressSuffix)
+		         client.target(addressPrefix + clientIP + addressSuffix)
 				.path("search")
 				.queryParam("filename", filename)			
 				.queryParam("ip", ip)							
@@ -143,8 +142,7 @@ public class ClientCalls {
 		Response respons = null;
 		LOG.log(Level.INFO, "In clientcalls.SearchResult: "+"clientIP: " +clientIP +" id: "+id+" Filename: " +filename);
 		try {
-		Client client = ClientBuilder.newClient();
-				respons = client.target(addressPrefix+clientIP+addressSuffix)
+				client.target(addressPrefix+clientIP+addressSuffix)
 				.path("searchresult")
 				.queryParam("clientIP", clientIP)
 				.queryParam("id", id)				
