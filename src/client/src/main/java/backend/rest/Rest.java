@@ -81,7 +81,7 @@ public class Rest {
 			List<String> peers = new ArrayList<String>();	
 			peers = databaseCalls.getconnPeers();
 			hopLimit = hopLimit-1;
-			for(int i=0; i<peers.size() && (peers.get(i)!=ip);i++)	{
+			for(int i=0; i<peers.size() && (peers.get(i)!=ip) &&hopLimit!=0;i++)	{
 			clientCalls.search(peers.get(i),filename, ip, hopLimit);
 			}							
 		}
@@ -94,9 +94,7 @@ public class Rest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void searchResult(@QueryParam("clientIP") String clientIP, @QueryParam("id") String id, @QueryParam("blockCount") Integer blockCount, @QueryParam("filename") String filename, @QueryParam("fileChecksum") String fileChecksum, @QueryParam("metadataChecksum") String metadataChecksum)
 	{
-		System.out.print("In searchresults" + "id: "+id+"blockcount: "+blockCount +"filename: "+filename);
-		System.out.print("/n");
-		System.out.print("fileChecksum: "+fileChecksum+"metadataChecksum: "+metadataChecksum);
+		System.out.print("In searchresults");
 		Backend.getInstance().searchResult(id, blockCount, filename, fileChecksum, metadataChecksum, clientIP);
 	}
 
