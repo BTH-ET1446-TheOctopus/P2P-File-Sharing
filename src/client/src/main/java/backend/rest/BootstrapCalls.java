@@ -17,6 +17,7 @@ import backend.json.ID;
 import backend.json.Peers;
 import backend.json.Swarm;
 import backend.json.SwarmsHelper;
+import backend.thread.BootstrapHelloThread;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -126,6 +127,7 @@ public class BootstrapCalls implements calls {
 			.queryParam("blockCount", blockCount)				
 			.queryParam("fileChecksum", fileChecksum)
 			.queryParam("metadataChecksum", metadataChecksum)
+			.queryParam("clientID", BootstrapHelloThread.getClientId())
 			.request(MediaType.APPLICATION_JSON)
 			.post(null, ID.class);
 		
