@@ -5,7 +5,9 @@ import java.util.List;
 
 import backend.api.datatypes.SwarmMetadata;
 import backend.rest.ClientCalls;
+import backend.rest.RESTStartUp;
 import sql.DatabaseCalls;
+
 
 public class ClientSearchThread extends Thread {
 	String filename;
@@ -20,8 +22,8 @@ public class ClientSearchThread extends Thread {
 		List<String> peers = new ArrayList<String>();	
 		peers = databaseCalls.getconnPeers();
 		System.out.print(peers.size());
-		int hopLimit = 2;
-		String ip ="127.0.0.1:1337"; //should be automatic
+		int hopLimit = 2;		
+		String ip =RESTStartUp.getLocalAddress(); //should be automatic
 		for(int i=0; i<peers.size() && (peers.get(i)!=ip);i++)	{
 		clientCalls.search(peers.get(i),filename, ip, hopLimit);
 		}	
