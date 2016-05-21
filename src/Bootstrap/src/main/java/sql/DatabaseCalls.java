@@ -27,7 +27,6 @@ public class DatabaseCalls implements DatabaseAPI {
 
 	//This method writes to 'bootstrapserver' table
 	public boolean addBootstrapServer(String ip, String name, int clientcount, int servercount){  
-		//sqlconnector sc = new sqlconnector("serverdb");
 		Statement stmnt = sc.getStatement();
 
 		try {
@@ -37,15 +36,12 @@ public class DatabaseCalls implements DatabaseAPI {
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
-//		finally {  //close all connection to database
-//			sc.closeconnect();
-//		}
 		return false;
 	}
 
 	 //This method writes to 'serverswarm' table
 	public boolean addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid){  
-		//sqlconnector sc = new sqlconnector("serverdb");
+
 		Statement stmnt = sc.getStatement();
 
 		try {
@@ -55,16 +51,12 @@ public class DatabaseCalls implements DatabaseAPI {
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
-//		finally {  //close all connection to database
-//			sc.closeconnect();
-//		}
 		return false;
 	}
 	
 
 	//This method writes to 'serverpeers' table
 	public void addPeers(String id, String latestIP, boolean blacklist, String timestamp ){  
-		//sqlconnector sc = new sqlconnector("serverdb");
 		Statement stmnt = sc.getStatement();
 
 		try {
@@ -73,9 +65,6 @@ public class DatabaseCalls implements DatabaseAPI {
 		} catch (SQLException e) {
 			LOG.log(Level.INFO, e.getMessage(), e);
 		}
-//		finally {  //close all connection to database
-//			sc.closeconnect();
-//		}
 	}
 	
 	public boolean isClientOnSwarm(String swarmID, String clientID){
@@ -103,7 +92,6 @@ public class DatabaseCalls implements DatabaseAPI {
 	
 	public boolean updateSwarm(String swarmID, String clientID){
 		String readquery="";
-		//readquery="insert into peersarray where swarmID='" + swarmID + "'";
 		readquery = "update peersarray set clientid= '" + clientID+ "'"
 					+ "' where swarmid='"+ swarmID + "'";
 		
@@ -119,8 +107,6 @@ public class DatabaseCalls implements DatabaseAPI {
 	
 	
 	public boolean addPeer(String id, String latestIP, boolean blacklist, String timestamp){
-		//sqlconnector sc = new sqlconnector("serverdb");
-		Statement stmnt = sc.getStatement();
 		boolean updateFlag = false;
 		
 		if(isPeerIDExisting(id)) {
@@ -128,44 +114,29 @@ public class DatabaseCalls implements DatabaseAPI {
 			updateFlag = updatePeer(latestIP, id, timestamp);
 		} else {
 			// Adding new peer if peer don't exist
-			try {
-				stmnt.executeUpdate("INSERT INTO serverpeers (id, latestIP, blacklist, timestamp) " + 
-						"VALUES ('"+id+"', '"+latestIP+"', "+blacklist+", '"+timestamp+"')");
-			} catch (SQLException e) {
-				LOG.log(Level.INFO, e.getMessage(), e);
-			}
+			sc.Update("INSERT INTO serverpeers (id, latestIP, blacklist, timestamp) " + 
+					"VALUES ('"+id+"', '"+latestIP+"', "+blacklist+", '"+timestamp+"')");
 		}
 		return updateFlag;
 	}
 	
 	
 	private boolean updatePeer(String ip, String id, String timestamp, boolean blacklist){
-		//sqlconnector sc = new sqlconnector("serverdb");
 		boolean updateflag=false;
 		String updatequery = "update serverpeers set latestip= + '"+ip+ "',"
 				+ " timestamp='"+ timestamp + " blacklist='"+ blacklist + "' where id='"+ id + "'";
 		updateflag=sc.Update(updatequery);
-//		sc.closeconnect();
 		return updateflag;
 	}
 	
 	public void addPeerArray(String uniquefileid, String peers){  //This method writes to 'peersarray' table
-		//sqlconnector sc = new sqlconnector("serverdb");
-		Statement stmnt = sc.getStatement();
 
-		try {
-			stmnt.executeUpdate("INSERT INTO peersarray (uniquefileid, peers) " + 
+		sc.Update("INSERT INTO peersarray (uniquefileid, peers) " + 
 					"VALUES ( '"+uniquefileid+"', '"+peers+"')");
-		} catch (SQLException e) {
-			LOG.log(Level.INFO, e.getMessage(), e);
-		}
-//		finally {  //close all connection to database
-//			sc.closeconnect();
-//		}
 	}
 
 	public boolean isPeerIDExisting(String id){
-		//sqlconnector sc = new sqlconnector("serverdb");
+
 		String query = "select distinct id from serverpeers where id =" + "'"+ id + "'";	
 		rs=sc.runquery(query);
 		try {
@@ -177,19 +148,15 @@ public class DatabaseCalls implements DatabaseAPI {
 			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
 		}
-//		finally  {
-//			sc.closeconnect();
-//		}
 		return false;
 	}
 
 	public boolean updatePeer(String ip, String id, String timestamp){
-		//sqlconnector sc = new sqlconnector("serverdb");
+
 		boolean updateflag=false;
 		String updatequery = "update serverpeers set latestip= + '"+ip+ "',"
 				+ " timestamp='"+ timestamp + "' where id='"+ id + "'";
 		updateflag=sc.Update(updatequery);
-//		sc.closeconnect();
 		return updateflag;
 	}
 
@@ -212,7 +179,6 @@ public class DatabaseCalls implements DatabaseAPI {
 	}
 
 	public getIPoStatus getPeers(){   //This method reads from 'serverpeers' table
-		//sqlconnector sc = new sqlconnector("serverdb");
 		String latestIP = null;
 		String blackList = null;
 		rs = sc.runquery("SELECT * FROM serverpeers");
@@ -237,9 +203,6 @@ public class DatabaseCalls implements DatabaseAPI {
 			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
 		}
-//		finally  {
-//			sc.closeconnect();
-//		}
 
 		return new getIPoStatus(latestIP, blackList);
 
@@ -248,7 +211,6 @@ public class DatabaseCalls implements DatabaseAPI {
 	public Peers getpeers(){
 		Peers peers = new Peers();
 		String readquery="";
-		//sqlconnector SC = new sqlconnector("serverdb");
 		ResultSet result;
 		String data="";
 		int counter=0;
@@ -270,7 +232,6 @@ public class DatabaseCalls implements DatabaseAPI {
 		catch (Exception e) {
 			System.out.println("Exception in query method:\n" + e.getMessage());
 		}
-//		test.closeconnect();
 		peers.setpeers(ip);
 
 		return peers;
@@ -279,7 +240,6 @@ public class DatabaseCalls implements DatabaseAPI {
 	public Bootstraps getBootstraps(){
 		Bootstraps bootstraps = new Bootstraps();
 		String readquery="";
-		//sqlconnector sc = new sqlconnector("severdb");
 		ResultSet result;
 		String data="";
 		readquery="select distinct ip from bootstrapserver";
@@ -297,13 +257,11 @@ public class DatabaseCalls implements DatabaseAPI {
 		catch (Exception e) {
 			System.out.println("Exception in query method:\n" + e.getMessage());
 		}
-//		test.closeconnect();
 		bootstraps.setbootstraps(ip);
 		return bootstraps;
 	}
 
 	public Blacklist getBlacklist()	{
-		//sqlconnector sc = new sqlconnector("serverdb");
 		Blacklist blacklist = new Blacklist();
 
 		String readquery="";
@@ -331,7 +289,6 @@ public class DatabaseCalls implements DatabaseAPI {
 	public SwarmsHelper getSwarms(){
 		SwarmsHelper swarmHelp = new SwarmsHelper();
 		String readquery="";
-		//sqlconnector sc = new sqlconnector("serverdb");
 		ResultSet result;
 		readquery="select * from serverswarm";
 		result = sc.runquery(readquery);
@@ -352,7 +309,6 @@ public class DatabaseCalls implements DatabaseAPI {
 		catch (Exception e) {
 			System.out.println("Exception in query method:\n" + e.getMessage());
 		}
-//		sc.closeconnect();
 		swarmHelp.setSwarms(swarms);		
 		return swarmHelp;
 	}
@@ -360,7 +316,6 @@ public class DatabaseCalls implements DatabaseAPI {
 	public Swarm getSwarm(String swarmID){
 		Swarm swarm = new Swarm();
 		String readquery="";
-		//sqlconnector sc = new sqlconnector("serverdb");
 		ResultSet result;
 		int blockcount=0;
 		String filename="";
@@ -405,8 +360,7 @@ public class DatabaseCalls implements DatabaseAPI {
 		}
 		catch (Exception e) {
 			System.out.println("Exception in query method:\n" + e.getMessage());
-		}
-//		sc.closeconnect();	
+		}	
 		swarm.setPeers(peers);
 		return swarm;
 	}
@@ -480,7 +434,6 @@ public class DatabaseCalls implements DatabaseAPI {
 	 * @return true if ip was blacklisted in db
 	 */
 	public boolean isBlacklisted(String ip) {
-		//sqlconnector sc = new sqlconnector("serverdb");
 		String readquery="";
 		ResultSet result;
 		//String data="";
@@ -526,7 +479,6 @@ public class DatabaseCalls implements DatabaseAPI {
 		readquery="delete from serverpeers where peers='"+ClientUUID+"'";
 
 		try {
-//		result = sc.runquery(readquery);
 		result = sc.Update(readquery);
 //		LOG.log(Level.INFO, ClientUUID + " : removed from server (inactive for 3 minutes)");
 		return true;
@@ -577,5 +529,4 @@ public class DatabaseCalls implements DatabaseAPI {
 		return inactivePeers;
 
 	}	
-	
 }
