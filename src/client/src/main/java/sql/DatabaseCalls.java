@@ -240,14 +240,14 @@ public class DatabaseCalls implements DatabaseAPI{
 		ResultSet values; 
 		
 		String query = "SELECT uniquefileid FROM clientswarm WHERE uniquefileid = " + "'" + swarmId + "'";
-		values = sc.runquery(query);
+		rs = sc.runquery(query);
+		
 		try {
-			if(values.getString("uniquefileid").equals(swarmId)){
+			if(rs.next()){
 				flag = true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.log(Level.INFO, e.getMessage(), e);
 		}
 		
 		return flag;
@@ -289,10 +289,24 @@ public class DatabaseCalls implements DatabaseAPI{
 		
 		
 		if(isSwarmExisting(swarmId)){
-			String query = "INSERT INTO peersarray (uniquefileid, peers) " + 
-					"VALUES ('"+swarmId+"', '"+ip+"')";
-			rs = sc.runquery(query);
-			
+			if(!checkExistenceOfPeerInSwarmID(swarmId, ip)){
+				String query = "INSERT INTO peersarray (uniquefileid, peers) " + 
+						"VALUES ('"+swarmId+"', '"+ip+"')";
+				try{
+					sc.Update(query);
+					if(checkExistenceOfPeerInSwarmID(swarmId, ip))
+					{
+						//The peer is added to the swarm
+						flag = true;
+					}
+				} catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			} else {
+				//The peer is already added to the swarm
+				flag = true;
+			}
 		}
 		
 		return flag;
@@ -301,11 +315,17 @@ public class DatabaseCalls implements DatabaseAPI{
 	private boolean checkExistenceOfPeerInSwarmID(String swarmId, String ip)
 	{
 		boolean flag = false;
-		String query = "SELECT * FROM peersarray WHERE uniquefileid = '"+swarmId+"' AND (peers = '"+ip+"') ";
+		String query = "SELECT * FROM peersarray WHERE uniquefileid = '"+swarmId+"' AND (peers = '"+ip+"'); ";
 		
 		rs = sc.runquery(query);
-		
-		
+		try{
+			if(rs.next())
+			{
+				flag = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return flag;
 	}
 	

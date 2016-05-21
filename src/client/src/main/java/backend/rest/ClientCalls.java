@@ -60,7 +60,7 @@ public class ClientCalls {
 		}
 		
 		addressPrefix = ((Settings.ENABLE_HTTPS) ? "HTTPS://" : "HTTP://");
-		addressSuffix = ":" + Settings.BOOTSTRAP_PORT + "/rest";
+		addressSuffix = ":" + Settings.CLIENT_PORT + "/rest";
 	}
 	
 	/**

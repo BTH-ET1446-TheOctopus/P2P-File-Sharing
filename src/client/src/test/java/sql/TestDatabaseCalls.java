@@ -66,14 +66,16 @@ public class TestDatabaseCalls {
 		String fileChecksum1 ="";
 		int blockCount = 10;
 		String metadataChecksum1 = "";
-		
+
 		String ip = "190.160.12.1";
+		String fakeSwarm = "XD%¤%¤%";
 		
 		database.addSwarm(swarmID1, filename, fileChecksum1, metadataChecksum1, blockCount, uuidClient1);
 		
-		database.addPeers(swarmID1, ip);
+		assertEquals(true, database.addPeers(swarmID1, ip));
+		assertEquals(false, database.addPeers(fakeSwarm, ip));
 	}
-	
+	/*
 	@org.junit.Test
 	public void getSwarmByName()
 	{
@@ -93,7 +95,6 @@ public class TestDatabaseCalls {
 	
 		assertEquals(filename, swarm.getFilename());
 		assertNull(swarm2);
-
 	}
 	/*
 	@org.junit.Test
