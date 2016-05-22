@@ -325,7 +325,8 @@ public class Client implements BackendObserver
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				peerlist = new GetPeerList();
-
+	    btnNewButton = new JButton("");
+	           
 			}
 		});
 		GroupLayout gl_iconBar = new GroupLayout(iconBar);
@@ -422,6 +423,8 @@ public class Client implements BackendObserver
 	private void createDarkPeerButton()
 	{
 		darkPeerbtn = new JButton();
+		darkPeerbtn.setForeground(Color.LIGHT_GRAY);
+		darkPeerbtn.setBackground(Color.DARK_GRAY);
 
 		if (this.darkStatus == false)
 		{
@@ -499,7 +502,7 @@ public class Client implements BackendObserver
 		{
 			this.darkStatus = true;
 			darkPeerbtn.setToolTipText("Your machine is invisible to the servers!");
-			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/darkPeer.png")));
+			darkPeerbtn.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/dark_peer.png")));
 
 		} else
 		{
