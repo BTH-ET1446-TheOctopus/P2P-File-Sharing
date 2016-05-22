@@ -80,8 +80,7 @@ public class Mode extends JDialog
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-
-				backend.createSwarm(address);
+				backend.createSwarm(address, rdbtnPrivate.isSelected());
 				frame.setVisible(false);
 			}
 		});

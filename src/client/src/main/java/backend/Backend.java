@@ -141,9 +141,7 @@ public class Backend implements BackendController {
 	}
 
 	@Override
-	public void createSwarm(String filename) {
-		boolean dark = false; // Add to parameters
-
+	public void createSwarm(String filename, boolean dark) {
 		String basename = (new File(filename)).getName();
 		
 		BlockBuffer blockBuffer = FileHandler.read(filename);

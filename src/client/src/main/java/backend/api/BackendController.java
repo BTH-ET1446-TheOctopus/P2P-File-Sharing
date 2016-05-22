@@ -81,8 +81,9 @@ public interface BackendController {
 	 * {@link BackendObserver#newSwarm(String, String, int, String)}.
 	 * 
 	 * @param filename
+	 * @param dark
 	 */
-	public void createSwarm(String filename);
+	public void createSwarm(String filename, boolean dark);
 
 	/**
 	 * Search for a file among other peers. The function will return
