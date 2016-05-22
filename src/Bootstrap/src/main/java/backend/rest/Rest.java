@@ -3,6 +3,7 @@ package backend.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -266,6 +267,27 @@ public class Rest {
 		return respons;
 	}
 
+	@DELETE
+	@Path("/swarms/{swarmID}/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Swarm deleteSwarm(@Context org.glassfish.grizzly.http.server.Request caller,
+			@PathParam("swarmID") String swarmID, @QueryParam("clientID") String clientID) {
+		Swarm swarm = new Swarm();
+
+		if (database.isBlacklisted(caller.getRemoteAddr())) {
+			swarm = null;
+		} else {
+			if (database.isSwarmExisting(swarmID)) {
+				if (database.removePeerArray(swarmID, clientID)) {
+					LOG.info("Removed peer "+clientID+" from swarm "+swarmID);
+				} else {
+					LOG.warning("Failed to removed peer "+clientID+" from swarm "+swarmID);
+				}
+			}
+		}
+		return swarm;
+	}
+	
 	/**
 	 * Function used by bootstrap servers to sync whit each other.
 	 * @return Bootstrap information for other servers

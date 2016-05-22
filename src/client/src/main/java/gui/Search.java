@@ -311,7 +311,9 @@ public class Search extends JDialog
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				UpdateSearchResult();
+				System.out.println("GUI download: "+searchNeighborsResultTable.getValueAt(searchNeighborsResultTable.getSelectedRow(), 0));
+				backend.engageSwarm(
+						(String) searchNeighborsResultTable.getValueAt(searchNeighborsResultTable.getSelectedRow(), 0));
 			}
 		});
 	}

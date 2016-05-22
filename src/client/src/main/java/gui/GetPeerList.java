@@ -16,6 +16,7 @@ import javax.swing.table.TableModel;
 
 import backend.Backend;
 import backend.api.datatypes.*;
+import backend.thread.BootstrapDataThread;
 import sql.DatabaseCalls;
 
 
@@ -33,8 +34,7 @@ public class GetPeerList extends JFrame
     	JTable Peerstable = new JTable();
         DatabaseCalls databaseCalls;
         databaseCalls = new DatabaseCalls();
-        List<String> peers = new ArrayList<String>();	
-		peers = databaseCalls.getconnPeers();
+        List<String> peers = BootstrapDataThread.getPeers();
 		DefaultTableModel model = (DefaultTableModel) Peerstable.getModel();
 		String[] columnNames = {"Connecting peers"};
 		model.setColumnIdentifiers(columnNames);

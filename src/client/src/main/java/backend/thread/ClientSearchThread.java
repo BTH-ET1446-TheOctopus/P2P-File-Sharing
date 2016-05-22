@@ -19,8 +19,8 @@ public class ClientSearchThread extends Thread {
 	public void run() {
 		DatabaseCalls databaseCalls = new DatabaseCalls();	
 		ClientCalls clientCalls = new ClientCalls();
-		List<String> peers = new ArrayList<String>();	
-		peers = databaseCalls.getconnPeers();
+		List<String> peers = BootstrapDataThread.getPeers();
+		//peers = databaseCalls.getconnPeers();
 		System.out.print(peers.size());
 		int hopLimit = 2;		
 		String ip =RESTStartUp.getLocalAddress(); //should be automatic

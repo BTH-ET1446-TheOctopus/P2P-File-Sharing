@@ -7,6 +7,7 @@ import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import backend.Settings;
 import backend.api.calls;
@@ -117,6 +118,15 @@ public class BootstrapCalls implements calls {
 
 		LOG.log(Level.INFO, respons.toString());
 		return respons;
+	}
+		
+	public void removeClientFromSwarm(String fileID) {
+		Response respons = client.target(bootstrapUrl).path("swarms/" + fileID)
+				.queryParam("clientID", BootstrapHelloThread.getClientId())
+				.request(MediaType.APPLICATION_JSON)
+				.delete();
+
+		LOG.log(Level.INFO, respons.toString());
 	}
 
 	public ID addSwarm(String filename, int blockCount, String fileChecksum, String metadataChecksum) {

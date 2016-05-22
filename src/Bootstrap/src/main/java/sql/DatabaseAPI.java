@@ -18,6 +18,7 @@ public interface DatabaseAPI {
 	public boolean addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid);
 	public void addPeers(String id, String latestIP, boolean blacklist, String timestamp);
 	public boolean addPeerArray(String uniquefileid, String clientIP, String clientID);
+	public boolean removePeerArray(String uniquefileid, String clientID);
 	
 	public boolean isPeerIDExisting(String id);
 	public boolean updatePeer(String ip, String id, String timestamp);

@@ -92,7 +92,21 @@ public class Backend implements BackendController {
 			return false;
 		}
 		
-		SwarmEngager swarmEngager = new SwarmEngager(id, restObserver, bootstrapCalls, clientCalls);
+		SwarmMetadata darkSwarmMetadata = null;
+		for (SwarmMetadata swarmMetadata : searchResults) {
+			if (swarmMetadata.getId().equals(id)) {
+				darkSwarmMetadata = swarmMetadata;
+				break;
+			}
+		}
+		
+		SwarmEngager swarmEngager = null;
+		if (darkSwarmMetadata == null) {
+			swarmEngager = new SwarmEngager(id, restObserver, bootstrapCalls, clientCalls);
+		} else {
+			swarmEngager = new SwarmEngager(darkSwarmMetadata, restObserver, clientCalls);
+		}
+		
 		swarmEngager.start();
 
 		activeSwarms.put(id, swarmEngager);
@@ -104,13 +118,14 @@ public class Backend implements BackendController {
 		SwarmEngager swarmEngager = activeSwarms.get(id);
 		if (swarmEngager == null) {
 			LOG.log(Level.WARNING, "Cannot disengage swarm id={0}: has not been engaged", id);
-			return false;
+		} else {
+			swarmEngager.interrupt();
+			activeSwarms.remove(id);
 		}
 		
-		swarmEngager.interrupt();
-		activeSwarms.remove(id);
-		
 		databaseCalls.deleteSwarmID(id);
+		
+		bootstrapCalls.removeClientFromSwarm(id);
 
 		return true;
 	}

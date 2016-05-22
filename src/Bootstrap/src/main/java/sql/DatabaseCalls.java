@@ -493,5 +493,10 @@ public class DatabaseCalls implements DatabaseAPI {
 		
 		return inactivePeers;
 
+	}
+
+	@Override
+	public boolean removePeerArray(String uniquefileid, String clientID) {
+		return sc.Update("DELETE FROM peersarray WHERE uniquefileid = '"+uniquefileid+"' AND clientid = '"+clientID+"'");
 	}	
 }

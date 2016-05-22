@@ -19,10 +19,10 @@ public class BootstrapDataThread extends Thread {
 
 	private BootstrapCalls bootstrapCalls;
 
-	private List<String> peers;
-	private List<String> bootstraps;
-	private List<Swarms> swarms;
-	private List<String> blacklist;
+	private static List<String> peers;
+	private static List<String> bootstraps;
+	private static List<Swarms> swarms;
+	private static List<String> blacklist;
 
 	public BootstrapDataThread(BootstrapCalls bootstrapCalls) {
 		this.bootstrapCalls = bootstrapCalls;
@@ -53,19 +53,19 @@ public class BootstrapDataThread extends Thread {
 		}
 	}
 
-	public List<String> getPeers() {
+	public static List<String> getPeers() {
 		return peers;
 	}
 
-	public List<String> getBootstraps() {
+	public static List<String> getBootstraps() {
 		return bootstraps;
 	}
 
-	public List<Swarms> getSwarms() {
+	public static List<Swarms> getSwarms() {
 		return swarms;
 	}
 
-	public List<String> getBlacklist() {
+	public static List<String> getBlacklist() {
 		return blacklist;
 	}
 }
