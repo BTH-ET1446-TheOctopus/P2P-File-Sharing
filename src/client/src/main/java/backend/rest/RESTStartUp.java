@@ -49,7 +49,7 @@ public class RESTStartUp implements Runnable {
 			// set up security context
 			sslContext.setKeyStoreFile("selfsigned.jks"); // contains server keypair
 			sslContext.setKeyStorePass("vyshu_09");
-			sslContext.setTrustStoreFile("truststore_client"); // contains server certificate
+			sslContext.setTrustStoreFile("truststore_server"); // contains server certificate
 			sslContext.setTrustStorePass("vyshu_09");
 
 			if (!sslContext.validateConfiguration(true)) {
