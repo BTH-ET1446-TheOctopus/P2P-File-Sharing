@@ -144,7 +144,7 @@ public class ClientCalls {
 		try {
 				client.target(addressPrefix+clientIP+addressSuffix)
 				.path("searchresult")
-				.queryParam("clientIP", clientIP)
+				.queryParam("clientIP", Settings.DEFAULT_CLIENT_ADDRESS)
 				.queryParam("id", id)				
 				.queryParam("blockCount", blockCount)
 				.queryParam("filename", filename)

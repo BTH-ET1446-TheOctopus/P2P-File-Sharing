@@ -47,6 +47,7 @@ public class Main {
 		test.closeconnect();
 		
 		String bindAddress = (args.length > 0) ? args[0] : null;
+		Settings.DEFAULT_CLIENT_ADDRESS = args[0];
 		Settings.DEFAULT_BOOTSTRAP_ADDRESS = args[1];
 		
 		final Thread restServerThread = new Thread(new RESTStartUp(bindAddress));
