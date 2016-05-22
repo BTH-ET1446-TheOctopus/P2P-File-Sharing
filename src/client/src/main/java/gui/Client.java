@@ -57,7 +57,7 @@ public class Client implements BackendObserver
 	private SpeedChart					speedChartWindow;
 //	private JButton						peerlist;
 	private Backend backend;
-	private JButton btnNewButton;
+	private JButton peerlistbutton;
 
 	/**
 	 * This method creates the Octopus P2P client GUI.
@@ -319,13 +319,13 @@ public class Client implements BackendObserver
 		search = new JButton();
 		search.setToolTipText("Search");
 		search.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileSearch.png")));
-		btnNewButton = new JButton("");
-		btnNewButton.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/peerlist2.png")));
-		//btnNewButton.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/peerlist.png")));
-		btnNewButton.addActionListener(new ActionListener() {
+		peerlistbutton = new JButton("");
+		peerlistbutton.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/peerlist2.png")));
+		//peerlistbutton.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/peerlist.png")));
+		peerlistbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				peerlist = new GetPeerList();
-	    btnNewButton = new JButton("");
+	   // btnNewButton = new JButton("");
 	           
 			}
 		});
@@ -340,7 +340,7 @@ public class Client implements BackendObserver
 					.addComponent(pauseTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 					.addComponent(resumeTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 					.addGap(388)
-					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+					.addComponent(peerlistbutton, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(speedChart, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 					.addComponent(search, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
@@ -349,7 +349,7 @@ public class Client implements BackendObserver
 			gl_iconBar.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_iconBar.createSequentialGroup()
 					.addGroup(gl_iconBar.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(btnNewButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(peerlistbutton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(newTorrent, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
 						.addComponent(removeTorrent, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
 						.addComponent(pauseTorrent, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
