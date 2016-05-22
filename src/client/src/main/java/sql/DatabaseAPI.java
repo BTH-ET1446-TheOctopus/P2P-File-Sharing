@@ -8,7 +8,7 @@ public interface DatabaseAPI {
 
 	public boolean addSwarm(String swarmid, String filename, String fileChecksum, String metadataChecksum, int blockCount, String clientID);
 	public boolean addPeers(String swarmId, String ip); //What is the difference from the one bellow? 
-	//public void addPeerArray(String uniquefileid, String peers); //What is the difference from the one above
+	public boolean addPeerArray(String uniquefileid, String peers); //What is the difference from the one above
 	
 	public boolean isSwarmExisting(String swarmId);
 	

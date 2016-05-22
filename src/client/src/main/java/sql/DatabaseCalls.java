@@ -208,9 +208,9 @@ public class DatabaseCalls implements DatabaseAPI{
 	} 
 	
 	// WRITES TO TABLES IN 'CLIENTDB'
-	public void addPeerArray(String uniquefileid, String peers){  //This method writes to 'peersarray' table
+	public boolean addPeerArray(String uniquefileid, String peers){  //This method writes to 'peersarray' table
 
-		sc.Update("INSERT INTO peersarray (uniquefileid, peers) " + 
+		return sc.Update("INSERT INTO peersarray (uniquefileid, peers) " + 
 				"VALUES ( '"+uniquefileid+"', '"+peers+"')");
 	}
 	
