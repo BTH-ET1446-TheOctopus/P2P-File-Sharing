@@ -236,16 +236,15 @@ public class DatabaseCalls implements DatabaseAPI{
 		//sqlconnector sc = new sqlconnector();
 		//Statement stmnt = sc.getStatement();
 		boolean flag = false;
-		if(!isSwarmExisting(swarmid))
-		{
-		//try {
+		if(!isSwarmExisting(swarmid)) {
 			String query = "INSERT INTO clientswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
 					"VALUES ('"+filename+"', "+blockCount+", '192.168.2.2', 1, '"+swarmid+"', '"+fileChecksum+"', '"+metadataChecksum+"' )";
-			flag = sc.Update(query);
-		//} catch (SQLException e) {
-		//	LOG.log(Level.INFO, e.getMessage(), e);
-		//}
+			sc.Update(query);
 		}
+		if(isSwarmExisting(swarmid)) {
+			flag = true;
+		}
+		
 		return flag;
 	}
 	
@@ -307,8 +306,10 @@ public class DatabaseCalls implements DatabaseAPI{
 			String query = "DELETE FROM clientswarm WHERE uniquefileid = " + "'" + swarmID + "'";
 			rs = sc.runquery(query);
 			try {
-				if(rs.getString("uniquefileid").equals(swarmID)){
-					flag = true;
+				if(rs != null){
+					if(rs.getString("uniquefileid").equals(swarmID)){
+						flag = true;
+					}
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
