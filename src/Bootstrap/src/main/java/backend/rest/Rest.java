@@ -97,7 +97,7 @@ public class Rest {
 		if (database.isBlacklisted(caller.getRemoteAddr())) {
 			peers = null;
 		} else {
-			peers = database.getpeers();
+			peers.setpeers(database.getpeers());
 		}
 		return peers;
 	}
@@ -117,7 +117,7 @@ public class Rest {
 		if (database.isBlacklisted(caller.getRemoteAddr())) {
 			bootstraps = null;
 		} else {
-			bootstraps = database.getBootstraps();
+			bootstraps.setbootstraps(database.getBootstraps()); 
 		}
 		return bootstraps;
 	}
@@ -136,7 +136,7 @@ public class Rest {
 		if (database.isBlacklisted(caller.getRemoteAddr())) {
 			blacklist = null;
 		} else {
-			blacklist = database.getBlacklist();
+			blacklist.setblacklist(database.getBlacklist());
 		}
 		return blacklist;
 	}

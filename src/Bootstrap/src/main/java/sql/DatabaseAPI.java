@@ -4,6 +4,9 @@ import sql.DatabaseCalls.getIPoStatus;
 import backend.json.SwarmsHelper;
 import backend.json.Swarm;
 import backend.json.Peers;
+
+import java.util.List;
+
 import backend.json.Blacklist;
 import backend.json.Bootstraps;
 import backend.json.Sync;
@@ -28,12 +31,12 @@ public interface DatabaseAPI {
 	public void closedbconnect();
 	
 	public getIPoStatus getPeers();
-	public Blacklist getBlacklist();
+	public List<String> getBlacklist();
 	public Sync getSync();
-	public Peers getpeers();
+	public List<String> getpeers();
 	public SwarmsHelper getSwarms();
 	public Swarm getSwarm(String swarmID);
-	public Bootstraps getBootstraps();
+	public List<String> getBootstraps();
 	
 	public Peers getInactivePeers(int timeout);
 	public boolean removePeers(String CientUUID); 
