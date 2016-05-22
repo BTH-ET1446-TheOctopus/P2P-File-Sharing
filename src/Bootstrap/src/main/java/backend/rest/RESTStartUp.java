@@ -29,7 +29,7 @@ public class RESTStartUp implements Runnable {
 			SSLContextConfigurator sslContext = new SSLContextConfigurator();
 
 			// set up security context
-			sslContext.setKeyStoreFile("selfsigned.jks"); // contains server keypair
+			sslContext.setKeyStoreFile("servercertificate"); // contains server keypair
 			sslContext.setKeyStorePass("vyshu_09");
 			sslContext.setTrustStoreFile("truststore_client"); // contains server
 																// certificate
