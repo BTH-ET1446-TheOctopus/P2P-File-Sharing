@@ -186,6 +186,8 @@ public class Rest {
 					// New client connecting to swarm
 					swarm = database.getSwarm(swarmID);
 					
+					database.addPeerArray(swarmID, caller.getRemoteAddr(), clientID);
+					
 					//if (database.updateSwarm(swarmID, clientID)) {
 						// Success on update swarm
 						LOG.log(Level.INFO, "Client: " + clientID + " added on swarm: " + swarmID);
@@ -232,7 +234,11 @@ public class Rest {
 						if(fileChecksum != null){
 							if(database.isPeerIDExisting(clientID)){
 								UUID uuid = UUID.randomUUID();
+								LOG.info("Add new swarm id="+uuid.toString()+", filename="+filename);
 								database.addSwarmDB(clientID, blockCount, filename, fileChecksum, metadataChecksum, uuid.toString());
+								
+								database.addPeerArray(uuid.toString(), caller.getRemoteAddr(), clientID);
+								
 								respons = new ID(uuid.toString());
 							} else {
 								//Peer does not exist

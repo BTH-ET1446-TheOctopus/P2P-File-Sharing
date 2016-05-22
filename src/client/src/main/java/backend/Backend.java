@@ -2,6 +2,8 @@ package backend;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -141,10 +143,17 @@ public class Backend implements BackendController {
 	}
 
 	@Override
-	public void createSwarm(String filename, boolean dark) {
-		String basename = (new File(filename)).getName();
+	public void createSwarm(String originalFilename, boolean dark) {
+		String basename = (new File(originalFilename)).getName();
 		
-		BlockBuffer blockBuffer = FileHandler.read(filename);
+		// Try to copy the file to working directory
+		try {
+			Files.copy((new File(originalFilename)).toPath(), (new File(basename)).toPath());
+		} catch (IOException e) {
+			LOG.log(Level.WARNING, "Failed to copy {0} to working directory", new Object[] {originalFilename, basename});
+		}
+		
+		BlockBuffer blockBuffer = FileHandler.read(originalFilename);
 		
 		String uuid;
 		int blockCount = -1;
@@ -198,13 +207,19 @@ public class Backend implements BackendController {
 		if (speedChartObserver != null) {
 			throw new RuntimeException("Cannot subscribe for multiple speed charts");
 		}
-
-		activeSwarms.get(id).subscribeSpeedCallback(callback);
+		
+		SwarmEngager swarmEngager = activeSwarms.get(id);
+		if (swarmEngager != null) {
+			activeSwarms.get(id).subscribeSpeedCallback(callback);
+		}
 	}
 
 	@Override
 	public void unsubscribeSpeedChart(String id) {
-		activeSwarms.get(id).unsubscribeSpeedCallback();
+		SwarmEngager swarmEngager = activeSwarms.get(id);
+		if (swarmEngager != null) {
+			activeSwarms.get(id).unsubscribeSpeedCallback();
+		}
 	}
 
 	public void searchResult(String id, Integer blockCount, String filename, String fileChecksum,

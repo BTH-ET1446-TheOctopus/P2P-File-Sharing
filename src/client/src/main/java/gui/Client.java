@@ -43,6 +43,7 @@ public class Client implements BackendObserver
 	private JButton						speedChart;
 	private JButton						search;
 	private JButton						darkPeerbtn;
+	private JButton                     peerlistbutton;
 	private JLabel						download;
 	private JLabel						upload;
 	private JScrollPane					scrollPane;
@@ -55,9 +56,8 @@ public class Client implements BackendObserver
 	private GetPeerList					peerlist;
 	private Mode						mode;
 	private SpeedChart					speedChartWindow;
-//	private JButton						peerlist;
 	private Backend backend;
-	private JButton btnNewButton;
+	
 
 	/**
 	 * This method creates the Octopus P2P client GUI.
@@ -319,14 +319,13 @@ public class Client implements BackendObserver
 		search = new JButton();
 		search.setToolTipText("Search");
 		search.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/fileSearch.png")));
-		btnNewButton = new JButton("");
-		btnNewButton.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/peerlist2.png")));
-		//btnNewButton.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/peerlist.png")));
-		btnNewButton.addActionListener(new ActionListener() {
+		peerlistbutton = new JButton("");
+		peerlistbutton.setToolTipText("Shows List Of All Connected Peers");
+        peerlistbutton.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/peerlist2.png")));
+		peerlistbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				peerlist = new GetPeerList();
-	    btnNewButton = new JButton("");
-	           
+	 	           
 			}
 		});
 		GroupLayout gl_iconBar = new GroupLayout(iconBar);
@@ -340,7 +339,7 @@ public class Client implements BackendObserver
 					.addComponent(pauseTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 					.addComponent(resumeTorrent, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 					.addGap(388)
-					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+					.addComponent(peerlistbutton, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(speedChart, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 					.addComponent(search, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
@@ -349,7 +348,7 @@ public class Client implements BackendObserver
 			gl_iconBar.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_iconBar.createSequentialGroup()
 					.addGroup(gl_iconBar.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(btnNewButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(peerlistbutton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(newTorrent, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
 						.addComponent(removeTorrent, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
 						.addComponent(pauseTorrent, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
@@ -379,7 +378,8 @@ public class Client implements BackendObserver
 	private void createDownloadLable()
 	{
 		download = new JLabel();
-		download.setText("999.9 MB");
+		download.setToolTipText("Download Speed");
+		download.setText("9.45 MB");
 		download.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/download.png")));
 	}
 
@@ -394,15 +394,16 @@ public class Client implements BackendObserver
 	private void createUploadLable()
 	{
 		upload = new JLabel();
-		upload.setText("999.9 MB");
+		upload.setToolTipText("Upload Speed");
+		upload.setText("5.32 MB");
 		upload.setIcon(new ImageIcon(Client.class.getResource("/gui/resources/upload.png")));
 		GroupLayout gl_statusBar = new GroupLayout(statusBar);
 		gl_statusBar.setHorizontalGroup(
 			gl_statusBar.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_statusBar.createSequentialGroup()
-					.addGap(500)
-					.addComponent(upload, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-					.addComponent(download, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
+					.addGap(550)
+					.addComponent(upload, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+					.addComponent(download, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))
 		);
 		gl_statusBar.setVerticalGroup(
 			gl_statusBar.createParallelGroup(Alignment.LEADING)
@@ -466,27 +467,7 @@ public class Client implements BackendObserver
 		});
 	}
 
-	/**
-	 * This method adds sample data to the table in the main frame of the
-	 * Octopus P2P client. This method should be removed when the connection
-	 * between back and front end is established!
-	 * 
-	 * @author Kamran Alipoursimakani
-	 *
-	 */
 
-	// private void addSampleDataToTable(String id, String filename)
-	// {
-	// tableRows = new ArrayList<>();
-	// List<String> row = new ArrayList<>();
-	// row.add("1");
-	// row.add("Man on the moon.mp4");
-	// SwarmMetadataShort swarm = new SwarmMetadataShort(id, filename);
-	// swarm. setRowTable(row);
-	// tableRows.add(swarm);
-	//
-	// createTableDataModel(tableRows);
-	// }
 
 	/**
 	 * This method changes the status of the "status" variable and also changes

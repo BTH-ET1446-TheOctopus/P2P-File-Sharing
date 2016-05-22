@@ -30,7 +30,7 @@ public class addPeerArrayTest {
 		
 		DatabaseCalls dbc = new DatabaseCalls();
 
-		dbc.addPeerArray("278f6d83-a707-4aee-8471-8ffc03c662a9", "192.168.45.98");
+		dbc.addPeerArray("278f6d83-a707-4aee-8471-8ffc03c662a9", "192.168.45.98", "378f6d83-a707-4aee-8471-8ffc03c662a9");
 		
 		//get info from the table
 		rs = sc.runquery("SELECT * FROM peersarray where peers='192.168.45.98'");

@@ -1,7 +1,6 @@
 package backend.rest;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,10 +23,8 @@ import backend.json.Address;
 import backend.json.Chunk;
 import backend.json.Chunks;
 import backend.json.Peers;
-import backend.thread.ClientSearchThread;
 import sql.DatabaseAPI;
 import sql.DatabaseCalls;
-import sql.sqlconnector;
 
 @Path("/rest")
 public class Rest {
@@ -102,78 +99,87 @@ public class Rest {
 	@Path("/file/{id}/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Chunks getFileChunks(@PathParam("id") String id) {
+		LOG.log(Level.INFO, "Received request to get block availability file id {0}", new Object[] { id });
 		
 		Chunks chunks = new Chunks();
-		LOG.log(Level.INFO, id.toString());
-		if (id.equals("abc123")) {
-			List<Integer> chunk = Arrays.asList(0, 1, 2, 3);
-
-			chunks.setchunks(chunk);
+		List<Integer> blocks;
+		
+		String filename = database.getSwarmName(id);
+		if (filename == null) {
+			LOG.log(Level.WARNING, "No such file {0} in database", filename);
+			return chunks;
 		}
+		
+		BlockBuffer blockBuffer = FileHandler.read(filename);
+		if (blockBuffer == null) {
+			LOG.log(Level.WARNING, "Unable to open file {0} for reading", filename);
+			return chunks;
+		}
+		
+		try {
+			blocks = new ArrayList<Integer>(blockBuffer.getBlockCount());
+			
+			for (int i = 0; i < blockBuffer.getBlockCount(); ++i) {
+				blocks.add(i);
+			}
+		} catch (IOException e) {
+			LOG.log(Level.WARNING, e.toString(), e);
+			return chunks;
+		}
+		
+		chunks.setchunks(blocks);
+		
 		return chunks;
 	}
 
 	@GET
 	@Path("/file/{id}/{chunk}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Chunk getFile(@PathParam("id") String id, @PathParam("chunk") Integer chunk) {
-		LOG.log(Level.INFO, "Received request to download file id {0}, block {1}", new Object[] { id, chunk });
+	public Chunk getFile(@PathParam("id") String id, @PathParam("chunk") Integer blockNumber) {
+		LOG.log(Level.INFO, "Received request to download file id {0}, block {1}", new Object[] { id, blockNumber });
 		
+		Chunk chunk = new Chunk();
+		String filename = database.getSwarmName(id);
+		if (filename == null) {
+			LOG.log(Level.WARNING, "No such file {0} in database", filename);
+			return chunk;
+		}
 		
+		BlockBuffer blockBuffer = FileHandler.read(filename);
+		if (blockBuffer == null) {
+			LOG.log(Level.WARNING, "Unable to open file {0} for reading", filename);
+			return chunk;
+		}
 		
-		String fileName = database.getSwarmName(id);
-		
-		
-		
-		// Database code:
-		// Get the filename from 'id'
- 		sqlconnector test = new sqlconnector("clientdb");
- 		ResultSet result;
- 		String fname="";
- 		String readquery="select distinct filename from clientswarm where filename='id'";
- 		result = test.runquery(readquery);
-		//Retrieve by column name
- 		try {
- 			fname = result.getString("filename");
- 	    }
- 	    catch (Exception e) {
- 	        LOG.log(Level.INFO, "Exception in query method:\n" + e.getMessage());
- 	    }
-			         
- 		test.closeconnect();
-		// Check if the block number 'chunk' is downloaded
- 		
-		Chunk chunko = new Chunk();
-		chunko.setSequenceNumber(chunk);
-
-		if (id.equals("abc123")) {
-			String filename = "octopus.jpg";
-
-			BlockBuffer blockBuffer = FileHandler.read(filename);
-			if (blockBuffer == null) {
-				LOG.log(Level.WARNING, "Unable to open file {0} for reading", filename);
-				return chunko;
+		try {
+			if (blockNumber >= blockBuffer.getBlockCount()) {
+				LOG.log(Level.WARNING, "Block number out of bounds {0}", filename);
 			}
-
-			byte[] data = new byte[BlockBuffer.BLOCK_SIZE];
-			int readCount = 0;
-			try {
-				readCount = blockBuffer.getBlock(data, chunk);
-			} catch (IOException e) {
-				LOG.log(Level.WARNING, "Unable to read block {0} in file {1}", new Object[] { chunk, filename });
-				return chunko;
-			} catch (IndexOutOfBoundsException e) {
-				LOG.log(Level.WARNING, "Unable to read block {0} in file {1}", new Object[] { chunk, filename });
-				return chunko;
-			}
-
-			chunko.setData(data);
-			chunko.setSize(readCount);
-
-			chunko.setChecksum("Wololosum");
+		} catch (IOException e) {
+			LOG.log(Level.WARNING, e.toString(), e);
+			return chunk;
+		}
+		
+		chunk.setSequenceNumber(blockNumber);
+		
+		byte[] data = new byte[BlockBuffer.BLOCK_SIZE];
+		int readCount = 0;
+		try {
+			readCount = blockBuffer.getBlock(data, blockNumber);
+		} catch (IOException e) {
+			LOG.log(Level.WARNING, "Unable to read block {0} in file {1}", new Object[] { chunk, filename });
+			return chunk;
+		} catch (IndexOutOfBoundsException e) {
+			LOG.log(Level.WARNING, "Unable to read block {0} in file {1}", new Object[] { chunk, filename });
+			return chunk;
 		}
 
-		return chunko;
+		chunk.setData(data);
+		chunk.setSize(readCount);
+
+		chunk.setChecksum("Wololosum");
+
+		return chunk;
 	}
 
 }
