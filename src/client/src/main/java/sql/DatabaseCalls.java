@@ -1,5 +1,4 @@
 package sql;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -232,21 +231,20 @@ public class DatabaseCalls implements DatabaseAPI{
 		return flag;
 	}
 
-	public boolean addSwarm(String swarmid, String filename, String fileChecksum, String metadataChecksum, int blockCount, String clientID){   //This method writes to 'clientfile' table
-		//sqlconnector sc = new sqlconnector();
-		//Statement stmnt = sc.getStatement();
-		boolean flag = false;
-		if(!isSwarmExisting(swarmid)) {
-			String query = "INSERT INTO clientswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
-					"VALUES ('"+filename+"', "+blockCount+", '192.168.2.2', 1, '"+swarmid+"', '"+fileChecksum+"', '"+metadataChecksum+"' )";
-			sc.Update(query);
-		}
-		if(isSwarmExisting(swarmid)) {
-			flag = true;
-		}
-		
-		return flag;
-	}
+	public boolean addSwarm(String swarmid, String filename, String fileChecksum, String metadataChecksum, int blockCount, String clientID){
+	    //sqlconnector sc = new sqlconnector();
+	    //Statement stmnt = sc.getStatement();
+	    //boolean flag = false;
+	    
+	    if(!isSwarmExisting(swarmid)) {
+	      String query = "INSERT INTO clientswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
+	          "VALUES ('"+filename+"', "+blockCount+", '192.168.2.2', 1, '"+swarmid+"', '"+fileChecksum+"', '"+metadataChecksum+"' )";
+	      sc.Update(query);
+	      return true;
+	    }
+	    
+	    return false;
+	  }
 	
 	//Close DB Connection
 	public void closedbconnect(){
@@ -299,25 +297,22 @@ public class DatabaseCalls implements DatabaseAPI{
 	}
 	
 	public boolean deleteSwarmID(String swarmID){
-		boolean flag = false;
-		
-		if(isSwarmExisting(swarmID))
-		{
-			String query = "DELETE FROM clientswarm WHERE uniquefileid = " + "'" + swarmID + "'";
-			rs = sc.runquery(query);
-			try {
-				if(rs != null){
-					if(rs.getString("uniquefileid").equals(swarmID)){
-						flag = true;
-					}
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return flag;
-	}
+	    boolean flag = false;
+	    
+	    if(isSwarmExisting(swarmID))
+	    {
+	      String query = "DELETE FROM clientswarm WHERE uniquefileid = " + "'" + swarmID + "'";
+	      try {
+	        sc.Update(query);
+	        flag = true;
+	      } catch (Exception e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+	      }
+
+	    }
+	    return flag;
+	  }
 	
 	public String getSwarmName(String swarmID){
 		String filename = null;
