@@ -22,6 +22,19 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
+		
+		if (args.length < 1) {
+			System.out.println("Error: Too few arguments");
+			System.out.println("Bootstrap.jar [local address]");
+			System.out.println();
+			System.out.println("Example:");
+			System.out.println("\tBootstrap.jar 192.168.1.254");
+			
+			return;
+		}
+		
+		Settings.DEFAULT_BOOTSTRAP_ADDRESS = args[0];
+		
 		/*The below command line is calling a method/class "RESTStartUp"
 		 where the bootstrap is initiated, interrupted and terminated  */
 		

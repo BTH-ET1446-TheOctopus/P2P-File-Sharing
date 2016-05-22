@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import backend.Backend;
 import backend.Logging;
+import backend.Settings;
 import backend.rest.RESTStartUp;
 import sql.insertsample;
 import sql.sqlconnector;
@@ -15,7 +16,7 @@ public class Main {
 	private final static Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	public static void main(String[] args) {
-
+		
 		try {
 			Logging.newlog();
 		} catch (IOException e) {
@@ -23,7 +24,18 @@ public class Main {
 			//throw new RuntimeException("Error when creating log file");
 		}
 		Logger.getLogger("com.sun.jersey").setLevel(Level.WARNING);
-
+		
+		
+		if (args.length < 2) {
+			System.out.println("Error: Too few arguments");
+			System.out.println("Client.jar [local address] [bootstrap address]");
+			System.out.println();
+			System.out.println("Example:");
+			System.out.println("\tClient.jar 192.168.1.100 192.168.1.254");
+			
+			return;
+		}
+		
 		sqlconnector test = new sqlconnector();
 		// Creates Client DB on Runtime
 		test.createclientdb();
@@ -35,6 +47,7 @@ public class Main {
 		test.closeconnect();
 		
 		String bindAddress = (args.length > 0) ? args[0] : null;
+		Settings.DEFAULT_BOOTSTRAP_ADDRESS = args[1];
 		
 		final Thread restServerThread = new Thread(new RESTStartUp(bindAddress));
 		restServerThread.start();

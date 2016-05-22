@@ -44,6 +44,8 @@ public class BootstrapDataThread extends Thread {
 
 				LOG.log(Level.INFO, "Grabbing blacklist from bootstrap server");
 				blacklist = bootstrapCalls.getBlacklist().getblacklist();
+				
+				
 
 				long elapsedTime = System.currentTimeMillis() - timestampStart;
 				Thread.sleep(Settings.BOOTSTRAP_DATA_RETRIVAL_INTERVAL * 1000 - elapsedTime);

@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public final class Settings {
 	public static final boolean ENABLE_HTTPS = true;
 	
-	public static final String DEFAULT_BOOTSTRAP_ADDRESS = "localhost";
+	public static String DEFAULT_BOOTSTRAP_ADDRESS = "localhost";
 	public static final String BOOTSTRAP_PORT = "9999";
 
 	public static final String NTP_SERVER = "ptbtime1.ptb.de";
