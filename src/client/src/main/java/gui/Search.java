@@ -360,7 +360,7 @@ public class Search extends JDialog
 		for (SwarmMetadataShort swarm : swarms)
 		{
 			model.addRow(new Object[]
-			{ swarm.getId(), swarm.getFilename() });
+			{ swarm.getId(), swarm.getFilename(), null, String.join(", ", swarm.getPeers()) });
 
 		}
 

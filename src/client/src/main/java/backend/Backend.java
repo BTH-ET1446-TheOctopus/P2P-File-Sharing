@@ -121,7 +121,7 @@ public class Backend implements BackendController {
 		List<SwarmMetadataShort> swarms = new ArrayList<SwarmMetadataShort>();
 
 		for (Swarms json_swarm : json_swarms) {
-			swarms.add(new SwarmMetadataShort(json_swarm.getid(), json_swarm.getfilename()));
+			swarms.add(new SwarmMetadataShort(json_swarm.getid(), json_swarm.getfilename(), json_swarm.getPeers()));
 		}
 
 		return swarms;

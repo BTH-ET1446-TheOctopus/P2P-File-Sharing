@@ -1,10 +1,12 @@
 package backend.json;
 
+import java.util.List;
+
 public class Swarms {
 	private String id;
 	private String filename;
-	
-	
+	private List<String> peers;
+
 	public Swarms() {
 	}
 	
@@ -24,6 +26,10 @@ public class Swarms {
 	public void setfilename(String fileName) {
 		this.filename = fileName;
 	}
-	
-	
+	public List<String> getPeers() {
+		return peers;
+	}
+	public void setPeers(List<String> peers) {
+		this.peers = peers;
+	}
 }
