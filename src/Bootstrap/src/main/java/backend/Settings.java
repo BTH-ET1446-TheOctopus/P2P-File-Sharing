@@ -23,7 +23,7 @@ public final class Settings {
 
 	public static final int BOOTSTRAP_SYNCHRONIZATION_INTERVAL = 60 * 1000; // milliseconds
 
-	public static final boolean USE_SQLITE = true;
+	public static final boolean USE_SQLITE = false;
 	public static final String MYSQL_HOST = "127.0.0.1";
 	public static final String MYSQL_PORT = "3306";
 	public static final String MYSQL_USERNAME = "root";

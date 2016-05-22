@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import backend.json.Blacklist;
-import backend.json.Bootstraps;
 import backend.json.Peers;
 import backend.json.PeersInfo;
 import backend.json.SwarmsInfo;
@@ -105,13 +103,13 @@ public class DatabaseCalls implements DatabaseAPI {
 		return updateflag;
 	}
 	
-	public void addPeerArray(String uniquefileid, String clientIP, String clientID) {
-		sc.Update("INSERT INTO peersarray (uniquefileid, peers, clientid) VALUES ('"+uniquefileid+"', '"+clientIP+"', '"+clientID+"')");
+	public boolean addPeerArray(String uniquefileid, String clientIP, String clientID) {
+		return sc.Update("INSERT INTO peersarray (uniquefileid, peers, clientid) VALUES ('"+uniquefileid+"', '"+clientIP+"', '"+clientID+"')");
 	}
 
 	public boolean isPeerIDExisting(String id){
 
-		String query = "select distinct id from serverpeers where id =" + "'"+ id + "'";	
+		String query = "SELECT distinct id FROM serverpeers WHERE id =" + "'"+ id + "'";	
 		rs=sc.runquery(query);
 		try {
 			if(rs.next())
@@ -182,13 +180,13 @@ public class DatabaseCalls implements DatabaseAPI {
 
 	} 
 
-	public Peers getpeers(){
-		Peers peers = new Peers();
-		String readquery="";
+	public List<String> getpeers(){
 		ResultSet result;
 		String data="";
 		int counter=0;
-		readquery="select distinct latestIP from serverpeers";
+
+		String readquery="SELECT distinct latestIP FROM serverpeers";
+
 		result = sc.runquery(readquery);
 		List<String> ip = new ArrayList<String>();
 
@@ -205,56 +203,43 @@ public class DatabaseCalls implements DatabaseAPI {
 		catch (Exception e) {
 			LOG.log(Level.WARNING, e.toString(), e);
 		}
-		peers.setpeers(ip);
-
-		return peers;
+		return ip;
 	}
 
-	public Bootstraps getBootstraps(){
-		Bootstraps bootstraps = new Bootstraps();
-		String readquery="";
+	public List<String> getBootstraps(){
 		ResultSet result;
-		String data="";
-		readquery="select distinct ip from bootstrapserver";
+		String readquery="SELECT distinct ip FROM bootstrapserver";
 		result = sc.runquery(readquery);
 
 		List<String> ip = new ArrayList<String>();
 		try {
 			while(result.next()){
-				//Retrieve by column name			
-				data = result.getString("ip");	         
-				ip.add(data);
+				//Retrieve by column name			         
+				ip.add(result.getString("ip"));
 			}
 		}
 		catch (Exception e) {
 			LOG.log(Level.WARNING, e.toString(), e);
 		}
-		bootstraps.setbootstraps(ip);
-		return bootstraps;
+		return ip;
 	}
 
-	public Blacklist getBlacklist()	{
-		Blacklist blacklist = new Blacklist();
-
-		String readquery="";
+	public List<String> getBlacklist()	{
 		ResultSet result;
-		String data="";
-		readquery="select distinct latestip from serverpeers where blacklist='1';";
+		String readquery="SELECT distinct latestip FROM serverpeers where blacklist='1';";
 		result = sc.runquery(readquery);
 		List<String> ip = new ArrayList<String>();
+		
 		try {
 			while(result.next()){
-				//Retrieve by column name			
-				data = result.getString("latestip");	         
-				ip.add(data);
+				//Retrieve by column name			         
+				ip.add(result.getString("latestip"));
 			}
 		}
 		catch (Exception e) {
 			LOG.log(Level.WARNING, e.toString(), e);
 		}
-		blacklist.setblacklist(ip);
-
-		return blacklist;
+		return ip;
 	}
 	
 	private List<String> getPeers(String fileId) {
@@ -453,20 +438,19 @@ public class DatabaseCalls implements DatabaseAPI {
 	}
 	
 	public boolean removePeers(String ClientUUID) {
-		String readquery="";
-		boolean result;
-		readquery="delete from serverpeers where peers='"+ClientUUID+"'";
+		boolean result = false;
+		String readquery="DELETE FROM serverpeers WHERE peers='"+ClientUUID+"'";
 
 		try {
-		result = sc.Update(readquery);
+			result = sc.Update(readquery);
 //		LOG.log(Level.INFO, ClientUUID + " : removed from server (inactive for 3 minutes)");
-		return true;
+		return result;
 		
 		}
 		catch (Exception e) {
 			LOG.log(Level.WARNING, e.toString(), e);
 		}
-		return false;
+		return result;
 	}
 
 	public Peers getInactivePeers(int timeout) {
@@ -476,8 +460,9 @@ public class DatabaseCalls implements DatabaseAPI {
 		long diff;
 		ResultSet result;
 		Timestamp time;
+		//Must use ntp time stamp
 		Timestamp currentTime = new Timestamp((new java.util.Date()).getTime());
-		readquery="select * from serverpeers";
+		readquery="SELECT * FROM serverpeers";
 		result = sc.runquery(readquery);
 		List<String> ip = new ArrayList<String>();
 		
@@ -494,7 +479,8 @@ public class DatabaseCalls implements DatabaseAPI {
 				long diffSeconds = diff / 1000;
 
 				if (diffSeconds > timeout){  //see if the difference is at least 3 minutes
-				ip.add(peer);
+				//remove inactive peers here
+					ip.add(peer);
 			}
 				
 			}

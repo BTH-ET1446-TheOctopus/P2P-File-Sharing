@@ -4,6 +4,9 @@ import sql.DatabaseCalls.getIPoStatus;
 import backend.json.SwarmsHelper;
 import backend.json.Swarm;
 import backend.json.Peers;
+
+import java.util.List;
+
 import backend.json.Blacklist;
 import backend.json.Bootstraps;
 import backend.json.Sync;
@@ -14,7 +17,7 @@ public interface DatabaseAPI {
 	public boolean addBootstrapServer(String ip, String name, int clientcount, int servercount);
 	public boolean addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid);
 	public void addPeers(String id, String latestIP, boolean blacklist, String timestamp);
-	public void addPeerArray(String uniquefileid, String clientIP, String clientID);
+	public boolean addPeerArray(String uniquefileid, String clientIP, String clientID);
 	
 	public boolean isPeerIDExisting(String id);
 	public boolean updatePeer(String ip, String id, String timestamp);
@@ -28,12 +31,12 @@ public interface DatabaseAPI {
 	public void closedbconnect();
 	
 	public getIPoStatus getPeers();
-	public Blacklist getBlacklist();
+	public List<String> getBlacklist();
 	public Sync getSync();
-	public Peers getpeers();
+	public List<String> getpeers();
 	public SwarmsHelper getSwarms();
 	public Swarm getSwarm(String swarmID);
-	public Bootstraps getBootstraps();
+	public List<String> getBootstraps();
 	
 	public Peers getInactivePeers(int timeout);
 	public boolean removePeers(String CientUUID); 
