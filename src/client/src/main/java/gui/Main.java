@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import backend.Backend;
 import backend.Logging;
 import backend.rest.RESTStartUp;
 import sql.insertsample;
@@ -28,8 +29,10 @@ public class Main {
 		test.createclientdb();
 
 		// Insert Sample in Client DB
-		insertsample insample = new insertsample();
-		insample.insertcdb();
+		//insertsample insample = new insertsample();
+		//insample.insertcdb();
+		
+		test.closeconnect();
 		
 		String bindAddress = (args.length > 0) ? args[0] : null;
 		
@@ -39,6 +42,8 @@ public class Main {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
+				Backend.getInstance().destroy();
+				
 				restServerThread.interrupt();
 				try {
 					restServerThread.join();

@@ -38,8 +38,12 @@ import java.util.logging.Logger;
 @Path("/rest")
 public class Rest {
 	private static final Logger LOG = Logger.getLogger(Rest.class.getName());
-	private DatabaseAPI database = new DatabaseCalls();
-
+	private static DatabaseAPI database = new DatabaseCalls();
+	
+	public static void destory() {
+		database.closedbconnect();
+	}
+	
 	@GET
 	@Path("/test/")
 	@Produces(MediaType.APPLICATION_JSON)

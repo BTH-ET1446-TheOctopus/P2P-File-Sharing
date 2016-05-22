@@ -3,6 +3,7 @@ package backend;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import backend.rest.RESTStartUp;
+import backend.rest.Rest;
 import sql.sqlconnector;
 import sql.insertsample;
 /*
@@ -29,8 +30,8 @@ public class Main {
 		//Creates Server DB on Runtime
 		test.createserverdb();
 		//Insert Sample Data in Server DB
-		insertsample insample = new insertsample();
-		insample.insertIntoServer();
+		//insertsample insample = new insertsample();
+		//insample.insertIntoServer();
 		test.closeconnect();
 
 		final Thread restServerThread = new Thread(new RESTStartUp());
@@ -42,8 +43,10 @@ public class Main {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
+				Rest.destory(); // Close the database connection
+				
 				restServerThread.interrupt(); // Stop the REST server thread
-
+				
 				try {
 					restServerThread.join(); // Wait until the thread is stopped
 				} catch (InterruptedException e) {

@@ -239,7 +239,6 @@ public class Backend implements BackendController {
 
 	public void searchResult(String id, Integer blockCount, String filename, String fileChecksum,
 			String metadataChecksum, String ipAddress) {
-		System.out.print("Kommer vi hit?");
 		searchResults.add(
 				new SwarmMetadata(id, filename, blockCount, fileChecksum, metadataChecksum, Arrays.asList(ipAddress)));
 		System.out.print(Arrays.asList(ipAddress));
@@ -249,5 +248,11 @@ public class Backend implements BackendController {
 	{
 	return searchResults;
 	}
-
+	
+	public void destroy() {
+		if (databaseCalls != null) {
+			databaseCalls.closedbconnect();
+			databaseCalls = null;
+		}
+	}
 }
