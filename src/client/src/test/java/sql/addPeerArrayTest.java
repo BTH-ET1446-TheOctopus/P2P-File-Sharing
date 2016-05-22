@@ -15,12 +15,11 @@ public class addPeerArrayTest {
 	private static final Logger LOG = Logger.getLogger(DatabaseCalls.class.getName());
 	
 	@Test
-	public void SuccessfuladdPeerArrayTest() { 
+	public void SuccessfullyAddPeerArrayTest() { 
 		
-		sqlconnector sc = new sqlconnector();
+		sqlconnector sc = new sqlconnector("clientdb");
 		ResultSet rs = null;
 
-		String id = null;
 		String uniquefileid = null;
 		String peers = null;
 		
@@ -30,22 +29,14 @@ public class addPeerArrayTest {
 		
 		try {
 			while(rs.next()){
-	
-				id=rs.getString("id");
 				uniquefileid=rs.getString("uniquefileid");
-				peers=rs.getString("peers");
-				System.out.println(uniquefileid);			}
+				peers=rs.getString("peers");			}
 		} catch (SQLException ex){
 			
 			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
 			LOG.log(Level.INFO,"SQLState: " + ex.getSQLState());
 			LOG.log(Level.INFO,"VendorError: " + ex.getErrorCode());
-		} finally  {
-			sc.closeconnect();
 		}
-		
-		assertNotNull(id);
-		assertEquals("545", id);
 		
 		assertNotNull(uniquefileid);
 		assertEquals("278f6d83-a707-4aee-8471-8ffc03c662a9", uniquefileid);

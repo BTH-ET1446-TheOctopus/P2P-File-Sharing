@@ -103,8 +103,8 @@ public class DatabaseCalls implements DatabaseAPI {
 		return updateflag;
 	}
 	
-	public void addPeerArray(String uniquefileid, String clientIP, String clientID) {
-		sc.Update("INSERT INTO peersarray (uniquefileid, peers, clientid) VALUES ('"+uniquefileid+"', '"+clientIP+"', '"+clientID+"')");
+	public boolean addPeerArray(String uniquefileid, String clientIP, String clientID) {
+		return sc.Update("INSERT INTO peersarray (uniquefileid, peers, clientid) VALUES ('"+uniquefileid+"', '"+clientIP+"', '"+clientID+"')");
 	}
 
 	public boolean isPeerIDExisting(String id){

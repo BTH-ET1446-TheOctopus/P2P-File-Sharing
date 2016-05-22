@@ -81,30 +81,30 @@ public class TestDatabaseCalls {
 	public void addPeerArray()
 	{//test to see if peers are added to the server database
 		
-		sqlconnector sc = new sqlconnector();
+		sqlconnector sc = new sqlconnector("serverdb");
 		ResultSet rs = null;
 		
 		//Initialize table columns
 		
 		String uniquefileid = null;
 		String peers = null;
-		
+		String clientid = null;
 		
 		DatabaseCalls dbc = new DatabaseCalls();
 
-		dbc.addPeerArray("278f6d83-a707-4aee-8471-8ffc03c662a9", "192.168.45.98");
+		dbc.addPeerArray("278f6d83-a707-4aee-8471-8ffc03c662a9", "192.168.45.98", "SQD-32434");
 		
 		//get info from the table
 		rs = sc.runquery("SELECT * FROM peersarray where peers='192.168.45.98'");
 		
+		
 		try {
-			while(rs.next()){
 			
-				
-				
+			while(rs.next()){		
 				uniquefileid=rs.getString("uniquefileid");
 				peers=rs.getString("peers");
-				System.out.println(uniquefileid);			}
+				clientid=rs.getString("clientid");
+			}
 		} catch (SQLException ex){
 			// handle any errors
 			LOG.log(Level.INFO,"SQLException: " + ex.getMessage());
@@ -114,13 +114,14 @@ public class TestDatabaseCalls {
 			sc.closeconnect();
 		}
 		
-
 		assertNotNull(uniquefileid);
 		assertEquals("278f6d83-a707-4aee-8471-8ffc03c662a9", uniquefileid);
 		
 		assertNotNull(peers);
-		assertEquals("192.168.45.98", peers);
+		assertEquals("192.168.45.98", peers);	
 		
+		assertNotNull(clientid);
+		assertEquals("SQD-32434", clientid);
 		
 	}
 	
@@ -144,9 +145,7 @@ public class TestDatabaseCalls {
 		
 		try {
 			while(rs.next()){
-			
-				
-				
+
 				uniquefileid=rs.getString("uniquefileid");
 				peers=rs.getString("peers");
 				System.out.println(uniquefileid);			}
