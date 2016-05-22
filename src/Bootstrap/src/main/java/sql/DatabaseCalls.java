@@ -2,7 +2,6 @@ package sql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +59,7 @@ public class DatabaseCalls implements DatabaseAPI {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}
 		
 		return false;
@@ -77,7 +76,7 @@ public class DatabaseCalls implements DatabaseAPI {
 			return true;
 			}
 		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}
 		return false;
 	}
@@ -196,7 +195,6 @@ public class DatabaseCalls implements DatabaseAPI {
 		List<String> ip = new ArrayList<String>();
 
 		try {
-			System.out.println();
 			while(result.next()){
 				//Retrieve by column name			
 				data = result.getString("peers");	         
@@ -207,7 +205,7 @@ public class DatabaseCalls implements DatabaseAPI {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}
 		peers.setpeers(ip);
 
@@ -224,7 +222,6 @@ public class DatabaseCalls implements DatabaseAPI {
 
 		List<String> ip = new ArrayList<String>();
 		try {
-			System.out.println();
 			while(result.next()){
 				//Retrieve by column name			
 				data = result.getString("ip");	         
@@ -232,7 +229,7 @@ public class DatabaseCalls implements DatabaseAPI {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}
 		bootstraps.setbootstraps(ip);
 		return bootstraps;
@@ -248,7 +245,6 @@ public class DatabaseCalls implements DatabaseAPI {
 		result = sc.runquery(readquery);
 		List<String> ip = new ArrayList<String>();
 		try {
-			System.out.println();
 			while(result.next()){
 				//Retrieve by column name			
 				data = result.getString("latestip");	         
@@ -256,7 +252,7 @@ public class DatabaseCalls implements DatabaseAPI {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}
 		blacklist.setblacklist(ip);
 
@@ -273,7 +269,6 @@ public class DatabaseCalls implements DatabaseAPI {
 		List<Swarms> swarms = new ArrayList<Swarms>();
 
 		try {
-			System.out.println();
 			while (result.next()) { 
 				Swarms swarm = new Swarms();
 				System.out.println(result.getString("filename"));
@@ -284,7 +279,7 @@ public class DatabaseCalls implements DatabaseAPI {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}
 		swarmHelp.setSwarms(swarms);		
 		return swarmHelp;
@@ -308,7 +303,6 @@ public class DatabaseCalls implements DatabaseAPI {
 
 		List<String> peers = new ArrayList<String>();
 		try {
-			System.out.println();
 			while(result.next()){
 				//Retrieve by column name			
 				filename = result.getString("filename");	         
@@ -323,12 +317,11 @@ public class DatabaseCalls implements DatabaseAPI {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}
 		readquery="select distinct peers from peersarray where uniquefileid ='"+swarmid+"';"; //" + swarmid;
 		result = sc.runquery(readquery);
 		try {
-			System.out.println();
 			while(result.next()){
 				//Retrieve by column name			
 				filepeers = result.getString("peers");	         
@@ -336,7 +329,7 @@ public class DatabaseCalls implements DatabaseAPI {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}	
 		swarm.setPeers(peers);
 		return swarm;
@@ -435,8 +428,8 @@ public class DatabaseCalls implements DatabaseAPI {
 	@Override
 	public boolean addSwarmDB(String uuidClient, int totalBlocks, String filename, String fileChecksum,
 			String metadataChecksum, String SwarmID) {
-		return sc.Update("INSERT INTO serverswarm (filename, totalblocks, peers, uniquefileid, filechecksum, metadatachecksum) " + 
-					"VALUES ('"+filename+"', "+totalBlocks+", '"+uuidClient+"', "+SwarmID+",'"+fileChecksum+"', '"+metadataChecksum+"')");
+		return sc.Update("INSERT INTO serverswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
+					"VALUES ('"+filename+"', "+totalBlocks+", '"+uuidClient+"', 1, '"+SwarmID+"','"+fileChecksum+"', '"+metadataChecksum+"')");
 	}
 
 	
@@ -452,7 +445,7 @@ public class DatabaseCalls implements DatabaseAPI {
 		
 		}
 		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}
 		return false;
 	}
@@ -488,7 +481,7 @@ public class DatabaseCalls implements DatabaseAPI {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("Exception in query method:\n" + e.getMessage());
+			LOG.log(Level.WARNING, e.toString(), e);
 		}
 		
 		inactivePeers.setpeers(ip) ;

@@ -163,7 +163,7 @@ public class Backend implements BackendController {
 		if (dark) {
 			uuid = UUID.randomUUID().toString();
 		} else {
-			ID uuid_json = bootstrapCalls.addSwarm(filename, blockCount, fileChecksum, metadataChecksum);
+			ID uuid_json = bootstrapCalls.addSwarm(basename, blockCount, fileChecksum, metadataChecksum);
 			uuid = uuid_json.getid();
 		}
 
