@@ -186,6 +186,11 @@ public class Search extends JDialog
 
 	}
 
+	/**
+	 * This method creates the search panel for searching files.
+	 * 
+	 *
+	 */
 	private void addTabbedPanel()
 	{
 		panelSearch = new JTabbedPane(JTabbedPane.TOP);
@@ -201,6 +206,11 @@ public class Search extends JDialog
 		frame.getContentPane().setLayout(groupLayout);
 	}
 
+	/**
+	 * This method creates the search panel for searching files from servers.
+	 * 
+	 *
+	 */
 	private void addServerPanel()
 	{
 		panelServers = new JPanel();
@@ -279,6 +289,12 @@ public class Search extends JDialog
 		panelServers.setLayout(gl_panelServers);
 	}
 
+	/**
+	 * This method creates the search panel for searching files from neighbors.
+	 * 
+	 *
+	 */
+	
 	private void addNeighborsPanel()
 	{
 		panelNeighbors = new JPanel();
