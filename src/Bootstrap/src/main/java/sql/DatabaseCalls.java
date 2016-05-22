@@ -241,7 +241,23 @@ public class DatabaseCalls implements DatabaseAPI {
 		}
 		return ip;
 	}
-
+	
+	private List<String> getPeers(String fileId) {
+		List<String> peers = new ArrayList<String>();
+		
+		ResultSet peerSet = sc.runquery("SELECT peers FROM peersarray WHERE uniquefileid = '" + fileId + "'");
+		
+		try {
+			while (peerSet.next()) {
+				peers.add(peerSet.getString("peers"));
+			}
+		} catch (SQLException e) {
+			LOG.log(Level.WARNING, e.toString(), e);
+		}
+		
+		return peers;
+	}
+	
 	public SwarmsHelper getSwarms(){
 		SwarmsHelper swarmHelp = new SwarmsHelper();
 		String readquery="";
@@ -256,8 +272,14 @@ public class DatabaseCalls implements DatabaseAPI {
 				Swarms swarm = new Swarms();
 				System.out.println(result.getString("filename"));
 				System.out.println(result.getString("uniquefileid"));
+				
 				swarm.setfilename(result.getString("filename"));
-				swarm.setid(result.getString("uniquefileid"));
+				
+				String fileId = result.getString("uniquefileid");
+				swarm.setid(fileId);
+				
+				swarm.setPeers(getPeers(fileId));
+				
 				swarms.add(swarm);
 			}
 		}
