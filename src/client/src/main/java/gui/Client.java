@@ -301,11 +301,7 @@ public class Client implements BackendObserver
 		});
 	}
 
-	////////////////////////////
 	
-	
-	
-	/////////////////////////
 	/**
 	 * This method creates the "Search" button at the icon bar of the main frame
 	 * of the Octopus P2P client.
@@ -585,29 +581,6 @@ public class Client implements BackendObserver
 		
 	}
 
-//	@Override
-//	public void updateSwarmBlock(String id, int blockNumber, boolean correctChecksum)
-//	{
-//		
-//for (int i = 0; i < table.getRowCount(); i++)
-//{
-//	if (table.getValueAt(i, 0) == id){
-//		double size = (double) table.getValueAt(i, 3);
-//		int totalBlock = (int) (size / 1024);
-//		int currentPercent = (blockNumber * 100) /totalBlock;
-//		table.setValueAt(currentPercent, i, 2);
-//	}
-//	
-//}		
-//		
-//		model.setValueAt("Changed", model.getRowCount()-1, 1);
-//		Random rnd = new Random();
-//		System.out.println(rnd.nextInt(101));
-//		
-//		model.setValueAt((rnd.nextInt(100)+"%"), model.getRowCount()-1, 3);
-//		
-//
-//	}
 
 	@Override
 	public void updateSwarm(String id, double progress, double speed, List<String> peers, String timeToCompletion)
