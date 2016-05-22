@@ -110,7 +110,9 @@ public class BootstrapCalls implements calls {
 	}
 
 	public Swarm getSwarm(String id) {
-		Swarm respons = client.target(bootstrapUrl).path("swarms/" + id).request(MediaType.APPLICATION_JSON)
+		Swarm respons = client.target(bootstrapUrl).path("swarms/" + id)
+				.queryParam("clientID", BootstrapHelloThread.getClientId())
+				.request(MediaType.APPLICATION_JSON)
 				.get(Swarm.class);
 
 		LOG.log(Level.INFO, respons.toString());

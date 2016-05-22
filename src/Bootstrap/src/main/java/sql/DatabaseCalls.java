@@ -32,8 +32,8 @@ public class DatabaseCalls implements DatabaseAPI {
 
 	 //This method writes to 'serverswarm' table
 	public boolean addSwarm(String filename, int totalblocks, String peers, int peercount, int uniquefileid){  
-		return sc.Update("INSERT INTO serverswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
-					"VALUES ('"+filename+"', "+totalblocks+", '"+peers+"', "+peercount+", "+uniquefileid+",'filechecksum', 'metadatachecksum')");
+		return sc.Update("INSERT INTO serverswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " +
+				"VALUES ('"+filename+"', "+totalblocks+", '"+peers+"', "+peercount+", "+uniquefileid+",'filechecksum', 'metadatachecksum')");
 	}
 	
 
@@ -105,10 +105,8 @@ public class DatabaseCalls implements DatabaseAPI {
 		return updateflag;
 	}
 	
-	public void addPeerArray(String uniquefileid, String peers){  //This method writes to 'peersarray' table
-
-		sc.Update("INSERT INTO peersarray (uniquefileid, peers) " + 
-					"VALUES ( '"+uniquefileid+"', '"+peers+"')");
+	public void addPeerArray(String uniquefileid, String clientIP, String clientID) {
+		sc.Update("INSERT INTO peersarray (uniquefileid, peers, clientid) VALUES ('"+uniquefileid+"', '"+clientIP+"', '"+clientID+"')");
 	}
 
 	public boolean isPeerIDExisting(String id){
@@ -190,14 +188,14 @@ public class DatabaseCalls implements DatabaseAPI {
 		ResultSet result;
 		String data="";
 		int counter=0;
-		readquery="select distinct peers from peersarray";
+		readquery="select distinct latestIP from serverpeers";
 		result = sc.runquery(readquery);
 		List<String> ip = new ArrayList<String>();
 
 		try {
 			while(result.next()){
 				//Retrieve by column name			
-				data = result.getString("peers");	         
+				data = result.getString("latestIP");	         
 				if (counter<3){
 					ip.add(data);
 				}
@@ -295,8 +293,8 @@ public class DatabaseCalls implements DatabaseAPI {
 		String filechecksum="";
 		String metadatachecksum="";
 		String filepeers="";
-		String swarmid="'"+swarmID+"'";
-		readquery="select * from serverswarm where uniquefileid ='"+swarmid+"';";  //"+ swarmid;
+		
+		readquery="select * from serverswarm where uniquefileid ='"+swarmID+"';";  //"+ swarmid;
 		result = sc.runquery(readquery);
 
 		LOG.log(Level.INFO, swarmID);
@@ -319,7 +317,7 @@ public class DatabaseCalls implements DatabaseAPI {
 		catch (Exception e) {
 			LOG.log(Level.WARNING, e.toString(), e);
 		}
-		readquery="select distinct peers from peersarray where uniquefileid ='"+swarmid+"';"; //" + swarmid;
+		readquery="select distinct peers from peersarray where uniquefileid ='"+swarmID+"';"; //" + swarmid;
 		result = sc.runquery(readquery);
 		try {
 			while(result.next()){
@@ -429,9 +427,8 @@ public class DatabaseCalls implements DatabaseAPI {
 	public boolean addSwarmDB(String uuidClient, int totalBlocks, String filename, String fileChecksum,
 			String metadataChecksum, String SwarmID) {
 		return sc.Update("INSERT INTO serverswarm (filename, totalblocks, peers, peercount, uniquefileid, filechecksum, metadatachecksum) " + 
-					"VALUES ('"+filename+"', "+totalBlocks+", '"+uuidClient+"', 1, '"+SwarmID+"','"+fileChecksum+"', '"+metadataChecksum+"')");
+				"VALUES ('"+filename+"', "+totalBlocks+", '"+uuidClient+"', 1, '"+SwarmID+"','"+fileChecksum+"', '"+metadataChecksum+"')");
 	}
-
 	
 	public boolean removePeers(String ClientUUID) {
 		String readquery="";

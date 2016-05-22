@@ -116,7 +116,7 @@ public class SwarmEngager extends Thread {
 		}
 
 		restObserver.newSwarm(swarmId, swarmMetadata.getFilename(), swarmMetadata.getBlockCount());
-		restObserver.updateSwarm(swarmId, 0.0, 1.0, swarmMetadata.getPeers(), "N/A");
+		restObserver.updateSwarm(swarmId, 0.0, 0.0, swarmMetadata.getPeers(), "N/A");
 
 		// Get available chunks
 		for (String peer : swarmMetadata.getPeers()) {

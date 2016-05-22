@@ -151,7 +151,6 @@ public class Backend implements BackendController {
 			Files.copy((new File(originalFilename)).toPath(), (new File(basename)).toPath());
 		} catch (IOException e) {
 			LOG.log(Level.WARNING, "Failed to copy {0} to working directory", new Object[] {originalFilename, basename});
-			return;
 		}
 		
 		BlockBuffer blockBuffer = FileHandler.read(originalFilename);
@@ -208,13 +207,19 @@ public class Backend implements BackendController {
 		if (speedChartObserver != null) {
 			throw new RuntimeException("Cannot subscribe for multiple speed charts");
 		}
-
-		activeSwarms.get(id).subscribeSpeedCallback(callback);
+		
+		SwarmEngager swarmEngager = activeSwarms.get(id);
+		if (swarmEngager != null) {
+			activeSwarms.get(id).subscribeSpeedCallback(callback);
+		}
 	}
 
 	@Override
 	public void unsubscribeSpeedChart(String id) {
-		activeSwarms.get(id).unsubscribeSpeedCallback();
+		SwarmEngager swarmEngager = activeSwarms.get(id);
+		if (swarmEngager != null) {
+			activeSwarms.get(id).unsubscribeSpeedCallback();
+		}
 	}
 
 	public void searchResult(String id, Integer blockCount, String filename, String fileChecksum,
